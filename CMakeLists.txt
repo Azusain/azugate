@@ -33,16 +33,10 @@ spdlog::spdlog
 add_executable(azugate
 "src/app/azugate.cc"
 )
-add_executable(test
-"src/app/v3.cc"
-)
 
 target_link_libraries(azugate
 common
 Boost::asio
 Boost::thread
 yaml-cpp::yaml-cpp
-)
-target_link_libraries(test
-common
 )

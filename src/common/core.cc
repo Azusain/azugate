@@ -58,28 +58,6 @@ ssize_t Writen(int fd, const char *buf, size_t len) {
   return n_write;
 }
 
-int Echo(const int fd) {
-  char buf[kDftBufSize];
-  ssize_t n_read = 0;
-  while (true) {
-    // read.
-    n_read = read(fd, buf, kDftBufSize);
-    if (n_read <= 0) {
-      if (errno == EINTR) {
-        continue;
-      }
-      close(fd);
-      SPDLOG_DEBUG("connection closed");
-      return 0;
-    }
-    // write.
-    if (Writen(fd, buf, n_read) == -1) {
-      SPDLOG_ERROR("failed to write {} bytes", n_read);
-      return -1;
-    }
-  }
-}
-
 struct FdCloser {
   void operator()(const int *fd) const {
     if (fd && *fd > 0) {

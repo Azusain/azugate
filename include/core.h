@@ -20,9 +20,6 @@ int Init(int bind_port);
 
 ssize_t Writen(int fd, const char *buf, size_t len);
 
-// some services.
-int Echo(int fd);
-
 int FileProxy(int fd, std::string_view path_base_folder);
 
 #endif
