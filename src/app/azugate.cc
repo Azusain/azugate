@@ -53,3 +53,9 @@ int main() {
 
   return 0;
 }
+
+// TODO: let's proxy websockets then.
+// TODO: design fault tolerances.
+// TODO: crush if being frequently requested?
+// TODO: maybe reuse port.
+// logging system.

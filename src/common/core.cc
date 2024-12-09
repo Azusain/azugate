@@ -189,10 +189,3 @@ int FileProxy(int sock_fd, std::string_view path_base_folder) {
 
   return 0;
 }
-
-// TODO: let's proxy websockets then.
-// TODO: logger level.
-// TODO: design fault tolerances.
-// TODO: crush if being frequently requested?
-// TODO: maybe reuse port.
-// TODO: config file?
