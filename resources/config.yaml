@@ -1,6 +1,6 @@
 port:
   7777
 crt:
-  "localhost.crt"
+  localhost.crt
 key:
-  "localhost.key"
+  localhost.key

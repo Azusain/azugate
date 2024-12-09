@@ -22,14 +22,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-struct FdCloser {
-  void operator()(const int *fd) const {
-    if (fd && *fd > 0) {
-      close(*fd);
-    }
-  }
-};
-
 // return false if err, true if successful
 bool FileProxy(
     const boost::shared_ptr<
@@ -98,7 +90,12 @@ bool FileProxy(
     SPDLOG_ERROR("failed to open file {}: {}", full_path, strerror(errno));
     return false;
   }
-  std::unique_ptr<int, FdCloser> _resource_fd(&resource_fd);
+  std::unique_ptr<int, decltype([](const int *fd) {
+                    if (fd && *fd > 0) {
+                      close(*fd);
+                    }
+                  })>
+      _resource_fd(&resource_fd);
 
   // Get file size
   struct stat file_stat {};

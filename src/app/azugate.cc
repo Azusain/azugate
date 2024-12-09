@@ -55,10 +55,13 @@ void handler(
 }
 
 int main() {
+  std::string path_config_file =
+      fmt::format("{}/{}", kPathResourceFolder, kDftConfigFile);
   try {
     // parse configuration.
-    auto config = YAML::LoadFile(
-        fmt::format("{}/{}", kPathResourceFolder, kDftConfigFile));
+    // TODO: why sslKey equals to sslCrt in release mode?
+    SPDLOG_INFO("loading config from {}", path_config_file);
+    auto config = YAML::LoadFile(path_config_file);
     port = config[kYamlFieldPort].as<uint16_t>();
     sslCrt = config[kYamlFieldCrt].as<std::string>();
     sslKey = config[kYamlFieldKey].as<std::string>();
@@ -66,7 +69,6 @@ int main() {
     SPDLOG_ERROR("failed to load config file: {}", e.what());
     return 1;
   }
-  // setup logger.
   // ref: https://github.com/gabime/spdlog/wiki/3.-Custom-formatting.
   // for production, use this logger:
   // spdlog::set_pattern("[%^%l%$] %t | %D %H:%M:%S | %v");
@@ -101,7 +103,6 @@ int main() {
 // TODO:
 // let's proxy websockets then.
 // design fault tolerances.
-// crush if being frequently requested?
 // maybe reuse port.
 // logging system.
 // health check.

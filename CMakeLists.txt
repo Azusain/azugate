@@ -3,6 +3,8 @@ project(azugate)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# what the fuck is wrong with this? yaml-cpp seems to be abnormal in release mode?
+# set(CMAKE_BUILD_TYPE Release)
 
 find_package(spdlog REQUIRED)
 find_package(fmt REQUIRED)
