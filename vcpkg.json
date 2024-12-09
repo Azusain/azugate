@@ -5,6 +5,7 @@
     "boost-thread",
     "fmt",
     "spdlog",
-    "yaml-cpp"
+    "yaml-cpp",
+    "openssl"
   ]
 }

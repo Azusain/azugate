@@ -105,15 +105,10 @@ public:
 
   void SetAllowCredentials(std::string_view origin);
 
-  // this will send both the status line (or the request line)
-  // and the headers to the client.
-  bool SendHeader(int fd);
+  std::string StringifyHeaders();
 
   // return true if successful.
-  virtual bool sendFirstLine(int fd) = 0;
-
-  // return true if successful.
-  inline bool writeDelimiter(int fd);
+  virtual std::string StringifyFirstLine() = 0;
 
   std::vector<std::string> headers_;
 };
@@ -122,7 +117,7 @@ class HttpResponse : public HttpMessage {
 public:
   explicit HttpResponse(uint16_t status_code);
 
-  bool sendFirstLine(int fd) override;
+  std::string StringifyFirstLine() override;
 
   uint16_t status_code_;
 
@@ -134,7 +129,7 @@ class HttpRequest : public HttpMessage {
 public:
   HttpRequest(const std::string &method, const std::string &url);
 
-  bool sendFirstLine(int fd) override;
+  std::string StringifyFirstLine() override;
 
   std::string method_;
   std::string url_;

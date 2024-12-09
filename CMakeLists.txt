@@ -8,6 +8,7 @@ find_package(spdlog REQUIRED)
 find_package(fmt REQUIRED)
 find_package(Boost COMPONENTS asio thread CONFIG)
 find_package(yaml-cpp CONFIG REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 set(COMMON_INCLUDES_DIR "include")
 set(THIRD_PARTY_INCLUDES_DIR "third_party")
@@ -35,6 +36,7 @@ add_executable(azugate
 )
 
 target_link_libraries(azugate
+${OPENSSL_LIBRARIES}
 common
 Boost::asio
 Boost::thread

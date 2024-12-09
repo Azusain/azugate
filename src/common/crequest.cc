@@ -1,6 +1,4 @@
 #include "crequest.h"
-
-#include "core.h"
 #include <cstddef>
 #include <cstdint>
 #include <format>
@@ -151,50 +149,19 @@ void HttpMessage::SetAllowMethods(std::vector<std::string> methods) {
   headers_.emplace_back(std::move(allow_methods));
 }
 
-inline bool HttpMessage::writeDelimiter(int fd) {
-  if (Writen(fd, kCrlf.data(), kCrlf.length()) == -1) {
-    SPDLOG_ERROR("failed to write delimiters");
-    return false;
+std::string HttpMessage::StringifyHeaders() {
+  std::string str_headers;
+  for (auto &h : headers_) {
+    str_headers.append(h);
+    str_headers.append(kCrlf);
   }
-  return true;
-}
-
-// return true if successful.
-bool HttpMessage::SendHeader(int fd) {
-  if (!sendFirstLine(fd)) {
-    SPDLOG_ERROR("failed to write header line");
-    return false;
-  }
-  if (!writeDelimiter(fd)) {
-    return false;
-  }
-
-  if (headers_.size() > kMaxHeadersNum) {
-    SPDLOG_ERROR("the number of the headers has excceded the limit");
-    return false;
-  }
-
-  // write headers.
-  for (auto &header : headers_) {
-    if (Writen(fd, header.c_str(), header.length()) == -1) {
-      SPDLOG_ERROR("failed to write header");
-      return false;
-    }
-    if (!writeDelimiter(fd)) {
-      return false;
-    }
-  }
-  if (!writeDelimiter(fd)) {
-    return false;
-  }
-
-  return true;
+  str_headers.append(kCrlf);
+  return str_headers;
 }
 
 // class HttpRequest.
-bool HttpRequest::sendFirstLine(int fd) {
-  std::string header_line = std::format("{} {} {}", method_, url_, version_);
-  return Writen(fd, header_line.c_str(), header_line.length()) != -1;
+std::string HttpRequest::StringifyFirstLine() {
+  return fmt::format("{} {} {}", method_, url_, version_);
 }
 
 HttpRequest::HttpRequest(const std::string &method, const std::string &url)
@@ -204,10 +171,9 @@ HttpRequest::HttpRequest(const std::string &method, const std::string &url)
 HttpResponse::HttpResponse(uint16_t status_code)
     : status_code_(status_code), version_(kHttpVersion011) {}
 
-bool HttpResponse::sendFirstLine(int fd) {
-  std::string header_line = std::format("{} {} {}", version_, status_code_,
-                                        GetMessageFromStatusCode(status_code_));
-  return Writen(fd, header_line.c_str(), header_line.length()) != -1;
+std::string HttpResponse::StringifyFirstLine() {
+  return fmt::format("{} {} {}{}", version_, status_code_,
+                     GetMessageFromStatusCode(status_code_), kCrlf);
 }
 
 } // namespace CRequest
