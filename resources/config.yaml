@@ -1,6 +1,3 @@
-port:
-  7777
-crt:
-  localhost.crt
-key:
-  localhost.key
+port: 7777
+crt: "../resources/localhost.crt"
+key: "../resources/localhost.key"

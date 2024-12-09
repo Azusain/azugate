@@ -29,8 +29,8 @@ constexpr std::string_view kYamlFieldKey = "key";
 
 uint16_t port = 80;
 // TODO: mTLS.
-std::string_view sslCrt;
-std::string_view sslKey;
+std::string sslCrt;
+std::string sslKey;
 
 void handler(
     const boost::shared_ptr<ssl::stream<ip::tcp::socket>> &ssl_sock_ptr) {
@@ -59,14 +59,15 @@ int main() {
       fmt::format("{}/{}", kPathResourceFolder, kDftConfigFile);
   try {
     // parse configuration.
-    // TODO: why sslKey equals to sslCrt in release mode?
     SPDLOG_INFO("loading config from {}", path_config_file);
     auto config = YAML::LoadFile(path_config_file);
     port = config[kYamlFieldPort].as<uint16_t>();
     sslCrt = config[kYamlFieldCrt].as<std::string>();
+    SPDLOG_INFO("loading certificate: {}", sslCrt);
     sslKey = config[kYamlFieldKey].as<std::string>();
-  } catch (const std::exception &e) {
-    SPDLOG_ERROR("failed to load config file: {}", e.what());
+    SPDLOG_INFO("loading key: {}", sslKey);
+  } catch (...) {
+    SPDLOG_ERROR("unexpected errors happen when parsing yaml file");
     return 1;
   }
   // ref: https://github.com/gabime/spdlog/wiki/3.-Custom-formatting.
