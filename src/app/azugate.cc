@@ -54,8 +54,14 @@ int main() {
   return 0;
 }
 
-// TODO: let's proxy websockets then.
-// TODO: design fault tolerances.
-// TODO: crush if being frequently requested?
-// TODO: maybe reuse port.
+// TODO:
+// let's proxy websockets then.
+// design fault tolerances.
+// crush if being frequently requested?
+// maybe reuse port.
 // logging system.
+// health check.
+// stat prefix in envoy?
+// best practice you can check:
+// https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes.
+// envoy OAuth, JWT,RBAC.
