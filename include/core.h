@@ -6,7 +6,6 @@
 #include <boost/core/demangle.hpp>
 #include <cstddef>
 #include <string_view>
-#include <unistd.h>
 
 constexpr size_t kNumMaxListen = 5;
 constexpr size_t kDftBufSize = 1024 * 4;
