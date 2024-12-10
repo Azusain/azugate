@@ -4,8 +4,9 @@
     "boost-system",
     "boost-thread",
     "fmt",
+    "openssl",
     "spdlog",
     "yaml-cpp",
-    "openssl"
+    "grpc"
   ]
 }

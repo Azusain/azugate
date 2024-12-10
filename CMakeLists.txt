@@ -10,6 +10,8 @@ find_package(fmt REQUIRED)
 find_package(Boost COMPONENTS asio thread CONFIG)
 find_package(yaml-cpp CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
+find_package(gRPC CONFIG REQUIRED)
+find_package(Protobuf CONFIG REQUIRED)
 
 set(COMMON_INCLUDES_DIR "include")
 set(THIRD_PARTY_INCLUDES_DIR "third_party")
@@ -42,4 +44,6 @@ common
 Boost::asio
 Boost::thread
 yaml-cpp::yaml-cpp
+gRPC::grpc++
+protobuf::libprotobuf
 )
