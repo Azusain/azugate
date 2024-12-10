@@ -55,6 +55,13 @@ void handler(
 }
 
 int main() {
+  // ref: https://github.com/gabime/spdlog/wiki/3.-Custom-formatting.
+  // for production, use this logger:
+  // spdlog::set_pattern("[%^%l%$] %t | %D %H:%M:%S | %v");
+  // with source file and line when debug:
+  spdlog::set_pattern("[%^%l%$] %t | %D %H:%M:%S | %s:%# | %v");
+  spdlog::set_level(spdlog::level::debug);
+
   std::string path_config_file =
       fmt::format("{}/{}", kPathResourceFolder, kDftConfigFile);
   try {
@@ -70,14 +77,10 @@ int main() {
     SPDLOG_ERROR("unexpected errors happen when parsing yaml file");
     return 1;
   }
-  // ref: https://github.com/gabime/spdlog/wiki/3.-Custom-formatting.
-  // for production, use this logger:
-  // spdlog::set_pattern("[%^%l%$] %t | %D %H:%M:%S | %v");
-  // with source file and line when debug:
-  spdlog::set_pattern("[%^%l%$] %t | %D %H:%M:%S | %s:%# | %v");
-  spdlog::set_level(spdlog::level::debug);
+
   // setup ssl connection.
   ssl::context ssl_context(ssl::context::sslv23);
+  // TODO: this is unsafe.
   ssl_context.set_verify_mode(ssl::verify_none);
   try {
     // TODO: file format.

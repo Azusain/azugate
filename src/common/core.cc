@@ -72,23 +72,26 @@ bool FileProxy(
     }
   }
 
-  // Handle default page
-  if (len_path == 0 || (len_path == 1 && path[0] == '/')) {
+  // handle default page
+  if (len_path <= 0 || path == nullptr || (len_path == 1 && path[0] == '/')) {
     path = kPathDftPage.data();
     len_path = kPathDftPage.length();
   }
 
-  // Assemble full path
+  // assemble full path
+  const char *base_folder = path_base_folder.data();
   const size_t len_base_folder = path_base_folder.length();
   size_t len_full_path = len_base_folder + len_path + 1;
-  std::string full_path =
-      std::string(path_base_folder) + std::string(path, len_path);
+  std::unique_ptr<char[]> full_path(new char[len_full_path]);
+  std::memcpy(full_path.get(), base_folder, len_base_folder);
+  std::memcpy(full_path.get() + len_base_folder, path, len_path);
+  std::memcpy(full_path.get() + len_base_folder + len_path, "\0", 1);
 
-  // Open file
-  int resource_fd = open(full_path.c_str(), O_RDONLY);
+  // read file from disk.
+  int resource_fd = open(full_path.get(), O_RDONLY);
   if (resource_fd == -1) {
-    SPDLOG_ERROR("failed to open file {}: {}", full_path, strerror(errno));
-    return false;
+    SPDLOG_ERROR("failed to open file {}", full_path.get());
+    return -1;
   }
   std::unique_ptr<int, decltype([](const int *fd) {
                     if (fd && *fd > 0) {
@@ -97,14 +100,14 @@ bool FileProxy(
                   })>
       _resource_fd(&resource_fd);
 
-  // Get file size
+  // get file size
   struct stat file_stat {};
   if (fstat(resource_fd, &file_stat) == -1) {
-    SPDLOG_ERROR("failed to get file stat for {}", full_path);
+    SPDLOG_ERROR("failed to get file stat for {}", full_path.get());
     return false;
   }
 
-  // Send HTTP response header
+  // send HTTP response header
   CRequest::HttpResponse resp(CRequest::kHttpOk);
   resp.SetContentLen(file_stat.st_size);
   resp.SetContentType(CRequest::kTypeTextHtml); // TODO: support more types
@@ -125,13 +128,14 @@ bool FileProxy(
   }
 
   // send body.
+  memset(header_buf, '\0', sizeof(header_buf));
   for (;;) {
     ssize_t n_read = read(resource_fd, header_buf, sizeof(header_buf));
     if (n_read < 0) {
       if (errno == EINTR) {
         continue;
       }
-      SPDLOG_ERROR("failed to read from file {}: {}", full_path,
+      SPDLOG_ERROR("failed to read from file {}: {}", full_path.get(),
                    strerror(errno));
       return false;
     } else if (n_read == 0) {
