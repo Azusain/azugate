@@ -1,3 +1,5 @@
+# azugate
+
 ### requirements
 
 - you will need a compiler that supports c++20, along with CMake and vcpkg, to build this project.
