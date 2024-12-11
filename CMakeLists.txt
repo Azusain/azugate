@@ -23,14 +23,14 @@ file(GLOB_RECURSE THIRD_PARTY_SOURCES "third_party/*.cc" "third_party/*.c")
 # library for all the apps.
 add_library(common STATIC
 ${COMMON_SOURCES}
-${API_SOURCES}
 ${THIRD_PARTY_SOURCES}
+${API_SOURCES}
 )
 
 target_include_directories(common PUBLIC
 ${COMMON_INCLUDES_DIR} 
-${API_INCLUDES_DIR}
 ${THIRD_PARTY_INCLUDES_DIR}
+${API_INCLUDES_DIR}
 )
 
 target_link_libraries(common

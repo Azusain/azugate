@@ -1,4 +1,4 @@
-#include "../api//config_service.h"
+#include "../api//config_service.hpp"
 #include "core.h"
 #include <boost/asio.hpp>
 #include <boost/asio/io_service.hpp>
@@ -104,7 +104,7 @@ int main() {
     grpc::ServerBuilder server_builder;
     server_builder.AddListeningPort(fmt::format("0.0.0.0:{}", admin_port),
                                     grpc::InsecureServerCredentials());
-    api::v1::ConfigServiceImpl config_service;
+    ConfigServiceImpl config_service;
     server_builder.RegisterService(&config_service);
     std::unique_ptr<grpc::Server> server(server_builder.BuildAndStart());
     SPDLOG_INFO("grpc server runs on {}", admin_port);
