@@ -16,16 +16,20 @@ find_package(Protobuf CONFIG REQUIRED)
 set(COMMON_INCLUDES_DIR "include")
 set(THIRD_PARTY_INCLUDES_DIR "third_party")
 file(GLOB_RECURSE COMMON_SOURCES "src/common/*.cc")
+file(GLOB_RECURSE API_SOURCES "src/api/*.cc")
+file(GLOB_RECURSE API_INCLUDES_DIR "src/api")
 file(GLOB_RECURSE THIRD_PARTY_SOURCES "third_party/*.cc" "third_party/*.c")
 
 # library for all the apps.
 add_library(common STATIC
 ${COMMON_SOURCES}
+${API_SOURCES}
 ${THIRD_PARTY_SOURCES}
 )
 
 target_include_directories(common PUBLIC
 ${COMMON_INCLUDES_DIR} 
+${API_INCLUDES_DIR}
 ${THIRD_PARTY_INCLUDES_DIR}
 )
 
