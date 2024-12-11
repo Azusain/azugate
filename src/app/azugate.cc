@@ -1,3 +1,4 @@
+#include "../api//config_service.h"
 #include "core.h"
 #include <boost/asio.hpp>
 #include <boost/asio/io_service.hpp>
@@ -13,9 +14,17 @@
 #include <exception>
 #include <fmt/base.h>
 #include <fmt/format.h>
+#include <grpcpp/create_channel.h>
+#include <grpcpp/grpcpp.h>
+#include <grpcpp/security/server_credentials.h>
+#include <grpcpp/server.h>
+#include <grpcpp/server_builder.h>
+#include <memory>
 #include <spdlog/spdlog.h>
 #include <string>
 #include <string_view>
+#include <sys/types.h>
+#include <thread>
 #include <yaml-cpp/node/parse.h>
 #include <yaml-cpp/yaml.h>
 
@@ -26,8 +35,10 @@ constexpr std::string_view kDftConfigFile = "config.yaml";
 constexpr std::string_view kYamlFieldPort = "port";
 constexpr std::string_view kYamlFieldCrt = "crt";
 constexpr std::string_view kYamlFieldKey = "key";
+constexpr std::string_view kYamlFieldAdminPort = "admin_port";
 
-uint16_t port = 80;
+uint16_t port = 443;
+uint16_t admin_port = 50051;
 // TODO: mTLS.
 std::string sslCrt;
 std::string sslKey;
@@ -69,10 +80,9 @@ int main() {
     SPDLOG_INFO("loading config from {}", path_config_file);
     auto config = YAML::LoadFile(path_config_file);
     port = config[kYamlFieldPort].as<uint16_t>();
+    admin_port = config[kYamlFieldAdminPort].as<uint16_t>();
     sslCrt = config[kYamlFieldCrt].as<std::string>();
-    SPDLOG_INFO("loading certificate: {}", sslCrt);
     sslKey = config[kYamlFieldKey].as<std::string>();
-    SPDLOG_INFO("loading key: {}", sslKey);
   } catch (...) {
     SPDLOG_ERROR("unexpected errors happen when parsing yaml file");
     return 1;
@@ -80,8 +90,6 @@ int main() {
 
   // setup ssl connection.
   ssl::context ssl_context(ssl::context::sslv23);
-  // TODO: this is unsafe.
-  ssl_context.set_verify_mode(ssl::verify_none);
   try {
     // TODO: file format.
     ssl_context.use_certificate_chain_file(std::string(sslCrt));
@@ -90,6 +98,19 @@ int main() {
     SPDLOG_ERROR("failed to setup ssl context: {}", e.what());
     return 1;
   }
+
+  // setup grpc server.
+  auto grpc_thread = std::thread([&]() {
+    grpc::ServerBuilder server_builder;
+    server_builder.AddListeningPort(fmt::format("0.0.0.0:{}", admin_port),
+                                    grpc::InsecureServerCredentials());
+    api::v1::ConfigServiceImpl config_service;
+    server_builder.RegisterService(&config_service);
+    std::unique_ptr<grpc::Server> server(server_builder.BuildAndStart());
+    SPDLOG_INFO("grpc server runs on {}", admin_port);
+    server->Wait();
+  });
+
   // setup a basic OTPL server.
   io_service service;
   ip::tcp::endpoint local_address(ip::tcp::v4(), port);

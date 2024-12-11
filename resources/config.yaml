@@ -1,3 +1,4 @@
 port: 5080
+admin_port: 50051
 crt: "../resources/localhost.crt"
 key: "../resources/localhost.key"
