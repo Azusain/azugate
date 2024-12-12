@@ -1,5 +1,6 @@
 #include "../api//config_service.hpp"
-#include "core.h"
+#include "config.h"
+#include "http_service.h"
 #include <boost/asio.hpp>
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/tcp.hpp>
@@ -10,7 +11,6 @@
 #include <boost/asio/ssl/verify_mode.hpp>
 #include <boost/system.hpp>
 #include <boost/thread.hpp>
-#include <cstdint>
 #include <exception>
 #include <fmt/base.h>
 #include <fmt/format.h>
@@ -22,26 +22,12 @@
 #include <memory>
 #include <spdlog/spdlog.h>
 #include <string>
-#include <string_view>
 #include <sys/types.h>
 #include <thread>
 #include <yaml-cpp/node/parse.h>
 #include <yaml-cpp/yaml.h>
 
 using namespace boost::asio;
-
-// TODO: find a great place for these definations.
-constexpr std::string_view kDftConfigFile = "config.yaml";
-constexpr std::string_view kYamlFieldPort = "port";
-constexpr std::string_view kYamlFieldCrt = "crt";
-constexpr std::string_view kYamlFieldKey = "key";
-constexpr std::string_view kYamlFieldAdminPort = "admin_port";
-
-uint16_t port = 443;
-uint16_t admin_port = 50051;
-// TODO: mTLS.
-std::string sslCrt;
-std::string sslKey;
 
 void handler(
     const boost::shared_ptr<ssl::stream<ip::tcp::socket>> &ssl_sock_ptr) {
@@ -73,8 +59,7 @@ int main() {
   spdlog::set_pattern("[%^%l%$] %t | %D %H:%M:%S | %s:%# | %v");
   spdlog::set_level(spdlog::level::debug);
 
-  std::string path_config_file =
-      fmt::format("{}/{}", kPathResourceFolder, kDftConfigFile);
+  path_config_file = fmt::format("{}/{}", kPathResourceFolder, kDftConfigFile);
   try {
     // parse configuration.
     SPDLOG_INFO("loading config from {}", path_config_file);
@@ -115,7 +100,7 @@ int main() {
   io_service service;
   ip::tcp::endpoint local_address(ip::tcp::v4(), port);
   ip::tcp::acceptor acc(service, local_address);
-  SPDLOG_INFO("server runs on port {}", port);
+  SPDLOG_INFO("azugate runs on port {}", port);
   for (;;) {
     boost::shared_ptr<ssl::stream<ip::tcp::socket>> ssl_sock_ptr(
         new ssl::stream<ip::tcp::socket>(service, ssl_context));

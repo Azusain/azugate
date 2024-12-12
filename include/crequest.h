@@ -1,5 +1,5 @@
-#ifndef __REQUEST_H
-#define __REQUEST_H
+#ifndef __CREQUEST_H
+#define __CREQUEST_H
 
 #include <cstddef>
 #include <cstdint>

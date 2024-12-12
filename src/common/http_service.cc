@@ -1,4 +1,5 @@
-#include "core.h"
+#include "http_service.h"
+#include "config.h"
 #include "crequest.h"
 #include "picohttpparser.h"
 #include <boost/asio.hpp>
