@@ -1,8 +1,10 @@
 #ifndef __CONFIG_H
 #define __CONFIG_H
 
+#include <mutex>
 #include <string_view>
 
+namespace azugate {
 // http server
 constexpr size_t kNumMaxListen = 5;
 constexpr size_t kDftBufSize = 1024 * 4;
@@ -24,9 +26,18 @@ constexpr std::string_view kYamlFieldAdminPort = "admin_port";
 // runtime shared variables.
 extern uint16_t port;
 extern uint16_t admin_port;
-extern std::string path_config_file;
 // TODO: mTLS.
 extern std::string sslCrt;
 extern std::string sslKey;
+
+// TODO: currently, this may seem unnecessary, but
+// it will be useful when we add more configuration variables
+// and implement hot-reload functionality in the future.
+extern std::mutex config_mutex;
+
+std::string GetConfigPath();
+void SetConfigPath(std::string &&path);
+
+} // namespace azugate
 
 #endif

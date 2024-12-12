@@ -23,6 +23,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+using namespace azugate;
 // return false if err, true if successful
 bool FileProxy(
     const boost::shared_ptr<

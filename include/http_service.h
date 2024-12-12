@@ -1,5 +1,5 @@
-#ifndef __CORE_H
-#define __CORE_H
+#ifndef __HTTP_SERVICE_H
+#define __HTTP_SERVICE_H
 #include <boost/asio.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ssl/stream.hpp>

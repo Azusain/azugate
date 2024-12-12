@@ -28,6 +28,7 @@
 #include <yaml-cpp/yaml.h>
 
 using namespace boost::asio;
+using namespace azugate;
 
 void handler(
     const boost::shared_ptr<ssl::stream<ip::tcp::socket>> &ssl_sock_ptr) {
@@ -45,7 +46,7 @@ void handler(
     SPDLOG_WARN(what);
   }
 
-  if (!FileProxy(ssl_sock_ptr, kPathResourceFolder)) {
+  if (!FileProxy(ssl_sock_ptr, azugate::kPathResourceFolder)) {
     SPDLOG_ERROR("failed to handler file request");
     return;
   }
@@ -58,9 +59,11 @@ int main() {
   // with source file and line when debug:
   spdlog::set_pattern("[%^%l%$] %t | %D %H:%M:%S | %s:%# | %v");
   spdlog::set_level(spdlog::level::debug);
+  azugate::SetConfigPath(fmt::format("{}/{}", azugate::kPathResourceFolder,
+                                     azugate::kDftConfigFile));
 
-  path_config_file = fmt::format("{}/{}", kPathResourceFolder, kDftConfigFile);
   try {
+    auto path_config_file = azugate::GetConfigPath();
     // parse configuration.
     SPDLOG_INFO("loading config from {}", path_config_file);
     auto config = YAML::LoadFile(path_config_file);
