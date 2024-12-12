@@ -98,6 +98,8 @@ constexpr const char *GetMessageFromStatusCode(uint16_t status_code) {
   }
 }
 
+HttpMessage::~HttpMessage() = default;
+
 // class HttpMessage.
 void HttpMessage::SetCookie(std::string_view key, std::string_view val) {
   headers_.emplace_back(std::format("Set-Cookie:{}={}", key, val));
@@ -124,9 +126,9 @@ void HttpMessage::SetAllowOrigin(std::string_view origin) {
   headers_.emplace_back(std::format("Access-Control-Allow-Origin:{}", origin));
 }
 
-// TODO: this seems incorrect.
+// cors
 void HttpMessage::SetAllowHeaders(std::vector<std::string> hdrs) {
-  std::string allow_hdrs;
+  std::string allow_hdrs{"Access-Control-Allow-Headers: "};
   size_t hdr_count = hdrs.size();
   for (size_t i = 0; i < hdr_count; ++i) {
     allow_hdrs.append(hdrs[i]);
@@ -137,9 +139,9 @@ void HttpMessage::SetAllowHeaders(std::vector<std::string> hdrs) {
   headers_.emplace_back(std::move(allow_hdrs));
 }
 
-// TODO: this seems incorrect.
+// cors.
 void HttpMessage::SetAllowMethods(std::vector<std::string> methods) {
-  std::string allow_methods;
+  std::string allow_methods{"Access-Control-Allow-Methods: "};
   for (size_t i = 0; i < methods.size(); ++i) {
     allow_methods.append(methods[i]);
     if (i != (methods.size() - 1)) {

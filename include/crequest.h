@@ -82,7 +82,7 @@ constexpr const char *GetMessageFromStatusCode(uint16_t status_code);
 
 class HttpMessage {
 public:
-  virtual ~HttpMessage() = default;
+  virtual ~HttpMessage();
 
   // header operations.
   void SetCookie(std::string_view key, std::string_view value);
