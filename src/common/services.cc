@@ -24,6 +24,15 @@
 #include <unistd.h>
 
 using namespace azugate;
+
+std::string findFileExtension(std::string &&path) {
+  auto pos = path.find_last_of(".");
+  if (pos != std::string::npos && pos + 2 <= path.length()) {
+    return path.substr(pos + 1);
+  }
+  return "";
+}
+
 // return false if err, true if successful
 bool FileProxy(
     const boost::shared_ptr<
@@ -109,10 +118,11 @@ bool FileProxy(
     return false;
   }
 
-  // send HTTP response header
+  // send HTTP response header.
   CRequest::HttpResponse resp(CRequest::kHttpOk);
   resp.SetContentLen(file_stat.st_size);
-  resp.SetContentType(CRequest::kTypeTextHtml); // TODO: support more types
+  auto ext = findFileExtension(std::string(path, len_path));
+  resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
   resp.SetKeepAlive(false);
 
   // send headers.

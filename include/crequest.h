@@ -61,24 +61,56 @@ constexpr std::string_view kHttpHead = "HEAD";
 constexpr std::string_view kHttpTrace = "TRACE";
 constexpr std::string_view kHttpPatch = "PATCH";
 constexpr std::string_view kHttpConnect = "CONNECT";
-// http headers.
+// http connection.
 constexpr std::string_view kConnectionClose = "Close";
 constexpr std::string_view kConnectionKeepAlive = "keep-alive";
-constexpr std::string_view kTypeAppJson = "application/json";
-constexpr std::string_view kTypeAppUrlencoded =
+// http content type.
+constexpr std::string_view kContentTypeAppJson = "application/json";
+constexpr std::string_view kContentTypeAppUrlencoded =
     "application/x-www-form-urlencoded";
-constexpr std::string_view kTypeAppXml = "application/xml";
-constexpr std::string_view kTypeAppOctet = "application/octet-stream";
-constexpr std::string_view kTypeTextHtml = "text/html";
-constexpr std::string_view kTypeTextPlain = "text/plain";
-constexpr std::string_view kTypeImgPng = "image/png";
-constexpr std::string_view kTypeImgJpeg = "image/jpeg";
+constexpr std::string_view kContentTypeAppXml = "application/xml";
+constexpr std::string_view kContentTypeAppOctet = "application/octet-stream";
+constexpr std::string_view kContentTypeTextHtml = "text/html";
+constexpr std::string_view kContentTypeTextPlain = "text/plain";
+constexpr std::string_view kContentTypeImgPng = "image/png";
+constexpr std::string_view kContentTypeImgJpeg = "image/jpeg";
+constexpr std::string_view kContentTypeXIcon = "image/x-icon";
+// supported versions.
 constexpr std::string_view kHttpVersion011 = "HTTP/1.1";
 // some parser stuffs.
 constexpr std::string_view kCrlf = "\r\n";
 constexpr std::string_view kSpace = " ";
+// local file extensions;
+static constexpr uint32_t
+HashFileSuffix(const std::string_view &file_extension) {
+  uint32_t hash = 0;
+  for (const char &c : file_extension) {
+    hash = hash * 31 + static_cast<uint32_t>(c);
+  }
+  return hash;
+};
+constexpr uint32_t kFileExtensionJson = HashFileSuffix("json");
+constexpr uint32_t kFileExtensionXml = HashFileSuffix("xml");
+constexpr uint32_t kFileExtensionBin = HashFileSuffix("bin");
+constexpr uint32_t kFileExtensionExe = HashFileSuffix("exe");
+constexpr uint32_t kFileExtensionIso = HashFileSuffix("iso");
+constexpr uint32_t kFileExtensionHtml = HashFileSuffix("html");
+constexpr uint32_t kFileExtensionHtm = HashFileSuffix("htm");
+constexpr uint32_t kFileExtensionTxt = HashFileSuffix("txt");
+constexpr uint32_t kFileExtensionLog = HashFileSuffix("log");
+constexpr uint32_t kFileExtensionCfg = HashFileSuffix("cfg");
+constexpr uint32_t kFileExtensionIni = HashFileSuffix("ini");
+constexpr uint32_t kFileExtensionPng = HashFileSuffix("png");
+constexpr uint32_t kFileExtensionJpg = HashFileSuffix("jpg");
+constexpr uint32_t kFileExtensionJpeg = HashFileSuffix("jpeg");
+constexpr uint32_t kFileExtensionXIcon = HashFileSuffix("ico");
 
+namespace utils {
 constexpr const char *GetMessageFromStatusCode(uint16_t status_code);
+
+std::string_view GetContentTypeFromSuffix(const std::string_view &path);
+
+} // namespace utils.
 
 class HttpMessage {
 public:

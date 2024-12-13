@@ -8,7 +8,7 @@
 #include <vector>
 
 namespace CRequest {
-
+namespace utils {
 constexpr const char *GetMessageFromStatusCode(uint16_t status_code) {
   switch (status_code) {
   case kHttpContinue:
@@ -98,6 +98,46 @@ constexpr const char *GetMessageFromStatusCode(uint16_t status_code) {
   }
 }
 
+std::string_view GetContentTypeFromSuffix(const std::string_view &path) {
+  uint32_t hashed_path = HashFileSuffix(path);
+  switch (hashed_path) {
+  case kFileExtensionJson:
+    return kContentTypeAppJson;
+
+  case kFileExtensionXml:
+    return kContentTypeAppXml;
+
+  case kFileExtensionIso:
+  case kFileExtensionExe:
+  case kFileExtensionBin:
+    return kContentTypeAppOctet;
+
+  case kFileExtensionHtm:
+  case kFileExtensionHtml:
+    return kContentTypeTextHtml;
+
+  case kFileExtensionTxt:
+  case kFileExtensionLog:
+  case kFileExtensionIni:
+  case kFileExtensionCfg:
+    return kContentTypeTextPlain;
+
+  case kFileExtensionPng:
+    return kContentTypeImgPng;
+
+  case kFileExtensionJpg:
+  case kFileExtensionJpeg:
+    return kContentTypeImgJpeg;
+
+  case kFileExtensionXIcon:
+    return kContentTypeXIcon;
+
+  default:
+    return kContentTypeAppOctet;
+  }
+};
+} // namespace utils
+
 HttpMessage::~HttpMessage() = default;
 
 // class HttpMessage.
@@ -175,7 +215,7 @@ HttpResponse::HttpResponse(uint16_t status_code)
 
 std::string HttpResponse::StringifyFirstLine() {
   return fmt::format("{} {} {}{}", version_, status_code_,
-                     GetMessageFromStatusCode(status_code_), kCrlf);
+                     utils::GetMessageFromStatusCode(status_code_), kCrlf);
 }
 
 } // namespace CRequest
