@@ -9,3 +9,4 @@
 
 - http file proxy
 - https
+- management via gRPC API
