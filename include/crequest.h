@@ -65,6 +65,7 @@ constexpr std::string_view kHttpConnect = "CONNECT";
 constexpr std::string_view kConnectionClose = "Close";
 constexpr std::string_view kConnectionKeepAlive = "keep-alive";
 // http content type.
+// ref: https://www.iana.org/assignments/media-types/media-types.xhtml
 constexpr std::string_view kContentTypeAppJson = "application/json";
 constexpr std::string_view kContentTypeAppUrlencoded =
     "application/x-www-form-urlencoded";
@@ -74,7 +75,8 @@ constexpr std::string_view kContentTypeTextHtml = "text/html";
 constexpr std::string_view kContentTypeTextPlain = "text/plain";
 constexpr std::string_view kContentTypeImgPng = "image/png";
 constexpr std::string_view kContentTypeImgJpeg = "image/jpeg";
-constexpr std::string_view kContentTypeXIcon = "image/x-icon";
+// official MIME type registered with IANA as an alternative to image/x-icon.
+constexpr std::string_view kContentTypeXIcon = "image/vnd.microsoft.icon";
 // supported versions.
 constexpr std::string_view kHttpVersion011 = "HTTP/1.1";
 // some parser stuffs.
