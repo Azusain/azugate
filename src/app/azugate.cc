@@ -1,6 +1,6 @@
 #include "../api//config_service.hpp"
 #include "config.h"
-#include "http_service.h"
+#include "services.h"
 #include <boost/asio.hpp>
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/tcp.hpp>
@@ -23,7 +23,6 @@
 #include <spdlog/spdlog.h>
 #include <string>
 #include <sys/types.h>
-#include <thread>
 #include <yaml-cpp/node/parse.h>
 #include <yaml-cpp/yaml.h>
 
@@ -124,3 +123,5 @@ int main() {
 // https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes.
 // envoy OAuth, JWT, RBAC.
 // async log.
+// websockets.
+// dynamic protocol detection.
