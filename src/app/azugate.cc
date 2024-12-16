@@ -9,8 +9,12 @@
 #include <boost/asio/ssl/stream.hpp>
 #include <boost/asio/ssl/stream_base.hpp>
 #include <boost/asio/ssl/verify_mode.hpp>
+#include <boost/bind/bind.hpp>
+#include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/system.hpp>
 #include <boost/thread.hpp>
+#include <boost/thread/detail/thread.hpp>
+#include <cstdint>
 #include <exception>
 #include <fmt/base.h>
 #include <fmt/format.h>
@@ -29,7 +33,7 @@
 using namespace boost::asio;
 using namespace azugate;
 
-void handler(
+void http_handler(
     const boost::shared_ptr<ssl::stream<ip::tcp::socket>> &ssl_sock_ptr) {
   try {
     // ssl handshake.
@@ -51,6 +55,12 @@ void handler(
   }
 }
 
+void tcp_proxy_handler(
+    const boost::shared_ptr<boost::asio::ip::tcp::socket> &source_sock_ptr) {
+  // TODO: implement this.
+  return;
+}
+
 int main() {
   // ref: https://github.com/gabime/spdlog/wiki/3.-Custom-formatting.
   // for production, use this logger:
@@ -70,6 +80,11 @@ int main() {
     admin_port = config[kYamlFieldAdminPort].as<uint16_t>();
     sslCrt = config[kYamlFieldCrt].as<std::string>();
     sslKey = config[kYamlFieldKey].as<std::string>();
+    proxy_mode = config[kYamlFieldProxyMode].as<bool>();
+    if (proxy_mode) {
+      target_port = config[kYamlFieldProxyTargetPort].as<uint16_t>();
+      target_host = config[kYamlFieldProxyTargetHost].as<std::string>();
+    }
   } catch (...) {
     SPDLOG_ERROR("unexpected errors happen when parsing yaml file");
     return 1;
@@ -102,12 +117,21 @@ int main() {
   io_service service;
   ip::tcp::endpoint local_address(ip::tcp::v4(), port);
   ip::tcp::acceptor acc(service, local_address);
+  // dns resovler.
+  ip::tcp::resolver resolver(service);
+  ip::tcp::resolver::query query(target_host, std::to_string(target_port));
   SPDLOG_INFO("azugate runs on port {}", port);
   for (;;) {
-    boost::shared_ptr<ssl::stream<ip::tcp::socket>> ssl_sock_ptr(
-        new ssl::stream<ip::tcp::socket>(service, ssl_context));
-    acc.accept(ssl_sock_ptr->lowest_layer());
-    boost::thread(boost::bind(handler, ssl_sock_ptr));
+    if (proxy_mode) {
+      boost::shared_ptr<ssl::stream<ip::tcp::socket>> ssl_sock_ptr(
+          new ssl::stream<ip::tcp::socket>(service, ssl_context));
+      acc.accept(ssl_sock_ptr->lowest_layer());
+      boost::thread(boost::bind(http_handler, ssl_sock_ptr));
+    } else {
+      boost::shared_ptr<ip::tcp::socket> sock_ptr(new ip::tcp::socket(service));
+      acc.accept(*sock_ptr);
+      boost::thread(boost::bind(tcp_proxy_handler, sock_ptr));
+    }
   }
   return 0;
 }

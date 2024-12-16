@@ -8,6 +8,7 @@
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ssl/stream.hpp>
 #include <boost/asio/write.hpp>
+#include <boost/system/detail/error_code.hpp>
 #include <boost/system/system_error.hpp>
 #include <cerrno>
 #include <cstddef>
@@ -162,4 +163,25 @@ bool FileProxy(
   }
 
   return true;
+}
+
+bool TcpProxy(const boost::shared_ptr<boost::asio::ip::tcp::socket> &sock_ptr) {
+  using namespace boost::asio;
+  char buf[kDftBufSize];
+  boost::system::error_code ec;
+  auto asio_buf = buffer(buf, kDftBufSize);
+  // handle request in a simple loop.
+  for (;;) {
+    sock_ptr->read_some(asio_buf, ec);
+    if (ec) {
+      if (ec == boost::asio::error::eof) {
+        SPDLOG_DEBUG("connection closed by peer");
+        break;
+      }
+      SPDLOG_WARN("failed to read HTTP header: {}", ec.message());
+      return false;
+    }
+  }
+
+  return false;
 }

@@ -1,4 +1,5 @@
 #include "config.h"
+#include <cstdint>
 #include <mutex>
 #include <string>
 
@@ -9,7 +10,9 @@ std::string path_config_file;
 // TODO: mTLS.
 std::string sslCrt;
 std::string sslKey;
-
+bool proxy_mode = false;
+uint16_t target_port;
+std::string target_host;
 std::mutex config_mutex;
 
 std::string GetConfigPath() {
