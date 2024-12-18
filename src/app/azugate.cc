@@ -2,6 +2,7 @@
 #include "config.h"
 #include "services.h"
 #include <boost/asio.hpp>
+#include <boost/asio/connect.hpp>
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ssl.hpp>
@@ -56,9 +57,18 @@ void http_handler(
 }
 
 void tcp_proxy_handler(
-    const boost::shared_ptr<boost::asio::ip::tcp::socket> &source_sock_ptr) {
+    const boost::shared_ptr<ip::tcp::socket> &source_sock_ptr,
+    ip::tcp::resolver *resolver, const ip::tcp::resolver::query &query,
+    io_service *service) {
+  auto endpoints = resolver->resolve(query);
+  auto target_sock = ip::tcp::socket(*service);
+  try {
+    connect(target_sock, endpoints);
+  } catch (const std::exception &e) {
+    SPDLOG_WARN("failed to establish connection to peer");
+    return;
+  }
   // TODO: implement this.
-  return;
 }
 
 int main() {
@@ -130,7 +140,8 @@ int main() {
     } else {
       boost::shared_ptr<ip::tcp::socket> sock_ptr(new ip::tcp::socket(service));
       acc.accept(*sock_ptr);
-      boost::thread(boost::bind(tcp_proxy_handler, sock_ptr));
+      boost::thread(
+          boost::bind(tcp_proxy_handler, sock_ptr, &resolver, query, &service));
     }
   }
   return 0;
