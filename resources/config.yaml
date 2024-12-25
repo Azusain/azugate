@@ -2,6 +2,6 @@ port: 5080
 admin_port: 50051
 crt: "../resources/localhost.crt"
 key: "../resources/localhost.key"
-proxy_mode: true
+proxy_mode: false
 proxy_target_port: 80
 proxy_target_host: google.com

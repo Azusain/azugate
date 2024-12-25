@@ -165,20 +165,31 @@ bool FileProxy(
   return true;
 }
 
-bool TcpProxy(const boost::shared_ptr<boost::asio::ip::tcp::socket> &sock_ptr) {
+bool TcpProxy(
+    const boost::shared_ptr<boost::asio::ip::tcp::socket> &source_sock_ptr,
+    const boost::shared_ptr<boost::asio::ip::tcp::socket> &target_sock_ptr) {
   using namespace boost::asio;
   char buf[kDftBufSize];
   boost::system::error_code ec;
   auto asio_buf = buffer(buf, kDftBufSize);
   // handle request in a simple loop.
   for (;;) {
-    sock_ptr->read_some(asio_buf, ec);
+    source_sock_ptr->read_some(asio_buf, ec);
     if (ec) {
       if (ec == boost::asio::error::eof) {
         SPDLOG_DEBUG("connection closed by peer");
-        break;
+        return true;
       }
-      SPDLOG_WARN("failed to read HTTP header: {}", ec.message());
+      SPDLOG_WARN("failed to read from source: {}", ec.message());
+      return false;
+    }
+    target_sock_ptr->write_some(asio_buf, ec);
+    if (ec) {
+      if (ec == boost::asio::error::eof) {
+        SPDLOG_DEBUG("connection closed by peer");
+        return true;
+      }
+      SPDLOG_WARN("failed to send data to traget: {}", ec.message());
       return false;
     }
   }

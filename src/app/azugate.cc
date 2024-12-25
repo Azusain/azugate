@@ -61,14 +61,18 @@ void tcp_proxy_handler(
     ip::tcp::resolver *resolver, const ip::tcp::resolver::query &query,
     io_service *service) {
   auto endpoints = resolver->resolve(query);
-  auto target_sock = ip::tcp::socket(*service);
+  boost::shared_ptr<ip::tcp::socket> target_sock_ptr(
+      new ip::tcp::socket(*service));
   try {
-    connect(target_sock, endpoints);
+    connect(*target_sock_ptr, endpoints);
   } catch (const std::exception &e) {
     SPDLOG_WARN("failed to establish connection to peer");
     return;
   }
-  // TODO: implement this.
+  if (!TcpProxy(source_sock_ptr, target_sock_ptr)) {
+    SPDLOG_WARN("errors happen when doing tcp proxy");
+    return;
+  }
 }
 
 int main() {
@@ -132,7 +136,7 @@ int main() {
   ip::tcp::resolver::query query(target_host, std::to_string(target_port));
   SPDLOG_INFO("azugate runs on port {}", port);
   for (;;) {
-    if (proxy_mode) {
+    if (!proxy_mode) {
       boost::shared_ptr<ssl::stream<ip::tcp::socket>> ssl_sock_ptr(
           new ssl::stream<ip::tcp::socket>(service, ssl_context));
       acc.accept(ssl_sock_ptr->lowest_layer());

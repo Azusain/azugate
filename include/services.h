@@ -12,6 +12,8 @@ bool FileProxy(
         boost::asio::ssl::stream<boost::asio::ip::tcp::socket>> &ssl_sock_ptr,
     const std::string_view &path_base_folder);
 
-bool TcpProxy(const boost::shared_ptr<boost::asio::ip::tcp::socket> &sock_ptr);
+bool TcpProxy(
+    const boost::shared_ptr<boost::asio::ip::tcp::socket> &source_sock_ptr,
+    const boost::shared_ptr<boost::asio::ip::tcp::socket> &target_sock_ptr);
 
 #endif
