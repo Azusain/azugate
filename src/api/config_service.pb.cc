@@ -119,25 +119,31 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_config_5fservice_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\024config_service.proto\022\006api.v1\"1\n\020GetCon"
-    "figRequest\022\035\n\nconfig_key\030\001 \001(\tR\tconfigKe"
-    "y\"6\n\021GetConfigResponse\022!\n\014config_value\030\001"
-    " \001(\tR\013configValue2Q\n\rConfigService\022@\n\tGe"
-    "tConfig\022\030.api.v1.GetConfigRequest\032\031.api."
-    "v1.GetConfigResponseBY\n\ncom.api.v1B\022Conf"
-    "igServiceProtoP\001\242\002\003AXX\252\002\006Api.V1\312\002\006Api\\V1"
-    "\342\002\022Api\\V1\\GPBMetadata\352\002\007Api::V1b\006proto3"
+    "\n\024config_service.proto\022\006api.v1\032\034google/a"
+    "pi/annotations.proto\"1\n\020GetConfigRequest"
+    "\022\035\n\nconfig_key\030\001 \001(\tR\tconfigKey\"6\n\021GetCo"
+    "nfigResponse\022!\n\014config_value\030\001 \001(\tR\013conf"
+    "igValue2a\n\rConfigService\022P\n\tGetConfig\022\030."
+    "api.v1.GetConfigRequest\032\031.api.v1.GetConf"
+    "igResponse\"\016\202\323\344\223\002\010\"\003/v1:\001*B_\n\ncom.api.v1"
+    "B\022ConfigServiceProtoP\001Z\004/api\242\002\003AXX\252\002\006Api"
+    ".V1\312\002\006Api\\V1\342\002\022Api\\V1\\GPBMetadata\352\002\007Api:"
+    ":V1b\006proto3"
+};
+static const ::_pbi::DescriptorTable* const descriptor_table_config_5fservice_2eproto_deps[1] =
+    {
+        &::descriptor_table_google_2fapi_2fannotations_2eproto,
 };
 static ::absl::once_flag descriptor_table_config_5fservice_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_config_5fservice_2eproto = {
     false,
     false,
-    319,
+    371,
     descriptor_table_protodef_config_5fservice_2eproto,
     "config_service.proto",
     &descriptor_table_config_5fservice_2eproto_once,
-    nullptr,
-    0,
+    descriptor_table_config_5fservice_2eproto_deps,
+    1,
     2,
     schemas,
     file_default_instances,

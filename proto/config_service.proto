@@ -1,8 +1,16 @@
 syntax = "proto3";
 package api.v1;
+import "google/api/annotations.proto";
+
+option go_package = "/api";
 
 service ConfigService {
-  rpc GetConfig(GetConfigRequest) returns (GetConfigResponse);
+  rpc GetConfig(GetConfigRequest) returns (GetConfigResponse){
+    option(google.api.http) = {
+      post: "/v1"
+      body: "*"
+    };
+  }
 }
 
 message GetConfigRequest {
