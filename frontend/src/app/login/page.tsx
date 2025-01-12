@@ -1,4 +1,6 @@
+"use client";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Login() {
   const AvatarInput = ({
@@ -45,16 +47,17 @@ export default function Login() {
             placeholder="Username"
             avatarUrl="icons/user.svg"
           />
-
           {/* Password with avatar */}
           <AvatarInput
             type="password"
             placeholder="Password"
             avatarUrl="icons/lock.svg"
           />
-
           {/* Login button */}
-          <button className="btn btn-primary w-full">Log In</button>
+          <Link href={"/"}>
+            {" "}
+            <button className="btn btn-primary w-full">Log In</button>
+          </Link>{" "}
         </form>
       </div>
     </div>
