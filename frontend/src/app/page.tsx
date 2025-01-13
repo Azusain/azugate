@@ -1,4 +1,8 @@
+"use client";
+import { useState } from "react";
+
 export default function Home() {
+  const [sidebar, setSidebar] = useState("Firewall");
   return (
     <div className="flex flex-row">
       {/* sidebar */}
@@ -25,10 +29,22 @@ export default function Home() {
             <div className="divider"></div>
 
             <li>
-              <a>Overview</a>
+              <a
+                onClick={() => {
+                  setSidebar("Overview");
+                }}
+              >
+                Overview
+              </a>
             </li>
             <li>
-              <a>Firewall</a>
+              <a
+                onClick={() => {
+                  setSidebar("Firewall");
+                }}
+              >
+                Firewall
+              </a>
             </li>
           </ul>
         </div>
@@ -76,6 +92,46 @@ export default function Home() {
             </button>
           </div>
         </div>
+        {sidebar == "Firewall" ? (
+          <div className="overflow-x-auto">
+            <table className="table">
+              {/* head */}
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Name</th>
+                  <th>Job</th>
+                  <th>Favorite Color</th>
+                </tr>
+              </thead>
+              <tbody>
+                {/* row 1 */}
+                <tr>
+                  <th>1</th>
+                  <td>Cy Ganderton</td>
+                  <td>Quality Control Specialist</td>
+                  <td>Blue</td>
+                </tr>
+                {/* row 2 */}
+                <tr>
+                  <th>2</th>
+                  <td>Hart Hagerty</td>
+                  <td>Desktop Support Technician</td>
+                  <td>Purple</td>
+                </tr>
+                {/* row 3 */}
+                <tr>
+                  <th>3</th>
+                  <td>Brice Swyre</td>
+                  <td>Tax Accountant</td>
+                  <td>Red</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
