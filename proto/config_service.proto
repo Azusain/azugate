@@ -1,16 +1,31 @@
 syntax = "proto3";
 package api.v1;
+
 import "google/api/annotations.proto";
 
 option go_package = "/api";
 
 service ConfigService {
-  rpc GetConfig(GetConfigRequest) returns (GetConfigResponse){
-    option(google.api.http) = {
-      post: "/v1"
+  rpc GetConfig(GetConfigRequest) returns (GetConfigResponse) {
+    option (google.api.http) = {
+      post: "/config"
       body: "*"
     };
   }
+
+  rpc GetIpBlackList(GetIpBlacklistRequest) returns (GetIpBlacklistResponse) {
+    option (google.api.http) = {
+      get: "/config/iplist"
+    };
+  }
+
+  rpc UpdateIpBlackList(UpdateIpBlacklistRequest) returns (UpdateIpBlacklistResponse) {
+    option (google.api.http) = {
+      post: "/config/iplist:update"
+      body: "*"
+    };
+  }
+
 }
 
 message GetConfigRequest {
@@ -20,3 +35,21 @@ message GetConfigRequest {
 message GetConfigResponse {
   string config_value = 1;
 }
+
+message GetIpBlacklistRequest{}
+
+message GetIpBlacklistResponse{
+  repeated string ip_list = 1;
+}
+
+message UpdateIpBlacklistRequest {
+  enum ActionType {
+    ACTION_UNSPECIFIED = 0;
+    ADD = 1;
+    REMOVE = 2;
+  }
+  ActionType action = 1;
+  repeated string ip_list = 2;
+}
+
+message UpdateIpBlacklistResponse {}

@@ -5,6 +5,7 @@
 #include <mutex>
 #include <string>
 #include <string_view>
+#include <unordered_set>
 
 namespace azugate {
 // http server
@@ -31,6 +32,7 @@ constexpr std::string_view kYamlFieldProxyTargetHost = "target_host";
 // runtime shared variables.
 extern uint16_t port;
 extern uint16_t admin_port;
+
 // TODO: mTLS.
 extern std::string sslCrt;
 extern std::string sslKey;
@@ -45,6 +47,10 @@ extern std::mutex config_mutex;
 
 std::string GetConfigPath();
 void SetConfigPath(std::string &&path);
+
+std::unordered_set<std::string> GetIpBlackList();
+void AddBlacklistIp(const std::string &&ip);
+void RemoveBlacklistIp(const std::string &&ip);
 
 } // namespace azugate
 

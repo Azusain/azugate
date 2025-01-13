@@ -7,7 +7,9 @@
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/server_context.h>
 #include <grpcpp/support/status.h>
+#include <spdlog/spdlog.h>
 #include <sys/types.h>
+#include <utility>
 
 extern uint16_t azugate::port;
 
@@ -22,6 +24,43 @@ public:
     resp->set_config_value(azugate::GetConfigPath());
     return grpc::Status::OK;
   }
+
+  virtual ::grpc::Status
+  GetIpBlackList(::grpc::ServerContext *context,
+                 const ::api::v1::GetIpBlacklistRequest *request,
+                 ::api::v1::GetIpBlacklistResponse *response) override {
+    for (auto &ip : azugate::GetIpBlackList()) {
+      response->add_ip_list(ip);
+    }
+    return grpc::Status::OK;
+  };
+
+  virtual grpc::Status
+  UpdateIpBlackList(grpc::ServerContext *context,
+                    const api::v1::UpdateIpBlacklistRequest *request,
+                    api::v1::UpdateIpBlacklistResponse *response) override {
+
+    switch (request->action()) {
+    case api::v1::UpdateIpBlacklistRequest_ActionType_ADD:
+      for (const std::string &ip : request->ip_list()) {
+        azugate::AddBlacklistIp(std::move(ip));
+      }
+      break;
+    case api::v1::UpdateIpBlacklistRequest_ActionType_REMOVE:
+      for (const std::string &ip : request->ip_list()) {
+        azugate::RemoveBlacklistIp(std::move(ip));
+      }
+      break;
+    case api::v1::UpdateIpBlacklistRequest_ActionType_ACTION_UNSPECIFIED:
+    case api::v1::
+        UpdateIpBlacklistRequest_ActionType_UpdateIpBlacklistRequest_ActionType_INT_MIN_SENTINEL_DO_NOT_USE_:
+    case api::v1::
+        UpdateIpBlacklistRequest_ActionType_UpdateIpBlacklistRequest_ActionType_INT_MAX_SENTINEL_DO_NOT_USE_:
+      return grpc::Status::CANCELLED;
+      break;
+    }
+    return grpc::Status::OK;
+  };
 };
 
 #endif
