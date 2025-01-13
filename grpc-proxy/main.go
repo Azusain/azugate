@@ -2,44 +2,32 @@ package main
 
 import (
 	"context"
-	"flag"
+	"log/slog"
 	"net/http"
 	"proxy/api"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/grpc/grpclog"
 )
 
-var (
-	// command-line options:
-	// gRPC server endpoint
-	grpcServerEndpoint = flag.String("grpc-server-endpoint", "localhost:9090", "gRPC server endpoint")
-)
-
-func run() error {
+func main() {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	// Register gRPC server endpoint
-	// Note: Make sure the gRPC server is running properly and accessible
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	err := api.RegisterConfigServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	err := api.RegisterConfigServiceHandlerFromEndpoint(ctx, mux, "localhost:50051", opts)
 	if err != nil {
-		return err
+		slog.Error("wrong")
+		return
 	}
 
+	slog.Info("http sever runs on port 8081")
 	// Start HTTP server (and proxy calls to gRPC server endpoint)
-	return http.ListenAndServe(":8081", mux)
-}
-
-func main() {
-	flag.Parse()
-
-	if err := run(); err != nil {
-		grpclog.Fatal(err)
+	if err := http.ListenAndServe(":8081", mux); err != nil {
+		slog.Error("error")
+		return
 	}
 }

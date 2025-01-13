@@ -6,16 +6,16 @@ managed:
 plugins:
   # c++
   - remote: buf.build/grpc/cpp:v1.68.2
-    out: src/api
+    out: ../src/api
   - remote: buf.build/protocolbuffers/cpp:v28.3
-    out: src/api
+    out: ../src/api
   # golang
   - remote: buf.build/protocolbuffers/go
-    out: grpc-proxy/api
+    out: ../grpc-proxy/api
     opt: paths=source_relative
   - remote: buf.build/grpc/go
-    out: grpc-proxy/api
+    out: ../grpc-proxy/api
     opt: paths=source_relative
   - remote: buf.build/grpc-ecosystem/gateway
-    out: grpc-proxy/api
+    out: ../grpc-proxy/api
     opt: paths=source_relative

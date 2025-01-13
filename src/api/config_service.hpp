@@ -14,7 +14,7 @@ extern uint16_t azugate::port;
 class ConfigServiceImpl final : public api::v1::ConfigService::Service {
 public:
   ConfigServiceImpl() = default;
-  virtual ~ConfigServiceImpl() override{};
+  virtual ~ConfigServiceImpl() override {};
 
   virtual grpc::Status GetConfig(grpc::ServerContext *ctx,
                                  const api::v1::GetConfigRequest *req,
