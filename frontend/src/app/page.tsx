@@ -1,5 +1,54 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+interface FirewallTableInterface {
+  ipList: string[];
+}
+
+const FirewallTable = () => {
+  const [ipList, setipList] = useState<string[]>();
+  useEffect(() => {
+    const getIpList = async () => {
+      const response = await fetch("http://localhost:8081/config/iplist", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const result: FirewallTableInterface = await response.json();
+      setipList(result.ipList);
+    };
+    getIpList();
+  }, []);
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="table">
+        {/* head */}
+        <thead>
+          <tr>
+            <th></th>
+            <th>IP</th>
+          </tr>
+        </thead>
+        {ipList ? (
+          <tbody>
+            {ipList.map((ip, idx) => {
+              return (
+                <tr key={idx}>
+                  <th>{idx}</th>
+                  <td>{ip}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        ) : (
+          <></>
+        )}
+      </table>
+    </div>
+  );
+};
 
 export default function Home() {
   const [sidebar, setSidebar] = useState("Firewall");
@@ -27,9 +76,11 @@ export default function Home() {
             {/* Sidebar content here */}
             <div className="font-semibold text-lg p-4">azugate</div>
             <div className="divider"></div>
-
             <li>
               <a
+                className={
+                  sidebar == "Overview" ? "bg-gray-700 text-white" : ""
+                }
                 onClick={() => {
                   setSidebar("Overview");
                 }}
@@ -39,6 +90,9 @@ export default function Home() {
             </li>
             <li>
               <a
+                className={
+                  sidebar == "Firewall" ? "bg-gray-700 text-white" : ""
+                }
                 onClick={() => {
                   setSidebar("Firewall");
                 }}
@@ -92,46 +146,7 @@ export default function Home() {
             </button>
           </div>
         </div>
-        {sidebar == "Firewall" ? (
-          <div className="overflow-x-auto">
-            <table className="table">
-              {/* head */}
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Name</th>
-                  <th>Job</th>
-                  <th>Favorite Color</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* row 1 */}
-                <tr>
-                  <th>1</th>
-                  <td>Cy Ganderton</td>
-                  <td>Quality Control Specialist</td>
-                  <td>Blue</td>
-                </tr>
-                {/* row 2 */}
-                <tr>
-                  <th>2</th>
-                  <td>Hart Hagerty</td>
-                  <td>Desktop Support Technician</td>
-                  <td>Purple</td>
-                </tr>
-                {/* row 3 */}
-                <tr>
-                  <th>3</th>
-                  <td>Brice Swyre</td>
-                  <td>Tax Accountant</td>
-                  <td>Red</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <></>
-        )}
+        {sidebar == "Firewall" ? <FirewallTable /> : <></>}
       </div>
     </div>
   );
