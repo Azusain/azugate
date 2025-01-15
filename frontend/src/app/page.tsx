@@ -1,43 +1,124 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+
+const backendUrl = "http://localhost:8081";
+const apiHeaders = {
+  "Content-Type": "application/json",
+};
+
+interface AddIpButtonInterface {
+  getIpList: () => void;
+}
 
 interface FirewallTableInterface {
+  getIpList: () => void;
+  setIpList: Dispatch<SetStateAction<string[] | undefined>>;
   ipList: string[];
 }
 
-const FirewallTable = () => {
-  const [ipList, setipList] = useState<string[]>();
+const AddIpButton: React.FC<AddIpButtonInterface> = (props) => {
+  const [newIp, setNewIp] = useState("");
+
+  return (
+    <div>
+      <button
+        className="btn"
+        onClick={() => {
+          const elem: HTMLElement | null =
+            document.getElementById("add_ip_modal");
+          if (elem) {
+            (elem as HTMLDialogElement).showModal();
+          }
+          setNewIp("");
+        }}
+      >
+        Add IP
+      </button>
+      <dialog id="add_ip_modal" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg pb-4">New IP Address</h3>
+          <label className="form-control w-full max-w-xs">
+            <input
+              type="text"
+              placeholder="IPv4 Address"
+              className="input input-bordered w-full max-w-xs"
+              onChange={(e) => {
+                setNewIp(e.target.value);
+              }}
+            />
+          </label>{" "}
+          <div className="modal-action">
+            <form method="dialog" className="flex flex-row gap-4">
+              <button
+                className="btn"
+                onClick={() => {
+                  const addNewIp = async () => {
+                    await fetch(`${backendUrl}/config/iplist:update`, {
+                      method: "POST",
+                      headers: apiHeaders,
+                      body: JSON.stringify({
+                        action: "ADD",
+                        ip_list: [newIp],
+                      }),
+                    });
+                  };
+                  addNewIp();
+                  props.getIpList();
+                }}
+              >
+                Add
+              </button>
+              <button className="btn">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+    </div>
+  );
+};
+
+const FirewallTable: React.FC<FirewallTableInterface> = (props) => {
   useEffect(() => {
-    const getIpList = async () => {
-      const response = await fetch("http://localhost:8081/config/iplist", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const result: FirewallTableInterface = await response.json();
-      setipList(result.ipList);
-    };
-    getIpList();
-  }, []);
+    props.getIpList();
+  }, [props]);
 
   return (
     <div className="overflow-x-auto">
       <table className="table">
-        {/* head */}
         <thead>
           <tr>
-            <th></th>
+            <th>Index</th>
             <th>IP</th>
+            <th>Modify</th>
           </tr>
         </thead>
-        {ipList ? (
+        {props.ipList ? (
           <tbody>
-            {ipList.map((ip, idx) => {
+            {props.ipList.map((ip, idx) => {
               return (
                 <tr key={idx}>
                   <th>{idx}</th>
                   <td>{ip}</td>
+                  <td>
+                    <button
+                      className="btn"
+                      onClick={() => {
+                        const deleteIp = async () => {
+                          await fetch(`${backendUrl}/config/iplist:update`, {
+                            method: "POST",
+                            headers: apiHeaders,
+                            body: JSON.stringify({
+                              action: "REMOVE",
+                              ip_list: [props.ipList[idx]],
+                            }),
+                          });
+                        };
+                        deleteIp();
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               );
             })}
@@ -52,6 +133,16 @@ const FirewallTable = () => {
 
 export default function Home() {
   const [sidebar, setSidebar] = useState("Firewall");
+  const [ipList, setipList] = useState<string[]>();
+  const getIpList = async () => {
+    const response = await fetch(`${backendUrl}/config/iplist`, {
+      method: "GET",
+      headers: apiHeaders,
+    });
+    const result: FirewallTableInterface = await response.json();
+    setipList(result.ipList);
+  };
+
   return (
     <div className="flex flex-row">
       {/* sidebar */}
@@ -146,8 +237,22 @@ export default function Home() {
             </button>
           </div>
         </div>
-        {sidebar == "Firewall" ? <FirewallTable /> : <></>}
+        {sidebar == "Firewall" ? (
+          <>
+            <AddIpButton getIpList={getIpList} />
+            <FirewallTable
+              getIpList={getIpList}
+              setIpList={setipList}
+              ipList={ipList ? ipList : []}
+            />
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
 }
+
+// TODO:
+// static resources should be download beforehand.

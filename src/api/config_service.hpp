@@ -4,6 +4,7 @@
 #include "config.h"
 #include "config_service.grpc.pb.h"
 #include "config_service.pb.h"
+#include "string_validator.h"
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/server_context.h>
 #include <grpcpp/support/status.h>
@@ -43,7 +44,9 @@ public:
     switch (request->action()) {
     case api::v1::UpdateIpBlacklistRequest_ActionType_ADD:
       for (const std::string &ip : request->ip_list()) {
-        azugate::AddBlacklistIp(std::move(ip));
+        if (azugate::utils::isValidIpv4(ip)) {
+          azugate::AddBlacklistIp(std::move(ip));
+        }
       }
       break;
     case api::v1::UpdateIpBlacklistRequest_ActionType_REMOVE:
