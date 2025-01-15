@@ -16,6 +16,7 @@
 #include <boost/thread.hpp>
 #include <boost/thread/detail/thread.hpp>
 #include <cstdint>
+#include <cstdlib>
 #include <exception>
 #include <fmt/base.h>
 #include <fmt/format.h>
@@ -116,15 +117,25 @@ int main() {
   }
 
   // setup grpc server.
-  auto grpc_thread = std::thread([&]() {
+  std::thread grpc_thread([&]() {
     grpc::ServerBuilder server_builder;
     server_builder.AddListeningPort(fmt::format("0.0.0.0:{}", admin_port),
                                     grpc::InsecureServerCredentials());
     ConfigServiceImpl config_service;
     server_builder.RegisterService(&config_service);
     std::unique_ptr<grpc::Server> server(server_builder.BuildAndStart());
-    SPDLOG_INFO("grpc server runs on {}", admin_port);
+    SPDLOG_INFO("gRPC server runs on port {}", admin_port);
     server->Wait();
+  });
+
+  // setup http gateway for gRPC server.
+  std::thread http_gateway([]() {
+    SPDLOG_INFO("http gateway runs on port 8081");
+    // TODO: this is way too violent.
+    if (!std::system("../grpc-proxy/proxy")) {
+      SPDLOG_WARN("some errors happened in the http gateway");
+    };
+    SPDLOG_INFO("http gateway process exits");
   });
 
   // setup a basic OTPL server.
@@ -165,3 +176,4 @@ int main() {
 // websockets.
 // dynamic protocol detection.
 // unit test for utilities.
+// persistent storage.

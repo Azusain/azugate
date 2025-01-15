@@ -29,7 +29,6 @@ const AddIpButton: React.FC<AddIpButtonInterface> = (props) => {
           if (elem) {
             (elem as HTMLDialogElement).showModal();
           }
-          setNewIp("");
         }}
       >
         Add IP
