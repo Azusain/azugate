@@ -37,6 +37,16 @@ public:
   };
 
   virtual grpc::Status
+  UpdateConfig(grpc::ServerContext *context,
+               const api::v1::UpdateConfigRequest *request,
+               api::v1::UpdateConfigResponse *response) override {
+    for (auto &mask : request->update_mask()) {
+      SPDLOG_INFO(mask);
+    }
+    return grpc::Status::OK;
+  }
+
+  virtual grpc::Status
   UpdateIpBlackList(grpc::ServerContext *context,
                     const api::v1::UpdateIpBlacklistRequest *request,
                     api::v1::UpdateIpBlacklistResponse *response) override {

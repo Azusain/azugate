@@ -135,7 +135,7 @@ int main() {
     if (!std::system("../grpc-proxy/proxy")) {
       SPDLOG_WARN("some errors happened in the http gateway");
     };
-    SPDLOG_INFO("http gateway process exits");
+    SPDLOG_WARN("http gateway process exits");
   });
 
   // setup a basic OTPL server.

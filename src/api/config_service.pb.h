@@ -66,6 +66,12 @@ extern GetIpBlacklistRequestDefaultTypeInternal _GetIpBlacklistRequest_default_i
 class GetIpBlacklistResponse;
 struct GetIpBlacklistResponseDefaultTypeInternal;
 extern GetIpBlacklistResponseDefaultTypeInternal _GetIpBlacklistResponse_default_instance_;
+class UpdateConfigRequest;
+struct UpdateConfigRequestDefaultTypeInternal;
+extern UpdateConfigRequestDefaultTypeInternal _UpdateConfigRequest_default_instance_;
+class UpdateConfigResponse;
+struct UpdateConfigResponseDefaultTypeInternal;
+extern UpdateConfigResponseDefaultTypeInternal _UpdateConfigResponse_default_instance_;
 class UpdateIpBlacklistRequest;
 struct UpdateIpBlacklistRequestDefaultTypeInternal;
 extern UpdateIpBlacklistRequestDefaultTypeInternal _UpdateIpBlacklistRequest_default_instance_;
@@ -175,7 +181,7 @@ class UpdateIpBlacklistResponse final : public ::google::protobuf::internal::Zer
     return reinterpret_cast<const UpdateIpBlacklistResponse*>(
         &_UpdateIpBlacklistResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 7;
   friend void swap(UpdateIpBlacklistResponse& a, UpdateIpBlacklistResponse& b) { a.Swap(&b); }
   inline void Swap(UpdateIpBlacklistResponse* other) {
     if (other == this) return;
@@ -319,7 +325,7 @@ class UpdateIpBlacklistRequest final : public ::google::protobuf::Message
     return reinterpret_cast<const UpdateIpBlacklistRequest*>(
         &_UpdateIpBlacklistRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 6;
   friend void swap(UpdateIpBlacklistRequest& a, UpdateIpBlacklistRequest& b) { a.Swap(&b); }
   inline void Swap(UpdateIpBlacklistRequest* other) {
     if (other == this) return;
@@ -496,6 +502,361 @@ class UpdateIpBlacklistRequest final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
+class UpdateConfigResponse final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:api.v1.UpdateConfigResponse) */ {
+ public:
+  inline UpdateConfigResponse() : UpdateConfigResponse(nullptr) {}
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR UpdateConfigResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline UpdateConfigResponse(const UpdateConfigResponse& from) : UpdateConfigResponse(nullptr, from) {}
+  inline UpdateConfigResponse(UpdateConfigResponse&& from) noexcept
+      : UpdateConfigResponse(nullptr, std::move(from)) {}
+  inline UpdateConfigResponse& operator=(const UpdateConfigResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UpdateConfigResponse& operator=(UpdateConfigResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+#ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+#endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UpdateConfigResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UpdateConfigResponse* internal_default_instance() {
+    return reinterpret_cast<const UpdateConfigResponse*>(
+        &_UpdateConfigResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 3;
+  friend void swap(UpdateConfigResponse& a, UpdateConfigResponse& b) { a.Swap(&b); }
+  inline void Swap(UpdateConfigResponse* other) {
+    if (other == this) return;
+#ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr && GetArena() == other->GetArena()) {
+#else   // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+#endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UpdateConfigResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  UpdateConfigResponse* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<UpdateConfigResponse>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const UpdateConfigResponse& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const UpdateConfigResponse& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() { return "api.v1.UpdateConfigResponse"; }
+
+ protected:
+  explicit UpdateConfigResponse(::google::protobuf::Arena* arena);
+  UpdateConfigResponse(::google::protobuf::Arena* arena, const UpdateConfigResponse& from);
+  UpdateConfigResponse(::google::protobuf::Arena* arena, UpdateConfigResponse&& from) noexcept
+      : UpdateConfigResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ZeroFieldsBase::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static const ::google::protobuf::internal::ZeroFieldsBase::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:api.v1.UpdateConfigResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  static constexpr const void* _raw_default_instance_ =
+      &_UpdateConfigResponse_default_instance_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const UpdateConfigResponse& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_config_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
+class UpdateConfigRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:api.v1.UpdateConfigRequest) */ {
+ public:
+  inline UpdateConfigRequest() : UpdateConfigRequest(nullptr) {}
+  ~UpdateConfigRequest() PROTOBUF_FINAL;
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR UpdateConfigRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline UpdateConfigRequest(const UpdateConfigRequest& from) : UpdateConfigRequest(nullptr, from) {}
+  inline UpdateConfigRequest(UpdateConfigRequest&& from) noexcept
+      : UpdateConfigRequest(nullptr, std::move(from)) {}
+  inline UpdateConfigRequest& operator=(const UpdateConfigRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UpdateConfigRequest& operator=(UpdateConfigRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+#ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+#endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UpdateConfigRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UpdateConfigRequest* internal_default_instance() {
+    return reinterpret_cast<const UpdateConfigRequest*>(
+        &_UpdateConfigRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 2;
+  friend void swap(UpdateConfigRequest& a, UpdateConfigRequest& b) { a.Swap(&b); }
+  inline void Swap(UpdateConfigRequest* other) {
+    if (other == this) return;
+#ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr && GetArena() == other->GetArena()) {
+#else   // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+#endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UpdateConfigRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  UpdateConfigRequest* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<UpdateConfigRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const UpdateConfigRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const UpdateConfigRequest& from) { UpdateConfigRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(UpdateConfigRequest* other);
+ private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() { return "api.v1.UpdateConfigRequest"; }
+
+ protected:
+  explicit UpdateConfigRequest(::google::protobuf::Arena* arena);
+  UpdateConfigRequest(::google::protobuf::Arena* arena, const UpdateConfigRequest& from);
+  UpdateConfigRequest(::google::protobuf::Arena* arena, UpdateConfigRequest&& from) noexcept
+      : UpdateConfigRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static const ::google::protobuf::Message::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kUpdateMaskFieldNumber = 1,
+    kHttpCompressionFieldNumber = 2,
+  };
+  // repeated string update_mask = 1 [json_name = "updateMask"];
+  int update_mask_size() const;
+  private:
+  int _internal_update_mask_size() const;
+
+  public:
+  void clear_update_mask() ;
+  const std::string& update_mask(int index) const;
+  std::string* mutable_update_mask(int index);
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_update_mask(int index, Arg_&& value, Args_... args);
+  std::string* add_update_mask();
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void add_update_mask(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<std::string>& update_mask() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* mutable_update_mask();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<std::string>& _internal_update_mask() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_update_mask();
+
+  public:
+  // bool http_compression = 2 [json_name = "httpCompression"];
+  void clear_http_compression() ;
+  bool http_compression() const;
+  void set_http_compression(bool value);
+
+  private:
+  bool _internal_http_compression() const;
+  void _internal_set_http_compression(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:api.v1.UpdateConfigRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      46, 2>
+      _table_;
+
+  static constexpr const void* _raw_default_instance_ =
+      &_UpdateConfigRequest_default_instance_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const UpdateConfigRequest& from_msg);
+    ::google::protobuf::RepeatedPtrField<std::string> update_mask_;
+    bool http_compression_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_config_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
 class GetIpBlacklistResponse final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:api.v1.GetIpBlacklistResponse) */ {
  public:
@@ -551,7 +912,7 @@ class GetIpBlacklistResponse final : public ::google::protobuf::Message
     return reinterpret_cast<const GetIpBlacklistResponse*>(
         &_GetIpBlacklistResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(GetIpBlacklistResponse& a, GetIpBlacklistResponse& b) { a.Swap(&b); }
   inline void Swap(GetIpBlacklistResponse* other) {
     if (other == this) return;
@@ -750,7 +1111,7 @@ class GetIpBlacklistRequest final : public ::google::protobuf::internal::ZeroFie
     return reinterpret_cast<const GetIpBlacklistRequest*>(
         &_GetIpBlacklistRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 2;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(GetIpBlacklistRequest& a, GetIpBlacklistRequest& b) { a.Swap(&b); }
   inline void Swap(GetIpBlacklistRequest* other) {
     if (other == this) return;
@@ -1345,6 +1706,100 @@ inline void GetConfigResponse::set_allocated_config_value(std::string* value) {
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:api.v1.GetConfigResponse.config_value)
 }
+
+// -------------------------------------------------------------------
+
+// UpdateConfigRequest
+
+// repeated string update_mask = 1 [json_name = "updateMask"];
+inline int UpdateConfigRequest::_internal_update_mask_size() const {
+  return _internal_update_mask().size();
+}
+inline int UpdateConfigRequest::update_mask_size() const {
+  return _internal_update_mask_size();
+}
+inline void UpdateConfigRequest::clear_update_mask() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.update_mask_.Clear();
+}
+inline std::string* UpdateConfigRequest::add_update_mask() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  std::string* _s = _internal_mutable_update_mask()->Add();
+  // @@protoc_insertion_point(field_add_mutable:api.v1.UpdateConfigRequest.update_mask)
+  return _s;
+}
+inline const std::string& UpdateConfigRequest::update_mask(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigRequest.update_mask)
+  return _internal_update_mask().Get(index);
+}
+inline std::string* UpdateConfigRequest::mutable_update_mask(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:api.v1.UpdateConfigRequest.update_mask)
+  return _internal_mutable_update_mask()->Mutable(index);
+}
+template <typename Arg_, typename... Args_>
+inline void UpdateConfigRequest::set_update_mask(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(
+      *_internal_mutable_update_mask()->Mutable(index),
+      std::forward<Arg_>(value), args... );
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigRequest.update_mask)
+}
+template <typename Arg_, typename... Args_>
+inline void UpdateConfigRequest::add_update_mask(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_update_mask(),
+                               std::forward<Arg_>(value),
+                               args... );
+  // @@protoc_insertion_point(field_add:api.v1.UpdateConfigRequest.update_mask)
+}
+inline const ::google::protobuf::RepeatedPtrField<std::string>&
+UpdateConfigRequest::update_mask() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:api.v1.UpdateConfigRequest.update_mask)
+  return _internal_update_mask();
+}
+inline ::google::protobuf::RepeatedPtrField<std::string>*
+UpdateConfigRequest::mutable_update_mask() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:api.v1.UpdateConfigRequest.update_mask)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_update_mask();
+}
+inline const ::google::protobuf::RepeatedPtrField<std::string>&
+UpdateConfigRequest::_internal_update_mask() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.update_mask_;
+}
+inline ::google::protobuf::RepeatedPtrField<std::string>*
+UpdateConfigRequest::_internal_mutable_update_mask() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.update_mask_;
+}
+
+// bool http_compression = 2 [json_name = "httpCompression"];
+inline void UpdateConfigRequest::clear_http_compression() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.http_compression_ = false;
+}
+inline bool UpdateConfigRequest::http_compression() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigRequest.http_compression)
+  return _internal_http_compression();
+}
+inline void UpdateConfigRequest::set_http_compression(bool value) {
+  _internal_set_http_compression(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigRequest.http_compression)
+}
+inline bool UpdateConfigRequest::_internal_http_compression() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.http_compression_;
+}
+inline void UpdateConfigRequest::_internal_set_http_compression(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.http_compression_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// UpdateConfigResponse
 
 // -------------------------------------------------------------------
 

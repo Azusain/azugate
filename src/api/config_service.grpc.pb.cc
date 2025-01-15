@@ -24,6 +24,7 @@ namespace v1 {
 
 static const char* ConfigService_method_names[] = {
   "/api.v1.ConfigService/GetConfig",
+  "/api.v1.ConfigService/UpdateConfig",
   "/api.v1.ConfigService/GetIpBlackList",
   "/api.v1.ConfigService/UpdateIpBlackList",
 };
@@ -36,8 +37,9 @@ std::unique_ptr< ConfigService::Stub> ConfigService::NewStub(const std::shared_p
 
 ConfigService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
   : channel_(channel), rpcmethod_GetConfig_(ConfigService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetIpBlackList_(ConfigService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_UpdateIpBlackList_(ConfigService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_UpdateConfig_(ConfigService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetIpBlackList_(ConfigService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_UpdateIpBlackList_(ConfigService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status ConfigService::Stub::GetConfig(::grpc::ClientContext* context, const ::api::v1::GetConfigRequest& request, ::api::v1::GetConfigResponse* response) {
@@ -59,6 +61,29 @@ void ConfigService::Stub::async::GetConfig(::grpc::ClientContext* context, const
 ::grpc::ClientAsyncResponseReader< ::api::v1::GetConfigResponse>* ConfigService::Stub::AsyncGetConfigRaw(::grpc::ClientContext* context, const ::api::v1::GetConfigRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncGetConfigRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status ConfigService::Stub::UpdateConfig(::grpc::ClientContext* context, const ::api::v1::UpdateConfigRequest& request, ::api::v1::UpdateConfigResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::api::v1::UpdateConfigRequest, ::api::v1::UpdateConfigResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_UpdateConfig_, context, request, response);
+}
+
+void ConfigService::Stub::async::UpdateConfig(::grpc::ClientContext* context, const ::api::v1::UpdateConfigRequest* request, ::api::v1::UpdateConfigResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::api::v1::UpdateConfigRequest, ::api::v1::UpdateConfigResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_UpdateConfig_, context, request, response, std::move(f));
+}
+
+void ConfigService::Stub::async::UpdateConfig(::grpc::ClientContext* context, const ::api::v1::UpdateConfigRequest* request, ::api::v1::UpdateConfigResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_UpdateConfig_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::api::v1::UpdateConfigResponse>* ConfigService::Stub::PrepareAsyncUpdateConfigRaw(::grpc::ClientContext* context, const ::api::v1::UpdateConfigRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::api::v1::UpdateConfigResponse, ::api::v1::UpdateConfigRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_UpdateConfig_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::api::v1::UpdateConfigResponse>* ConfigService::Stub::AsyncUpdateConfigRaw(::grpc::ClientContext* context, const ::api::v1::UpdateConfigRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncUpdateConfigRaw(context, request, cq);
   result->StartCall();
   return result;
 }
@@ -123,6 +148,16 @@ ConfigService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ConfigService_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< ConfigService::Service, ::api::v1::UpdateConfigRequest, ::api::v1::UpdateConfigResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](ConfigService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::api::v1::UpdateConfigRequest* req,
+             ::api::v1::UpdateConfigResponse* resp) {
+               return service->UpdateConfig(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      ConfigService_method_names[2],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ConfigService::Service, ::api::v1::GetIpBlacklistRequest, ::api::v1::GetIpBlacklistResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ConfigService::Service* service,
              ::grpc::ServerContext* ctx,
@@ -131,7 +166,7 @@ ConfigService::Service::Service() {
                return service->GetIpBlackList(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ConfigService_method_names[2],
+      ConfigService_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ConfigService::Service, ::api::v1::UpdateIpBlacklistRequest, ::api::v1::UpdateIpBlacklistResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ConfigService::Service* service,
@@ -146,6 +181,13 @@ ConfigService::Service::~Service() {
 }
 
 ::grpc::Status ConfigService::Service::GetConfig(::grpc::ServerContext* context, const ::api::v1::GetConfigRequest* request, ::api::v1::GetConfigResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status ConfigService::Service::UpdateConfig(::grpc::ServerContext* context, const ::api::v1::UpdateConfigRequest* request, ::api::v1::UpdateConfigResponse* response) {
   (void) context;
   (void) request;
   (void) response;

@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	ConfigService_GetConfig_FullMethodName         = "/api.v1.ConfigService/GetConfig"
+	ConfigService_UpdateConfig_FullMethodName      = "/api.v1.ConfigService/UpdateConfig"
 	ConfigService_GetIpBlackList_FullMethodName    = "/api.v1.ConfigService/GetIpBlackList"
 	ConfigService_UpdateIpBlackList_FullMethodName = "/api.v1.ConfigService/UpdateIpBlackList"
 )
@@ -29,6 +30,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ConfigServiceClient interface {
 	GetConfig(ctx context.Context, in *GetConfigRequest, opts ...grpc.CallOption) (*GetConfigResponse, error)
+	UpdateConfig(ctx context.Context, in *UpdateConfigRequest, opts ...grpc.CallOption) (*UpdateConfigResponse, error)
 	GetIpBlackList(ctx context.Context, in *GetIpBlacklistRequest, opts ...grpc.CallOption) (*GetIpBlacklistResponse, error)
 	UpdateIpBlackList(ctx context.Context, in *UpdateIpBlacklistRequest, opts ...grpc.CallOption) (*UpdateIpBlacklistResponse, error)
 }
@@ -45,6 +47,16 @@ func (c *configServiceClient) GetConfig(ctx context.Context, in *GetConfigReques
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetConfigResponse)
 	err := c.cc.Invoke(ctx, ConfigService_GetConfig_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *configServiceClient) UpdateConfig(ctx context.Context, in *UpdateConfigRequest, opts ...grpc.CallOption) (*UpdateConfigResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateConfigResponse)
+	err := c.cc.Invoke(ctx, ConfigService_UpdateConfig_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,6 +88,7 @@ func (c *configServiceClient) UpdateIpBlackList(ctx context.Context, in *UpdateI
 // for forward compatibility.
 type ConfigServiceServer interface {
 	GetConfig(context.Context, *GetConfigRequest) (*GetConfigResponse, error)
+	UpdateConfig(context.Context, *UpdateConfigRequest) (*UpdateConfigResponse, error)
 	GetIpBlackList(context.Context, *GetIpBlacklistRequest) (*GetIpBlacklistResponse, error)
 	UpdateIpBlackList(context.Context, *UpdateIpBlacklistRequest) (*UpdateIpBlacklistResponse, error)
 	mustEmbedUnimplementedConfigServiceServer()
@@ -90,6 +103,9 @@ type UnimplementedConfigServiceServer struct{}
 
 func (UnimplementedConfigServiceServer) GetConfig(context.Context, *GetConfigRequest) (*GetConfigResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetConfig not implemented")
+}
+func (UnimplementedConfigServiceServer) UpdateConfig(context.Context, *UpdateConfigRequest) (*UpdateConfigResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateConfig not implemented")
 }
 func (UnimplementedConfigServiceServer) GetIpBlackList(context.Context, *GetIpBlacklistRequest) (*GetIpBlacklistResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetIpBlackList not implemented")
@@ -132,6 +148,24 @@ func _ConfigService_GetConfig_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ConfigServiceServer).GetConfig(ctx, req.(*GetConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ConfigService_UpdateConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConfigServiceServer).UpdateConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ConfigService_UpdateConfig_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConfigServiceServer).UpdateConfig(ctx, req.(*UpdateConfigRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -182,6 +216,10 @@ var ConfigService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetConfig",
 			Handler:    _ConfigService_GetConfig_Handler,
+		},
+		{
+			MethodName: "UpdateConfig",
+			Handler:    _ConfigService_UpdateConfig_Handler,
 		},
 		{
 			MethodName: "GetIpBlackList",

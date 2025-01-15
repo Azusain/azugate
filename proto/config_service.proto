@@ -13,10 +13,15 @@ service ConfigService {
     };
   }
 
-  rpc GetIpBlackList(GetIpBlacklistRequest) returns (GetIpBlacklistResponse) {
+  rpc UpdateConfig(UpdateConfigRequest) returns (UpdateConfigResponse) {
     option (google.api.http) = {
-      get: "/config/iplist"
+      post: "/config:update"
+      body: "*"
     };
+  }
+
+  rpc GetIpBlackList(GetIpBlacklistRequest) returns (GetIpBlacklistResponse) {
+    option (google.api.http) = {get: "/config/iplist"};
   }
 
   rpc UpdateIpBlackList(UpdateIpBlacklistRequest) returns (UpdateIpBlacklistResponse) {
@@ -25,7 +30,6 @@ service ConfigService {
       body: "*"
     };
   }
-
 }
 
 message GetConfigRequest {
@@ -36,9 +40,16 @@ message GetConfigResponse {
   string config_value = 1;
 }
 
-message GetIpBlacklistRequest{}
+message UpdateConfigRequest {
+  repeated string update_mask = 1;
+  bool http_compression = 2;
+}
 
-message GetIpBlacklistResponse{
+message UpdateConfigResponse {}
+
+message GetIpBlacklistRequest {}
+
+message GetIpBlacklistResponse {
   repeated string ip_list = 1;
 }
 
