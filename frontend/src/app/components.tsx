@@ -253,29 +253,77 @@ const FirewallMainContent = () => {
       <FirewallTable
         getIpList={getIpList}
         setIpList={setipList}
-        ipList={ipList ? ipList : []}
+        ipList={ipList ?? []}
       />
     </>
   );
 };
 
-interface ToggleSwitchINterface {
+interface ToggleSwitchInterface {
   optionName: string;
+  on: boolean;
+  getConfig: () => void;
 }
 
-const ToggleSwitch: React.FC<ToggleSwitchINterface> = (props) => {
+interface UpdateConfigRequest {
+  path: string[];
+  httpCompression: boolean;
+}
+
+interface GetConfigResponse {
+  httpCompression: boolean;
+}
+
+const updateConfig = async (request: UpdateConfigRequest) => {
+  await fetch(`${backendUrl}/config:update`, {
+    method: "POST",
+    headers: apiHeaders,
+    body: JSON.stringify(request),
+  });
+};
+
+const ToggleSwitch: React.FC<ToggleSwitchInterface> = (props) => {
   return (
     <div className="flex flex-row gap-4 justify-between w-1/4">
       <label>{props.optionName}</label>
-      <input type="checkbox" className="toggle" defaultChecked />
+      <input
+        type="checkbox"
+        className="toggle"
+        checked={props.on ?? false}
+        onChange={(e) => {
+          updateConfig({
+            path: ["http_compression"],
+            httpCompression: e.target.checked,
+          }).then(() => {
+            props.getConfig();
+          });
+        }}
+      />
     </div>
   );
 };
 
 const SettingsMainContent = () => {
+  const [httpCompression, setHttpCompression] = useState(false);
+  const getConfig = async () => {
+    const response = await fetch(`${backendUrl}/config`, {
+      method: "GET",
+      headers: apiHeaders,
+    });
+    const result: GetConfigResponse = await response.json();
+    setHttpCompression(result.httpCompression);
+  };
+  useEffect(() => {
+    getConfig();
+  }, []);
+
   return (
     <div className="flex flex-col gap-4">
-      <ToggleSwitch optionName="Enable HTTP Compression" />
+      <ToggleSwitch
+        getConfig={getConfig}
+        optionName="Enable HTTP Compression"
+        on={httpCompression}
+      />
     </div>
   );
 };

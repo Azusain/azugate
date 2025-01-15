@@ -22,7 +22,7 @@ public:
   virtual grpc::Status GetConfig(grpc::ServerContext *ctx,
                                  const api::v1::GetConfigRequest *req,
                                  api::v1::GetConfigResponse *resp) override {
-    resp->set_config_value(azugate::GetConfigPath());
+    resp->set_http_compression(azugate::GetHttpCompression());
     return grpc::Status::OK;
   }
 
@@ -40,8 +40,10 @@ public:
   UpdateConfig(grpc::ServerContext *context,
                const api::v1::UpdateConfigRequest *request,
                api::v1::UpdateConfigResponse *response) override {
-    for (auto &mask : request->update_mask()) {
-      SPDLOG_INFO(mask);
+    for (auto &mask : request->path()) {
+      if (!mask.compare("http_compression")) {
+        azugate::SetHttpCompression(request->http_compression());
+      }
     }
     return grpc::Status::OK;
   }
@@ -50,7 +52,6 @@ public:
   UpdateIpBlackList(grpc::ServerContext *context,
                     const api::v1::UpdateIpBlacklistRequest *request,
                     api::v1::UpdateIpBlacklistResponse *response) override {
-
     switch (request->action()) {
     case api::v1::UpdateIpBlacklistRequest_ActionType_ADD:
       for (const std::string &ip : request->ip_list()) {

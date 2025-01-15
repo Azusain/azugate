@@ -9,6 +9,7 @@ uint16_t port = 443;
 uint16_t admin_port = 50051;
 std::string path_config_file;
 std::unordered_set<std::string> ip_blacklist;
+bool enable_http_compression = false;
 // TODO: mTLS.
 std::string sslCrt;
 std::string sslKey;
@@ -42,6 +43,16 @@ void RemoveBlacklistIp(const std::string &&ip) {
   std::lock_guard<std::mutex> lock(config_mutex);
   // TODO: return more details.
   ip_blacklist.erase(ip);
+}
+
+bool GetHttpCompression() {
+  std::lock_guard<std::mutex> lock(config_mutex);
+  return enable_http_compression;
+}
+
+void SetHttpCompression(bool http_compression) {
+  std::lock_guard<std::mutex> lock(config_mutex);
+  enable_http_compression = http_compression;
 }
 
 } // namespace azugate

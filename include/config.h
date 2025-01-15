@@ -48,6 +48,9 @@ extern std::mutex config_mutex;
 std::string GetConfigPath();
 void SetConfigPath(std::string &&path);
 
+bool GetHttpCompression();
+void SetHttpCompression(bool http_compression);
+
 std::unordered_set<std::string> GetIpBlackList();
 void AddBlacklistIp(const std::string &&ip);
 void RemoveBlacklistIp(const std::string &&ip);

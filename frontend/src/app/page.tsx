@@ -27,3 +27,4 @@ export default function Home() {
 
 // TODO:
 // static resources should be download beforehand.
+// create a folder for api codes.

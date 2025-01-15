@@ -90,7 +90,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr UpdateConfigRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : update_mask_{},
+      : path_{},
         http_compression_{false},
         _cached_size_{0} {}
 
@@ -159,9 +159,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr GetConfigResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : config_value_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
+      : http_compression_{false},
         _cached_size_{0} {}
 
 template <typename>
@@ -183,23 +181,14 @@ struct GetConfigResponseDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetConfigResponseDefaultTypeInternal _GetConfigResponse_default_instance_;
-
-inline constexpr GetConfigRequest::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : config_key_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        _cached_size_{0} {}
-
-template <typename>
+              template <typename>
 PROTOBUF_CONSTEXPR GetConfigRequest::GetConfigRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
+    : ::google::protobuf::internal::ZeroFieldsBase() {
 }
+#endif  // PROTOBUF_CUSTOM_VTABLE
 struct GetConfigRequestDefaultTypeInternal {
   PROTOBUF_CONSTEXPR GetConfigRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~GetConfigRequestDefaultTypeInternal() {}
@@ -226,7 +215,6 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::api::v1::GetConfigRequest, _impl_.config_key_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::api::v1::GetConfigResponse, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -235,7 +223,7 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::api::v1::GetConfigResponse, _impl_.config_value_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::GetConfigResponse, _impl_.http_compression_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -244,7 +232,7 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.update_mask_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.path_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.http_compression_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _internal_metadata_),
@@ -294,13 +282,13 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, -1, -1, sizeof(::api::v1::GetConfigRequest)},
-        {9, -1, -1, sizeof(::api::v1::GetConfigResponse)},
-        {18, -1, -1, sizeof(::api::v1::UpdateConfigRequest)},
-        {28, -1, -1, sizeof(::api::v1::UpdateConfigResponse)},
-        {36, -1, -1, sizeof(::api::v1::GetIpBlacklistRequest)},
-        {44, -1, -1, sizeof(::api::v1::GetIpBlacklistResponse)},
-        {53, -1, -1, sizeof(::api::v1::UpdateIpBlacklistRequest)},
-        {63, -1, -1, sizeof(::api::v1::UpdateIpBlacklistResponse)},
+        {8, -1, -1, sizeof(::api::v1::GetConfigResponse)},
+        {17, -1, -1, sizeof(::api::v1::UpdateConfigRequest)},
+        {27, -1, -1, sizeof(::api::v1::UpdateConfigResponse)},
+        {35, -1, -1, sizeof(::api::v1::GetIpBlacklistRequest)},
+        {43, -1, -1, sizeof(::api::v1::GetIpBlacklistResponse)},
+        {52, -1, -1, sizeof(::api::v1::UpdateIpBlacklistRequest)},
+        {62, -1, -1, sizeof(::api::v1::UpdateIpBlacklistResponse)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::api::v1::_GetConfigRequest_default_instance_._instance,
@@ -315,33 +303,32 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_config_5fservice_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\024config_service.proto\022\006api.v1\032\034google/a"
-    "pi/annotations.proto\"1\n\020GetConfigRequest"
-    "\022\035\n\nconfig_key\030\001 \001(\tR\tconfigKey\"6\n\021GetCo"
-    "nfigResponse\022!\n\014config_value\030\001 \001(\tR\013conf"
-    "igValue\"a\n\023UpdateConfigRequest\022\037\n\013update"
-    "_mask\030\001 \003(\tR\nupdateMask\022)\n\020http_compress"
-    "ion\030\002 \001(\010R\017httpCompression\"\026\n\024UpdateConf"
-    "igResponse\"\027\n\025GetIpBlacklistRequest\"1\n\026G"
-    "etIpBlacklistResponse\022\027\n\007ip_list\030\001 \003(\tR\006"
-    "ipList\"\263\001\n\030UpdateIpBlacklistRequest\022C\n\006a"
-    "ction\030\001 \001(\0162+.api.v1.UpdateIpBlacklistRe"
-    "quest.ActionTypeR\006action\022\027\n\007ip_list\030\002 \003("
-    "\tR\006ipList\"9\n\nActionType\022\026\n\022ACTION_UNSPEC"
-    "IFIED\020\000\022\007\n\003ADD\020\001\022\n\n\006REMOVE\020\002\"\033\n\031UpdateIp"
-    "BlacklistResponse2\260\003\n\rConfigService\022T\n\tG"
-    "etConfig\022\030.api.v1.GetConfigRequest\032\031.api"
-    ".v1.GetConfigResponse\"\022\202\323\344\223\002\014\"\007/config:\001"
-    "*\022d\n\014UpdateConfig\022\033.api.v1.UpdateConfigR"
-    "equest\032\034.api.v1.UpdateConfigResponse\"\031\202\323"
-    "\344\223\002\023\"\016/config:update:\001*\022g\n\016GetIpBlackLis"
-    "t\022\035.api.v1.GetIpBlacklistRequest\032\036.api.v"
-    "1.GetIpBlacklistResponse\"\026\202\323\344\223\002\020\022\016/confi"
-    "g/iplist\022z\n\021UpdateIpBlackList\022 .api.v1.U"
-    "pdateIpBlacklistRequest\032!.api.v1.UpdateI"
-    "pBlacklistResponse\" \202\323\344\223\002\032\"\025/config/ipli"
-    "st:update:\001*B_\n\ncom.api.v1B\022ConfigServic"
-    "eProtoP\001Z\004/api\242\002\003AXX\252\002\006Api.V1\312\002\006Api\\V1\342\002"
-    "\022Api\\V1\\GPBMetadata\352\002\007Api::V1b\006proto3"
+    "pi/annotations.proto\"\022\n\020GetConfigRequest"
+    "\">\n\021GetConfigResponse\022)\n\020http_compressio"
+    "n\030\001 \001(\010R\017httpCompression\"T\n\023UpdateConfig"
+    "Request\022\022\n\004path\030\001 \003(\tR\004path\022)\n\020http_comp"
+    "ression\030\002 \001(\010R\017httpCompression\"\026\n\024Update"
+    "ConfigResponse\"\027\n\025GetIpBlacklistRequest\""
+    "1\n\026GetIpBlacklistResponse\022\027\n\007ip_list\030\001 \003"
+    "(\tR\006ipList\"\263\001\n\030UpdateIpBlacklistRequest\022"
+    "C\n\006action\030\001 \001(\0162+.api.v1.UpdateIpBlackli"
+    "stRequest.ActionTypeR\006action\022\027\n\007ip_list\030"
+    "\002 \003(\tR\006ipList\"9\n\nActionType\022\026\n\022ACTION_UN"
+    "SPECIFIED\020\000\022\007\n\003ADD\020\001\022\n\n\006REMOVE\020\002\"\033\n\031Upda"
+    "teIpBlacklistResponse2\255\003\n\rConfigService\022"
+    "Q\n\tGetConfig\022\030.api.v1.GetConfigRequest\032\031"
+    ".api.v1.GetConfigResponse\"\017\202\323\344\223\002\t\022\007/conf"
+    "ig\022d\n\014UpdateConfig\022\033.api.v1.UpdateConfig"
+    "Request\032\034.api.v1.UpdateConfigResponse\"\031\202"
+    "\323\344\223\002\023\"\016/config:update:\001*\022g\n\016GetIpBlackLi"
+    "st\022\035.api.v1.GetIpBlacklistRequest\032\036.api."
+    "v1.GetIpBlacklistResponse\"\026\202\323\344\223\002\020\022\016/conf"
+    "ig/iplist\022z\n\021UpdateIpBlackList\022 .api.v1."
+    "UpdateIpBlacklistRequest\032!.api.v1.Update"
+    "IpBlacklistResponse\" \202\323\344\223\002\032\"\025/config/ipl"
+    "ist:update:\001*B_\n\ncom.api.v1B\022ConfigServi"
+    "ceProtoP\001Z\004/api\242\002\003AXX\252\002\006Api.V1\312\002\006Api\\V1\342"
+    "\002\022Api\\V1\\GPBMetadata\352\002\007Api::V1b\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_config_5fservice_2eproto_deps[1] =
     {
@@ -351,7 +338,7 @@ static ::absl::once_flag descriptor_table_config_5fservice_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_config_5fservice_2eproto = {
     false,
     false,
-    1117,
+    1078,
     descriptor_table_protodef_config_5fservice_2eproto,
     "config_service.proto",
     &descriptor_table_config_5fservice_2eproto_once,
@@ -395,69 +382,42 @@ class GetConfigRequest::_Internal {
 
 GetConfigRequest::GetConfigRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:api.v1.GetConfigRequest)
 }
-inline PROTOBUF_NDEBUG_INLINE GetConfigRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::api::v1::GetConfigRequest& from_msg)
-      : config_key_(arena, from.config_key_),
-        _cached_size_{0} {}
-
 GetConfigRequest::GetConfigRequest(
     ::google::protobuf::Arena* arena,
     const GetConfigRequest& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   GetConfigRequest* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
   // @@protoc_insertion_point(copy_constructor:api.v1.GetConfigRequest)
-}
-inline PROTOBUF_NDEBUG_INLINE GetConfigRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : config_key_(arena),
-        _cached_size_{0} {}
-
-inline void GetConfigRequest::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-GetConfigRequest::~GetConfigRequest() {
-  // @@protoc_insertion_point(destructor:api.v1.GetConfigRequest)
-  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  SharedDtor();
-}
-inline void GetConfigRequest::SharedDtor() {
-  ABSL_DCHECK(GetArena() == nullptr);
-  _impl_.config_key_.Destroy();
-  _impl_.~Impl_();
 }
 
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
 const ::google::protobuf::MessageLite::ClassDataFull
     GetConfigRequest::_class_data_ = {
-        ::google::protobuf::Message::ClassData{
+        ::google::protobuf::internal::ZeroFieldsBase::ClassData{
             &_GetConfigRequest_default_instance_._instance,
             &_table_.header,
             nullptr,  // OnDemandRegisterArenaDtor
             nullptr,  // IsInitialized
             &GetConfigRequest::MergeImpl,
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-            ::google::protobuf::Message::GetDeleteImpl<GetConfigRequest>(),
-            ::google::protobuf::Message::GetNewImpl<GetConfigRequest>(),
-            ::google::protobuf::Message::GetClearImpl<GetConfigRequest>(), &GetConfigRequest::ByteSizeLong,
+            ::google::protobuf::internal::ZeroFieldsBase::GetDeleteImpl<GetConfigRequest>(),
+            ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<GetConfigRequest>(),
+            ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<GetConfigRequest>(), &GetConfigRequest::ByteSizeLong,
                 &GetConfigRequest::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
             PROTOBUF_FIELD_OFFSET(GetConfigRequest, _impl_._cached_size_),
@@ -473,15 +433,15 @@ const ::google::protobuf::MessageLite::ClassData* GetConfigRequest::GetClassData
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 42, 2> GetConfigRequest::_table_ = {
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> GetConfigRequest::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    0, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -491,124 +451,24 @@ const ::_pbi::TcParseTable<0, 1, 0, 42, 2> GetConfigRequest::_table_ = {
     ::_pbi::TcParser::GetTable<::api::v1::GetConfigRequest>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string config_key = 1 [json_name = "configKey"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(GetConfigRequest, _impl_.config_key_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
-  }}, {{
-    // string config_key = 1 [json_name = "configKey"];
-    {PROTOBUF_FIELD_OFFSET(GetConfigRequest, _impl_.config_key_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
-  // no aux_entries
+  // no field_entries, or aux_entries
   {{
-    "\27\12\0\0\0\0\0\0"
-    "api.v1.GetConfigRequest"
-    "config_key"
   }},
 };
 
-PROTOBUF_NOINLINE void GetConfigRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:api.v1.GetConfigRequest)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.config_key_.ClearToEmpty();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* GetConfigRequest::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const GetConfigRequest& this_ = static_cast<const GetConfigRequest&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* GetConfigRequest::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const GetConfigRequest& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:api.v1.GetConfigRequest)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // string config_key = 1 [json_name = "configKey"];
-          if (!this_._internal_config_key().empty()) {
-            const std::string& _s = this_._internal_config_key();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.GetConfigRequest.config_key");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:api.v1.GetConfigRequest)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t GetConfigRequest::ByteSizeLong(const MessageLite& base) {
-          const GetConfigRequest& this_ = static_cast<const GetConfigRequest&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t GetConfigRequest::ByteSizeLong() const {
-          const GetConfigRequest& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:api.v1.GetConfigRequest)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-           {
-            // string config_key = 1 [json_name = "configKey"];
-            if (!this_._internal_config_key().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_config_key());
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void GetConfigRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<GetConfigRequest*>(&to_msg);
-  auto& from = static_cast<const GetConfigRequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.GetConfigRequest)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_config_key().empty()) {
-    _this->_internal_set_config_key(from._internal_config_key());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void GetConfigRequest::CopyFrom(const GetConfigRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:api.v1.GetConfigRequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
 
 
-void GetConfigRequest::InternalSwap(GetConfigRequest* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.config_key_, &other->_impl_.config_key_, arena);
-}
+
+
+
+
 
 ::google::protobuf::Metadata GetConfigRequest::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
@@ -625,36 +485,19 @@ GetConfigResponse::GetConfigResponse(::google::protobuf::Arena* arena)
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:api.v1.GetConfigResponse)
 }
-inline PROTOBUF_NDEBUG_INLINE GetConfigResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::api::v1::GetConfigResponse& from_msg)
-      : config_value_(arena, from.config_value_),
-        _cached_size_{0} {}
-
 GetConfigResponse::GetConfigResponse(
-    ::google::protobuf::Arena* arena,
-    const GetConfigResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  GetConfigResponse* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:api.v1.GetConfigResponse)
+    ::google::protobuf::Arena* arena, const GetConfigResponse& from)
+    : GetConfigResponse(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE GetConfigResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : config_value_(arena),
-        _cached_size_{0} {}
+      : _cached_size_{0} {}
 
 inline void GetConfigResponse::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.http_compression_ = {};
 }
 GetConfigResponse::~GetConfigResponse() {
   // @@protoc_insertion_point(destructor:api.v1.GetConfigResponse)
@@ -663,7 +506,6 @@ GetConfigResponse::~GetConfigResponse() {
 }
 inline void GetConfigResponse::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
-  _impl_.config_value_.Destroy();
   _impl_.~Impl_();
 }
 
@@ -696,7 +538,7 @@ const ::google::protobuf::MessageLite::ClassData* GetConfigResponse::GetClassDat
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 45, 2> GetConfigResponse::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> GetConfigResponse::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -714,21 +556,18 @@ const ::_pbi::TcParseTable<0, 1, 0, 45, 2> GetConfigResponse::_table_ = {
     ::_pbi::TcParser::GetTable<::api::v1::GetConfigResponse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string config_value = 1 [json_name = "configValue"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.config_value_)}},
+    // bool http_compression = 1 [json_name = "httpCompression"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(GetConfigResponse, _impl_.http_compression_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.http_compression_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string config_value = 1 [json_name = "configValue"];
-    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.config_value_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // bool http_compression = 1 [json_name = "httpCompression"];
+    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.http_compression_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
   }},
   // no aux_entries
   {{
-    "\30\14\0\0\0\0\0\0"
-    "api.v1.GetConfigResponse"
-    "config_value"
   }},
 };
 
@@ -739,7 +578,7 @@ PROTOBUF_NOINLINE void GetConfigResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.config_value_.ClearToEmpty();
+  _impl_.http_compression_ = false;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -758,12 +597,11 @@ PROTOBUF_NOINLINE void GetConfigResponse::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string config_value = 1 [json_name = "configValue"];
-          if (!this_._internal_config_value().empty()) {
-            const std::string& _s = this_._internal_config_value();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.GetConfigResponse.config_value");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
+          // bool http_compression = 1 [json_name = "httpCompression"];
+          if (this_._internal_http_compression() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                1, this_._internal_http_compression(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -790,10 +628,9 @@ PROTOBUF_NOINLINE void GetConfigResponse::Clear() {
           (void)cached_has_bits;
 
            {
-            // string config_value = 1 [json_name = "configValue"];
-            if (!this_._internal_config_value().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_config_value());
+            // bool http_compression = 1 [json_name = "httpCompression"];
+            if (this_._internal_http_compression() != 0) {
+              total_size += 2;
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -808,8 +645,8 @@ void GetConfigResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_config_value().empty()) {
-    _this->_internal_set_config_value(from._internal_config_value());
+  if (from._internal_http_compression() != 0) {
+    _this->_impl_.http_compression_ = from._impl_.http_compression_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -824,10 +661,8 @@ void GetConfigResponse::CopyFrom(const GetConfigResponse& from) {
 
 void GetConfigResponse::InternalSwap(GetConfigResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.config_value_, &other->_impl_.config_value_, arena);
+        swap(_impl_.http_compression_, other->_impl_.http_compression_);
 }
 
 ::google::protobuf::Metadata GetConfigResponse::GetMetadata() const {
@@ -851,7 +686,7 @@ UpdateConfigRequest::UpdateConfigRequest(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE UpdateConfigRequest::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::api::v1::UpdateConfigRequest& from_msg)
-      : update_mask_{visibility, arena, from.update_mask_},
+      : path_{visibility, arena, from.path_},
         _cached_size_{0} {}
 
 UpdateConfigRequest::UpdateConfigRequest(
@@ -874,7 +709,7 @@ UpdateConfigRequest::UpdateConfigRequest(
 inline PROTOBUF_NDEBUG_INLINE UpdateConfigRequest::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : update_mask_{visibility, arena},
+      : path_{visibility, arena},
         _cached_size_{0} {}
 
 inline void UpdateConfigRequest::SharedCtor(::_pb::Arena* arena) {
@@ -920,7 +755,7 @@ const ::google::protobuf::MessageLite::ClassData* UpdateConfigRequest::GetClassD
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 46, 2> UpdateConfigRequest::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 0, 39, 2> UpdateConfigRequest::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -941,14 +776,14 @@ const ::_pbi::TcParseTable<1, 2, 0, 46, 2> UpdateConfigRequest::_table_ = {
     // bool http_compression = 2 [json_name = "httpCompression"];
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigRequest, _impl_.http_compression_), 63>(),
      {16, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.http_compression_)}},
-    // repeated string update_mask = 1 [json_name = "updateMask"];
+    // repeated string path = 1 [json_name = "path"];
     {::_pbi::TcParser::FastUR1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.update_mask_)}},
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.path_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // repeated string update_mask = 1 [json_name = "updateMask"];
-    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.update_mask_), 0, 0,
+    // repeated string path = 1 [json_name = "path"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.path_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
     // bool http_compression = 2 [json_name = "httpCompression"];
     {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.http_compression_), 0, 0,
@@ -956,9 +791,9 @@ const ::_pbi::TcParseTable<1, 2, 0, 46, 2> UpdateConfigRequest::_table_ = {
   }},
   // no aux_entries
   {{
-    "\32\13\0\0\0\0\0\0"
+    "\32\4\0\0\0\0\0\0"
     "api.v1.UpdateConfigRequest"
-    "update_mask"
+    "path"
   }},
 };
 
@@ -969,7 +804,7 @@ PROTOBUF_NOINLINE void UpdateConfigRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.update_mask_.Clear();
+  _impl_.path_.Clear();
   _impl_.http_compression_ = false;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -989,11 +824,11 @@ PROTOBUF_NOINLINE void UpdateConfigRequest::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // repeated string update_mask = 1 [json_name = "updateMask"];
-          for (int i = 0, n = this_._internal_update_mask_size(); i < n; ++i) {
-            const auto& s = this_._internal_update_mask().Get(i);
+          // repeated string path = 1 [json_name = "path"];
+          for (int i = 0, n = this_._internal_path_size(); i < n; ++i) {
+            const auto& s = this_._internal_path().Get(i);
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.UpdateConfigRequest.update_mask");
+                s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.UpdateConfigRequest.path");
             target = stream->WriteString(1, s, target);
           }
 
@@ -1029,13 +864,13 @@ PROTOBUF_NOINLINE void UpdateConfigRequest::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated string update_mask = 1 [json_name = "updateMask"];
+            // repeated string path = 1 [json_name = "path"];
              {
               total_size +=
-                  1 * ::google::protobuf::internal::FromIntSize(this_._internal_update_mask().size());
-              for (int i = 0, n = this_._internal_update_mask().size(); i < n; ++i) {
+                  1 * ::google::protobuf::internal::FromIntSize(this_._internal_path().size());
+              for (int i = 0, n = this_._internal_path().size(); i < n; ++i) {
                 total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-                    this_._internal_update_mask().Get(i));
+                    this_._internal_path().Get(i));
               }
             }
           }
@@ -1057,7 +892,7 @@ void UpdateConfigRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, con
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_internal_mutable_update_mask()->MergeFrom(from._internal_update_mask());
+  _this->_internal_mutable_path()->MergeFrom(from._internal_path());
   if (from._internal_http_compression() != 0) {
     _this->_impl_.http_compression_ = from._impl_.http_compression_;
   }
@@ -1075,7 +910,7 @@ void UpdateConfigRequest::CopyFrom(const UpdateConfigRequest& from) {
 void UpdateConfigRequest::InternalSwap(UpdateConfigRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.update_mask_.InternalSwap(&other->_impl_.update_mask_);
+  _impl_.path_.InternalSwap(&other->_impl_.path_);
         swap(_impl_.http_compression_, other->_impl_.http_compression_);
 }
 

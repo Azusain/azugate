@@ -7,10 +7,7 @@ option go_package = "/api";
 
 service ConfigService {
   rpc GetConfig(GetConfigRequest) returns (GetConfigResponse) {
-    option (google.api.http) = {
-      post: "/config"
-      body: "*"
-    };
+    option (google.api.http) = {get: "/config"};
   }
 
   rpc UpdateConfig(UpdateConfigRequest) returns (UpdateConfigResponse) {
@@ -32,16 +29,14 @@ service ConfigService {
   }
 }
 
-message GetConfigRequest {
-  string config_key = 1;
-}
+message GetConfigRequest {}
 
 message GetConfigResponse {
-  string config_value = 1;
+  bool http_compression = 1;
 }
 
 message UpdateConfigRequest {
-  repeated string update_mask = 1;
+  repeated string path = 1;
   bool http_compression = 2;
 }
 
