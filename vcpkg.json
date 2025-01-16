@@ -3,10 +3,13 @@
     "boost-asio",
     "boost-system",
     "boost-thread",
+    "brotli",
     "fmt",
+    "grpc",
     "openssl",
     "spdlog",
     "yaml-cpp",
-    "grpc"
+    "zlib",
+    "boost-iostreams"
   ]
 }

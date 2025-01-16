@@ -9,6 +9,10 @@
 
 namespace CRequest {
 
+// http header fields.
+constexpr std::string_view kHeaderAcceptEncoding = "Accept-Encoding";
+constexpr std::string_view kHeaderContentEncoding = "Content-Encoding";
+
 // http status codes.
 constexpr uint16_t kHttpContinue = 100;
 constexpr uint16_t kHttpSwitchingProtocols = 101;
@@ -125,7 +129,7 @@ public:
 
   void SetContentType(std::string_view content_type);
 
-  void SetContentLen(size_t len);
+  void SetContentLength(size_t len);
 
   void SetToken(std::string_view token);
 
@@ -138,6 +142,10 @@ public:
   void SetAllowMethods(std::vector<std::string> methods);
 
   void SetAllowCredentials(std::string_view origin);
+
+  void SetAcceptEncoding(std::vector<std::string> encoding_types);
+
+  void SetContentEncoding(const std::string_view &encoding_type);
 
   std::string StringifyHeaders();
 

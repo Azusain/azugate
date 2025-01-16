@@ -40,8 +40,8 @@ public:
   UpdateConfig(grpc::ServerContext *context,
                const api::v1::UpdateConfigRequest *request,
                api::v1::UpdateConfigResponse *response) override {
-    for (auto &mask : request->path()) {
-      if (!mask.compare("http_compression")) {
+    for (auto &path : request->path()) {
+      if (!path.compare("http_compression")) {
         azugate::SetHttpCompression(request->http_compression());
       }
     }

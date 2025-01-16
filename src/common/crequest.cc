@@ -154,7 +154,7 @@ void HttpMessage::SetContentType(std::string_view content_type) {
   headers_.emplace_back(std::format("Content-Type:{}", content_type));
 }
 
-void HttpMessage::SetContentLen(size_t len) {
+void HttpMessage::SetContentLength(size_t len) {
   headers_.emplace_back(std::format("Content-Length:{}", len));
 }
 
@@ -189,6 +189,22 @@ void HttpMessage::SetAllowMethods(std::vector<std::string> methods) {
     }
   }
   headers_.emplace_back(std::move(allow_methods));
+}
+
+// compression.
+void HttpMessage::SetAcceptEncoding(std::vector<std::string> encoding_types) {
+  std::string encodings{std::format("{}: ", kHeaderAcceptEncoding)};
+  for (size_t i = 0; i < encoding_types.size(); ++i) {
+    encodings.append(encoding_types[i]);
+    if (i != (encoding_types.size() - 1)) {
+      encodings.append(",");
+    }
+  }
+}
+
+void HttpMessage::SetContentEncoding(const std::string_view &encoding_type) {
+  headers_.emplace_back(
+      std::format("{}: {}", kHeaderContentEncoding, encoding_type));
 }
 
 std::string HttpMessage::StringifyHeaders() {
