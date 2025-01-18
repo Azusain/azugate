@@ -3,6 +3,7 @@
 #include "config.h"
 #include "crequest.h"
 #include "picohttpparser.h"
+#include <array>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
@@ -19,6 +20,8 @@
 #include <cstring>
 #include <exception>
 #include <fmt/format.h>
+#include <format>
+#include <iomanip>
 #include <memory>
 #include <netinet/in.h>
 #include <spdlog/spdlog.h>
@@ -44,18 +47,20 @@ std::string findFileExtension(std::string &&path) {
 // TODO: this gateway only supports gzip and brotli currently.
 // TODO: ignore q-factor currently, for example:
 // Accept-Encoding: gzip; q=0.8, br; q=0.9, deflate.
-std::string_view
+utils::CompressionType
 getCompressionType(const std::string_view &supported_compression_types_str) {
   // gzip is the preferred encoding in azugate.
-  if (supported_compression_types_str.find(utils::kCompressionTypeGzip) !=
+  if (supported_compression_types_str.find(utils::kCompressionTypeStrGzip) !=
       std::string::npos) {
-    return utils::kCompressionTypeGzip;
+    return utils::CompressionType{.code = utils::kCompressionTypeCodeGzip,
+                                  .str = utils::kCompressionTypeStrGzip};
+  } else if (supported_compression_types_str.find(
+                 utils::kCompressionTypeStrBrotli) != std::string::npos) {
+    return utils::CompressionType{.code = utils::kCompressionTypeCodeBrotli,
+                                  .str = utils::kCompressionTypeStrBrotli};
   }
-  if (supported_compression_types_str.find(utils::kCompressionTypeBrotli) !=
-      std::string::npos) {
-    return utils::kCompressionTypeBrotli;
-  }
-  return utils::kCompressionTypeNone;
+  return utils::CompressionType{.code = utils::kCompressionTypeCodeNone,
+                                .str = utils::kCompressionTypeStrNone};
 }
 
 struct picoHttpRequest {
@@ -125,6 +130,49 @@ assembleFullLocalFilePath(const std::string_view &path_base_folder,
   return full_path;
 }
 
+void print_buffer_as_hex(const boost::asio::const_buffer &buffer) {
+  // 获取缓冲区的起始指针和大小
+  const uint8_t *data = boost::asio::buffer_cast<const uint8_t *>(buffer);
+  size_t size = boost::asio::buffer_size(buffer);
+  std::cout << "HEX DATA -> ";
+  // 输出十六进制格式的数据
+  for (size_t i = 0; i < size; ++i) {
+    std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)data[i]
+              << " ";
+  }
+  std::cout << std::endl;
+  std::cout << "<- HEX DATA END\n";
+}
+
+inline void compressBody(picoHttpRequest &http_req,
+                         const utils::CompressionType &compression_type,
+                         std::array<boost::asio::const_buffer, 2> &buffers,
+                         size_t n_read) {
+  switch (compression_type.code) {
+  case utils::kCompressionTypeCodeGzip: {
+    std::ostringstream compressed_stream(std::ios::binary);
+    utils::CompressGzipStream(http_req.header_buf, n_read, compressed_stream);
+    compressed_stream.write(CRequest::kCrlf.data(), CRequest::kCrlf.length());
+    std::string compressed_str = compressed_stream.str();
+    // scatter gather i/o.
+    buffers[0] = boost::asio::buffer(std::format(
+        "{:x}{}", compressed_str.length() - CRequest::kCrlf.length(),
+        CRequest::kCrlf));
+    buffers[1] = boost::asio::buffer(compressed_str);
+    print_buffer_as_hex(buffers[0]);
+    break;
+  }
+  case utils::kCompressionTypeCodeBrotli:
+    break;
+  case utils::kCompressionTypeCodeZStandard:
+    break;
+  case utils::kCompressionTypeCodeDeflate:
+    break;
+  default:
+    buffers[0] = boost::asio::buffer(http_req.header_buf, n_read);
+  }
+}
+
 // return false if err, true if successful
 bool FileProxy(
     const boost::shared_ptr<
@@ -142,7 +190,7 @@ bool FileProxy(
   }
 
   // extra meta from headers.
-  std::string_view compression_type;
+  utils::CompressionType compression_type;
   for (size_t i = 0; i < http_req.num_headers; ++i) {
     auto &header = http_req.headers[i];
     // accept-encoding.
@@ -186,12 +234,14 @@ bool FileProxy(
 
   // setup and send response headers.
   CRequest::HttpResponse resp(CRequest::kHttpOk);
-  resp.SetContentLength(file_stat.st_size);
   auto ext = findFileExtension(std::string(http_req.path, http_req.len_path));
   resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
   resp.SetKeepAlive(false);
-  if (compression_type != utils::kCompressionTypeNone) {
-    resp.SetContentEncoding(compression_type);
+  if (compression_type.code != utils::kCompressionTypeCodeNone) {
+    resp.SetContentEncoding(compression_type.str);
+    resp.SetTransferEncoding(CRequest::kTransferEncodingChunked);
+  } else {
+    resp.SetContentLength(file_stat.st_size);
   }
 
   try {
@@ -210,7 +260,6 @@ bool FileProxy(
   // setup and send body.
   // WARN: reuse buffer address.
   memset(http_req.header_buf, '\0', sizeof(http_req.header_buf));
-  std::ostringstream compressed_stream;
   for (;;) {
     ssize_t n_read =
         read(resource_fd, http_req.header_buf, sizeof(http_req.header_buf));
@@ -222,16 +271,27 @@ bool FileProxy(
                    full_local_file_path.get(), strerror(errno));
       return false;
     } else if (n_read == 0) {
+      if (compression_type.code != utils::kCompressionTypeCodeNone) {
+        // send the ending chunk.
+        ssl_sock_ptr->write_some(
+            boost::asio::buffer(CRequest::kChunkedEncodingEndingStr), ec);
+        if (ec && ec != error::eof) {
+          SPDLOG_ERROR("failed to write ending chunked: {}", ec.message());
+          return false;
+        }
+      }
       break; // eof.
     }
 
-    // http compression.
+    // http compression and chuncked encoding. ref:
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding.
     // TODO: we only support gzip currently
-    if (compression_type == utils::kCompressionTypeGzip) {
-      utils::CompressGzipStream(http_req.header_buf, n_read, compressed_stream);
-    }
-    ssl_sock_ptr->write_some(boost::asio::buffer(compressed_stream.str()), ec);
+    std::array<boost::asio::const_buffer, 2> buffers;
+    compressBody(http_req, compression_type, buffers, n_read);
+
+    ssl_sock_ptr->write_some(buffers, ec);
     if (ec && ec != error::eof) {
+      // TODO: ssl should be configuable.
       SPDLOG_ERROR("failed to write to SSL socket: {}", ec.message());
       return false;
     }

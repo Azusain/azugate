@@ -99,7 +99,7 @@ constexpr const char *GetMessageFromStatusCode(uint16_t status_code) {
 }
 
 std::string_view GetContentTypeFromSuffix(const std::string_view &path) {
-  uint32_t hashed_path = HashFileSuffix(path);
+  uint32_t hashed_path = HashConstantString(path);
   switch (hashed_path) {
   case kFileExtensionJson:
     return kContentTypeAppJson;
@@ -206,6 +206,10 @@ void HttpMessage::SetContentEncoding(const std::string_view &encoding_type) {
   headers_.emplace_back(
       std::format("{}: {}", kHeaderContentEncoding, encoding_type));
 }
+
+void HttpMessage::SetTransferEncoding(const std::string_view &value) {
+  headers_.emplace_back(std::format("{}: {}", kHeaderTransferEncoding, value));
+};
 
 std::string HttpMessage::StringifyHeaders() {
   std::string str_headers;

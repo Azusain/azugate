@@ -1,17 +1,18 @@
 #ifndef __CREQUEST_H
 #define __CREQUEST_H
 
+#include "common.h"
 #include <cstddef>
 #include <cstdint>
 #include <string>
 #include <string_view>
 #include <vector>
-
 namespace CRequest {
 
 // http header fields.
 constexpr std::string_view kHeaderAcceptEncoding = "Accept-Encoding";
 constexpr std::string_view kHeaderContentEncoding = "Content-Encoding";
+constexpr std::string_view kHeaderTransferEncoding = "Transfer-Encoding";
 
 // http status codes.
 constexpr uint16_t kHttpContinue = 100;
@@ -87,29 +88,24 @@ constexpr std::string_view kHttpVersion011 = "HTTP/1.1";
 constexpr std::string_view kCrlf = "\r\n";
 constexpr std::string_view kSpace = " ";
 // local file extensions;
-static constexpr uint32_t
-HashFileSuffix(const std::string_view &file_extension) {
-  uint32_t hash = 0;
-  for (const char &c : file_extension) {
-    hash = hash * 31 + static_cast<uint32_t>(c);
-  }
-  return hash;
-};
-constexpr uint32_t kFileExtensionJson = HashFileSuffix("json");
-constexpr uint32_t kFileExtensionXml = HashFileSuffix("xml");
-constexpr uint32_t kFileExtensionBin = HashFileSuffix("bin");
-constexpr uint32_t kFileExtensionExe = HashFileSuffix("exe");
-constexpr uint32_t kFileExtensionIso = HashFileSuffix("iso");
-constexpr uint32_t kFileExtensionHtml = HashFileSuffix("html");
-constexpr uint32_t kFileExtensionHtm = HashFileSuffix("htm");
-constexpr uint32_t kFileExtensionTxt = HashFileSuffix("txt");
-constexpr uint32_t kFileExtensionLog = HashFileSuffix("log");
-constexpr uint32_t kFileExtensionCfg = HashFileSuffix("cfg");
-constexpr uint32_t kFileExtensionIni = HashFileSuffix("ini");
-constexpr uint32_t kFileExtensionPng = HashFileSuffix("png");
-constexpr uint32_t kFileExtensionJpg = HashFileSuffix("jpg");
-constexpr uint32_t kFileExtensionJpeg = HashFileSuffix("jpeg");
-constexpr uint32_t kFileExtensionXIcon = HashFileSuffix("ico");
+constexpr uint32_t kFileExtensionJson = HashConstantString("json");
+constexpr uint32_t kFileExtensionXml = HashConstantString("xml");
+constexpr uint32_t kFileExtensionBin = HashConstantString("bin");
+constexpr uint32_t kFileExtensionExe = HashConstantString("exe");
+constexpr uint32_t kFileExtensionIso = HashConstantString("iso");
+constexpr uint32_t kFileExtensionHtml = HashConstantString("html");
+constexpr uint32_t kFileExtensionHtm = HashConstantString("htm");
+constexpr uint32_t kFileExtensionTxt = HashConstantString("txt");
+constexpr uint32_t kFileExtensionLog = HashConstantString("log");
+constexpr uint32_t kFileExtensionCfg = HashConstantString("cfg");
+constexpr uint32_t kFileExtensionIni = HashConstantString("ini");
+constexpr uint32_t kFileExtensionPng = HashConstantString("png");
+constexpr uint32_t kFileExtensionJpg = HashConstantString("jpg");
+constexpr uint32_t kFileExtensionJpeg = HashConstantString("jpeg");
+constexpr uint32_t kFileExtensionXIcon = HashConstantString("ico");
+// mics.
+constexpr std::string_view kTransferEncodingChunked = "chunked";
+constexpr std::string_view kChunkedEncodingEndingStr = "0\r\n\r\n";
 
 namespace utils {
 constexpr const char *GetMessageFromStatusCode(uint16_t status_code);
@@ -146,6 +142,8 @@ public:
   void SetAcceptEncoding(std::vector<std::string> encoding_types);
 
   void SetContentEncoding(const std::string_view &encoding_type);
+
+  void SetTransferEncoding(const std::string_view &value);
 
   std::string StringifyHeaders();
 
