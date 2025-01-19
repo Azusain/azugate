@@ -1,4 +1,11 @@
-#include "services.h"
+#include <boost/asio.hpp>
+#include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/ssl/stream.hpp>
+#include <boost/asio/ssl/stream_base.hpp>
+#include <boost/core/demangle.hpp>
+#include <boost/smart_ptr/shared_ptr.hpp>
+#include <string_view>
+
 #include "compression.h"
 #include "config.h"
 #include "crequest.h"
@@ -36,7 +43,7 @@
 
 using namespace azugate;
 
-std::string findFileExtension(std::string &&path) {
+inline std::string findFileExtension(std::string &&path) {
   auto pos = path.find_last_of(".");
   if (pos != std::string::npos && pos + 2 <= path.length()) {
     return path.substr(pos + 1);
@@ -47,8 +54,11 @@ std::string findFileExtension(std::string &&path) {
 // TODO: this gateway only supports gzip and brotli currently.
 // TODO: ignore q-factor currently, for example:
 // Accept-Encoding: gzip; q=0.8, br; q=0.9, deflate.
-utils::CompressionType
+inline utils::CompressionType
 getCompressionType(const std::string_view &supported_compression_types_str) {
+  // TODO: just for testing purpose.
+  return utils::CompressionType{.code = utils::kCompressionTypeCodeNone,
+                                .str = utils::kCompressionTypeStrNone};
   // gzip is the preferred encoding in azugate.
   if (supported_compression_types_str.find(utils::kCompressionTypeStrGzip) !=
       std::string::npos) {
@@ -74,10 +84,10 @@ struct picoHttpRequest {
   size_t num_headers;
 };
 
-inline bool httpHeaderParser(
-    picoHttpRequest &header, boost::system::error_code &ec,
-    const boost::shared_ptr<
-        boost::asio::ssl::stream<boost::asio::ip::tcp::socket>> &ssl_sock_ptr) {
+template <typename T>
+inline bool httpHeaderParser(picoHttpRequest &header,
+                             boost::system::error_code &ec,
+                             const boost::shared_ptr<T> &sock_ptr) {
   using namespace boost::asio;
   size_t total_parsed = 0;
 
@@ -87,9 +97,9 @@ inline bool httpHeaderParser(
       return false;
     }
     size_t bytes_read =
-        ssl_sock_ptr->read_some(buffer(header.header_buf + total_parsed,
-                                       kMaxHttpHeaderSize - total_parsed),
-                                ec);
+        sock_ptr->read_some(buffer(header.header_buf + total_parsed,
+                                   kMaxHttpHeaderSize - total_parsed),
+                            ec);
     if (ec) {
       if (ec == boost::asio::error::eof) {
         SPDLOG_DEBUG("connection closed by peer");
@@ -130,7 +140,7 @@ assembleFullLocalFilePath(const std::string_view &path_base_folder,
   return full_path;
 }
 
-void print_buffer_as_hex(const boost::asio::const_buffer &buffer) {
+inline void print_buffer_as_hex(const boost::asio::const_buffer &buffer) {
   // 获取缓冲区的起始指针和大小
   const uint8_t *data = boost::asio::buffer_cast<const uint8_t *>(buffer);
   size_t size = boost::asio::buffer_size(buffer);
@@ -173,20 +183,34 @@ inline void compressBody(picoHttpRequest &http_req,
   }
 }
 
-// return false if err, true if successful
-bool FileProxy(
-    const boost::shared_ptr<
-        boost::asio::ssl::stream<boost::asio::ip::tcp::socket>> &ssl_sock_ptr,
-    const std::string_view &path_base_folder) {
+template <typename T>
+concept isSslSocket = requires(T socket) {
+  socket.handshake(boost::asio::ssl::stream_base::server);
+};
+
+template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
   using namespace boost::asio;
+  // ssl handshake if necessary.
+  if constexpr (isSslSocket<T>) {
+    try {
+      sock_ptr->handshake(ssl::stream_base::server);
+    } catch (const std::exception &e) {
+      std::string what = e.what();
+      if (what.compare("handshake: ssl/tls alert certificate unknown (SSL "
+                       "routines) [asio.ssl:167773206]")) {
+        SPDLOG_ERROR("failed to handshake: {}", what);
+        return;
+      }
+    }
+  }
 
   picoHttpRequest http_req;
   boost::system::error_code ec;
 
   // read and parse HTTP header
-  if (!httpHeaderParser(http_req, ec, ssl_sock_ptr)) {
+  if (!httpHeaderParser(http_req, ec, sock_ptr)) {
     SPDLOG_ERROR("failed to parse http headers");
-    return false;
+    return;
   }
 
   // extra meta from headers.
@@ -210,13 +234,13 @@ bool FileProxy(
   }
 
   std::shared_ptr<char[]> full_local_file_path =
-      assembleFullLocalFilePath(path_base_folder, http_req);
+      assembleFullLocalFilePath(kPathResourceFolder, http_req);
 
   // read file from disk.
   int resource_fd = open(full_local_file_path.get(), O_RDONLY);
   if (resource_fd == -1) {
     SPDLOG_ERROR("failed to open file {}", full_local_file_path.get());
-    return -1;
+    return;
   }
   std::unique_ptr<int, decltype([](const int *fd) {
                     if (fd && *fd > 0) {
@@ -229,7 +253,7 @@ bool FileProxy(
   struct stat file_stat{};
   if (fstat(resource_fd, &file_stat) == -1) {
     SPDLOG_ERROR("failed to get file stat for {}", full_local_file_path.get());
-    return false;
+    return;
   }
 
   // setup and send response headers.
@@ -245,16 +269,16 @@ bool FileProxy(
   }
 
   try {
-    write(*ssl_sock_ptr, buffer(resp.StringifyFirstLine()));
-    write(*ssl_sock_ptr, buffer(resp.StringifyHeaders()));
+    write(*sock_ptr, buffer(resp.StringifyFirstLine()));
+    write(*sock_ptr, buffer(resp.StringifyHeaders()));
   } catch (const boost::system::system_error &e) {
     if (e.code() != error::eof) {
       SPDLOG_ERROR("failed to send headers: {}", e.what());
-      return false;
+      return;
     }
   } catch (const std::exception &e) {
     SPDLOG_ERROR("failed to send headers: {}", e.what());
-    return false;
+    return;
   }
 
   // setup and send body.
@@ -269,15 +293,15 @@ bool FileProxy(
       }
       SPDLOG_ERROR("failed to read from file {}: {}",
                    full_local_file_path.get(), strerror(errno));
-      return false;
+      return;
     } else if (n_read == 0) {
       if (compression_type.code != utils::kCompressionTypeCodeNone) {
         // send the ending chunk.
-        ssl_sock_ptr->write_some(
+        sock_ptr->write_some(
             boost::asio::buffer(CRequest::kChunkedEncodingEndingStr), ec);
         if (ec && ec != error::eof) {
           SPDLOG_ERROR("failed to write ending chunked: {}", ec.message());
-          return false;
+          return;
         }
       }
       break; // eof.
@@ -289,15 +313,15 @@ bool FileProxy(
     std::array<boost::asio::const_buffer, 2> buffers;
     compressBody(http_req, compression_type, buffers, n_read);
 
-    ssl_sock_ptr->write_some(buffers, ec);
+    sock_ptr->write_some(buffers, ec);
     if (ec && ec != error::eof) {
       // TODO: ssl should be configuable.
       SPDLOG_ERROR("failed to write to SSL socket: {}", ec.message());
-      return false;
+      return;
     }
   }
 
-  return true;
+  return;
 }
 
 bool TcpProxy(
@@ -331,15 +355,3 @@ bool TcpProxy(
 
   return false;
 }
-
-// TODO: chuncked encoded.
-// HTTP/1.1 200 OK
-// Content-Type: text/plain
-// Transfer-Encoding: chunked
-// Content-Encoding: gzip
-
-// A\r\n
-// <gzip-compressed-data-part1>\r\n
-// B\r\n
-// <gzip-compressed-data-part2>\r\n
-// 0\r\n\r\n

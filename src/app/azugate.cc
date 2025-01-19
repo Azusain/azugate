@@ -1,6 +1,6 @@
 #include "../api//config_service.hpp"
 #include "config.h"
-#include "services.h"
+#include "services.hpp"
 #include <boost/asio.hpp>
 #include <boost/asio/connect.hpp>
 #include <boost/asio/io_service.hpp>
@@ -15,7 +15,7 @@
 #include <boost/system.hpp>
 #include <boost/thread.hpp>
 #include <boost/thread/detail/thread.hpp>
-#include <cstdint>
+
 #include <cstdlib>
 #include <exception>
 #include <fmt/base.h>
@@ -29,33 +29,12 @@
 #include <spdlog/spdlog.h>
 #include <string>
 #include <sys/types.h>
+
 #include <yaml-cpp/node/parse.h>
 #include <yaml-cpp/yaml.h>
 
 using namespace boost::asio;
 using namespace azugate;
-
-void http_handler(
-    const boost::shared_ptr<ssl::stream<ip::tcp::socket>> &ssl_sock_ptr) {
-  try {
-    // ssl handshake.
-    ssl_sock_ptr->handshake(ssl::stream_base::server);
-  } catch (const std::exception &e) {
-    std::string what = e.what();
-    if (what.compare("handshake: ssl/tls alert certificate unknown (SSL "
-                     "routines) [asio.ssl:167773206]")) {
-      SPDLOG_ERROR("failed to handshake: {}", what);
-      return;
-    }
-    // ignore unknown certificate error.
-    SPDLOG_WARN(what);
-  }
-
-  if (!FileProxy(ssl_sock_ptr, azugate::kPathResourceFolder)) {
-    SPDLOG_ERROR("failed to handler file request");
-    return;
-  }
-}
 
 void tcp_proxy_handler(
     const boost::shared_ptr<ip::tcp::socket> &source_sock_ptr,
@@ -147,11 +126,21 @@ int main() {
   ip::tcp::resolver::query query(target_host, std::to_string(target_port));
   SPDLOG_INFO("azugate runs on port {}", port);
   for (;;) {
+    // file proxy.
     if (!proxy_mode) {
-      boost::shared_ptr<ssl::stream<ip::tcp::socket>> ssl_sock_ptr(
-          new ssl::stream<ip::tcp::socket>(service, ssl_context));
-      acc.accept(ssl_sock_ptr->lowest_layer());
-      boost::thread(boost::bind(http_handler, ssl_sock_ptr));
+      if (GetHttps()) {
+        boost::shared_ptr<ssl::stream<ip::tcp::socket>> ssl_sock_ptr(
+            new ssl::stream<ip::tcp::socket>(service, ssl_context));
+        acc.accept(ssl_sock_ptr->lowest_layer());
+        boost::thread(boost::bind(
+            FileProxyHandler<ssl::stream<ip::tcp::socket>>, ssl_sock_ptr));
+      } else {
+        boost::shared_ptr<ip::tcp::socket> sock_ptr(
+            new ip::tcp::socket(service));
+        acc.accept(*sock_ptr);
+        boost::thread(boost::bind(FileProxyHandler<ip::tcp::socket>, sock_ptr));
+      }
+
     } else {
       boost::shared_ptr<ip::tcp::socket> sock_ptr(new ip::tcp::socket(service));
       acc.accept(*sock_ptr);

@@ -55,6 +55,9 @@ std::unordered_set<std::string> GetIpBlackList();
 void AddBlacklistIp(const std::string &&ip);
 void RemoveBlacklistIp(const std::string &&ip);
 
+void SetHttps(bool https);
+bool GetHttps();
+
 } // namespace azugate
 
 #endif
