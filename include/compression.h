@@ -2,6 +2,7 @@
 #define __COMPRESSION_H
 
 #include "common.h"
+#include <boost/iostreams/filter/gzip.hpp>
 #include <cstdint>
 #include <iostream>
 #include <string_view>
@@ -25,7 +26,8 @@ struct CompressionType {
   std::string_view str;
 };
 
-void CompressGzipStream(char *input_buffer, size_t input_length,
+void CompressGzipStream(const boost::iostreams::gzip_compressor &compressor,
+                        char *input_buffer, size_t input_length,
                         std::ostream &out);
 } // namespace utils
 } // namespace azugate

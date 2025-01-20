@@ -9,10 +9,11 @@
 namespace azugate {
 namespace utils {
 
-void CompressGzipStream(char *input_buffer, size_t input_length,
+void CompressGzipStream(const boost::iostreams::gzip_compressor &compressor,
+                        char *input_buffer, size_t input_length,
                         std::ostream &out) {
   boost::iostreams::filtering_ostream fo;
-  fo.push(boost::iostreams::gzip_compressor());
+  fo.push(compressor);
   fo.push(out);
   fo.write(input_buffer, input_length);
   return;

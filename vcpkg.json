@@ -1,6 +1,7 @@
 {
   "dependencies": [
     "boost-asio",
+    "boost-iostreams",
     "boost-system",
     "boost-thread",
     "brotli",
@@ -9,7 +10,6 @@
     "openssl",
     "spdlog",
     "yaml-cpp",
-    "zlib",
-    "boost-iostreams"
+    "zlib"
   ]
 }

@@ -3,6 +3,9 @@
 #include <boost/asio/ssl/stream.hpp>
 #include <boost/asio/ssl/stream_base.hpp>
 #include <boost/core/demangle.hpp>
+#include <boost/iostreams/filter/gzip.hpp>
+
+#include <boost/iostreams/filter/zlib.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <string_view>
 
@@ -28,6 +31,7 @@
 #include <exception>
 #include <fmt/format.h>
 #include <format>
+#include <fstream>
 #include <iomanip>
 #include <memory>
 #include <netinet/in.h>
@@ -56,9 +60,9 @@ inline std::string findFileExtension(std::string &&path) {
 // Accept-Encoding: gzip; q=0.8, br; q=0.9, deflate.
 inline utils::CompressionType
 getCompressionType(const std::string_view &supported_compression_types_str) {
-  // TODO: just for testing purpose.
-  return utils::CompressionType{.code = utils::kCompressionTypeCodeNone,
-                                .str = utils::kCompressionTypeStrNone};
+  // // TODO: just for testing purpose.
+  // return utils::CompressionType{.code = utils::kCompressionTypeCodeNone,
+  //                               .str = utils::kCompressionTypeStrNone};
   // gzip is the preferred encoding in azugate.
   if (supported_compression_types_str.find(utils::kCompressionTypeStrGzip) !=
       std::string::npos) {
@@ -156,32 +160,8 @@ inline void print_buffer_as_hex(const boost::asio::const_buffer &buffer) {
 
 inline void compressBody(picoHttpRequest &http_req,
                          const utils::CompressionType &compression_type,
-                         std::array<boost::asio::const_buffer, 2> &buffers,
-                         size_t n_read) {
-  switch (compression_type.code) {
-  case utils::kCompressionTypeCodeGzip: {
-    std::ostringstream compressed_stream(std::ios::binary);
-    utils::CompressGzipStream(http_req.header_buf, n_read, compressed_stream);
-    compressed_stream.write(CRequest::kCrlf.data(), CRequest::kCrlf.length());
-    std::string compressed_str = compressed_stream.str();
-    // scatter gather i/o.
-    buffers[0] = boost::asio::buffer(std::format(
-        "{:x}{}", compressed_str.length() - CRequest::kCrlf.length(),
-        CRequest::kCrlf));
-    buffers[1] = boost::asio::buffer(compressed_str);
-    print_buffer_as_hex(buffers[0]);
-    break;
-  }
-  case utils::kCompressionTypeCodeBrotli:
-    break;
-  case utils::kCompressionTypeCodeZStandard:
-    break;
-  case utils::kCompressionTypeCodeDeflate:
-    break;
-  default:
-    buffers[0] = boost::asio::buffer(http_req.header_buf, n_read);
-  }
-}
+                         std::array<boost::asio::const_buffer, 3> &buffers,
+                         size_t n_read) {}
 
 template <typename T>
 concept isSslSocket = requires(T socket) {
@@ -259,7 +239,7 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
   // setup and send response headers.
   CRequest::HttpResponse resp(CRequest::kHttpOk);
   auto ext = findFileExtension(std::string(http_req.path, http_req.len_path));
-  resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
+  // resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
   resp.SetKeepAlive(false);
   if (compression_type.code != utils::kCompressionTypeCodeNone) {
     resp.SetContentEncoding(compression_type.str);
@@ -284,6 +264,8 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
   // setup and send body.
   // WARN: reuse buffer address.
   memset(http_req.header_buf, '\0', sizeof(http_req.header_buf));
+  auto compressor = boost::iostreams::gzip_compressor(
+      boost::iostreams::gzip::default_compression);
   for (;;) {
     ssize_t n_read =
         read(resource_fd, http_req.header_buf, sizeof(http_req.header_buf));
@@ -310,13 +292,40 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
     // http compression and chuncked encoding. ref:
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding.
     // TODO: we only support gzip currently
-    std::array<boost::asio::const_buffer, 2> buffers;
-    compressBody(http_req, compression_type, buffers, n_read);
+    std::array<boost::asio::const_buffer, 3> buffers;
+    std::string compressed_str;
+    switch (compression_type.code) {
+    case utils::kCompressionTypeCodeGzip: {
+      std::ostringstream compressed_stream;
+      utils::CompressGzipStream(compressor, http_req.header_buf, n_read,
+                                compressed_stream);
+      compressed_str = compressed_stream.str();
 
+      SPDLOG_INFO(compressed_str.length());
+      // scatter gather i/o.
+      buffers[0] = boost::asio::buffer(
+          std::format("{:x}{}", compressed_str.length(), CRequest::kCrlf));
+      buffers[1] =
+          boost::asio::buffer(compressed_str.data(), compressed_str.length());
+      buffers[2] = boost::asio::buffer("\r\n", 2);
+      break;
+    }
+    case utils::kCompressionTypeCodeBrotli:
+      break;
+    case utils::kCompressionTypeCodeZStandard:
+      break;
+    case utils::kCompressionTypeCodeDeflate:
+      break;
+    default:
+      buffers[0] = boost::asio::buffer(http_req.header_buf, n_read);
+    }
+    // print_buffer_as_hex(buffers[0]);
+
+    // print_buffer_as_hex(buffers[1]);
     sock_ptr->write_some(buffers, ec);
     if (ec && ec != error::eof) {
       // TODO: ssl should be configuable.
-      SPDLOG_ERROR("failed to write to SSL socket: {}", ec.message());
+      SPDLOG_ERROR("failed to write to socket: {}", ec.message());
       return;
     }
   }
