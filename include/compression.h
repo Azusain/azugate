@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <iostream>
 #include <string_view>
+#include <zlib.h>
 
 namespace azugate {
 namespace utils {
@@ -21,15 +22,30 @@ constexpr uint32_t kCompressionTypeCodeBrotli = HashConstantString("brotli");
 constexpr uint32_t kCompressionTypeCodeDeflate = HashConstantString("deflate");
 constexpr uint32_t kCompressionTypeCodeZStandard = HashConstantString("zstd");
 constexpr uint32_t kCompressionTypeCodeNone = HashConstantString("");
+constexpr size_t kDefaultCompressChunkSize = 1024;
 
 struct CompressionType {
   uint32_t code;
   std::string_view str;
 };
 
-void CompressGzipStream(boost::iostreams::filtering_ostream &fo,
-                        char *input_buffer, size_t input_length,
-                        std::ostream &out); // namespace utils
+class GzipCompressor {
+public:
+  GzipCompressor(int level = Z_DEFAULT_COMPRESSION);
+
+  ~GzipCompressor();
+
+  // return false if any errors occur.
+  // if any errors happening in the output_handler(), simply return
+  // false to terminate the internal process and prevent the errors from
+  // propagating further.
+  bool GzipStreamCompress(
+      std::istream &source,
+      std::function<bool(unsigned char *, size_t)> output_handler);
+
+private:
+  z_stream zstrm_;
+};
 } // namespace utils
 } // namespace azugate
 #endif
