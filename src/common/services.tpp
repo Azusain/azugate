@@ -4,9 +4,10 @@
 #include <boost/asio/ssl/stream_base.hpp>
 #include <boost/core/demangle.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
 
-#include <boost/iostreams/filter/zlib.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
+#include <iomanip>
 #include <string_view>
 
 #include "compression.h"
@@ -31,8 +32,7 @@
 #include <exception>
 #include <fmt/format.h>
 #include <format>
-#include <fstream>
-#include <iomanip>
+
 #include <memory>
 #include <netinet/in.h>
 #include <spdlog/spdlog.h>
@@ -144,6 +144,11 @@ assembleFullLocalFilePath(const std::string_view &path_base_folder,
   return full_path;
 }
 
+inline void compressBody(picoHttpRequest &http_req,
+                         const utils::CompressionType &compression_type,
+                         std::array<boost::asio::const_buffer, 3> &buffers,
+                         size_t n_read) {}
+
 inline void print_buffer_as_hex(const boost::asio::const_buffer &buffer) {
   // 获取缓冲区的起始指针和大小
   const uint8_t *data = boost::asio::buffer_cast<const uint8_t *>(buffer);
@@ -157,12 +162,6 @@ inline void print_buffer_as_hex(const boost::asio::const_buffer &buffer) {
   std::cout << std::endl;
   std::cout << "<- HEX DATA END\n";
 }
-
-inline void compressBody(picoHttpRequest &http_req,
-                         const utils::CompressionType &compression_type,
-                         std::array<boost::asio::const_buffer, 3> &buffers,
-                         size_t n_read) {}
-
 template <typename T>
 concept isSslSocket = requires(T socket) {
   socket.handshake(boost::asio::ssl::stream_base::server);
@@ -239,7 +238,7 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
   // setup and send response headers.
   CRequest::HttpResponse resp(CRequest::kHttpOk);
   auto ext = findFileExtension(std::string(http_req.path, http_req.len_path));
-  // resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
+  resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
   resp.SetKeepAlive(false);
   if (compression_type.code != utils::kCompressionTypeCodeNone) {
     resp.SetContentEncoding(compression_type.str);
@@ -249,6 +248,7 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
   }
 
   try {
+    // TODO: code style, write() or write_some()?
     write(*sock_ptr, buffer(resp.StringifyFirstLine()));
     write(*sock_ptr, buffer(resp.StringifyHeaders()));
   } catch (const boost::system::system_error &e) {
@@ -264,11 +264,16 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
   // setup and send body.
   // WARN: reuse buffer address.
   memset(http_req.header_buf, '\0', sizeof(http_req.header_buf));
-  auto compressor = boost::iostreams::gzip_compressor(
+  boost::iostreams::filtering_ostream fo;
+  auto compressor_opts = boost::iostreams::gzip_params(
       boost::iostreams::gzip::default_compression);
+  fo.push(boost::iostreams::gzip_compressor(compressor_opts, true));
+  std::ostringstream compressed_output;
+  fo.push(compressed_output);
+
+  // read data from local file and write it to socket.
   for (;;) {
-    ssize_t n_read =
-        read(resource_fd, http_req.header_buf, sizeof(http_req.header_buf));
+    ssize_t n_read = read(resource_fd, http_req.header_buf, 128);
     if (n_read < 0) {
       if (errno == EINTR) {
         continue;
@@ -288,7 +293,7 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
       }
       break; // eof.
     }
-
+    print_buffer_as_hex(boost::asio::const_buffer(http_req.header_buf, 128));
     // http compression and chuncked encoding. ref:
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding.
     // TODO: we only support gzip currently
@@ -296,12 +301,10 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
     std::string compressed_str;
     switch (compression_type.code) {
     case utils::kCompressionTypeCodeGzip: {
-      std::ostringstream compressed_stream;
-      utils::CompressGzipStream(compressor, http_req.header_buf, n_read,
-                                compressed_stream);
-      compressed_str = compressed_stream.str();
+      fo.write(http_req.header_buf, n_read);
 
-      SPDLOG_INFO(compressed_str.length());
+      compressed_str = compressed_output.str();
+      std::cout << "compressed_str -> " << compressed_str.length() << "\n";
       // scatter gather i/o.
       buffers[0] = boost::asio::buffer(
           std::format("{:x}{}", compressed_str.length(), CRequest::kCrlf));
@@ -319,12 +322,11 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
     default:
       buffers[0] = boost::asio::buffer(http_req.header_buf, n_read);
     }
-    // print_buffer_as_hex(buffers[0]);
 
     // print_buffer_as_hex(buffers[1]);
+
     sock_ptr->write_some(buffers, ec);
     if (ec && ec != error::eof) {
-      // TODO: ssl should be configuable.
       SPDLOG_ERROR("failed to write to socket: {}", ec.message());
       return;
     }

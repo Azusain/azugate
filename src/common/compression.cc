@@ -9,12 +9,12 @@
 namespace azugate {
 namespace utils {
 
-void CompressGzipStream(const boost::iostreams::gzip_compressor &compressor,
+// ref:
+// https://github.com/drogonframework/drogon/blob/a3b4779540831cb8c03addb591ced3080b488917/lib/src/Utilities.cc#L893.
+// https://www.zlib.net/manual.html.
+void CompressGzipStream(boost::iostreams::filtering_ostream &fo,
                         char *input_buffer, size_t input_length,
                         std::ostream &out) {
-  boost::iostreams::filtering_ostream fo;
-  fo.push(compressor);
-  fo.push(out);
   fo.write(input_buffer, input_length);
   return;
 }

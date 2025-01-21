@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include <boost/iostreams/filter/gzip.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
 #include <cstdint>
 #include <iostream>
 #include <string_view>
@@ -26,10 +27,9 @@ struct CompressionType {
   std::string_view str;
 };
 
-void CompressGzipStream(const boost::iostreams::gzip_compressor &compressor,
+void CompressGzipStream(boost::iostreams::filtering_ostream &fo,
                         char *input_buffer, size_t input_length,
-                        std::ostream &out);
+                        std::ostream &out); // namespace utils
 } // namespace utils
 } // namespace azugate
-
 #endif
