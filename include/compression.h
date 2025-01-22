@@ -22,7 +22,7 @@ constexpr uint32_t kCompressionTypeCodeBrotli = HashConstantString("brotli");
 constexpr uint32_t kCompressionTypeCodeDeflate = HashConstantString("deflate");
 constexpr uint32_t kCompressionTypeCodeZStandard = HashConstantString("zstd");
 constexpr uint32_t kCompressionTypeCodeNone = HashConstantString("");
-constexpr size_t kDefaultCompressChunkSize = 1024;
+constexpr size_t kDefaultCompressChunkSize = 100;
 
 struct CompressionType {
   uint32_t code;

@@ -270,7 +270,7 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
           std::array<boost::asio::const_buffer, 3> buffers = {
               boost::asio::buffer(std::format("{:x}{}", size, CRequest::kCrlf)),
               boost::asio::buffer(compressed_data, size),
-              boost::asio::buffer(CRequest::kCrlf, CRequest::kCrlf.length())};
+              boost::asio::buffer(CRequest::kCrlf, 2)};
           sock_ptr->write_some(buffers, ec);
           if (ec && ec != error::eof) {
             SPDLOG_ERROR("failed to write chunk data to socket: {}",
@@ -281,9 +281,7 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
         });
     // chunk ending marker.
     sock_ptr->write_some(
-        boost::asio::buffer(CRequest::kChunkedEncodingEndingStr,
-                            CRequest::kChunkedEncodingEndingStr.length()),
-        ec);
+        boost::asio::buffer(CRequest::kChunkedEncodingEndingStr, 5), ec);
     if (ec && ec != error::eof) {
       SPDLOG_ERROR("failed to write chunk ending marker: {}", ec.message());
       return;
@@ -304,25 +302,23 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
     break;
   default: {
     for (;;) {
-      if (!local_file_stream.read(http_req.header_buf,
-                                  utils::kDefaultCompressChunkSize)) {
-        SPDLOG_ERROR("errors occur while reading from local file stream");
-        return;
-      }
+      local_file_stream.read(http_req.header_buf, sizeof(http_req.header_buf));
       auto n_read = local_file_stream.gcount();
-      if (n_read > 0 && !local_file_stream.eof()) {
+      if (n_read > 0) {
         sock_ptr->write_some(boost::asio::buffer(http_req.header_buf, n_read),
                              ec);
         if (ec && ec != error::eof) {
-          SPDLOG_ERROR("failed to write data to socket");
+          SPDLOG_ERROR("failed to write data to socket: {}", ec.message());
           return;
         }
-        continue;
-      } else if (local_file_stream.eof()) {
+      }
+      if (local_file_stream.eof()) {
         break;
       }
-      SPDLOG_ERROR("errors occur while reading from local file stream");
-      return;
+      if (n_read == 0) {
+        SPDLOG_ERROR("errors occur while reading from local file stream");
+        return;
+      }
     }
   }
   }
