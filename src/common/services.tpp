@@ -9,7 +9,6 @@
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <filesystem>
 #include <fstream>
-#include <iomanip>
 #include <string_view>
 
 #include "compression.h"
@@ -150,20 +149,6 @@ inline void compressBody(picoHttpRequest &http_req,
                          std::array<boost::asio::const_buffer, 3> &buffers,
                          size_t n_read) {}
 
-inline void print_buffer_as_hex(const boost::asio::const_buffer &buffer) {
-  // 获取缓冲区的起始指针和大小
-  const uint8_t *data = boost::asio::buffer_cast<const uint8_t *>(buffer);
-  size_t size = boost::asio::buffer_size(buffer);
-  std::cout << "HEX DATA -> ";
-  // 输出十六进制格式的数据
-  for (size_t i = 0; i < size; ++i) {
-    std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)data[i]
-              << " ";
-  }
-  std::cout << std::endl;
-  std::cout << "<- HEX DATA END\n";
-}
-
 template <typename T>
 concept isSslSocket = requires(T socket) {
   socket.handshake(boost::asio::ssl::stream_base::server);
@@ -264,9 +249,9 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
   switch (compression_type.code) {
   case utils::kCompressionTypeCodeGzip: {
     utils::GzipCompressor gzip_compressor;
-    gzip_compressor.GzipStreamCompress(
-        local_file_stream, [&sock_ptr, &http_req,
-                            &ec](unsigned char *compressed_data, size_t size) {
+    auto ret = gzip_compressor.GzipStreamCompress(
+        local_file_stream,
+        [&sock_ptr, &ec](unsigned char *compressed_data, size_t size) {
           std::array<boost::asio::const_buffer, 3> buffers = {
               boost::asio::buffer(std::format("{:x}{}", size, CRequest::kCrlf)),
               boost::asio::buffer(compressed_data, size),
@@ -279,7 +264,11 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
           }
           return true;
         });
-    // chunk ending marker.
+    if (!ret) {
+      SPDLOG_ERROR("errors occur while compressing data chunk");
+      return;
+    }
+    // write chunk ending marker.
     sock_ptr->write_some(
         boost::asio::buffer(CRequest::kChunkedEncodingEndingStr, 5), ec);
     if (ec && ec != error::eof) {

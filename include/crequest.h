@@ -88,21 +88,36 @@ constexpr std::string_view kHttpVersion011 = "HTTP/1.1";
 constexpr std::string_view kCrlf = "\r\n";
 constexpr std::string_view kSpace = " ";
 // local file extensions;
-constexpr uint32_t kFileExtensionJson = HashConstantString("json");
-constexpr uint32_t kFileExtensionXml = HashConstantString("xml");
-constexpr uint32_t kFileExtensionBin = HashConstantString("bin");
-constexpr uint32_t kFileExtensionExe = HashConstantString("exe");
-constexpr uint32_t kFileExtensionIso = HashConstantString("iso");
-constexpr uint32_t kFileExtensionHtml = HashConstantString("html");
-constexpr uint32_t kFileExtensionHtm = HashConstantString("htm");
-constexpr uint32_t kFileExtensionTxt = HashConstantString("txt");
-constexpr uint32_t kFileExtensionLog = HashConstantString("log");
-constexpr uint32_t kFileExtensionCfg = HashConstantString("cfg");
-constexpr uint32_t kFileExtensionIni = HashConstantString("ini");
-constexpr uint32_t kFileExtensionPng = HashConstantString("png");
-constexpr uint32_t kFileExtensionJpg = HashConstantString("jpg");
-constexpr uint32_t kFileExtensionJpeg = HashConstantString("jpeg");
-constexpr uint32_t kFileExtensionXIcon = HashConstantString("ico");
+constexpr uint32_t kFileExtensionJson =
+    azugate::utils::HashConstantString("json");
+constexpr uint32_t kFileExtensionXml =
+    azugate::utils::HashConstantString("xml");
+constexpr uint32_t kFileExtensionBin =
+    azugate::utils::HashConstantString("bin");
+constexpr uint32_t kFileExtensionExe =
+    azugate::utils::HashConstantString("exe");
+constexpr uint32_t kFileExtensionIso =
+    azugate::utils::HashConstantString("iso");
+constexpr uint32_t kFileExtensionHtml =
+    azugate::utils::HashConstantString("html");
+constexpr uint32_t kFileExtensionHtm =
+    azugate::utils::HashConstantString("htm");
+constexpr uint32_t kFileExtensionTxt =
+    azugate::utils::HashConstantString("txt");
+constexpr uint32_t kFileExtensionLog =
+    azugate::utils::HashConstantString("log");
+constexpr uint32_t kFileExtensionCfg =
+    azugate::utils::HashConstantString("cfg");
+constexpr uint32_t kFileExtensionIni =
+    azugate::utils::HashConstantString("ini");
+constexpr uint32_t kFileExtensionPng =
+    azugate::utils::HashConstantString("png");
+constexpr uint32_t kFileExtensionJpg =
+    azugate::utils::HashConstantString("jpg");
+constexpr uint32_t kFileExtensionJpeg =
+    azugate::utils::HashConstantString("jpeg");
+constexpr uint32_t kFileExtensionXIcon =
+    azugate::utils::HashConstantString("ico");
 // mics.
 constexpr std::string_view kTransferEncodingChunked = "chunked";
 constexpr std::string_view kChunkedEncodingEndingStr = "0\r\n\r\n";

@@ -7,7 +7,7 @@
 #include <zlib.h>
 
 int main() {
-  const std::string input_file = "welcome.html";
+  const std::string input_file = "../resources/welcome.html";
   const std::string output_file = "welcome.html.gz";
 
   std::ifstream source(input_file, std::ios::binary);

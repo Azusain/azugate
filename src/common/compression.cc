@@ -50,7 +50,8 @@ bool GzipCompressor::GzipStreamCompress(
       zstrm_.next_out = out;
       ret = deflate(&zstrm_, flush);
       assert(ret != Z_STREAM_ERROR);
-      if (!output_handler(out, kDefaultCompressChunkSize - zstrm_.avail_out)) {
+      auto have = kDefaultCompressChunkSize - zstrm_.avail_out;
+      if (have > 0 && !output_handler(out, have)) {
         return false;
       };
     } while (zstrm_.avail_out == 0);

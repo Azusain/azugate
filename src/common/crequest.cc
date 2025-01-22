@@ -99,7 +99,7 @@ constexpr const char *GetMessageFromStatusCode(uint16_t status_code) {
 }
 
 std::string_view GetContentTypeFromSuffix(const std::string_view &path) {
-  uint32_t hashed_path = HashConstantString(path);
+  uint32_t hashed_path = azugate::utils::HashConstantString(path);
   switch (hashed_path) {
   case kFileExtensionJson:
     return kContentTypeAppJson;
