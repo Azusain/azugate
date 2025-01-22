@@ -9,5 +9,7 @@
 
 - http file proxy
 - https
+- http gzip compression and chunked transfer
 - management via gRPC API
 - web UI
+
