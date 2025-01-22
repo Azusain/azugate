@@ -10,6 +10,6 @@
 - http file proxy
 - https
 - http gzip compression and chunked transfer
-- management via gRPC API
+- management via gRPC API or JSON API
 - web UI
 
