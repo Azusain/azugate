@@ -7,6 +7,8 @@
 #include <boost/iostreams/filtering_stream.hpp>
 
 #include <boost/smart_ptr/shared_ptr.hpp>
+#include <filesystem>
+#include <fstream>
 #include <iomanip>
 #include <string_view>
 
@@ -36,7 +38,6 @@
 #include <memory>
 #include <netinet/in.h>
 #include <spdlog/spdlog.h>
-#include <sstream>
 #include <string>
 #include <string_view>
 #include <sys/fcntl.h>
@@ -162,6 +163,7 @@ inline void print_buffer_as_hex(const boost::asio::const_buffer &buffer) {
   std::cout << std::endl;
   std::cout << "<- HEX DATA END\n";
 }
+
 template <typename T>
 concept isSslSocket = requires(T socket) {
   socket.handshake(boost::asio::ssl::stream_base::server);
@@ -214,26 +216,18 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
 
   std::shared_ptr<char[]> full_local_file_path =
       assembleFullLocalFilePath(kPathResourceFolder, http_req);
+  auto full_local_file_path_str = full_local_file_path.get();
 
-  // read file from disk.
-  int resource_fd = open(full_local_file_path.get(), O_RDONLY);
-  if (resource_fd == -1) {
-    SPDLOG_ERROR("failed to open file {}", full_local_file_path.get());
+  if (!std::filesystem::exists(full_local_file_path_str)) {
+    SPDLOG_ERROR("file not exists: {}", full_local_file_path_str);
     return;
   }
-  std::unique_ptr<int, decltype([](const int *fd) {
-                    if (fd && *fd > 0) {
-                      close(*fd);
-                    }
-                  })>
-      _resource_fd(&resource_fd);
-
-  // get the size of the local file.
-  struct stat file_stat{};
-  if (fstat(resource_fd, &file_stat) == -1) {
-    SPDLOG_ERROR("failed to get file stat for {}", full_local_file_path.get());
+  std::ifstream local_file_stream(full_local_file_path_str, std::ios::binary);
+  if (!local_file_stream.is_open()) {
+    SPDLOG_ERROR("failed to open file: {}", full_local_file_path_str);
     return;
   }
+  auto local_file_size = std::filesystem::file_size(full_local_file_path_str);
 
   // setup and send response headers.
   CRequest::HttpResponse resp(CRequest::kHttpOk);
@@ -244,7 +238,7 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
     resp.SetContentEncoding(compression_type.str);
     resp.SetTransferEncoding(CRequest::kTransferEncodingChunked);
   } else {
-    resp.SetContentLength(file_stat.st_size);
+    resp.SetContentLength(local_file_size);
   }
 
   try {
@@ -264,74 +258,74 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
   // setup and send body.
   // WARN: reuse buffer address.
   memset(http_req.header_buf, '\0', sizeof(http_req.header_buf));
-  boost::iostreams::filtering_ostream fo;
-  auto compressor_opts = boost::iostreams::gzip_params(
-      boost::iostreams::gzip::default_compression);
-  fo.push(boost::iostreams::gzip_compressor(compressor_opts, true));
-  std::ostringstream compressed_output;
-  fo.push(compressed_output);
+  std::array<boost::asio::const_buffer, 3> buffers;
+  void *compressor_ptr = nullptr;
 
-  // read data from local file and write it to socket.
-  for (;;) {
-    ssize_t n_read = read(resource_fd, http_req.header_buf, 128);
-    if (n_read < 0) {
-      if (errno == EINTR) {
-        continue;
-      }
-      SPDLOG_ERROR("failed to read from file {}: {}",
-                   full_local_file_path.get(), strerror(errno));
+  switch (compression_type.code) {
+  case utils::kCompressionTypeCodeGzip: {
+    utils::GzipCompressor gzip_compressor;
+    gzip_compressor.GzipStreamCompress(
+        local_file_stream, [&sock_ptr, &http_req,
+                            &ec](unsigned char *compressed_data, size_t size) {
+          std::array<boost::asio::const_buffer, 3> buffers = {
+              boost::asio::buffer(std::format("{:x}{}", size, CRequest::kCrlf)),
+              boost::asio::buffer(compressed_data, size),
+              boost::asio::buffer(CRequest::kCrlf, CRequest::kCrlf.length())};
+          sock_ptr->write_some(buffers, ec);
+          if (ec && ec != error::eof) {
+            SPDLOG_ERROR("failed to write chunk data to socket: {}",
+                         ec.message());
+            return false;
+          }
+          return true;
+        });
+    // chunk ending marker.
+    sock_ptr->write_some(
+        boost::asio::buffer(CRequest::kChunkedEncodingEndingStr,
+                            CRequest::kChunkedEncodingEndingStr.length()),
+        ec);
+    if (ec && ec != error::eof) {
+      SPDLOG_ERROR("failed to write chunk ending marker: {}", ec.message());
       return;
-    } else if (n_read == 0) {
-      if (compression_type.code != utils::kCompressionTypeCodeNone) {
-        // send the ending chunk.
-        sock_ptr->write_some(
-            boost::asio::buffer(CRequest::kChunkedEncodingEndingStr), ec);
+    }
+    break;
+  }
+  case utils::kCompressionTypeCodeBrotli:
+    SPDLOG_WARN("unsupported compression type: {}",
+                utils::kCompressionTypeStrBrotli);
+    break;
+  case utils::kCompressionTypeCodeZStandard:
+    SPDLOG_WARN("unsupported compression type:{}",
+                utils::kCompressionTypeStrZStandard);
+    break;
+  case utils::kCompressionTypeCodeDeflate:
+    SPDLOG_WARN("unsupported compression type: {}",
+                utils::kCompressionTypeStrDeflate);
+    break;
+  default: {
+    for (;;) {
+      if (!local_file_stream.read(http_req.header_buf,
+                                  utils::kDefaultCompressChunkSize)) {
+        SPDLOG_ERROR("errors occur while reading from local file stream");
+        return;
+      }
+      auto n_read = local_file_stream.gcount();
+      if (n_read > 0 && !local_file_stream.eof()) {
+        sock_ptr->write_some(boost::asio::buffer(http_req.header_buf, n_read),
+                             ec);
         if (ec && ec != error::eof) {
-          SPDLOG_ERROR("failed to write ending chunked: {}", ec.message());
+          SPDLOG_ERROR("failed to write data to socket");
           return;
         }
+        continue;
+      } else if (local_file_stream.eof()) {
+        break;
       }
-      break; // eof.
-    }
-    print_buffer_as_hex(boost::asio::const_buffer(http_req.header_buf, 128));
-    // http compression and chuncked encoding. ref:
-    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding.
-    // TODO: we only support gzip currently
-    std::array<boost::asio::const_buffer, 3> buffers;
-    std::string compressed_str;
-    switch (compression_type.code) {
-    case utils::kCompressionTypeCodeGzip: {
-      fo.write(http_req.header_buf, n_read);
-
-      compressed_str = compressed_output.str();
-      std::cout << "compressed_str -> " << compressed_str.length() << "\n";
-      // scatter gather i/o.
-      buffers[0] = boost::asio::buffer(
-          std::format("{:x}{}", compressed_str.length(), CRequest::kCrlf));
-      buffers[1] =
-          boost::asio::buffer(compressed_str.data(), compressed_str.length());
-      buffers[2] = boost::asio::buffer("\r\n", 2);
-      break;
-    }
-    case utils::kCompressionTypeCodeBrotli:
-      break;
-    case utils::kCompressionTypeCodeZStandard:
-      break;
-    case utils::kCompressionTypeCodeDeflate:
-      break;
-    default:
-      buffers[0] = boost::asio::buffer(http_req.header_buf, n_read);
-    }
-
-    // print_buffer_as_hex(buffers[1]);
-
-    sock_ptr->write_some(buffers, ec);
-    if (ec && ec != error::eof) {
-      SPDLOG_ERROR("failed to write to socket: {}", ec.message());
+      SPDLOG_ERROR("errors occur while reading from local file stream");
       return;
     }
   }
-
+  }
   return;
 }
 
