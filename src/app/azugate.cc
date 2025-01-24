@@ -1,5 +1,6 @@
 #include "../api//config_service.hpp"
 #include "config.h"
+#include "dispatcher.h"
 #include "services.hpp"
 #include <boost/asio.hpp>
 #include <boost/asio/connect.hpp>
@@ -119,34 +120,18 @@ int main() {
 
   // setup a basic OTPL server.
   io_service service;
+  // TODO: ipv6?
   ip::tcp::endpoint local_address(ip::tcp::v4(), port);
   ip::tcp::acceptor acc(service, local_address);
   // dns resovler.
   ip::tcp::resolver resolver(service);
   ip::tcp::resolver::query query(target_host, std::to_string(target_port));
   SPDLOG_INFO("azugate runs on port {}", port);
-  for (;;) {
-    // file proxy.
-    if (!proxy_mode) {
-      if (GetHttps()) {
-        boost::shared_ptr<ssl::stream<ip::tcp::socket>> ssl_sock_ptr(
-            new ssl::stream<ip::tcp::socket>(service, ssl_context));
-        acc.accept(ssl_sock_ptr->lowest_layer());
-        boost::thread(boost::bind(
-            FileProxyHandler<ssl::stream<ip::tcp::socket>>, ssl_sock_ptr));
-      } else {
-        boost::shared_ptr<ip::tcp::socket> sock_ptr(
-            new ip::tcp::socket(service));
-        acc.accept(*sock_ptr);
-        boost::thread(boost::bind(FileProxyHandler<ip::tcp::socket>, sock_ptr));
-      }
 
-    } else {
-      boost::shared_ptr<ip::tcp::socket> sock_ptr(new ip::tcp::socket(service));
-      acc.accept(*sock_ptr);
-      boost::thread(
-          boost::bind(tcp_proxy_handler, sock_ptr, &resolver, query, &service));
-    }
+  for (;;) {
+    auto sock_ptr = boost::make_shared<ip::tcp::socket>(service);
+    acc.accept(*sock_ptr);
+    Dispatch(sock_ptr, ssl_context);
   }
   return 0;
 }
@@ -168,4 +153,3 @@ int main() {
 // persistent storage.
 // file mapping optimization.
 // memmory pool optimaization.
-// chunk size error.

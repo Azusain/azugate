@@ -149,26 +149,8 @@ inline void compressBody(picoHttpRequest &http_req,
                          std::array<boost::asio::const_buffer, 3> &buffers,
                          size_t n_read) {}
 
-template <typename T>
-concept isSslSocket = requires(T socket) {
-  socket.handshake(boost::asio::ssl::stream_base::server);
-};
-
 template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
   using namespace boost::asio;
-  // ssl handshake if necessary.
-  if constexpr (isSslSocket<T>) {
-    try {
-      sock_ptr->handshake(ssl::stream_base::server);
-    } catch (const std::exception &e) {
-      std::string what = e.what();
-      if (what.compare("handshake: ssl/tls alert certificate unknown (SSL "
-                       "routines) [asio.ssl:167773206]")) {
-        SPDLOG_ERROR("failed to handshake: {}", what);
-        return;
-      }
-    }
-  }
 
   picoHttpRequest http_req;
   boost::system::error_code ec;
@@ -314,7 +296,7 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
   return;
 }
 
-bool TcpProxy(
+inline bool TcpProxy(
     const boost::shared_ptr<boost::asio::ip::tcp::socket> &source_sock_ptr,
     const boost::shared_ptr<boost::asio::ip::tcp::socket> &target_sock_ptr) {
   using namespace boost::asio;
