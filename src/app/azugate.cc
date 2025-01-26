@@ -1,6 +1,7 @@
 #include "../api//config_service.hpp"
 #include "config.h"
 #include "dispatcher.h"
+#include "filter.h"
 #include "services.hpp"
 #include <boost/asio.hpp>
 #include <boost/asio/connect.hpp>
@@ -131,6 +132,9 @@ int main() {
   for (;;) {
     auto sock_ptr = boost::make_shared<ip::tcp::socket>(service);
     acc.accept(*sock_ptr);
+    if (!azugate::Filter(sock_ptr)) {
+      continue;
+    }
     Dispatch(sock_ptr, ssl_context);
   }
   return 0;

@@ -29,7 +29,6 @@ void Dispatch(const boost::shared_ptr<boost::asio::ip::tcp::socket> &sock_ptr,
     }
     boost::thread(boost::bind(FileProxyHandler<ssl::stream<ip::tcp::socket>>,
                               ssl_sock_ptr));
-
   } else {
     boost::thread(boost::bind(FileProxyHandler<ip::tcp::socket>, sock_ptr));
   }
