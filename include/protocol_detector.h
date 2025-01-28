@@ -1,8 +1,9 @@
 #ifndef __PROTOCOL_DETECTOR_H
 #define __PROTOCOL_DETECTOR_H
 
+#include <boost/asio/ip/tcp.hpp>
+#include <boost/smart_ptr/shared_ptr.hpp>
 #include <string_view>
-
 namespace azugate {
 constexpr std::string_view ProtocolTypeHttp = "http";
 constexpr std::string_view ProtocolTypeHttps = "https";
@@ -14,8 +15,5 @@ constexpr std::string_view ProtocolTypeUnknown = "";
 
 using ProtocolType = std::string_view;
 
-ProtocolType DetectProtocol();
-
 } // namespace azugate
-
 #endif
