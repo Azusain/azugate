@@ -2,9 +2,9 @@
 #include "config.h"
 #include "dispatcher.h"
 #include "filter.h"
-#include "services.hpp"
 #include <boost/asio.hpp>
 #include <boost/asio/connect.hpp>
+#include <boost/asio/io_context.hpp>
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ssl.hpp>
@@ -13,6 +13,7 @@
 #include <boost/asio/ssl/stream_base.hpp>
 #include <boost/asio/ssl/verify_mode.hpp>
 #include <boost/bind/bind.hpp>
+#include <boost/smart_ptr/make_shared_object.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/system.hpp>
 #include <boost/thread.hpp>
@@ -38,25 +39,6 @@
 using namespace boost::asio;
 using namespace azugate;
 
-void tcp_proxy_handler(
-    const boost::shared_ptr<ip::tcp::socket> &source_sock_ptr,
-    ip::tcp::resolver *resolver, const ip::tcp::resolver::query &query,
-    io_service *service) {
-  auto endpoints = resolver->resolve(query);
-  boost::shared_ptr<ip::tcp::socket> target_sock_ptr(
-      new ip::tcp::socket(*service));
-  try {
-    connect(*target_sock_ptr, endpoints);
-  } catch (const std::exception &e) {
-    SPDLOG_WARN("failed to establish connection to peer");
-    return;
-  }
-  if (!TcpProxy(source_sock_ptr, target_sock_ptr)) {
-    SPDLOG_WARN("errors happen when doing tcp proxy");
-    return;
-  }
-}
-
 int main() {
   // ref: https://github.com/gabime/spdlog/wiki/3.-Custom-formatting.
   // for production, use this logger:
@@ -77,7 +59,7 @@ int main() {
     sslCrt = config[kYamlFieldCrt].as<std::string>();
     sslKey = config[kYamlFieldKey].as<std::string>();
     proxy_mode = config[kYamlFieldProxyMode].as<bool>();
-    if (proxy_mode) {
+    if (false /*proxy_mode*/) {
       target_port = config[kYamlFieldProxyTargetPort].as<uint16_t>();
       target_host = config[kYamlFieldProxyTargetHost].as<std::string>();
     }
@@ -120,22 +102,24 @@ int main() {
   });
 
   // setup a basic OTPL server.
-  io_service service;
+
+  auto io_context_ptr = boost::make_shared<boost::asio::io_context>();
+
   // TODO: ipv6?
   ip::tcp::endpoint local_address(ip::tcp::v4(), port);
-  ip::tcp::acceptor acc(service, local_address);
+  ip::tcp::acceptor acc(*io_context_ptr, local_address);
   // dns resovler.
-  ip::tcp::resolver resolver(service);
+  ip::tcp::resolver resolver(io_context);
   ip::tcp::resolver::query query(target_host, std::to_string(target_port));
   SPDLOG_INFO("azugate runs on port {}", port);
 
   for (;;) {
-    auto sock_ptr = boost::make_shared<ip::tcp::socket>(service);
+    auto sock_ptr = boost::make_shared<ip::tcp::socket>(*io_context_ptr);
     acc.accept(*sock_ptr);
     if (!azugate::Filter(sock_ptr)) {
       continue;
     }
-    Dispatch(sock_ptr, ssl_context);
+    Dispatch(io_context_ptr, sock_ptr, ssl_context);
   }
   return 0;
 }

@@ -10,7 +10,7 @@
 namespace azugate {
 // http server
 constexpr size_t kNumMaxListen = 5;
-constexpr size_t kDftBufSize = 1024 * 4;
+constexpr size_t kDefaultBufSize = 1024 * 4;
 // TODO: this needs more consideration.
 constexpr size_t kMaxFdSize = 1024 / 2;
 // TODO: this needs some configuration file.

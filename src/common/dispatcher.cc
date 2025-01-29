@@ -1,6 +1,7 @@
 
 #include "config.h"
 #include "services.hpp"
+#include <boost/asio/io_context.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ssl/context.hpp>
 #include <boost/asio/ssl/stream.hpp>
@@ -10,11 +11,15 @@
 
 namespace azugate {
 
-void Dispatch(const boost::shared_ptr<boost::asio::ip::tcp::socket> &sock_ptr,
+void Dispatch(const boost::shared_ptr<boost::asio::io_context> &io_context_ptr,
+              const boost::shared_ptr<boost::asio::ip::tcp::socket> &sock_ptr,
               boost::asio::ssl::context &ssl_context) {
   using namespace boost::asio;
-  // TODO: dynamic protocol detector.
-  if (azugate::GetHttps()) {
+  // TODO: configured by router.
+  if (proxy_mode) {
+    boost::thread(boost::bind(TcpProxyHandler, io_context_ptr, sock_ptr));
+    // TODO: dynamic protocol detector.
+  } else if (azugate::GetHttps()) {
     auto ssl_sock_ptr = boost::make_shared<ssl::stream<ip::tcp::socket>>(
         std::move(*sock_ptr), ssl_context);
     try {

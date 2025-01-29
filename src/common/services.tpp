@@ -1,4 +1,5 @@
 #include <boost/asio.hpp>
+#include <boost/asio/io_context.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ssl/stream.hpp>
 #include <boost/asio/ssl/stream_base.hpp>
@@ -161,7 +162,7 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
     return;
   }
 
-  // extra meta from headers.
+  // extract meta from headers.
   utils::CompressionType compression_type;
   for (size_t i = 0; i < http_req.num_headers; ++i) {
     auto &header = http_req.headers[i];
@@ -296,34 +297,87 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
   return;
 }
 
-inline bool TcpProxy(
-    const boost::shared_ptr<boost::asio::ip::tcp::socket> &source_sock_ptr,
-    const boost::shared_ptr<boost::asio::ip::tcp::socket> &target_sock_ptr) {
+inline bool TcpProxyHandler(
+    const boost::shared_ptr<boost::asio::io_context> &io_context_ptr,
+    const boost::shared_ptr<boost::asio::ip::tcp::socket> &source_sock_ptr) {
   using namespace boost::asio;
-  char buf[kDftBufSize];
   boost::system::error_code ec;
-  auto asio_buf = buffer(buf, kDftBufSize);
-  // handle request in a simple loop.
-  for (;;) {
-    source_sock_ptr->read_some(asio_buf, ec);
+
+  ip::tcp::resolver resolver(*io_context_ptr);
+  ip::tcp::resolver::query query("localhost", "6080");
+  ip::tcp::resolver::iterator endpoint_iterator = resolver.resolve(query, ec);
+  if (ec) {
+    SPDLOG_WARN("Failed to resolve domain: {}", ec.message());
+    return false;
+  }
+
+  auto target_sock_ptr = std::make_shared<ip::tcp::socket>(*io_context_ptr);
+
+  boost::asio::connect(*target_sock_ptr, endpoint_iterator, ec);
+  if (ec) {
+    SPDLOG_WARN("Failed to connect to target: {}", ec.message());
+    return false;
+  }
+
+  SPDLOG_DEBUG("Successfully connected to target: www.baidu.com");
+
+  char buf[kDefaultBufSize];
+
+  while (true) {
+    size_t bytes_read = source_sock_ptr->read_some(buffer(buf), ec);
     if (ec) {
       if (ec == boost::asio::error::eof) {
-        SPDLOG_DEBUG("connection closed by peer");
+        SPDLOG_DEBUG("Connection closed by source");
         return true;
+      } else {
+        SPDLOG_WARN("Failed to read from source: {}", ec.message());
+        return false;
       }
-      SPDLOG_WARN("failed to read from source: {}", ec.message());
-      return false;
     }
-    target_sock_ptr->write_some(asio_buf, ec);
+
+    size_t bytes_written = 0;
+    while (bytes_written < bytes_read) {
+      bytes_written += target_sock_ptr->write_some(
+          buffer(buf + bytes_written, bytes_read - bytes_written), ec);
+      if (ec) {
+        if (ec == boost::asio::error::eof) {
+          SPDLOG_DEBUG("Connection closed by target");
+          return true;
+        } else {
+          SPDLOG_WARN("Failed to write to target: {}", ec.message());
+          return false;
+        }
+      }
+    }
+
+    size_t target_bytes_read = target_sock_ptr->read_some(buffer(buf), ec);
     if (ec) {
       if (ec == boost::asio::error::eof) {
-        SPDLOG_DEBUG("connection closed by peer");
+        SPDLOG_DEBUG("Connection closed by target");
         return true;
+      } else {
+        SPDLOG_WARN("Failed to read from target: {}", ec.message());
+        return false;
       }
-      SPDLOG_WARN("failed to send data to traget: {}", ec.message());
-      return false;
+    }
+
+    size_t target_bytes_written = 0;
+    while (target_bytes_written < target_bytes_read) {
+      target_bytes_written += source_sock_ptr->write_some(
+          buffer(buf + target_bytes_written,
+                 target_bytes_read - target_bytes_written),
+          ec);
+      if (ec) {
+        if (ec == boost::asio::error::eof) {
+          SPDLOG_DEBUG("Connection closed by source");
+          return true;
+        } else {
+          SPDLOG_WARN("Failed to write back to source: {}", ec.message());
+          return false;
+        }
+      }
     }
   }
 
-  return false;
+  return true;
 }
