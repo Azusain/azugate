@@ -1,6 +1,7 @@
 #ifndef __CONFIG_H
 #define __CONFIG_H
 
+#include "protocols.h"
 #include <cstdint>
 #include <mutex>
 #include <string>
@@ -57,6 +58,18 @@ void RemoveBlacklistIp(const std::string &&ip);
 
 void SetHttps(bool https);
 bool GetHttps();
+
+// router.
+
+struct ConnectionInfo {
+  ProtocolType type;
+  // currently IPv4.
+  std::string_view address;
+  std::string_view port;
+  std::string_view http_url;
+
+  bool operator==(const ConnectionInfo &other) const;
+};
 
 } // namespace azugate
 

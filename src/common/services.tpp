@@ -61,9 +61,6 @@ inline std::string findFileExtension(std::string &&path) {
 // Accept-Encoding: gzip; q=0.8, br; q=0.9, deflate.
 inline utils::CompressionType
 getCompressionType(const std::string_view &supported_compression_types_str) {
-  // // TODO: just for testing purpose.
-  // return utils::CompressionType{.code = utils::kCompressionTypeCodeNone,
-  //                               .str = utils::kCompressionTypeStrNone};
   // gzip is the preferred encoding in azugate.
   if (supported_compression_types_str.find(utils::kCompressionTypeStrGzip) !=
       std::string::npos) {
@@ -307,19 +304,16 @@ inline bool TcpProxyHandler(
   ip::tcp::resolver::query query("localhost", "6080");
   ip::tcp::resolver::iterator endpoint_iterator = resolver.resolve(query, ec);
   if (ec) {
-    SPDLOG_WARN("Failed to resolve domain: {}", ec.message());
+    SPDLOG_WARN("failed to resolve domain: {}", ec.message());
     return false;
   }
 
   auto target_sock_ptr = std::make_shared<ip::tcp::socket>(*io_context_ptr);
-
   boost::asio::connect(*target_sock_ptr, endpoint_iterator, ec);
   if (ec) {
-    SPDLOG_WARN("Failed to connect to target: {}", ec.message());
+    SPDLOG_WARN("failed to connect to target: {}", ec.message());
     return false;
   }
-
-  SPDLOG_DEBUG("Successfully connected to target: www.baidu.com");
 
   char buf[kDefaultBufSize];
 
@@ -327,10 +321,10 @@ inline bool TcpProxyHandler(
     size_t bytes_read = source_sock_ptr->read_some(buffer(buf), ec);
     if (ec) {
       if (ec == boost::asio::error::eof) {
-        SPDLOG_DEBUG("Connection closed by source");
+        SPDLOG_DEBUG("connection closed by source");
         return true;
       } else {
-        SPDLOG_WARN("Failed to read from source: {}", ec.message());
+        SPDLOG_WARN("failed to read from source: {}", ec.message());
         return false;
       }
     }
@@ -341,10 +335,10 @@ inline bool TcpProxyHandler(
           buffer(buf + bytes_written, bytes_read - bytes_written), ec);
       if (ec) {
         if (ec == boost::asio::error::eof) {
-          SPDLOG_DEBUG("Connection closed by target");
+          SPDLOG_DEBUG("connection closed by target");
           return true;
         } else {
-          SPDLOG_WARN("Failed to write to target: {}", ec.message());
+          SPDLOG_WARN("failed to write to target: {}", ec.message());
           return false;
         }
       }
@@ -353,10 +347,10 @@ inline bool TcpProxyHandler(
     size_t target_bytes_read = target_sock_ptr->read_some(buffer(buf), ec);
     if (ec) {
       if (ec == boost::asio::error::eof) {
-        SPDLOG_DEBUG("Connection closed by target");
+        SPDLOG_DEBUG("connection closed by target");
         return true;
       } else {
-        SPDLOG_WARN("Failed to read from target: {}", ec.message());
+        SPDLOG_WARN("failed to read from target: {}", ec.message());
         return false;
       }
     }
@@ -369,10 +363,10 @@ inline bool TcpProxyHandler(
           ec);
       if (ec) {
         if (ec == boost::asio::error::eof) {
-          SPDLOG_DEBUG("Connection closed by source");
+          SPDLOG_DEBUG("connection closed by source");
           return true;
         } else {
-          SPDLOG_WARN("Failed to write back to source: {}", ec.message());
+          SPDLOG_WARN("failed to write back to source: {}", ec.message());
           return false;
         }
       }
