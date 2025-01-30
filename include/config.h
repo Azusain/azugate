@@ -60,16 +60,17 @@ void SetHttps(bool https);
 bool GetHttps();
 
 // router.
-
 struct ConnectionInfo {
   ProtocolType type;
   // currently IPv4.
   std::string_view address;
-  std::string_view port;
+  uint16_t port;
   std::string_view http_url;
 
   bool operator==(const ConnectionInfo &other) const;
 };
+
+std::optional<ConnectionInfo> GetRouterMapping(const ConnectionInfo &source);
 
 } // namespace azugate
 

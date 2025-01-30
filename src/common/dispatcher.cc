@@ -13,11 +13,13 @@ namespace azugate {
 
 void Dispatch(const boost::shared_ptr<boost::asio::io_context> &io_context_ptr,
               const boost::shared_ptr<boost::asio::ip::tcp::socket> &sock_ptr,
-              boost::asio::ssl::context &ssl_context) {
+              boost::asio::ssl::context &ssl_context,
+              ConnectionInfo source_connection_info) {
   using namespace boost::asio;
   // TODO: configured by router.
   if (proxy_mode) {
-    boost::thread(boost::bind(TcpProxyHandler, io_context_ptr, sock_ptr));
+    boost::thread(boost::bind(TcpProxyHandler, io_context_ptr, sock_ptr,
+                              source_connection_info));
     // TODO: dynamic protocol detector.
   } else if (azugate::GetHttps()) {
     auto ssl_sock_ptr = boost::make_shared<ssl::stream<ip::tcp::socket>>(

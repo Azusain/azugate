@@ -296,12 +296,16 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
 
 inline bool TcpProxyHandler(
     const boost::shared_ptr<boost::asio::io_context> &io_context_ptr,
-    const boost::shared_ptr<boost::asio::ip::tcp::socket> &source_sock_ptr) {
+    const boost::shared_ptr<boost::asio::ip::tcp::socket> &source_sock_ptr,
+    ConnectionInfo source_connection_info) {
   using namespace boost::asio;
   boost::system::error_code ec;
 
+  // router.
+  // TODO: continue here !!!
   ip::tcp::resolver resolver(*io_context_ptr);
-  ip::tcp::resolver::query query("localhost", "6080");
+  ip::tcp::resolver::query query(std::string(source_connection_info.address),
+                                 std::to_string(source_connection_info.port));
   ip::tcp::resolver::iterator endpoint_iterator = resolver.resolve(query, ec);
   if (ec) {
     SPDLOG_WARN("failed to resolve domain: {}", ec.message());

@@ -102,7 +102,6 @@ int main() {
   });
 
   // setup a basic OTPL server.
-
   auto io_context_ptr = boost::make_shared<boost::asio::io_context>();
 
   // TODO: ipv6?
@@ -116,10 +115,16 @@ int main() {
   for (;;) {
     auto sock_ptr = boost::make_shared<ip::tcp::socket>(*io_context_ptr);
     acc.accept(*sock_ptr);
-    if (!azugate::Filter(sock_ptr)) {
+    auto source_endpoint = sock_ptr->remote_endpoint();
+    // TODO: why cant this be initialized in the bracklets.
+    ConnectionInfo src_conn_info;
+    src_conn_info.address = source_endpoint.address().to_string();
+    src_conn_info.port = source_endpoint.port();
+    SPDLOG_INFO("connection from {}", src_conn_info.address);
+    if (!azugate::Filter(sock_ptr, src_conn_info)) {
       continue;
     }
-    Dispatch(io_context_ptr, sock_ptr, ssl_context);
+    Dispatch(io_context_ptr, sock_ptr, ssl_context, src_conn_info);
   }
   return 0;
 }
@@ -141,3 +146,4 @@ int main() {
 // persistent storage.
 // file mapping optimization.
 // memmory pool optimaization.
+// fuzzy matching in router.

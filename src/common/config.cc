@@ -1,4 +1,5 @@
 #include "config.h"
+#include "protocols.h"
 #include <cstddef>
 #include <cstdint>
 #include <functional>
@@ -15,7 +16,7 @@ template <> struct hash<azugate::ConnectionInfo> {
   size_t operator()(const azugate::ConnectionInfo &conn) const {
     size_t h1 = hash<azugate::ProtocolType>()(conn.type);
     size_t h2 = hash<string_view>()(conn.address);
-    size_t h3 = hash<string_view>()(conn.port);
+    size_t h3 = hash<uint16_t>()(conn.port);
     size_t h4 = hash<string_view>()(conn.http_url);
     return h1 ^ (h2 << 1) ^ (h3 << 2) ^ (h4 << 3);
   }
@@ -83,7 +84,7 @@ void AddRouterMapping(ConnectionInfo &&source, ConnectionInfo &&target) {
   router_map.emplace(std::pair<ConnectionInfo, ConnectionInfo>{source, target});
 }
 
-std::optional<ConnectionInfo> GetRouterMapping(ConnectionInfo &&source) {
+std::optional<ConnectionInfo> GetRouterMapping(const ConnectionInfo &source) {
   std::lock_guard<std::mutex> lock(config_mutex);
   auto it = router_map.find(source);
   if (it != router_map.end()) {
@@ -93,8 +94,12 @@ std::optional<ConnectionInfo> GetRouterMapping(ConnectionInfo &&source) {
 }
 
 bool azugate::ConnectionInfo::operator==(const ConnectionInfo &other) const {
-  return type == other.type && address == other.address && port == other.port &&
-         http_url == other.http_url;
+  if (type != other.type) {
+    return false;
+  }
+  auto tcp_eq = type == ProtocolTypeTcp && address == other.address;
+  auto http_eq = type == ProtocolTypeHttp && http_url == other.http_url;
+  return tcp_eq | http_eq;
 }
 
 } // namespace azugate
