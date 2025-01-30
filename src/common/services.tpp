@@ -10,6 +10,7 @@
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <filesystem>
 #include <fstream>
+#include <optional>
 #include <string_view>
 
 #include "compression.h"
@@ -294,42 +295,44 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
   return;
 }
 
-inline bool TcpProxyHandler(
+inline void TcpProxyHandler(
     const boost::shared_ptr<boost::asio::io_context> &io_context_ptr,
     const boost::shared_ptr<boost::asio::ip::tcp::socket> &source_sock_ptr,
-    ConnectionInfo source_connection_info) {
+    std::optional<ConnectionInfo> target_connection_info_opt) {
   using namespace boost::asio;
   boost::system::error_code ec;
-
+  if (!target_connection_info_opt) {
+    SPDLOG_ERROR("failed to get proxy target");
+    return;
+  }
   // router.
-  // TODO: continue here !!!
   ip::tcp::resolver resolver(*io_context_ptr);
-  ip::tcp::resolver::query query(std::string(source_connection_info.address),
-                                 std::to_string(source_connection_info.port));
-  ip::tcp::resolver::iterator endpoint_iterator = resolver.resolve(query, ec);
+  ip::tcp::resolver::query query(
+      std::string(target_connection_info_opt->address),
+      std::to_string(target_connection_info_opt->port));
+  auto endpoint_iterator = resolver.resolve(query, ec);
   if (ec) {
     SPDLOG_WARN("failed to resolve domain: {}", ec.message());
-    return false;
+    return;
   }
 
   auto target_sock_ptr = std::make_shared<ip::tcp::socket>(*io_context_ptr);
   boost::asio::connect(*target_sock_ptr, endpoint_iterator, ec);
   if (ec) {
     SPDLOG_WARN("failed to connect to target: {}", ec.message());
-    return false;
+    return;
   }
 
   char buf[kDefaultBufSize];
-
   while (true) {
     size_t bytes_read = source_sock_ptr->read_some(buffer(buf), ec);
     if (ec) {
       if (ec == boost::asio::error::eof) {
         SPDLOG_DEBUG("connection closed by source");
-        return true;
+        return;
       } else {
         SPDLOG_WARN("failed to read from source: {}", ec.message());
-        return false;
+        return;
       }
     }
 
@@ -340,10 +343,10 @@ inline bool TcpProxyHandler(
       if (ec) {
         if (ec == boost::asio::error::eof) {
           SPDLOG_DEBUG("connection closed by target");
-          return true;
+          return;
         } else {
           SPDLOG_WARN("failed to write to target: {}", ec.message());
-          return false;
+          return;
         }
       }
     }
@@ -352,10 +355,10 @@ inline bool TcpProxyHandler(
     if (ec) {
       if (ec == boost::asio::error::eof) {
         SPDLOG_DEBUG("connection closed by target");
-        return true;
+        return;
       } else {
         SPDLOG_WARN("failed to read from target: {}", ec.message());
-        return false;
+        return;
       }
     }
 
@@ -368,14 +371,14 @@ inline bool TcpProxyHandler(
       if (ec) {
         if (ec == boost::asio::error::eof) {
           SPDLOG_DEBUG("connection closed by source");
-          return true;
+          return;
         } else {
           SPDLOG_WARN("failed to write back to source: {}", ec.message());
-          return false;
+          return;
         }
       }
     }
   }
 
-  return true;
+  return;
 }

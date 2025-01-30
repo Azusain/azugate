@@ -84,6 +84,7 @@ void AddRouterMapping(ConnectionInfo &&source, ConnectionInfo &&target) {
   router_map.emplace(std::pair<ConnectionInfo, ConnectionInfo>{source, target});
 }
 
+// TODO: implement support for wildcards.
 std::optional<ConnectionInfo> GetRouterMapping(const ConnectionInfo &source) {
   std::lock_guard<std::mutex> lock(config_mutex);
   auto it = router_map.find(source);

@@ -33,6 +33,7 @@
 #include <string>
 #include <sys/types.h>
 
+#include <utility>
 #include <yaml-cpp/node/parse.h>
 #include <yaml-cpp/yaml.h>
 
@@ -124,7 +125,7 @@ int main() {
     if (!azugate::Filter(sock_ptr, src_conn_info)) {
       continue;
     }
-    Dispatch(io_context_ptr, sock_ptr, ssl_context, src_conn_info);
+    Dispatch(io_context_ptr, sock_ptr, ssl_context, std::move(src_conn_info));
   }
   return 0;
 }
