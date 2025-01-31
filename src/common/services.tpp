@@ -148,7 +148,9 @@ inline void compressBody(picoHttpRequest &http_req,
                          std::array<boost::asio::const_buffer, 3> &buffers,
                          size_t n_read) {}
 
-template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
+template <typename T>
+void FileProxyHandler(boost::shared_ptr<T> &sock_ptr,
+                      azugate::ConnectionInfo source_connection_info) {
   using namespace boost::asio;
 
   picoHttpRequest http_req;
@@ -174,11 +176,21 @@ template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr) {
 
   // handle default page.
   // TODO: this can be replaced by a router.
+  source_connection_info.http_url = http_req.path;
+  source_connection_info.type = ProtocolTypeHttp;
+  auto target_conn_info_opt = GetRouterMapping(source_connection_info);
   if (http_req.len_path <= 0 || http_req.path == nullptr ||
-      (http_req.len_path == 1 && http_req.path[0] == '/')) {
+      !target_conn_info_opt) {
+    // TODO: Redirect to error message page.
     http_req.path = kPathDftPage.data();
     http_req.len_path = kPathDftPage.length();
   }
+
+  // if (http_req.len_path <= 0 || http_req.path == nullptr ||
+  //     (http_req.len_path == 1 && http_req.path[0] == '/')) {
+  //   http_req.path = kPathDftPage.data();
+  //   http_req.len_path = kPathDftPage.length();
+  // }
 
   std::shared_ptr<char[]> full_local_file_path =
       assembleFullLocalFilePath(kPathResourceFolder, http_req);

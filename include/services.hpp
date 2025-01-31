@@ -7,7 +7,10 @@
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <optional>
 
-template <typename T> void FileProxyHandler(boost::shared_ptr<T> &sock_ptr);
+// TODO: these interfaces look pretty shity.
+template <typename T>
+void FileProxyHandler(boost::shared_ptr<T> &sock_ptr,
+                      azugate::ConnectionInfo source_connection_info);
 
 void TcpProxyHandler(
     const boost::shared_ptr<boost::asio::io_context> &io_context_ptr,

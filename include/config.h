@@ -70,6 +70,8 @@ struct ConnectionInfo {
   bool operator==(const ConnectionInfo &other) const;
 };
 
+void AddRouterMapping(ConnectionInfo &&source, ConnectionInfo &&target);
+
 std::optional<ConnectionInfo> GetRouterMapping(const ConnectionInfo &source);
 
 } // namespace azugate

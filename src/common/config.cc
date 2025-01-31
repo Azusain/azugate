@@ -5,6 +5,7 @@
 #include <functional>
 #include <mutex>
 #include <optional>
+#include <spdlog/spdlog.h>
 #include <string>
 
 #include <unordered_map>

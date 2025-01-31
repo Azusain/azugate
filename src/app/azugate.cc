@@ -2,6 +2,7 @@
 #include "config.h"
 #include "dispatcher.h"
 #include "filter.h"
+#include "protocols.h"
 #include <boost/asio.hpp>
 #include <boost/asio/connect.hpp>
 #include <boost/asio/io_context.hpp>
@@ -60,10 +61,6 @@ int main() {
     sslCrt = config[kYamlFieldCrt].as<std::string>();
     sslKey = config[kYamlFieldKey].as<std::string>();
     proxy_mode = config[kYamlFieldProxyMode].as<bool>();
-    if (false /*proxy_mode*/) {
-      target_port = config[kYamlFieldProxyTargetPort].as<uint16_t>();
-      target_host = config[kYamlFieldProxyTargetHost].as<std::string>();
-    }
   } catch (...) {
     SPDLOG_ERROR("unexpected errors happen when parsing yaml file");
     return 1;
@@ -113,6 +110,12 @@ int main() {
   ip::tcp::resolver::query query(target_host, std::to_string(target_port));
   SPDLOG_INFO("azugate runs on port {}", port);
 
+  // TODO: for testing purpose.
+  azugate::AddRouterMapping(
+      ConnectionInfo{.type = ProtocolTypeTcp, .address = "127.0.0.1"},
+      ConnectionInfo{
+          .type = ProtocolTypeTcp, .address = "127.0.0.1", .port = 6080});
+
   for (;;) {
     auto sock_ptr = boost::make_shared<ip::tcp::socket>(*io_context_ptr);
     acc.accept(*sock_ptr);
@@ -120,7 +123,6 @@ int main() {
     // TODO: why cant this be initialized in the bracklets.
     ConnectionInfo src_conn_info;
     src_conn_info.address = source_endpoint.address().to_string();
-    src_conn_info.port = source_endpoint.port();
     SPDLOG_INFO("connection from {}", src_conn_info.address);
     if (!azugate::Filter(sock_ptr, src_conn_info)) {
       continue;
@@ -137,7 +139,7 @@ int main() {
 // logging system.
 // health check.
 // stat prefix in envoy?
-// best practice you can check:
+// best practices, you can check:
 // https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes.
 // envoy OAuth, JWT, RBAC.
 // async log.
