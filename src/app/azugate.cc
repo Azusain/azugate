@@ -3,6 +3,7 @@
 #include "dispatcher.h"
 #include "filter.h"
 #include "protocols.h"
+#include "rate_limiter.h"
 #include <boost/asio.hpp>
 #include <boost/asio/connect.hpp>
 #include <boost/asio/io_context.hpp>
@@ -34,6 +35,7 @@
 #include <string>
 #include <sys/types.h>
 
+#include <thread>
 #include <utility>
 #include <yaml-cpp/node/parse.h>
 #include <yaml-cpp/yaml.h>
@@ -116,19 +118,31 @@ int main() {
       ConnectionInfo{
           .type = ProtocolTypeTcp, .address = "127.0.0.1", .port = 6080});
 
-  for (;;) {
-    auto sock_ptr = boost::make_shared<ip::tcp::socket>(*io_context_ptr);
-    acc.accept(*sock_ptr);
-    auto source_endpoint = sock_ptr->remote_endpoint();
-    // TODO: why cant this be initialized in the bracklets.
-    ConnectionInfo src_conn_info;
-    src_conn_info.address = source_endpoint.address().to_string();
-    SPDLOG_INFO("connection from {}", src_conn_info.address);
-    if (!azugate::Filter(sock_ptr, src_conn_info)) {
-      continue;
+  // setup timer.
+  azugate::TokenBucketRateLimiter rate_limiter(io_context_ptr);
+  rate_limiter.Start();
+
+  // setup a basic OTPL server.
+  // TODO: optimize it with async io architecture.
+  std::thread otpl_server([&]() {
+    for (;;) {
+      auto sock_ptr = boost::make_shared<ip::tcp::socket>(*io_context_ptr);
+      acc.accept(*sock_ptr);
+      auto source_endpoint = sock_ptr->remote_endpoint();
+      // TODO: why cant this be initialized in the bracklets.
+      ConnectionInfo src_conn_info;
+      src_conn_info.address = source_endpoint.address().to_string();
+      SPDLOG_INFO("connection from {}", src_conn_info.address);
+      if (!azugate::Filter(sock_ptr, src_conn_info)) {
+        continue;
+      }
+      Dispatch(io_context_ptr, sock_ptr, ssl_context, std::move(src_conn_info));
     }
-    Dispatch(io_context_ptr, sock_ptr, ssl_context, std::move(src_conn_info));
-  }
+  });
+
+  // invoke asynchronous tasks.
+  io_context_ptr->run();
+
   return 0;
 }
 

@@ -175,7 +175,6 @@ void FileProxyHandler(boost::shared_ptr<T> &sock_ptr,
   }
 
   // handle default page.
-  // TODO: this can be replaced by a router.
   source_connection_info.http_url = http_req.path;
   source_connection_info.type = ProtocolTypeHttp;
   auto target_conn_info_opt = GetRouterMapping(source_connection_info);
