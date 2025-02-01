@@ -149,14 +149,12 @@ int main() {
 // TODO:
 // let's proxy websockets then.
 // design fault tolerances.
-// maybe reuse port.
-// logging system.
 // health check.
 // stat prefix in envoy?
 // best practices, you can check:
 // https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes.
 // envoy OAuth, JWT, RBAC.
-// async log.
+// async logging system.
 // websockets.
 // dynamic protocol detection.
 // unit test for utilities.
