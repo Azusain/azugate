@@ -46,33 +46,6 @@
 
 using namespace azugate;
 
-inline std::string findFileExtension(std::string &&path) {
-  auto pos = path.find_last_of(".");
-  if (pos != std::string::npos && pos + 2 <= path.length()) {
-    return path.substr(pos + 1);
-  }
-  return "";
-}
-
-// TODO: this gateway only supports gzip and brotli currently.
-// TODO: ignore q-factor currently, for example:
-// Accept-Encoding: gzip; q=0.8, br; q=0.9, deflate.
-inline utils::CompressionType
-getCompressionType(const std::string_view &supported_compression_types_str) {
-  // gzip is the preferred encoding in azugate.
-  if (supported_compression_types_str.find(utils::kCompressionTypeStrGzip) !=
-      std::string::npos) {
-    return utils::CompressionType{.code = utils::kCompressionTypeCodeGzip,
-                                  .str = utils::kCompressionTypeStrGzip};
-  } else if (supported_compression_types_str.find(
-                 utils::kCompressionTypeStrBrotli) != std::string::npos) {
-    return utils::CompressionType{.code = utils::kCompressionTypeCodeBrotli,
-                                  .str = utils::kCompressionTypeStrBrotli};
-  }
-  return utils::CompressionType{.code = utils::kCompressionTypeCodeNone,
-                                .str = utils::kCompressionTypeStrNone};
-}
-
 struct picoHttpRequest {
   char header_buf[kMaxHttpHeaderSize];
   const char *path = nullptr;
@@ -85,9 +58,8 @@ struct picoHttpRequest {
 };
 
 template <typename T>
-inline bool httpHeaderParser(picoHttpRequest &header,
-                             boost::system::error_code &ec,
-                             const boost::shared_ptr<T> &sock_ptr) {
+bool getHttpHeader(picoHttpRequest &header, boost::system::error_code &ec,
+                   const boost::shared_ptr<T> &sock_ptr) {
   using namespace boost::asio;
   size_t total_parsed = 0;
 
@@ -116,9 +88,11 @@ inline bool httpHeaderParser(picoHttpRequest &header,
         &header.path, &header.len_path, &header.minor_version, header.headers,
         &header.num_headers, 0);
     if (pret > 0) {
-      break; // Successful parse
+      // successful parse
+      break;
     } else if (pret == -2) {
-      continue; // Need more data
+      // need more data.
+      continue;
     } else {
       SPDLOG_WARN("failed to parse HTTP request");
       return false;
@@ -141,7 +115,7 @@ assembleFullLocalFilePath(const std::string_view &path_base_folder,
 }
 
 template <typename T>
-void FileProxyHandler(boost::shared_ptr<T> &sock_ptr,
+void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
                       azugate::ConnectionInfo source_connection_info) {
   using namespace boost::asio;
 
@@ -149,7 +123,7 @@ void FileProxyHandler(boost::shared_ptr<T> &sock_ptr,
   boost::system::error_code ec;
 
   // read and parse HTTP header
-  if (!httpHeaderParser(http_req, ec, sock_ptr)) {
+  if (!getHttpHeader(http_req, ec, sock_ptr)) {
     SPDLOG_ERROR("failed to parse http headers");
     return;
   }
@@ -161,8 +135,8 @@ void FileProxyHandler(boost::shared_ptr<T> &sock_ptr,
     // accept-encoding.
     if (std::string_view(header.name, header.name_len) ==
         CRequest::kHeaderAcceptEncoding) {
-      compression_type =
-          getCompressionType(std::string_view(header.value, header.value_len));
+      compression_type = azugate::utils::GetCompressionType(
+          std::string_view(header.value, header.value_len));
     }
   }
 
@@ -194,7 +168,8 @@ void FileProxyHandler(boost::shared_ptr<T> &sock_ptr,
 
   // setup and send response headers.
   CRequest::HttpResponse resp(CRequest::kHttpOk);
-  auto ext = findFileExtension(std::string(http_req.path, http_req.len_path));
+  auto ext = azugate::utils::FindFileExtension(
+      std::string(http_req.path, http_req.len_path));
   resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
   resp.SetKeepAlive(false);
   if (compression_type.code != utils::kCompressionTypeCodeNone) {
@@ -221,8 +196,6 @@ void FileProxyHandler(boost::shared_ptr<T> &sock_ptr,
   // setup and send body.
   // WARN: reuse buffer address.
   memset(http_req.header_buf, '\0', sizeof(http_req.header_buf));
-  std::array<boost::asio::const_buffer, 3> buffers;
-  void *compressor_ptr = nullptr;
 
   switch (compression_type.code) {
   case utils::kCompressionTypeCodeGzip: {

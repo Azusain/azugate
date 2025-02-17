@@ -9,7 +9,7 @@
 
 // TODO: these interfaces look pretty shity.
 template <typename T>
-void FileProxyHandler(boost::shared_ptr<T> &sock_ptr,
+void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
                       azugate::ConnectionInfo source_connection_info);
 
 void TcpProxyHandler(

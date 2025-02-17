@@ -5,6 +5,15 @@
 
 namespace azugate {
 namespace utils {
+
+inline std::string FindFileExtension(std::string &&path) {
+  auto pos = path.find_last_of(".");
+  if (pos != std::string::npos && pos + 2 <= path.length()) {
+    return path.substr(pos + 1);
+  }
+  return "";
+}
+
 // only used for testing.
 inline void PrintBufferAsHex(const boost::asio::const_buffer &buffer) {
   const uint8_t *data = boost::asio::buffer_cast<const uint8_t *>(buffer);

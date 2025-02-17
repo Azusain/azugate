@@ -1,4 +1,5 @@
 #include "../api//config_service.hpp"
+#include "auth.h"
 #include "config.h"
 #include "dispatcher.h"
 #include "filter.h"
@@ -69,6 +70,9 @@ int main() {
     SPDLOG_ERROR("unexpected errors happen when parsing yaml file");
     return 1;
   }
+
+  // token secret.
+  g_token_secret = utils::GenerateSecret();
 
   // setup ssl connection.
   ssl::context ssl_context(ssl::context::sslv23);

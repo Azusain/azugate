@@ -43,10 +43,10 @@ void Dispatch(const boost::shared_ptr<boost::asio::io_context> &io_context_ptr,
         return;
       }
     }
-    boost::thread(boost::bind(FileProxyHandler<ssl::stream<ip::tcp::socket>>,
+    boost::thread(boost::bind(HttpProxyHandler<ssl::stream<ip::tcp::socket>>,
                               ssl_sock_ptr, source_connection_info));
   } else {
-    boost::thread(boost::bind(FileProxyHandler<ip::tcp::socket>, sock_ptr,
+    boost::thread(boost::bind(HttpProxyHandler<ip::tcp::socket>, sock_ptr,
                               source_connection_info));
   }
 }

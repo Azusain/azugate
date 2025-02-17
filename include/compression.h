@@ -20,12 +20,17 @@ constexpr uint32_t kCompressionTypeCodeBrotli = HashConstantString("brotli");
 constexpr uint32_t kCompressionTypeCodeDeflate = HashConstantString("deflate");
 constexpr uint32_t kCompressionTypeCodeZStandard = HashConstantString("zstd");
 constexpr uint32_t kCompressionTypeCodeNone = HashConstantString("");
-constexpr size_t kDefaultCompressChunkSize = 100;
+constexpr size_t kDefaultCompressChunkBytes = 100;
 
 struct CompressionType {
   uint32_t code;
   std::string_view str;
 };
+
+// TODO: ignore q-factor currently, for example:
+// Accept-Encoding: gzip; q=0.8, br; q=0.9, deflate.
+inline CompressionType
+GetCompressionType(const std::string_view &supported_compression_types_str);
 
 class GzipCompressor {
 public:

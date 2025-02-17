@@ -7,6 +7,9 @@
 
 namespace azugate {
 namespace utils {
+
+inline std::string FindFileExtension(std::string &&path);
+
 static constexpr uint32_t HashConstantString(const std::string_view &str) {
   uint32_t hash = 0;
   for (const char &c : str) {

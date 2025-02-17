@@ -41,6 +41,8 @@ std::string g_target_host;
 std::mutex g_config_mutex;
 // router.
 std::unordered_map<ConnectionInfo, ConnectionInfo> g_router_map;
+// token.
+std::string g_token_secret;
 
 std::string GetConfigPath() {
   std::lock_guard<std::mutex> lock(g_config_mutex);

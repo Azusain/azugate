@@ -6,6 +6,24 @@
 namespace azugate {
 namespace utils {
 
+// TODO: ignore q-factor currently, for example:
+// Accept-Encoding: gzip; q=0.8, br; q=0.9, deflate.
+inline CompressionType
+GetCompressionType(const std::string_view &supported_compression_types_str) {
+  // gzip is the preferred encoding in azugate.
+  if (supported_compression_types_str.find(utils::kCompressionTypeStrGzip) !=
+      std::string::npos) {
+    return utils::CompressionType{.code = utils::kCompressionTypeCodeGzip,
+                                  .str = utils::kCompressionTypeStrGzip};
+  } else if (supported_compression_types_str.find(
+                 utils::kCompressionTypeStrBrotli) != std::string::npos) {
+    return utils::CompressionType{.code = utils::kCompressionTypeCodeBrotli,
+                                  .str = utils::kCompressionTypeStrBrotli};
+  }
+  return utils::CompressionType{.code = utils::kCompressionTypeCodeNone,
+                                .str = utils::kCompressionTypeStrNone};
+}
+
 GzipCompressor::GzipCompressor(int level) {
   zstrm_.zalloc = Z_NULL;
   zstrm_.zfree = Z_NULL;
@@ -29,10 +47,10 @@ bool GzipCompressor::GzipStreamCompress(
     std::function<bool(unsigned char *, size_t)> output_handler) {
   int ret, flush;
   unsigned have;
-  unsigned char in[kDefaultCompressChunkSize];
-  unsigned char out[kDefaultCompressChunkSize];
+  unsigned char in[kDefaultCompressChunkBytes];
+  unsigned char out[kDefaultCompressChunkBytes];
   do {
-    source.read(reinterpret_cast<char *>(in), kDefaultCompressChunkSize);
+    source.read(reinterpret_cast<char *>(in), kDefaultCompressChunkBytes);
     zstrm_.avail_in = source.gcount();
     if (source.fail() && !source.eof()) {
       return false;
@@ -42,11 +60,11 @@ bool GzipCompressor::GzipStreamCompress(
     flush = source.eof() ? Z_FINISH : Z_NO_FLUSH;
     zstrm_.next_in = in;
     do {
-      zstrm_.avail_out = kDefaultCompressChunkSize;
+      zstrm_.avail_out = kDefaultCompressChunkBytes;
       zstrm_.next_out = out;
       ret = deflate(&zstrm_, flush);
       assert(ret != Z_STREAM_ERROR);
-      auto have = kDefaultCompressChunkSize - zstrm_.avail_out;
+      auto have = kDefaultCompressChunkBytes - zstrm_.avail_out;
       if (have > 0 && !output_handler(out, have)) {
         return false;
       };

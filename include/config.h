@@ -48,8 +48,10 @@ extern std::string g_target_host;
 extern std::mutex g_config_mutex;
 // set it to true when integrating with external authentication provider.
 extern bool g_management_system_authentication;
+// used for generating and verifying tokens.
+extern std::string g_token_secret;
 
-std::string GetConfigPath();
+extern std::string GetConfigPath();
 void SetConfigPath(std::string &&path);
 
 bool GetHttpCompression();
