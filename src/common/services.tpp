@@ -180,12 +180,6 @@ void FileProxyHandler(boost::shared_ptr<T> &sock_ptr,
     http_req.len_path = kPathDftPage.length();
   }
 
-  // if (http_req.len_path <= 0 || http_req.path == nullptr ||
-  //     (http_req.len_path == 1 && http_req.path[0] == '/')) {
-  //   http_req.path = kPathDftPage.data();
-  //   http_req.len_path = kPathDftPage.length();
-  // }
-
   std::shared_ptr<char[]> full_local_file_path =
       assembleFullLocalFilePath(kPathResourceFolder, http_req);
   auto full_local_file_path_str = full_local_file_path.get();

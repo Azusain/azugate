@@ -10,6 +10,7 @@
     "openssl",
     "spdlog",
     "yaml-cpp",
-    "zlib"
+    "zlib",
+    "jwt-cpp"
   ]
 }

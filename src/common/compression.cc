@@ -1,8 +1,4 @@
 #include "compression.h"
-#include <boost/iostreams/device/file.hpp>
-#include <boost/iostreams/filter/gzip.hpp>
-#include <boost/iostreams/filtering_stream.hpp>
-#include <brotli/encode.h>
 #include <cstddef>
 #include <iostream>
 #include <zlib.h>
@@ -58,18 +54,6 @@ bool GzipCompressor::GzipStreamCompress(
   } while (flush != Z_FINISH);
 
   return ret == Z_STREAM_END;
-}
-
-// TODO: implement this.
-void CompressBrotliStream(char *input_buffer, size_t input_length,
-                          char *output_buffer, size_t output_length) {
-  BrotliEncoderState *encoder =
-      BrotliEncoderCreateInstance(nullptr, nullptr, nullptr);
-  // TODO: these params should be configured by the user.
-  BrotliEncoderSetParameter(encoder, BROTLI_PARAM_QUALITY, 11);
-  BrotliEncoderSetParameter(encoder, BROTLI_PARAM_LGWIN, 22);
-
-  BrotliEncoderDestroyInstance(encoder);
 }
 
 } // namespace utils

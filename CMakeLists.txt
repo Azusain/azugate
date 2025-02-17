@@ -52,8 +52,6 @@ yaml-cpp::yaml-cpp
 gRPC::grpc++
 protobuf::libprotobuf
 Boost::iostreams
-unofficial::brotli::brotlidec
-unofficial::brotli::brotlienc
 )
 
 # only for testing
@@ -63,6 +61,4 @@ add_executable(test
 target_link_libraries(test
 common
 Boost::iostreams
-unofficial::brotli::brotlidec
-unofficial::brotli::brotlienc
 )

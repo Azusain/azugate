@@ -120,7 +120,7 @@ int main() {
       ConnectionInfo{
           .type = ProtocolTypeTcp, .address = "127.0.0.1", .port = 6080});
 
-  // setup timer.
+  // setup rate limiter.
   azugate::TokenBucketRateLimiter rate_limiter(io_context_ptr);
   rate_limiter.Start();
 
