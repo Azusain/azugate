@@ -80,7 +80,7 @@ int main() {
   }
 
   // setup grpc server.
-  std::thread grpc_thread([&]() {
+  std::thread grpc_server_thread([&]() {
     grpc::ServerBuilder server_builder;
     server_builder.AddListeningPort(fmt::format("0.0.0.0:{}", admin_port),
                                     grpc::InsecureServerCredentials());
@@ -92,7 +92,7 @@ int main() {
   });
 
   // setup http gateway for gRPC server.
-  std::thread http_gateway([]() {
+  std::thread http_gateway_thread([]() {
     SPDLOG_INFO("http gateway runs on port 8081");
     // TODO: this is way too violent.
     if (!std::system("../grpc-proxy/proxy")) {
@@ -124,7 +124,7 @@ int main() {
 
   // setup a basic OTPL server.
   // TODO: optimize it with async io architecture.
-  std::thread otpl_server([&]() {
+  std::thread otpl_server_thread([&]() {
     for (;;) {
       auto sock_ptr = boost::make_shared<ip::tcp::socket>(*io_context_ptr);
       acc.accept(*sock_ptr);
