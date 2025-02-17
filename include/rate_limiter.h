@@ -11,8 +11,9 @@
 namespace azugate {
 
 constexpr size_t kDftTokenGenIntervalSec = 1;
-constexpr size_t kTokenGenNum = 10;
-constexpr size_t kMaxTokenNum = 100;
+// TODO: for testing purpose.
+constexpr size_t kTokenGenNum = 1;
+constexpr size_t kMaxTokenNum = 10;
 
 class TokenBucketRateLimiter {
 public:

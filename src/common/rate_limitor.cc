@@ -26,12 +26,13 @@ TokenBucketRateLimiter::TokenBucketRateLimiter(
              boost::asio::chrono::seconds(kDftTokenGenIntervalSec)),
       n_token_(kMaxTokenNum) {};
 
-// TODO: consume one token each time.
+// TODO: memory order.
 bool TokenBucketRateLimiter::GetToken() {
-  size_t current_tokens = n_token_.load(std::memory_order_acquire);
-  if (n_token_.fetch_sub(1, std::memory_order_acq_rel) > 0) {
+  size_t current_tokens = n_token_.fetch_sub(1, std::memory_order_acq_rel);
+  if (current_tokens > 0) {
     return true;
   }
+  n_token_.fetch_add(1, std::memory_order_acq_rel);
   return false;
 }
 
@@ -42,7 +43,7 @@ void TokenBucketRateLimiter::performTask() {
   }
   n_token_.store(new_token_num);
   // TODO: rm this line.
-  SPDLOG_INFO("current tokens number: {}", new_token_num);
+  // SPDLOG_INFO("current tokens number: {}", new_token_num);
 }
 
 void TokenBucketRateLimiter::tick(boost::asio::steady_timer &t) {

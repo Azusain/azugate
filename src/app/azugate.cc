@@ -136,7 +136,8 @@ int main() {
       if (!azugate::Filter(sock_ptr, src_conn_info)) {
         continue;
       }
-      Dispatch(io_context_ptr, sock_ptr, ssl_context, std::move(src_conn_info));
+      Dispatch(io_context_ptr, sock_ptr, ssl_context, std::move(src_conn_info),
+               rate_limiter);
     }
   });
 

@@ -1,6 +1,7 @@
 
 #include "config.h"
 #include "protocols.h"
+#include "rate_limiter.h"
 #include "services.hpp"
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/ip/tcp.hpp>
@@ -17,8 +18,13 @@ namespace azugate {
 void Dispatch(const boost::shared_ptr<boost::asio::io_context> &io_context_ptr,
               const boost::shared_ptr<boost::asio::ip::tcp::socket> &sock_ptr,
               boost::asio::ssl::context &ssl_context,
-              ConnectionInfo &&source_connection_info) {
+              ConnectionInfo &&source_connection_info,
+              TokenBucketRateLimiter &rate_limiter) {
   using namespace boost::asio;
+  // rate limiting.
+  if (!rate_limiter.GetToken()) {
+    return;
+  }
   // TODO: configured by router.
   if (proxy_mode) {
     source_connection_info.type = ProtocolTypeTcp;
