@@ -23,10 +23,30 @@ TokenBucketRateLimiter::TokenBucketRateLimiter(
     const boost::shared_ptr<boost::asio::io_context> io_context_ptr)
     : io_context_ptr_(io_context_ptr),
       timer_(*io_context_ptr,
-             boost::asio::chrono::seconds(kDftTokenGenIntervalSec)) {};
+             boost::asio::chrono::seconds(kDftTokenGenIntervalSec)),
+      n_token_(kMaxTokenNum) {};
 
-void tick(boost::asio::steady_timer &t) {
-  SPDLOG_INFO("tick!");
+// TODO: consume one token each time.
+bool TokenBucketRateLimiter::GetToken() {
+  size_t current_tokens = n_token_.load(std::memory_order_acquire);
+  if (n_token_.fetch_sub(1, std::memory_order_acq_rel) > 0) {
+    return true;
+  }
+  return false;
+}
+
+void TokenBucketRateLimiter::performTask() {
+  size_t new_token_num = n_token_.load() + kTokenGenNum;
+  if (new_token_num > kMaxTokenNum) {
+    new_token_num = kMaxTokenNum;
+  }
+  n_token_.store(new_token_num);
+  // TODO: rm this line.
+  SPDLOG_INFO("current tokens number: {}", new_token_num);
+}
+
+void TokenBucketRateLimiter::tick(boost::asio::steady_timer &t) {
+  performTask();
   t.expires_at(t.expiry() +
                boost::asio::chrono::seconds(kDftTokenGenIntervalSec));
   t.async_wait([&](const boost::system::error_code &) { tick(t); });
