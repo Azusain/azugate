@@ -1,10 +1,8 @@
 {
   "dependencies": [
     "boost-asio",
-    "boost-iostreams",
     "boost-system",
     "boost-thread",
-    "brotli",
     "fmt",
     "grpc",
     "openssl",

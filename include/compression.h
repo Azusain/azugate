@@ -2,8 +2,6 @@
 #define __COMPRESSION_H
 
 #include "common.h"
-#include <boost/iostreams/filter/gzip.hpp>
-#include <boost/iostreams/filtering_stream.hpp>
 #include <cstdint>
 #include <iostream>
 #include <string_view>

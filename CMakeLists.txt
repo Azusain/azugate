@@ -7,12 +7,14 @@ set(CMAKE_BUILD_TYPE Release)
 
 find_package(spdlog REQUIRED)
 find_package(fmt REQUIRED)
-find_package(Boost COMPONENTS asio thread iostreams CONFIG)
+find_package(Boost COMPONENTS asio thread CONFIG)
 find_package(yaml-cpp CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(gRPC CONFIG REQUIRED)
 find_package(Protobuf CONFIG REQUIRED)
-find_package(unofficial-brotli CONFIG REQUIRED)
+find_package(jwt-cpp REQUIRED)
+find_package(ZLIB REQUIRED)
+
 
 set(COMMON_INCLUDES_DIR "include")
 set(THIRD_PARTY_INCLUDES_DIR "third_party")
@@ -36,6 +38,7 @@ ${API_INCLUDES_DIR}
 
 target_link_libraries(common
 spdlog::spdlog
+ZLIB::ZLIB
 )
 
 # apps.
@@ -45,13 +48,13 @@ add_executable(azugate
 
 target_link_libraries(azugate
 ${OPENSSL_LIBRARIES}
+${jwt-cpp_LIBRARIES}
 common
 Boost::asio
 Boost::thread
 yaml-cpp::yaml-cpp
 gRPC::grpc++
 protobuf::libprotobuf
-Boost::iostreams
 )
 
 # only for testing
@@ -60,5 +63,4 @@ add_executable(test
 )
 target_link_libraries(test
 common
-Boost::iostreams
 )
