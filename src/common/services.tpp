@@ -13,6 +13,7 @@
 #include "compression.hpp"
 #include "config.h"
 #include "crequest.h"
+#include "http_wrapper.hpp"
 #include "picohttpparser.h"
 #include <array>
 #include <boost/algorithm/string.hpp>
@@ -29,7 +30,7 @@
 #include <cerrno>
 #include <cstddef>
 #include <cstring>
-#include <exception>
+
 #include <fmt/format.h>
 #include <format>
 
@@ -179,17 +180,8 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
     resp.SetContentLength(local_file_size);
   }
 
-  try {
-    // TODO: code style, write() or write_some()?
-    write(*sock_ptr, buffer(resp.StringifyFirstLine()));
-    write(*sock_ptr, buffer(resp.StringifyHeaders()));
-  } catch (const boost::system::system_error &e) {
-    if (e.code() != error::eof) {
-      SPDLOG_ERROR("failed to send headers: {}", e.what());
-      return;
-    }
-  } catch (const std::exception &e) {
-    SPDLOG_ERROR("failed to send headers: {}", e.what());
+  if (!network::SendHttpMessage<T>(resp, sock_ptr, ec)) {
+    SPDLOG_ERROR("failed to send http response");
     return;
   }
 
@@ -199,21 +191,22 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
   switch (compression_type.code) {
   case utils::kCompressionTypeCodeGzip: {
     utils::GzipCompressor gzip_compressor;
-    auto ret = gzip_compressor.GzipStreamCompress(
-        local_file_stream,
-        [&sock_ptr, &ec](unsigned char *compressed_data, size_t size) {
-          std::array<boost::asio::const_buffer, 3> buffers = {
-              boost::asio::buffer(std::format("{:x}{}", size, CRequest::kCrlf)),
-              boost::asio::buffer(compressed_data, size),
-              boost::asio::buffer(CRequest::kCrlf, 2)};
-          sock_ptr->write_some(buffers, ec);
-          if (ec && ec != error::eof) {
-            SPDLOG_ERROR("failed to write chunk data to socket: {}",
-                         ec.message());
-            return false;
-          }
-          return true;
-        });
+    auto compressed_output_handler = [&sock_ptr,
+                                      &ec](unsigned char *compressed_data,
+                                           size_t size) {
+      std::array<boost::asio::const_buffer, 3> buffers = {
+          boost::asio::buffer(std::format("{:x}{}", size, CRequest::kCrlf)),
+          boost::asio::buffer(compressed_data, size),
+          boost::asio::buffer(CRequest::kCrlf, 2)};
+      sock_ptr->write_some(buffers, ec);
+      if (ec) {
+        SPDLOG_ERROR("failed to write chunk data to socket: {}", ec.message());
+        return false;
+      }
+      return true;
+    };
+    auto ret = gzip_compressor.GzipStreamCompress(local_file_stream,
+                                                  compressed_output_handler);
     if (!ret) {
       SPDLOG_ERROR("errors occur while compressing data chunk");
       return;
@@ -221,7 +214,7 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
     // write chunk ending marker.
     sock_ptr->write_some(
         boost::asio::buffer(CRequest::kChunkedEncodingEndingStr, 5), ec);
-    if (ec && ec != error::eof) {
+    if (ec) {
       SPDLOG_ERROR("failed to write chunk ending marker: {}", ec.message());
       return;
     }
@@ -244,9 +237,9 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
       local_file_stream.read(http_req.header_buf, sizeof(http_req.header_buf));
       auto n_read = local_file_stream.gcount();
       if (n_read > 0) {
-        sock_ptr->write_some(boost::asio::buffer(http_req.header_buf, n_read),
-                             ec);
-        if (ec && ec != error::eof) {
+        sock_ptr->write_some(
+            boost::asio::const_buffer(http_req.header_buf, n_read), ec);
+        if (ec) {
           SPDLOG_ERROR("failed to write data to socket: {}", ec.message());
           return;
         }
@@ -297,7 +290,7 @@ inline void TcpProxyHandler(
     size_t bytes_read = source_sock_ptr->read_some(buffer(buf), ec);
     if (ec) {
       if (ec == boost::asio::error::eof) {
-        SPDLOG_DEBUG("connection closed by source");
+        SPDLOG_DEBUG("connection closed by peer");
         return;
       } else {
         SPDLOG_WARN("failed to read from source: {}", ec.message());
@@ -310,20 +303,15 @@ inline void TcpProxyHandler(
       bytes_written += target_sock_ptr->write_some(
           buffer(buf + bytes_written, bytes_read - bytes_written), ec);
       if (ec) {
-        if (ec == boost::asio::error::eof) {
-          SPDLOG_DEBUG("connection closed by target");
-          return;
-        } else {
-          SPDLOG_WARN("failed to write to target: {}", ec.message());
-          return;
-        }
+        SPDLOG_WARN("failed to write to target: {}", ec.message());
+        return;
       }
     }
 
     size_t target_bytes_read = target_sock_ptr->read_some(buffer(buf), ec);
     if (ec) {
       if (ec == boost::asio::error::eof) {
-        SPDLOG_DEBUG("connection closed by target");
+        SPDLOG_DEBUG("connection closed by peer");
         return;
       } else {
         SPDLOG_WARN("failed to read from target: {}", ec.message());
@@ -338,13 +326,8 @@ inline void TcpProxyHandler(
                  target_bytes_read - target_bytes_written),
           ec);
       if (ec) {
-        if (ec == boost::asio::error::eof) {
-          SPDLOG_DEBUG("connection closed by source");
-          return;
-        } else {
-          SPDLOG_WARN("failed to write back to source: {}", ec.message());
-          return;
-        }
+        SPDLOG_WARN("failed to write back to source: {}", ec.message());
+        return;
       }
     }
   }
