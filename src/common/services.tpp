@@ -143,11 +143,6 @@ assembleFullLocalFilePath(const std::string_view &path_base_folder,
   return full_path;
 }
 
-inline void compressBody(picoHttpRequest &http_req,
-                         const utils::CompressionType &compression_type,
-                         std::array<boost::asio::const_buffer, 3> &buffers,
-                         size_t n_read) {}
-
 template <typename T>
 void FileProxyHandler(boost::shared_ptr<T> &sock_ptr,
                       azugate::ConnectionInfo source_connection_info) {
