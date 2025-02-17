@@ -1,44 +1,16 @@
-#include "compression.h"
-#include <cassert>
-#include <cstddef>
-#include <fstream>
+#include "auth.h"
 #include <iostream>
-#include <string>
-#include <zlib.h>
 
 int main() {
-  const std::string input_file = "../resources/welcome.html";
-  const std::string output_file = "welcome.html.gz";
+  std::string secret = azugate::utils::GenerateSecret();
+  std::cout << "Generated Secret: " << secret << std::endl;
 
-  std::ifstream source(input_file, std::ios::binary);
-  if (!source) {
-    std::cerr << "Failed to open source file: " << input_file << std::endl;
-    return 1;
-  }
+  std::string payload = "{\"user_id\":\"12345\"}";
 
-  std::ofstream dest(output_file, std::ios::binary);
-  if (!dest) {
-    std::cerr << "Failed to open destination file: " << output_file
-              << std::endl;
-    return 1;
-  }
+  std::string token = azugate::utils::GenerateToken(payload, secret);
+  std::cout << "Generated Token: " << token << std::endl;
 
-  azugate::utils::GzipCompressor compressor;
-
-  int ret = compressor.GzipStreamCompress(
-      source, [&dest](unsigned char *data, size_t size) {
-        dest.write(reinterpret_cast<char *>(data), size);
-        return !dest.fail();
-      });
-  if (!ret) {
-    std::cerr << "Compression failed!" << std::endl;
-    return 1;
-  }
-
-  std::cout << "File compressed successfully: " << output_file << std::endl;
-
-  source.close();
-  dest.close();
-
+  bool is_valid = azugate::utils::VerifyToken(token, secret);
+  std::cout << "Is the token valid? " << (is_valid ? "Yes" : "No") << std::endl;
   return 0;
 }

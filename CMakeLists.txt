@@ -62,5 +62,6 @@ add_executable(test
 "src/app/test.cc"
 )
 target_link_libraries(test
+${OPENSSL_LIBRARIES}
 common
 )
