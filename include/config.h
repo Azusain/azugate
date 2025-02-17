@@ -29,22 +29,25 @@ constexpr std::string_view kYamlFieldAdminPort = "admin_port";
 constexpr std::string_view kYamlFieldProxyMode = "proxy_mode";
 constexpr std::string_view kYamlFieldProxyTargetPort = "target_port";
 constexpr std::string_view kYamlFieldProxyTargetHost = "target_host";
+constexpr std::string_view kYamlFieldManagementSysAuth = "authentication";
 
 // runtime shared variables.
-extern uint16_t port;
-extern uint16_t admin_port;
+extern uint16_t g_port;
+extern uint16_t g_admin_port;
 
 // TODO: mTLS.
-extern std::string sslCrt;
-extern std::string sslKey;
+extern std::string g_sslCrt;
+extern std::string g_sslKey;
 // TODO: need a better alternaive for these 3 variables..
-extern bool proxy_mode;
-extern uint16_t target_port;
-extern std::string target_host;
+extern bool g_proxy_mode;
+extern uint16_t g_target_port;
+extern std::string g_target_host;
 // TODO: currently, this may seem unnecessary, but
 // it will be useful when we add more configuration variables
 // and implement hot-reload functionality in the future.
-extern std::mutex config_mutex;
+extern std::mutex g_config_mutex;
+// set it to true when integrating with external authentication provider.
+extern bool g_management_system_authentication;
 
 std::string GetConfigPath();
 void SetConfigPath(std::string &&path);

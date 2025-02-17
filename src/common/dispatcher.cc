@@ -26,7 +26,7 @@ void Dispatch(const boost::shared_ptr<boost::asio::io_context> &io_context_ptr,
     return;
   }
   // TODO: configured by router.
-  if (proxy_mode) {
+  if (g_proxy_mode) {
     source_connection_info.type = ProtocolTypeTcp;
     boost::thread(boost::bind(TcpProxyHandler, io_context_ptr, sock_ptr,
                               GetRouterMapping(source_connection_info)));

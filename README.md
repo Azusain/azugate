@@ -5,6 +5,7 @@
 - http file proxy
 - https
 - http gzip compression and chunked transfer
+- tcp proxy
 - rate limiting
 - management via gRPC API or JSON API
 - web UI
