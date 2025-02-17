@@ -1,7 +1,7 @@
 #ifndef __COMPRESSION_H
 #define __COMPRESSION_H
 
-#include "common.h"
+#include "common.hpp"
 #include <cstdint>
 #include <iostream>
 #include <string_view>
@@ -30,7 +30,20 @@ struct CompressionType {
 // TODO: ignore q-factor currently, for example:
 // Accept-Encoding: gzip; q=0.8, br; q=0.9, deflate.
 inline CompressionType
-GetCompressionType(const std::string_view &supported_compression_types_str);
+GetCompressionType(const std::string_view &supported_compression_types_str) {
+  // gzip is the preferred encoding in azugate.
+  if (supported_compression_types_str.find(utils::kCompressionTypeStrGzip) !=
+      std::string::npos) {
+    return utils::CompressionType{.code = utils::kCompressionTypeCodeGzip,
+                                  .str = utils::kCompressionTypeStrGzip};
+  } else if (supported_compression_types_str.find(
+                 utils::kCompressionTypeStrBrotli) != std::string::npos) {
+    return utils::CompressionType{.code = utils::kCompressionTypeCodeBrotli,
+                                  .str = utils::kCompressionTypeStrBrotli};
+  }
+  return utils::CompressionType{.code = utils::kCompressionTypeCodeNone,
+                                .str = utils::kCompressionTypeStrNone};
+}
 
 class GzipCompressor {
 public:

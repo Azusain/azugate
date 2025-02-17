@@ -1,28 +1,10 @@
-#include "compression.h"
+#include "compression.hpp"
 #include <cstddef>
-#include <iostream>
+
 #include <zlib.h>
 
 namespace azugate {
 namespace utils {
-
-// TODO: ignore q-factor currently, for example:
-// Accept-Encoding: gzip; q=0.8, br; q=0.9, deflate.
-inline CompressionType
-GetCompressionType(const std::string_view &supported_compression_types_str) {
-  // gzip is the preferred encoding in azugate.
-  if (supported_compression_types_str.find(utils::kCompressionTypeStrGzip) !=
-      std::string::npos) {
-    return utils::CompressionType{.code = utils::kCompressionTypeCodeGzip,
-                                  .str = utils::kCompressionTypeStrGzip};
-  } else if (supported_compression_types_str.find(
-                 utils::kCompressionTypeStrBrotli) != std::string::npos) {
-    return utils::CompressionType{.code = utils::kCompressionTypeCodeBrotli,
-                                  .str = utils::kCompressionTypeStrBrotli};
-  }
-  return utils::CompressionType{.code = utils::kCompressionTypeCodeNone,
-                                .str = utils::kCompressionTypeStrNone};
-}
 
 GzipCompressor::GzipCompressor(int level) {
   zstrm_.zalloc = Z_NULL;

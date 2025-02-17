@@ -1,7 +1,7 @@
 #ifndef __CREQUEST_H
 #define __CREQUEST_H
 
-#include "common.h"
+#include "common.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <string>

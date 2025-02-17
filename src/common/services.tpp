@@ -10,7 +10,7 @@
 #include <optional>
 #include <string_view>
 
-#include "compression.h"
+#include "compression.hpp"
 #include "config.h"
 #include "crequest.h"
 #include "picohttpparser.h"
@@ -168,8 +168,8 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
 
   // setup and send response headers.
   CRequest::HttpResponse resp(CRequest::kHttpOk);
-  auto ext = azugate::utils::FindFileExtension(
-      std::string(http_req.path, http_req.len_path));
+  auto ext =
+      utils::FindFileExtension(std::string(http_req.path, http_req.len_path));
   resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
   resp.SetKeepAlive(false);
   if (compression_type.code != utils::kCompressionTypeCodeNone) {
@@ -196,7 +196,6 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
   // setup and send body.
   // WARN: reuse buffer address.
   memset(http_req.header_buf, '\0', sizeof(http_req.header_buf));
-
   switch (compression_type.code) {
   case utils::kCompressionTypeCodeGzip: {
     utils::GzipCompressor gzip_compressor;
