@@ -34,6 +34,7 @@
 #include <fmt/format.h>
 #include <format>
 
+#include "http_wrapper.hpp"
 #include <memory>
 #include <netinet/in.h>
 #include <spdlog/spdlog.h>
@@ -43,68 +44,13 @@
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <vector>
 
 using namespace azugate;
 
-struct picoHttpRequest {
-  char header_buf[kMaxHttpHeaderSize];
-  const char *path = nullptr;
-  const char *method = nullptr;
-  size_t method_len;
-  size_t len_path;
-  int minor_version;
-  phr_header headers[kMaxHeadersNum];
-  size_t num_headers;
-};
-
-template <typename T>
-bool getHttpHeader(picoHttpRequest &header, boost::system::error_code &ec,
-                   const boost::shared_ptr<T> &sock_ptr) {
-  using namespace boost::asio;
-  size_t total_parsed = 0;
-
-  for (;;) {
-    if (total_parsed >= kMaxHttpHeaderSize) {
-      SPDLOG_WARN("HTTP header size exceeded the limit");
-      return false;
-    }
-    size_t bytes_read =
-        sock_ptr->read_some(buffer(header.header_buf + total_parsed,
-                                   kMaxHttpHeaderSize - total_parsed),
-                            ec);
-    if (ec) {
-      if (ec == boost::asio::error::eof) {
-        SPDLOG_DEBUG("connection closed by peer");
-        break;
-      }
-      SPDLOG_WARN("failed to read HTTP header: {}", ec.message());
-      return false;
-    }
-
-    total_parsed += bytes_read;
-    header.num_headers = std::size(header.headers);
-    int pret = phr_parse_request(
-        header.header_buf, total_parsed, &header.method, &header.method_len,
-        &header.path, &header.len_path, &header.minor_version, header.headers,
-        &header.num_headers, 0);
-    if (pret > 0) {
-      // successful parse
-      break;
-    } else if (pret == -2) {
-      // need more data.
-      continue;
-    } else {
-      SPDLOG_WARN("failed to parse HTTP request");
-      return false;
-    }
-  }
-  return true;
-}
-
+// TODO: file path should be configured by router.
 inline std::shared_ptr<char[]>
 assembleFullLocalFilePath(const std::string_view &path_base_folder,
-                          const picoHttpRequest &header) {
+                          const network::PicoHttpRequest &header) {
   const size_t len_base_folder = path_base_folder.length();
   size_t len_full_path = len_base_folder + header.len_path + 1;
   std::shared_ptr<char[]> full_path(new char[len_full_path]);
@@ -117,14 +63,14 @@ assembleFullLocalFilePath(const std::string_view &path_base_folder,
 
 template <typename T>
 void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
-                      azugate::ConnectionInfo source_connection_info) {
+                      ConnectionInfo source_connection_info) {
   using namespace boost::asio;
 
-  picoHttpRequest http_req;
+  network::PicoHttpRequest http_req;
   boost::system::error_code ec;
 
   // read and parse HTTP header
-  if (!getHttpHeader(http_req, ec, sock_ptr)) {
+  if (!network::GetHttpHeader(http_req, ec, sock_ptr)) {
     SPDLOG_ERROR("failed to parse http headers");
     return;
   }
@@ -136,7 +82,7 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
     // accept-encoding.
     if (std::string_view(header.name, header.name_len) ==
         CRequest::kHeaderAcceptEncoding) {
-      compression_type = azugate::utils::GetCompressionType(
+      compression_type = utils::GetCompressionType(
           std::string_view(header.value, header.value_len));
     }
   }
