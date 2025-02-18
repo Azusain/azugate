@@ -12,7 +12,7 @@
 #include <sys/types.h>
 #include <utility>
 
-extern uint16_t azugate::g_port;
+extern uint16_t azugate::g_azugate_port;
 
 class ConfigServiceImpl final : public api::v1::ConfigService::Service {
 public:

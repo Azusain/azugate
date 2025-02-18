@@ -45,6 +45,7 @@
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <utility>
 
 using namespace azugate;
 
@@ -213,8 +214,11 @@ void HttpProxyHandler(
   network::PicoHttpRequest request;
   boost::system::error_code ec;
 
+  // init http client using established tcp connection.
+  network::HttpClient<T> http_client(std::move(sock_ptr));
+
   // read and parse HTTP header
-  if (!network::GetHttpHeader(request, ec, sock_ptr)) {
+  if (!http_client.GetHttpHeader(request, ec)) {
     SPDLOG_ERROR("failed to parse http headers");
     return;
   }
@@ -245,7 +249,7 @@ void HttpProxyHandler(
       // redirect to oauth login page.
       CRequest::HttpResponse redirect_resp(CRequest::kHttpFound);
       redirect_resp.SetKeepAlive(false);
-      if (!network::SendHttpMessage(redirect_resp, sock_ptr, ec)) {
+      if (!http_client.SendHttpMessage(redirect_resp, ec)) {
         SPDLOG_WARN("failed to send redirect http response");
         return;
       };
@@ -291,7 +295,7 @@ void HttpProxyHandler(
     resp.SetContentLength(local_file_size);
   }
 
-  if (!network::SendHttpMessage<T>(resp, sock_ptr, ec)) {
+  if (!http_client.SendHttpMessage(resp, ec)) {
     SPDLOG_ERROR("failed to send http response");
     return;
   }
@@ -316,10 +320,10 @@ inline void TcpProxyHandler(
     SPDLOG_ERROR("failed to get proxy target");
     return;
   }
-  network::TcpClient<boost::asio::ip::tcp::socket> tcp_client;
-  tcp_client.Init(io_context_ptr,
-                  std::string(target_connection_info_opt->address),
-                  std::to_string(target_connection_info_opt->port));
+  network::HttpClient<boost::asio::ip::tcp::socket> tcp_client;
+  tcp_client.Connect(io_context_ptr,
+                     std::string(target_connection_info_opt->address),
+                     std::to_string(target_connection_info_opt->port));
   auto target_sock_ptr = tcp_client.GetSocket();
   char buf[kDefaultBufSize];
   while (true) {

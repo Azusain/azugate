@@ -32,8 +32,8 @@ constexpr std::string_view kYamlFieldProxyTargetHost = "target_host";
 constexpr std::string_view kYamlFieldManagementSysAuth = "authentication";
 
 // runtime shared variables.
-extern uint16_t g_port;
-extern uint16_t g_admin_port;
+extern uint16_t g_azugate_port;
+extern uint16_t g_azugate_admin_port;
 
 // TODO: mTLS.
 extern std::string g_ssl_crt;

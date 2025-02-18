@@ -59,8 +59,8 @@ int main() {
     // parse and load configuration.
     SPDLOG_INFO("loading config from {}", path_config_file);
     auto config = YAML::LoadFile(path_config_file);
-    g_port = config[kYamlFieldPort].as<uint16_t>();
-    g_admin_port = config[kYamlFieldAdminPort].as<uint16_t>();
+    g_azugate_port = config[kYamlFieldPort].as<uint16_t>();
+    g_azugate_admin_port = config[kYamlFieldAdminPort].as<uint16_t>();
     g_ssl_crt = config[kYamlFieldCrt].as<std::string>();
     g_ssl_key = config[kYamlFieldKey].as<std::string>();
     g_proxy_mode = config[kYamlFieldProxyMode].as<bool>();
@@ -88,12 +88,13 @@ int main() {
   // setup grpc server.
   std::thread grpc_server_thread([&]() {
     grpc::ServerBuilder server_builder;
-    server_builder.AddListeningPort(fmt::format("0.0.0.0:{}", g_admin_port),
-                                    grpc::InsecureServerCredentials());
+    server_builder.AddListeningPort(
+        fmt::format("0.0.0.0:{}", g_azugate_admin_port),
+        grpc::InsecureServerCredentials());
     ConfigServiceImpl config_service;
     server_builder.RegisterService(&config_service);
     std::unique_ptr<grpc::Server> server(server_builder.BuildAndStart());
-    SPDLOG_INFO("gRPC server runs on port {}", g_admin_port);
+    SPDLOG_INFO("gRPC server runs on port {}", g_azugate_admin_port);
     server->Wait();
   });
 
@@ -111,12 +112,12 @@ int main() {
   auto io_context_ptr = boost::make_shared<boost::asio::io_context>();
 
   // TODO: ipv6?
-  ip::tcp::endpoint local_address(ip::tcp::v4(), g_port);
+  ip::tcp::endpoint local_address(ip::tcp::v4(), g_azugate_port);
   ip::tcp::acceptor acc(*io_context_ptr, local_address);
   // dns resovler.
   ip::tcp::resolver resolver(io_context);
   ip::tcp::resolver::query query(g_target_host, std::to_string(g_target_port));
-  SPDLOG_INFO("azugate runs on port {}", g_port);
+  SPDLOG_INFO("azugate runs on port {}", g_azugate_port);
 
   // TODO: for testing purpose.
   azugate::AddRouterMapping(

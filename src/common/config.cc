@@ -25,8 +25,8 @@ template <> struct hash<azugate::ConnectionInfo> {
 } // namespace std
 
 namespace azugate {
-uint16_t g_port = 443;
-uint16_t g_admin_port = 50051;
+uint16_t g_azugate_port = 443;
+uint16_t g_azugate_admin_port = 50051;
 std::string g_path_config_file;
 std::unordered_set<std::string> g_ip_blacklist;
 bool g_enable_http_compression = false;
