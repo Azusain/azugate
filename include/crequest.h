@@ -9,11 +9,6 @@
 #include <vector>
 namespace CRequest {
 
-// http header fields.
-constexpr std::string_view kHeaderAcceptEncoding = "Accept-Encoding";
-constexpr std::string_view kHeaderContentEncoding = "Content-Encoding";
-constexpr std::string_view kHeaderTransferEncoding = "Transfer-Encoding";
-
 // http status codes.
 constexpr uint16_t kHttpContinue = 100;
 constexpr uint16_t kHttpSwitchingProtocols = 101;
@@ -66,6 +61,12 @@ constexpr std::string_view kHttpHead = "HEAD";
 constexpr std::string_view kHttpTrace = "TRACE";
 constexpr std::string_view kHttpPatch = "PATCH";
 constexpr std::string_view kHttpConnect = "CONNECT";
+// http header fields.
+constexpr std::string_view kHeaderAcceptEncoding = "Accept-Encoding";
+constexpr std::string_view kHeaderContentEncoding = "Content-Encoding";
+constexpr std::string_view kHeaderTransferEncoding = "Transfer-Encoding";
+constexpr std::string_view kHeaderCookie = "Cookie";
+constexpr std::string_view kHeaderAuthorization = "Authorization";
 // http connection.
 constexpr std::string_view kConnectionClose = "Close";
 constexpr std::string_view kConnectionKeepAlive = "keep-alive";
@@ -87,6 +88,7 @@ constexpr std::string_view kHttpVersion011 = "HTTP/1.1";
 // some parser stuffs.
 constexpr std::string_view kCrlf = "\r\n";
 constexpr std::string_view kSpace = " ";
+constexpr std::string_view kHeaderAuthorizationTypeBearer = "Bearer";
 // local file extensions;
 constexpr uint32_t kFileExtensionJson =
     azugate::utils::HashConstantString("json");

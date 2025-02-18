@@ -63,7 +63,7 @@ assembleFullLocalFilePath(const std::string_view &path_base_folder,
 }
 
 template <typename T>
-inline bool handleGzipCompression(const boost::shared_ptr<T> &sock_ptr,
+inline bool handleGzipCompression(const boost::shared_ptr<T> sock_ptr,
                                   boost::system::error_code &ec,
                                   std::ifstream &local_file_stream) {
   utils::GzipCompressor gzip_compressor;
@@ -98,7 +98,7 @@ inline bool handleGzipCompression(const boost::shared_ptr<T> &sock_ptr,
 }
 
 template <typename T>
-inline bool handleNoCompression(const boost::shared_ptr<T> &sock_ptr,
+inline bool handleNoCompression(const boost::shared_ptr<T> sock_ptr,
                                 boost::system::error_code &ec,
                                 std::ifstream &local_file_stream,
                                 network::PicoHttpRequest &request) {
@@ -125,7 +125,7 @@ inline bool handleNoCompression(const boost::shared_ptr<T> &sock_ptr,
 }
 
 template <typename T>
-inline bool compressAndWriteBody(const boost::shared_ptr<T> &sock_ptr,
+inline bool compressAndWriteBody(const boost::shared_ptr<T> sock_ptr,
                                  boost::system::error_code &ec,
                                  std::ifstream &local_file_stream,
                                  utils::CompressionType compression_type,
@@ -151,6 +151,58 @@ inline bool compressAndWriteBody(const boost::shared_ptr<T> &sock_ptr,
   }
 }
 
+// helper function to extract token from cookie
+inline std::string
+extractTokenFromCookie(const std::string_view &cookie_header) {
+  // logic to extract token from cookie, for example:
+  size_t token_pos = cookie_header.find("token=");
+  if (token_pos != std::string_view::npos) {
+    token_pos += 6; // move past 'token='
+    size_t token_end = cookie_header.find(';', token_pos);
+    if (token_end == std::string_view::npos) {
+      token_end = cookie_header.length();
+    }
+    return std::string(cookie_header.substr(token_pos, token_end - token_pos));
+  }
+  return "";
+}
+
+// helper function to extract token from Authorization header
+inline std::string
+extractTokenFromAuthorization(const std::string_view &auth_header) {
+  size_t token_pos = auth_header.find(CRequest::kHeaderAuthorizationTypeBearer);
+  if (token_pos != std::string_view::npos) {
+    // move past 'Bearer' and a space.
+    token_pos += 7;
+    return std::string(auth_header.substr(token_pos));
+  }
+  return "";
+}
+
+inline void extractMetaFromHeaders(utils::CompressionType &compression_type,
+                                   network::PicoHttpRequest &request,
+                                   std::string &token) {
+  for (size_t i = 0; i < request.num_headers; ++i) {
+    auto &header = request.headers[i];
+    std::string_view header_name(header.name, header.name_len);
+    if (header_name == CRequest::kHeaderAcceptEncoding) {
+      compression_type = utils::GetCompressionType(
+          std::string_view(header.value, header.value_len));
+      continue;
+    }
+    if (header_name == CRequest::kHeaderCookie) {
+      std::string_view header_value(header.value, header.value_len);
+      token = extractTokenFromCookie(header_value);
+      continue;
+    }
+    if (header_name == CRequest::kHeaderAuthorization) {
+      std::string_view header_value(header.value, header.value_len);
+      token = extractTokenFromAuthorization(header_value);
+      continue;
+    }
+  }
+}
+
 template <typename T>
 void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
                       ConnectionInfo source_connection_info) {
@@ -165,17 +217,11 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
     return;
   }
 
-  // extract meta from headers.
   utils::CompressionType compression_type;
-  for (size_t i = 0; i < request.num_headers; ++i) {
-    auto &header = request.headers[i];
-    // accept-encoding.
-    if (std::string_view(header.name, header.name_len) ==
-        CRequest::kHeaderAcceptEncoding) {
-      compression_type = utils::GetCompressionType(
-          std::string_view(header.value, header.value_len));
-    }
-  }
+  std::string token;
+  extractMetaFromHeaders(compression_type, request, token);
+
+  // authentication.
 
   // handle default page.
   source_connection_info.http_url = request.path;
@@ -183,7 +229,7 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
   auto target_conn_info_opt = GetRouterMapping(source_connection_info);
   if (request.len_path <= 0 || request.path == nullptr ||
       !target_conn_info_opt) {
-    // TODO: Redirect to error message page.
+    // TODO: redirect to error message page.
     request.path = kPathDftPage.data();
     request.len_path = kPathDftPage.length();
   }
