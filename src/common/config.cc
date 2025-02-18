@@ -32,9 +32,12 @@ std::unordered_set<std::string> g_ip_blacklist;
 bool g_enable_http_compression = false;
 bool g_enable_https = false;
 bool g_management_system_authentication = false;
+bool g_http_external_authorization = false;
+std::string g_external_oauth_server_domain = "localhost";
+std::string g_azugate_domain = "localhost";
 // TODO: mTLS.
-std::string g_sslCrt;
-std::string g_sslKey;
+std::string g_ssl_crt;
+std::string g_ssl_key;
 bool g_proxy_mode = false;
 uint16_t g_target_port;
 std::string g_target_host;

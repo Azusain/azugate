@@ -61,8 +61,8 @@ int main() {
     auto config = YAML::LoadFile(path_config_file);
     g_port = config[kYamlFieldPort].as<uint16_t>();
     g_admin_port = config[kYamlFieldAdminPort].as<uint16_t>();
-    g_sslCrt = config[kYamlFieldCrt].as<std::string>();
-    g_sslKey = config[kYamlFieldKey].as<std::string>();
+    g_ssl_crt = config[kYamlFieldCrt].as<std::string>();
+    g_ssl_key = config[kYamlFieldKey].as<std::string>();
     g_proxy_mode = config[kYamlFieldProxyMode].as<bool>();
     g_management_system_authentication =
         config[kYamlFieldManagementSysAuth].as<bool>();
@@ -75,11 +75,11 @@ int main() {
   g_token_secret = utils::GenerateSecret();
 
   // setup ssl connection.
-  ssl::context ssl_context(ssl::context::sslv23);
+  ssl::context ssl_context(ssl::context::sslv23_server);
   try {
     // TODO: file format.
-    ssl_context.use_certificate_chain_file(std::string(g_sslCrt));
-    ssl_context.use_private_key_file(std::string(g_sslKey), ssl::context::pem);
+    ssl_context.use_certificate_chain_file(std::string(g_ssl_crt));
+    ssl_context.use_private_key_file(std::string(g_ssl_key), ssl::context::pem);
   } catch (const std::exception &e) {
     SPDLOG_ERROR("failed to setup ssl context: {}", e.what());
     return 1;

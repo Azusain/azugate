@@ -36,8 +36,8 @@ extern uint16_t g_port;
 extern uint16_t g_admin_port;
 
 // TODO: mTLS.
-extern std::string g_sslCrt;
-extern std::string g_sslKey;
+extern std::string g_ssl_crt;
+extern std::string g_ssl_key;
 // TODO: need a better alternaive for these 3 variables..
 extern bool g_proxy_mode;
 extern uint16_t g_target_port;
@@ -48,6 +48,12 @@ extern std::string g_target_host;
 extern std::mutex g_config_mutex;
 // set it to true when integrating with external authentication provider.
 extern bool g_management_system_authentication;
+// external oauth authorization.
+// TODO: update these into configuration files.
+extern std::string g_external_oauth_server_domain;
+extern std::string g_azugate_domain;
+// http(s) external oauth authorization..
+extern bool g_http_external_authorization;
 // used for generating and verifying tokens.
 extern std::string g_token_secret;
 

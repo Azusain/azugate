@@ -10,10 +10,12 @@
 #include <optional>
 #include <string_view>
 
+#include "auth.h"
+#include "common.hpp"
 #include "compression.hpp"
 #include "config.h"
 #include "crequest.h"
-#include "http_wrapper.hpp"
+#include "network_wrapper.hpp"
 #include "picohttpparser.h"
 #include <array>
 #include <boost/algorithm/string.hpp>
@@ -34,7 +36,6 @@
 #include <fmt/format.h>
 #include <format>
 
-#include "http_wrapper.hpp"
 #include <memory>
 #include <netinet/in.h>
 #include <spdlog/spdlog.h>
@@ -204,8 +205,9 @@ inline void extractMetaFromHeaders(utils::CompressionType &compression_type,
 }
 
 template <typename T>
-void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
-                      ConnectionInfo source_connection_info) {
+void HttpProxyHandler(
+    const boost::shared_ptr<boost::asio::io_context> io_context_ptr,
+    boost::shared_ptr<T> &sock_ptr, ConnectionInfo source_connection_info) {
   using namespace boost::asio;
 
   network::PicoHttpRequest request;
@@ -221,7 +223,35 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
   std::string token;
   extractMetaFromHeaders(compression_type, request, token);
 
-  // authentication.
+  // external authoriation.
+  if (g_http_external_authorization) {
+    // exract authorization code from url parameters.
+    auto code = network::ExtractParamFromUrl(
+        std::string(request.path, request.len_path), "code");
+    if (code != "") {
+
+      // // token exchange with the oauth server.
+      // std::ostringstream body;
+
+      // body << "grant_type=" <<
+      // azugate::utils::UrlEncode("authorization_code");
+      // << "&code=" << azugate::utils::UrlEncode(code)
+      // << "&redirect_uri=" << azugate::utils::UrlEncode(redirect_uri)
+      // << "&client_id=" << azugate::utils::UrlEncode(client_id)
+      // << "&client_secret=" << azugate::utils::UrlEncode(client_secret);
+    }
+    // verify token.
+    if (token.length() == 0 || !utils::VerifyToken(token, g_token_secret)) {
+      // redirect to oauth login page.
+      CRequest::HttpResponse redirect_resp(CRequest::kHttpFound);
+      redirect_resp.SetKeepAlive(false);
+      if (!network::SendHttpMessage(redirect_resp, sock_ptr, ec)) {
+        SPDLOG_WARN("failed to send redirect http response");
+        return;
+      };
+    }
+    return;
+  }
 
   // handle default page.
   source_connection_info.http_url = request.path;
@@ -237,7 +267,6 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
   std::shared_ptr<char[]> full_local_file_path =
       assembleFullLocalFilePath(kPathResourceFolder, request);
   auto full_local_file_path_str = full_local_file_path.get();
-
   if (!std::filesystem::exists(full_local_file_path_str)) {
     SPDLOG_ERROR("file not exists: {}", full_local_file_path_str);
     return;
@@ -278,7 +307,7 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
 }
 
 inline void TcpProxyHandler(
-    const boost::shared_ptr<boost::asio::io_context> &io_context_ptr,
+    const boost::shared_ptr<boost::asio::io_context> io_context_ptr,
     const boost::shared_ptr<boost::asio::ip::tcp::socket> &source_sock_ptr,
     std::optional<ConnectionInfo> target_connection_info_opt) {
   using namespace boost::asio;
@@ -287,24 +316,11 @@ inline void TcpProxyHandler(
     SPDLOG_ERROR("failed to get proxy target");
     return;
   }
-  // router.
-  ip::tcp::resolver resolver(*io_context_ptr);
-  ip::tcp::resolver::query query(
-      std::string(target_connection_info_opt->address),
-      std::to_string(target_connection_info_opt->port));
-  auto endpoint_iterator = resolver.resolve(query, ec);
-  if (ec) {
-    SPDLOG_WARN("failed to resolve domain: {}", ec.message());
-    return;
-  }
-
-  auto target_sock_ptr = std::make_shared<ip::tcp::socket>(*io_context_ptr);
-  boost::asio::connect(*target_sock_ptr, endpoint_iterator, ec);
-  if (ec) {
-    SPDLOG_WARN("failed to connect to target: {}", ec.message());
-    return;
-  }
-
+  network::TcpClient<boost::asio::ip::tcp::socket> tcp_client;
+  tcp_client.Init(io_context_ptr,
+                  std::string(target_connection_info_opt->address),
+                  std::to_string(target_connection_info_opt->port));
+  auto target_sock_ptr = tcp_client.GetSocket();
   char buf[kDefaultBufSize];
   while (true) {
     size_t bytes_read = source_sock_ptr->read_some(buffer(buf), ec);
