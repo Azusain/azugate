@@ -61,7 +61,6 @@ public:
   boost::shared_ptr<T> GetSocket() const { return sock_ptr_; }
 
 private:
-  // 定义 sock_ptr_ 为模板类型，支持不同的套接s字类型
   boost::shared_ptr<T> sock_ptr_;
 };
 
