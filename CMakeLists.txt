@@ -14,7 +14,7 @@ find_package(gRPC CONFIG REQUIRED)
 find_package(Protobuf CONFIG REQUIRED)
 find_package(jwt-cpp REQUIRED)
 find_package(ZLIB REQUIRED)
-
+find_package(nlohmann_json CONFIG REQUIRED)
 
 set(COMMON_INCLUDES_DIR "include")
 set(THIRD_PARTY_INCLUDES_DIR "third_party")
@@ -39,6 +39,14 @@ ${API_INCLUDES_DIR}
 target_link_libraries(common
 spdlog::spdlog
 ZLIB::ZLIB
+Boost::asio
+Boost::thread
+yaml-cpp::yaml-cpp
+gRPC::grpc++
+protobuf::libprotobuf
+nlohmann_json::nlohmann_json
+${OPENSSL_LIBRARIES}
+${jwt-cpp_LIBRARIES}
 )
 
 # apps.
@@ -47,14 +55,7 @@ add_executable(azugate
 )
 
 target_link_libraries(azugate
-${OPENSSL_LIBRARIES}
-${jwt-cpp_LIBRARIES}
 common
-Boost::asio
-Boost::thread
-yaml-cpp::yaml-cpp
-gRPC::grpc++
-protobuf::libprotobuf
 )
 
 # only for testing

@@ -35,6 +35,17 @@ struct PicoHttpRequest {
   size_t num_headers;
 };
 
+struct PicoHttpResponse {
+  char header_buf[kMaxHttpHeaderSize];
+  const char *status_code = nullptr;
+  const char *status_message = nullptr;
+  size_t status_message_len;
+  int *status;
+  int minor_version;
+  phr_header headers[kMaxHeadersNum];
+  size_t num_headers;
+};
+
 // this class can be also used for establishing a tcp connection.
 template <typename T> class HttpClient {
 public:
@@ -139,6 +150,53 @@ public:
         return false;
       }
     }
+    return true;
+  }
+
+  inline bool GetHttpResponse(PicoHttpResponse &response,
+                              boost::system::error_code &ec) {
+    using namespace boost::asio;
+    size_t total_parsed = 0;
+
+    for (;;) {
+      if (total_parsed >= kMaxHttpHeaderSize) {
+        SPDLOG_WARN("HTTP header size exceeded the limit");
+        return false;
+      }
+
+      // 读取数据
+      size_t bytes_read =
+          sock_ptr_->read_some(buffer(response.header_buf + total_parsed,
+                                      kMaxHttpHeaderSize - total_parsed),
+                               ec);
+      if (ec) {
+        if (ec == boost::asio::error::eof) {
+          SPDLOG_DEBUG("connection closed by peer");
+          break;
+        }
+        SPDLOG_WARN("failed to read HTTP response: {}", ec.message());
+        return false;
+      }
+
+      total_parsed += bytes_read;
+      response.num_headers = std::size(response.headers);
+      // TODO: last update here.................
+      int pret = phr_parse_response(
+          response.header_buf, total_parsed, &response.status_code,
+          &response.status_code_len, &response.status_message,
+          &response.status_message_len, &response.minor_version,
+          response.headers, &response.num_headers, 0);
+
+      if (pret > 0) {
+        break;
+      } else if (pret == -2) {
+        continue;
+      } else {
+        SPDLOG_WARN("failed to parse HTTP response");
+        return false;
+      }
+    }
+
     return true;
   }
 

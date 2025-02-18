@@ -72,7 +72,7 @@ int main() {
   }
 
   // token secret.
-  g_token_secret = utils::GenerateSecret();
+  g_authorization_token_secret = utils::GenerateSecret();
 
   // setup ssl connection.
   ssl::context ssl_context(ssl::context::sslv23_server);

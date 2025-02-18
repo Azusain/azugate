@@ -5,10 +5,11 @@
     "boost-thread",
     "fmt",
     "grpc",
+    "jwt-cpp",
+    "nlohmann-json",
     "openssl",
     "spdlog",
     "yaml-cpp",
-    "zlib",
-    "jwt-cpp"
+    "zlib"
   ]
 }

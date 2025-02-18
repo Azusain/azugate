@@ -2,6 +2,7 @@
 #define __CONFIG_H
 
 #include "protocols.h"
+#include <cstddef>
 #include <cstdint>
 #include <mutex>
 #include <string>
@@ -33,6 +34,7 @@ constexpr std::string_view kYamlFieldManagementSysAuth = "authentication";
 // mics.
 constexpr std::string_view kDftHttpPort = "80";
 constexpr std::string_view kDftHttpsPort = "443";
+constexpr size_t kDftStringReservedBytes = 256;
 // runtime shared variables.
 extern uint16_t g_azugate_port;
 extern uint16_t g_azugate_admin_port;
@@ -52,13 +54,17 @@ extern bool g_management_system_authentication;
 // external oauth authorization.
 // TODO: update these fields into configuration files.
 extern std::string g_external_oauth_server_domain;
+extern std::string g_external_oauth_server_path;
 extern std::string g_azugate_domain;
 // http(s) external oauth authorization..
 extern bool g_http_external_authorization;
 // used for generating and verifying tokens.
-extern std::string g_token_secret;
+extern std::string g_authorization_token_secret;
+// oauth.
+extern std::string g_azugate_oauth_client_id;
+extern std::string g_azugate_oauth_client_secret;
 
-extern std::string GetConfigPath();
+std::string GetConfigPath();
 void SetConfigPath(std::string &&path);
 
 bool GetHttpCompression();
@@ -89,3 +95,5 @@ std::optional<ConnectionInfo> GetRouterMapping(const ConnectionInfo &source);
 } // namespace azugate
 
 #endif
+
+// TODO: all the g_xxx variables should be thread-safe.

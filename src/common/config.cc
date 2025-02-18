@@ -34,6 +34,7 @@ bool g_enable_https = true;
 bool g_management_system_authentication = false;
 bool g_http_external_authorization = false;
 std::string g_external_oauth_server_domain = "localhost";
+std::string g_external_oauth_server_path = "/";
 std::string g_azugate_domain = "localhost";
 // TODO: mTLS.
 std::string g_ssl_crt;
@@ -45,7 +46,11 @@ std::mutex g_config_mutex;
 // router.
 std::unordered_map<ConnectionInfo, ConnectionInfo> g_router_map;
 // token.
-std::string g_token_secret;
+std::string g_authorization_token_secret;
+// oauth.
+// TODO: configured in config.yaml.
+std::string g_azugate_oauth_client_id;
+std::string g_azugate_oauth_client_secret;
 
 std::string GetConfigPath() {
   std::lock_guard<std::mutex> lock(g_config_mutex);

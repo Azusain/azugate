@@ -7,6 +7,7 @@
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <filesystem>
 #include <fstream>
+#include <nlohmann/json.hpp>
 #include <optional>
 #include <string_view>
 
@@ -17,6 +18,7 @@
 #include "crequest.h"
 #include "network_wrapper.hpp"
 #include "picohttpparser.h"
+#include "protocols.h"
 #include <array>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/classification.hpp>
@@ -236,18 +238,42 @@ void HttpProxyHandler(
       network::HttpClient<T> code_http_client;
       code_http_client.Connect(io_context_ptr, g_external_oauth_server_domain,
                                std::string(kDftHttpPort));
-      // // token exchange with the oauth server.
-      // std::ostringstream body;
-
-      // body << "grant_type=" <<
-      // azugate::utils::UrlEncode("authorization_code");
-      // << "&code=" << azugate::utils::UrlEncode(code)
-      // << "&redirect_uri=" << azugate::utils::UrlEncode(redirect_uri)
-      // << "&client_id=" << azugate::utils::UrlEncode(client_id)
-      // << "&client_secret=" << azugate::utils::UrlEncode(client_secret);
+      // token exchange with the oauth server.
+      std::string body;
+      body.reserve(kDftStringReservedBytes);
+      body.append("grant_type=")
+          .append(azugate::utils::UrlEncode("authorization_code"))
+          .append("&code=")
+          .append(azugate::utils::UrlEncode(code))
+          .append("&redirect_uri=");
+      if (GetHttps()) {
+        body.append(ProtocolTypeHttps);
+      } else {
+        body.append(ProtocolTypeHttp);
+      }
+      body.append(azugate::utils::UrlEncode("://"))
+          .append(g_azugate_domain)
+          .append(":")
+          .append(std::to_string(g_azugate_port))
+          .append("&client_id=")
+          .append(azugate::utils::UrlEncode(g_azugate_oauth_client_id))
+          .append("&client_secret=")
+          .append(azugate::utils::UrlEncode(g_azugate_oauth_client_secret));
+      CRequest::HttpRequest req(std::string(CRequest::kHttpPost),
+                                g_external_oauth_server_path);
+      req.SetContentLength(body.length());
+      req.SetKeepAlive(false);
+      if (!http_client.SendHttpMessage(req, ec)) {
+        SPDLOG_WARN("failed to send token exchange http request");
+        return;
+      }
+      network::PicoHttpRequest s;
+      // http_client.GetHttpHeader(PicoHttpRequest &header,
+      // boost::system::error_code &ec)
     }
     // verify token.
-    if (token.length() == 0 || !utils::VerifyToken(token, g_token_secret)) {
+    if (token.length() == 0 ||
+        !utils::VerifyToken(token, g_authorization_token_secret)) {
       // redirect to oauth login page.
       CRequest::HttpResponse redirect_resp(CRequest::kHttpFound);
       redirect_resp.SetKeepAlive(false);
