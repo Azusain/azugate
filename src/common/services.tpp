@@ -50,15 +50,105 @@ using namespace azugate;
 // TODO: file path should be configured by router.
 inline std::shared_ptr<char[]>
 assembleFullLocalFilePath(const std::string_view &path_base_folder,
-                          const network::PicoHttpRequest &header) {
+                          const network::PicoHttpRequest &request) {
   const size_t len_base_folder = path_base_folder.length();
-  size_t len_full_path = len_base_folder + header.len_path + 1;
+  size_t len_full_path = len_base_folder + request.len_path + 1;
   std::shared_ptr<char[]> full_path(new char[len_full_path]);
   const char *base_folder = path_base_folder.data();
   std::memcpy(full_path.get(), base_folder, len_base_folder);
-  std::memcpy(full_path.get() + len_base_folder, header.path, header.len_path);
-  std::memcpy(full_path.get() + len_base_folder + header.len_path, "\0", 1);
+  std::memcpy(full_path.get() + len_base_folder, request.path,
+              request.len_path);
+  std::memcpy(full_path.get() + len_base_folder + request.len_path, "\0", 1);
   return full_path;
+}
+
+template <typename T>
+inline bool handleGzipCompression(const boost::shared_ptr<T> &sock_ptr,
+                                  boost::system::error_code &ec,
+                                  std::ifstream &local_file_stream) {
+  utils::GzipCompressor gzip_compressor;
+  auto compressed_output_handler = [&sock_ptr,
+                                    &ec](unsigned char *compressed_data,
+                                         size_t size) {
+    std::array<boost::asio::const_buffer, 3> buffers = {
+        boost::asio::buffer(std::format("{:x}{}", size, CRequest::kCrlf)),
+        boost::asio::buffer(compressed_data, size),
+        boost::asio::buffer(CRequest::kCrlf, 2)};
+    sock_ptr->write_some(buffers, ec);
+    if (ec) {
+      SPDLOG_ERROR("failed to write chunk data to socket: {}", ec.message());
+      return false;
+    }
+    return true;
+  };
+
+  auto ret = gzip_compressor.GzipStreamCompress(local_file_stream,
+                                                compressed_output_handler);
+  if (!ret) {
+    SPDLOG_ERROR("errors occur while compressing data chunk");
+    return false;
+  }
+  sock_ptr->write_some(
+      boost::asio::buffer(CRequest::kChunkedEncodingEndingStr, 5), ec);
+  if (ec) {
+    SPDLOG_ERROR("failed to write chunk ending marker: {}", ec.message());
+    return false;
+  }
+  return true;
+}
+
+template <typename T>
+inline bool handleNoCompression(const boost::shared_ptr<T> &sock_ptr,
+                                boost::system::error_code &ec,
+                                std::ifstream &local_file_stream,
+                                network::PicoHttpRequest &request) {
+  for (;;) {
+    local_file_stream.read(request.header_buf, sizeof(request.header_buf));
+    auto n_read = local_file_stream.gcount();
+    if (n_read > 0) {
+      sock_ptr->write_some(
+          boost::asio::const_buffer(request.header_buf, n_read), ec);
+      if (ec) {
+        SPDLOG_ERROR("failed to write data to socket: {}", ec.message());
+        return false;
+      }
+    }
+    if (local_file_stream.eof()) {
+      break;
+    }
+    if (n_read == 0) {
+      SPDLOG_ERROR("errors occur while reading from local file stream");
+      return false;
+    }
+  }
+  return true;
+}
+
+template <typename T>
+inline bool compressAndWriteBody(const boost::shared_ptr<T> &sock_ptr,
+                                 boost::system::error_code &ec,
+                                 std::ifstream &local_file_stream,
+                                 utils::CompressionType compression_type,
+                                 network::PicoHttpRequest &request) {
+  switch (compression_type.code) {
+  case utils::kCompressionTypeCodeGzip: {
+    return handleGzipCompression(sock_ptr, ec, local_file_stream);
+  }
+  case utils::kCompressionTypeCodeBrotli:
+    SPDLOG_WARN("unsupported compression type: {}",
+                utils::kCompressionTypeStrBrotli);
+    return false;
+  case utils::kCompressionTypeCodeZStandard:
+    SPDLOG_WARN("unsupported compression type: {}",
+                utils::kCompressionTypeStrZStandard);
+    return false;
+  case utils::kCompressionTypeCodeDeflate:
+    SPDLOG_WARN("unsupported compression type: {}",
+                utils::kCompressionTypeStrDeflate);
+    return false;
+  default:
+    return handleNoCompression(sock_ptr, ec, local_file_stream, request);
+  }
 }
 
 template <typename T>
@@ -66,19 +156,19 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
                       ConnectionInfo source_connection_info) {
   using namespace boost::asio;
 
-  network::PicoHttpRequest http_req;
+  network::PicoHttpRequest request;
   boost::system::error_code ec;
 
   // read and parse HTTP header
-  if (!network::GetHttpHeader(http_req, ec, sock_ptr)) {
+  if (!network::GetHttpHeader(request, ec, sock_ptr)) {
     SPDLOG_ERROR("failed to parse http headers");
     return;
   }
 
   // extract meta from headers.
   utils::CompressionType compression_type;
-  for (size_t i = 0; i < http_req.num_headers; ++i) {
-    auto &header = http_req.headers[i];
+  for (size_t i = 0; i < request.num_headers; ++i) {
+    auto &header = request.headers[i];
     // accept-encoding.
     if (std::string_view(header.name, header.name_len) ==
         CRequest::kHeaderAcceptEncoding) {
@@ -88,18 +178,18 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
   }
 
   // handle default page.
-  source_connection_info.http_url = http_req.path;
+  source_connection_info.http_url = request.path;
   source_connection_info.type = ProtocolTypeHttp;
   auto target_conn_info_opt = GetRouterMapping(source_connection_info);
-  if (http_req.len_path <= 0 || http_req.path == nullptr ||
+  if (request.len_path <= 0 || request.path == nullptr ||
       !target_conn_info_opt) {
     // TODO: Redirect to error message page.
-    http_req.path = kPathDftPage.data();
-    http_req.len_path = kPathDftPage.length();
+    request.path = kPathDftPage.data();
+    request.len_path = kPathDftPage.length();
   }
 
   std::shared_ptr<char[]> full_local_file_path =
-      assembleFullLocalFilePath(kPathResourceFolder, http_req);
+      assembleFullLocalFilePath(kPathResourceFolder, request);
   auto full_local_file_path_str = full_local_file_path.get();
 
   if (!std::filesystem::exists(full_local_file_path_str)) {
@@ -116,7 +206,7 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
   // setup and send response headers.
   CRequest::HttpResponse resp(CRequest::kHttpOk);
   auto ext =
-      utils::FindFileExtension(std::string(http_req.path, http_req.len_path));
+      utils::FindFileExtension(std::string(request.path, request.len_path));
   resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
   resp.SetKeepAlive(false);
   if (compression_type.code != utils::kCompressionTypeCodeNone) {
@@ -133,73 +223,11 @@ void HttpProxyHandler(boost::shared_ptr<T> &sock_ptr,
 
   // setup and send body.
   // WARN: reuse buffer address.
-  memset(http_req.header_buf, '\0', sizeof(http_req.header_buf));
-  switch (compression_type.code) {
-  case utils::kCompressionTypeCodeGzip: {
-    utils::GzipCompressor gzip_compressor;
-    auto compressed_output_handler = [&sock_ptr,
-                                      &ec](unsigned char *compressed_data,
-                                           size_t size) {
-      std::array<boost::asio::const_buffer, 3> buffers = {
-          boost::asio::buffer(std::format("{:x}{}", size, CRequest::kCrlf)),
-          boost::asio::buffer(compressed_data, size),
-          boost::asio::buffer(CRequest::kCrlf, 2)};
-      sock_ptr->write_some(buffers, ec);
-      if (ec) {
-        SPDLOG_ERROR("failed to write chunk data to socket: {}", ec.message());
-        return false;
-      }
-      return true;
-    };
-    auto ret = gzip_compressor.GzipStreamCompress(local_file_stream,
-                                                  compressed_output_handler);
-    if (!ret) {
-      SPDLOG_ERROR("errors occur while compressing data chunk");
-      return;
-    }
-    // write chunk ending marker.
-    sock_ptr->write_some(
-        boost::asio::buffer(CRequest::kChunkedEncodingEndingStr, 5), ec);
-    if (ec) {
-      SPDLOG_ERROR("failed to write chunk ending marker: {}", ec.message());
-      return;
-    }
-    break;
-  }
-  case utils::kCompressionTypeCodeBrotli:
-    SPDLOG_WARN("unsupported compression type: {}",
-                utils::kCompressionTypeStrBrotli);
-    break;
-  case utils::kCompressionTypeCodeZStandard:
-    SPDLOG_WARN("unsupported compression type:{}",
-                utils::kCompressionTypeStrZStandard);
-    break;
-  case utils::kCompressionTypeCodeDeflate:
-    SPDLOG_WARN("unsupported compression type: {}",
-                utils::kCompressionTypeStrDeflate);
-    break;
-  default: {
-    for (;;) {
-      local_file_stream.read(http_req.header_buf, sizeof(http_req.header_buf));
-      auto n_read = local_file_stream.gcount();
-      if (n_read > 0) {
-        sock_ptr->write_some(
-            boost::asio::const_buffer(http_req.header_buf, n_read), ec);
-        if (ec) {
-          SPDLOG_ERROR("failed to write data to socket: {}", ec.message());
-          return;
-        }
-      }
-      if (local_file_stream.eof()) {
-        break;
-      }
-      if (n_read == 0) {
-        SPDLOG_ERROR("errors occur while reading from local file stream");
-        return;
-      }
-    }
-  }
-  }
+  memset(request.header_buf, '\0', sizeof(request.header_buf));
+  if (!compressAndWriteBody(sock_ptr, ec, local_file_stream, compression_type,
+                            request)) {
+    SPDLOG_WARN("failed to write body");
+  };
   return;
 }
 
