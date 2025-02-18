@@ -12,6 +12,7 @@
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/ssl/context.hpp>
 #include <boost/asio/ssl/stream.hpp>
+#include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/system/detail/error_code.hpp>
@@ -55,7 +56,7 @@ public:
       return false;
     }
     // connect to target.
-    auto tcp_sock_ptr = std::make_shared<ip::tcp::socket>(*io_context_ptr);
+    auto tcp_sock_ptr = boost::make_shared<ip::tcp::socket>(*io_context_ptr);
     boost::asio::connect(*tcp_sock_ptr, endpoint_iterator, ec);
     if (ec) {
       SPDLOG_WARN("failed to connect to target: {}", ec.message());
@@ -63,8 +64,9 @@ public:
     }
     // ssl client.
     if constexpr (std::is_same<T, ssl::stream<ip::tcp::socket>>::value) {
-      sock_ptr_ = std::make_shared<ssl::stream<ip::tcp::socket>>(
-          std::move(*tcp_sock_ptr), ssl::context(ssl::context::sslv23_client));
+      ssl::context ssl_client_ctx(ssl::context::sslv23_client);
+      sock_ptr_ = boost::make_shared<ssl::stream<ip::tcp::socket>>(
+          std::move(*tcp_sock_ptr), ssl_client_ctx);
       try {
         sock_ptr_->handshake(ssl::stream_base::client);
       } catch (const std::exception &e) {

@@ -233,7 +233,9 @@ void HttpProxyHandler(
     auto code = network::ExtractParamFromUrl(
         std::string(request.path, request.len_path), "code");
     if (code != "") {
-
+      network::HttpClient<T> code_http_client;
+      code_http_client.Connect(io_context_ptr, g_external_oauth_server_domain,
+                               std::string(kDftHttpPort));
       // // token exchange with the oauth server.
       // std::ostringstream body;
 
