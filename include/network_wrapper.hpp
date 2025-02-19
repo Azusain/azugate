@@ -37,11 +37,10 @@ struct PicoHttpRequest {
 
 struct PicoHttpResponse {
   char header_buf[kMaxHttpHeaderSize];
-  const char *status_code = nullptr;
-  const char *status_message = nullptr;
-  size_t status_message_len;
-  int *status;
   int minor_version;
+  int status;
+  const char *message = nullptr;
+  size_t len_message;
   phr_header headers[kMaxHeadersNum];
   size_t num_headers;
 };
@@ -94,8 +93,7 @@ public:
   boost::shared_ptr<T> GetSocket() const { return sock_ptr_; }
 
   inline bool SendHttpMessage(CRequest::HttpMessage &msg,
-
-                              boost::system::error_code &ec) {
+                              boost::system::error_code &ec) const {
     using namespace boost::asio;
     sock_ptr_->write_some(boost::asio::buffer(msg.StringifyFirstLine()), ec);
     if (ec) {
@@ -110,8 +108,8 @@ public:
     return true;
   };
 
-  inline bool GetHttpHeader(PicoHttpRequest &header,
-                            boost::system::error_code &ec) {
+  inline bool ParseHttpRequest(PicoHttpRequest &header,
+                               boost::system::error_code &ec) const {
     using namespace boost::asio;
     size_t total_parsed = 0;
 
@@ -153,18 +151,15 @@ public:
     return true;
   }
 
-  inline bool GetHttpResponse(PicoHttpResponse &response,
-                              boost::system::error_code &ec) {
+  inline bool ParseHttpResponse(PicoHttpResponse &response,
+                                boost::system::error_code &ec) const {
     using namespace boost::asio;
     size_t total_parsed = 0;
-
     for (;;) {
       if (total_parsed >= kMaxHttpHeaderSize) {
         SPDLOG_WARN("HTTP header size exceeded the limit");
         return false;
       }
-
-      // 读取数据
       size_t bytes_read =
           sock_ptr_->read_some(buffer(response.header_buf + total_parsed,
                                       kMaxHttpHeaderSize - total_parsed),
@@ -180,13 +175,11 @@ public:
 
       total_parsed += bytes_read;
       response.num_headers = std::size(response.headers);
-      // TODO: last update here.................
-      int pret = phr_parse_response(
-          response.header_buf, total_parsed, &response.status_code,
-          &response.status_code_len, &response.status_message,
-          &response.status_message_len, &response.minor_version,
-          response.headers, &response.num_headers, 0);
 
+      int pret = phr_parse_response(response.header_buf, total_parsed,
+                                    &response.minor_version, &response.status,
+                                    &response.message, &response.len_message,
+                                    response.headers, &response.num_headers, 0);
       if (pret > 0) {
         break;
       } else if (pret == -2) {
@@ -196,7 +189,28 @@ public:
         return false;
       }
     }
+    return true;
+  }
 
+  inline bool ReadHttpBody(std::string &body_buffer,
+                           boost::system::error_code &ec) const {
+    using namespace boost::asio;
+    size_t total_read = 0;
+    // read until eof.
+    for (;;) {
+      size_t n_read =
+          sock_ptr_->read_some(buffer(body_buffer.data() + total_read,
+                                      body_buffer.capacity() - total_read),
+                               ec);
+      if (ec) {
+        if (ec == error::eof) {
+          return true;
+        }
+        SPDLOG_WARN("failed to read body");
+        return false;
+      }
+      total_read += n_read;
+    }
     return true;
   }
 

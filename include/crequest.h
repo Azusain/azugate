@@ -67,6 +67,7 @@ constexpr std::string_view kHeaderContentEncoding = "Content-Encoding";
 constexpr std::string_view kHeaderTransferEncoding = "Transfer-Encoding";
 constexpr std::string_view kHeaderCookie = "Cookie";
 constexpr std::string_view kHeaderAuthorization = "Authorization";
+constexpr std::string_view kHeaderContentLength = "Content-Length";
 // http connection.
 constexpr std::string_view kConnectionClose = "Close";
 constexpr std::string_view kConnectionKeepAlive = "keep-alive";

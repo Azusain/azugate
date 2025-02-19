@@ -163,8 +163,9 @@ int main() {
 // envoy OAuth, JWT, RBAC.
 // async logging system.
 // websockets.
-// unit test for utilities.
+// unit test for utilities (HTTP parser).
 // persistent storage.
 // file mapping optimization.
 // memmory pool optimaization.
 // fuzzy matching in router.
+// gzip only works on file proxy.
