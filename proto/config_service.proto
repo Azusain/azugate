@@ -13,7 +13,7 @@ service ConfigService {
   rpc UpdateConfig(UpdateConfigRequest) returns (UpdateConfigResponse) {
     option (google.api.http) = {
       post: "/config:update"
-      body: "*"
+      body: "*"h
     };
   }
 
