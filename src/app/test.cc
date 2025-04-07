@@ -11,7 +11,6 @@
 #include <sys/types.h>
 #include <thread>
 #include <unistd.h>
-#include <vector>
 
 // boost asio
 #include <boost/asio.hpp>
@@ -150,46 +149,43 @@ private:
 int main() {
   int port = 8080;
 
-  SingleThreadModel model(port);
+  // SingleThreadModel model(port);
   // KqueueModel model(port);
-  // AsioReactorModel model(port);
+  AsioReactorModel model(port);
 
   model.start();
   return 0;
 }
 
+// thread per connection.
+// Running 30s test @ http://localhost:8080
+//   5 threads and 20 connections
+//   Thread Stats   Avg      Stdev     Max   +/- Stdev
+//     Latency     1.26s   479.76ms   1.82s    60.00%
+//     Req/Sec     1.57      2.17    10.00     84.69%
+//   98 requests in 30.09s, 6.32KB read
+//   Socket errors: connect 0, read 140, write 0, timeout 93
+// Requests/sec:      3.26
+// Transfer/sec:     214.93B
+
+// kqueue
+// Running 30s test @ http://localhost:8080
+//   5 threads and 20 connections
+//   Thread Stats   Avg      Stdev     Max   +/- Stdev
+//     Latency     1.18s   564.72ms   1.95s    66.67%
+//     Req/Sec     1.44      2.20     9.00     87.25%
+//   102 requests in 30.09s, 6.57KB read
+//   Socket errors: connect 0, read 147, write 3, timeout 96
+// Requests/sec:      3.39
+// Transfer/sec:     223.70B
+
 // reactor
-// azusain@Nakanos-MacBook-Air Desktop % wrk -t5 -c20 -d10s
-// http://localhost:8080 Running 10s test @ http://localhost:8080
-//   5 threads and 20 connections
-//   Thread Stats   Avg      Stdev     Max   +/- Stdev
-//     Latency     1.84ms   11.11ms 160.74ms   97.19%
-//     Req/Sec     8.39k     1.76k   10.83k    86.46%
-//   415251 requests in 10.01s, 26.14MB read
-//   Socket errors: connect 0, read 398288, write 16960, timeout 0
-// Requests/sec:  41467.87
-// Transfer/sec:      2.61MB
-//
-// multiplexing
-// azusain@Nakanos-MacBook-Air Desktop % wrk -t5 -c20 -d10s
-// http://localhost:8080 Running 10s test @ http://localhost:8080
-//   5 threads and 20 connections
-//   Thread Stats   Avg      Stdev     Max   +/- Stdev
-//     Latency     1.00s   545.08ms   1.93s    71.43%
-//     Req/Sec     2.03      2.75    10.00     90.00%
-//   30 requests in 10.09s, 1.93KB read
-//   Socket errors: connect 0, read 54, write 0, timeout 23
-// Requests/sec:      2.97
-// Transfer/sec:     196.16B
-//
-// thread per connection
-// azusain@Nakanos-MacBook-Air Desktop % wrk -t5 -c20 -d10s
-// http://localhost:8080 Running 10s test @ http://localhost:8080
-//   5 threads and 20 connections
-//   Thread Stats   Avg      Stdev     Max   +/- Stdev
-//     Latency     1.30s   446.31ms   1.76s    60.00%
-//     Req/Sec     1.07      1.25     4.00     85.71%
-//   28 requests in 10.09s, 1.80KB read
-//   Socket errors: connect 0, read 54, write 0, timeout 23
-// Requests/sec:      2.77
-// Transfer/sec:     183.08B
+// Running 30s test @ http://localhost:8080
+// 5 threads and 20 connections
+// Thread Stats   Avg      Stdev     Max   +/- Stdev
+//   Latency     2.33ms   13.66ms 167.47ms   96.97%
+//   Req/Sec     8.22k     1.79k   10.41k    82.17%
+// 1215260 requests in 30.20s, 76.49MB read
+// Socket errors: connect 0, read 1164992, write 50266, timeout 0
+// Requests/sec:  40234.23
+// Transfer/sec:      2.53MB
