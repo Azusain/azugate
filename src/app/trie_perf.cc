@@ -7,7 +7,6 @@
 #include <unordered_map>
 #include <vector>
 
-
 // ==============================
 // Trie 实现（最长前缀匹配）
 // ==============================
@@ -99,7 +98,7 @@ void performance_test(int m, int n) {
 
   // 构造测试路径（部分与规则前缀相同）
   std::vector<std::string> test_paths;
-  for (int i = 0; i < 10000; ++i) {
+  for (int i = 0; i < 100000; ++i) {
     std::string base = rules[i % rules.size()];
     test_paths.push_back(base + "/extra" + std::to_string(i)); // 模拟真实路径
   }
@@ -144,3 +143,9 @@ int main() {
   performance_test(m, n);
   return 0;
 }
+
+// 3 6 -> 100 条
+// 3 34.5 -> 1000 条
+// 3 2003 -> 10000 条
+// 27 20038 -> 100000 条
+//

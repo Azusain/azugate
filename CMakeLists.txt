@@ -58,11 +58,20 @@ target_link_libraries(azugate
 common
 )
 
-# only for testing
-add_executable(test
-"src/app/test.cc"
+# I/O Perf.
+add_executable(io_perf
+"src/app/io_perf.cc"
 )
-target_link_libraries(test
+target_link_libraries(io_perf
+${OPENSSL_LIBRARIES}
+common
+)
+
+# Trie Perf.
+add_executable(trie_perf
+"src/app/trie_perf.cc"
+)
+target_link_libraries(trie_perf
 ${OPENSSL_LIBRARIES}
 common
 )
