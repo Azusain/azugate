@@ -27,6 +27,7 @@
 #include <exception>
 #include <fmt/base.h>
 #include <fmt/format.h>
+#include <functional>
 #include <grpcpp/create_channel.h>
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/security/server_credentials.h>
@@ -129,37 +130,38 @@ int main() {
   azugate::TokenBucketRateLimiter rate_limiter(io_context_ptr);
   rate_limiter.Start();
 
-  // setup a basic OTPL server.
-  // TODO: optimize it with async io architecture.
-  std::thread otpl_server_thread([&]() {
-    for (;;) {
-      boost::system::error_code ec;
-      auto sock_ptr = boost::make_shared<ip::tcp::socket>(*io_context_ptr);
-      auto _ = acc.accept(*sock_ptr, ec);
+  std::function<void()> async_accept;
+  async_accept = [&]() {
+    boost::system::error_code ec;
+    auto sock_ptr = boost::make_shared<ip::tcp::socket>(*io_context_ptr);
+    acc.async_accept(*sock_ptr, [&, sock_ptr](auto ec) {
       if (ec) {
-        SPDLOG_WARN("failed to do accept()");
-        continue;
+        SPDLOG_WARN("failed to accept new connection");
+        async_accept();
       }
       auto source_endpoint = sock_ptr->remote_endpoint(ec);
       if (ec) {
         SPDLOG_WARN("failed to get remote_endpoint");
-        continue;
+        async_accept();
       }
-      // TODO: why cant this be initialized in the bracklets.
       ConnectionInfo src_conn_info;
       src_conn_info.address = source_endpoint.address().to_string();
       SPDLOG_INFO("connection from {}", src_conn_info.address);
-      if (!azugate::Filter(sock_ptr, src_conn_info)) {
-        continue;
+      if (azugate::Filter(sock_ptr, src_conn_info)) {
+        Dispatch(io_context_ptr, sock_ptr, ssl_context,
+                 std::move(src_conn_info), rate_limiter);
       }
-      Dispatch(io_context_ptr, sock_ptr, ssl_context, std::move(src_conn_info),
-               rate_limiter);
-    }
+      async_accept();
+    });
+  };
+  async_accept();
+
+  std::thread worker_thread([&]() {
+    // invoke asynchronous tasks.
+    io_context_ptr->run();
   });
 
-  // invoke asynchronous tasks.
-  io_context_ptr->run();
-
+  worker_thread.join();
   return 0;
 }
 
@@ -169,7 +171,6 @@ int main() {
 // stat prefix in envoy?
 // best practices, you can check:
 // https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes.
-// envoy OAuth, JWT, RBAC.
 // async logging system.
 // websockets.
 // unit test for utilities (HTTP parser).
