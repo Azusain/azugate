@@ -222,6 +222,12 @@ inline bool extractMetaFromHeaders(utils::CompressionType &compression_type,
       continue;
     }
   }
+  if (!GetHttpCompression()) {
+    compression_type =
+        utils::CompressionType{.code = utils::kCompressionTypeCodeNone,
+                               .str = utils::kCompressionTypeStrNone};
+  }
+
   return true;
 }
 
@@ -353,6 +359,13 @@ void HttpProxyHandler(
   std::string token;
   if (!extractMetaFromHeaders(compression_type, request, token)) {
     SPDLOG_WARN("failed to extract meta from headers");
+    CRequest::HttpResponse resp(CRequest::kHttpBadRequest);
+    resp.SetKeepAlive(false);
+    if (!http_client.SendHttpMessage(resp, ec)) {
+      SPDLOG_WARN("failed to write error response");
+    }
+    int fd = sock_ptr->lowest_layer().native_handle();
+    shutdown(fd, SHUT_RDWR);
     return;
   }
 
@@ -412,6 +425,9 @@ void HttpProxyHandler(
                             request)) {
     SPDLOG_WARN("failed to write body");
   };
+  int fd = sock_ptr->lowest_layer().native_handle();
+  shutdown(fd, SHUT_RDWR);
+  close(fd);
   return;
 }
 

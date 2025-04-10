@@ -34,6 +34,7 @@ bool g_enable_http_compression = false;
 bool g_enable_https = false;
 bool g_management_system_authentication = false;
 bool g_http_external_authorization = false;
+bool g_enable_rate_limiter = false;
 std::string g_external_oauth_server_domain = "localhost";
 std::string g_external_oauth_server_path = "/";
 std::string g_azugate_domain = "localhost";

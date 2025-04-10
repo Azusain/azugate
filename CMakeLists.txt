@@ -7,7 +7,7 @@ set(CMAKE_BUILD_TYPE DEBUG)
 
 find_package(spdlog REQUIRED)
 find_package(fmt REQUIRED)
-find_package(Boost COMPONENTS asio thread CONFIG)
+find_package(Boost COMPONENTS asio thread system CONFIG)
 find_package(yaml-cpp CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(gRPC CONFIG REQUIRED)
@@ -76,11 +76,12 @@ common
 # common
 # )
 
-# Trie Perf.
-add_executable(trie_perf
-"src/app/trie_perf.cc"
+# Perf.
+add_executable(perf
+"src/app/perf.cc"
 )
-target_link_libraries(trie_perf
+target_link_libraries(perf
 ${OPENSSL_LIBRARIES}
 common
+Boost::system
 )

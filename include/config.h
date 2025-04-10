@@ -63,6 +63,8 @@ extern std::string g_authorization_token_secret;
 // oauth.
 extern std::string g_azugate_oauth_client_id;
 extern std::string g_azugate_oauth_client_secret;
+// mics
+extern bool g_enable_rate_limiter;
 
 std::string GetConfigPath();
 void SetConfigPath(std::string &&path);

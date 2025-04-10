@@ -22,7 +22,8 @@ void Dispatch(const boost::shared_ptr<boost::asio::io_context> &io_context_ptr,
               TokenBucketRateLimiter &rate_limiter) {
   using namespace boost::asio;
   // rate limiting.
-  if (!rate_limiter.GetToken()) {
+  if (g_enable_rate_limiter && !rate_limiter.GetToken()) {
+    SPDLOG_WARN("request rejected by rate limiter");
     return;
   }
   // TODO: configured by router.

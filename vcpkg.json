@@ -3,6 +3,7 @@
     "boost-asio",
     "boost-system",
     "boost-thread",
+    "boost-beast",
     "fmt",
     "grpc",
     "jwt-cpp",

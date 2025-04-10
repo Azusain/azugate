@@ -19,6 +19,7 @@
 #include <boost/smart_ptr/make_shared_object.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/system.hpp>
+#include <boost/system/detail/error_code.hpp>
 #include <boost/thread.hpp>
 #include <boost/thread/detail/thread.hpp>
 
@@ -132,9 +133,18 @@ int main() {
   // TODO: optimize it with async io architecture.
   std::thread otpl_server_thread([&]() {
     for (;;) {
+      boost::system::error_code ec;
       auto sock_ptr = boost::make_shared<ip::tcp::socket>(*io_context_ptr);
-      acc.accept(*sock_ptr);
-      auto source_endpoint = sock_ptr->remote_endpoint();
+      auto _ = acc.accept(*sock_ptr, ec);
+      if (ec) {
+        SPDLOG_WARN("failed to do accept()");
+        continue;
+      }
+      auto source_endpoint = sock_ptr->remote_endpoint(ec);
+      if (ec) {
+        SPDLOG_WARN("failed to get remote_endpoint");
+        continue;
+      }
       // TODO: why cant this be initialized in the bracklets.
       ConnectionInfo src_conn_info;
       src_conn_info.address = source_endpoint.address().to_string();

@@ -29,7 +29,16 @@ You will need a compiler that supports c++20, along with CMake and vcpkg, to bui
 
 ### Dev Tools
 #### wrk
+
+```shell
+  # it should be noted that wrk reuses TCP connections.
+  # azugate hasn't supported HTTP keep-alive.
+  wrk -t1 -c20 -d10s http://localhost:5080
 ```
+
+#### ab
+
+```shell
   wrk -t1 -c20 -d10s http://localhost:5080
 ```
 
