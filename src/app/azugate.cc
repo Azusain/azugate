@@ -44,7 +44,16 @@
 using namespace boost::asio;
 using namespace azugate;
 
+void ignoreSigpipe() {
+  struct sigaction sa{};
+  sa.sa_handler = SIG_IGN;
+  sigaction(SIGPIPE, &sa, nullptr);
+}
+
 int main() {
+  // ignore SIGPIPE.
+  ignoreSigpipe();
+
   // ref: https://github.com/gabime/spdlog/wiki/3.-Custom-formatting.
   // for production, use this logger:
   // spdlog::set_pattern("[%^%l%$] %t | %D %H:%M:%S | %v");

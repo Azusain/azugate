@@ -185,11 +185,26 @@ extractTokenFromAuthorization(const std::string_view &auth_header) {
   return "";
 }
 
-inline void extractMetaFromHeaders(utils::CompressionType &compression_type,
+inline bool extractMetaFromHeaders(utils::CompressionType &compression_type,
                                    network::PicoHttpRequest &request,
                                    std::string &token) {
+  if (request.num_headers <= 0 || request.num_headers > kMaxHeadersNum) {
+    SPDLOG_WARN("No headers found in the request.");
+    return false;
+  }
+
   for (size_t i = 0; i < request.num_headers; ++i) {
     auto &header = request.headers[i];
+    if (header.name == nullptr || header.value == nullptr) {
+      SPDLOG_WARN("Header name or value is null at index {}", i);
+      return false;
+    }
+    if (header.name_len <= 0 || header.value_len <= 0) {
+      SPDLOG_WARN(
+          "Invalid header length at index {}: name_len={}, value_len={}", i,
+          header.name_len, header.value_len);
+      return false;
+    }
     std::string_view header_name(header.name, header.name_len);
     if (header_name == CRequest::kHeaderAcceptEncoding) {
       compression_type = utils::GetCompressionType(
@@ -207,6 +222,7 @@ inline void extractMetaFromHeaders(utils::CompressionType &compression_type,
       continue;
     }
   }
+  return true;
 }
 
 template <typename T>
@@ -335,7 +351,10 @@ void HttpProxyHandler(
 
   utils::CompressionType compression_type;
   std::string token;
-  extractMetaFromHeaders(compression_type, request, token);
+  if (!extractMetaFromHeaders(compression_type, request, token)) {
+    SPDLOG_WARN("failed to extract meta from headers");
+    return;
+  }
 
   // external authoriation.
   if (g_http_external_authorization &&

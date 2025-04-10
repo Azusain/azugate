@@ -16,7 +16,7 @@
 // 切换使用 sendfile（true）或 read+write（false）
 constexpr bool use_sendfile = true;
 
-void ignore_sigpipe() {
+void ignoreSigpipe() {
   struct sigaction sa{};
   sa.sa_handler = SIG_IGN;
   sigaction(SIGPIPE, &sa, nullptr);
@@ -86,7 +86,7 @@ void send_with_sendfile(int client_fd, const std::string &filename) {
 
 // wrk -t4 -c100 -d10s http://localhost:8080
 int main() {
-  ignore_sigpipe();
+  ignoreSigpipe();
 
   int server_fd = socket(AF_INET, SOCK_STREAM, 0);
   if (server_fd < 0) {

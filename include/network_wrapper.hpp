@@ -108,7 +108,7 @@ public:
     return true;
   };
 
-  inline bool ParseHttpRequest(PicoHttpRequest &header,
+  inline bool ParseHttpRequest(PicoHttpRequest &request,
                                boost::system::error_code &ec) const {
     using namespace boost::asio;
     size_t total_parsed = 0;
@@ -119,7 +119,7 @@ public:
         return false;
       }
       size_t bytes_read =
-          sock_ptr_->read_some(buffer(header.header_buf + total_parsed,
+          sock_ptr_->read_some(buffer(request.header_buf + total_parsed,
                                       kMaxHttpHeaderSize - total_parsed),
                                ec);
       if (ec) {
@@ -132,12 +132,18 @@ public:
       }
 
       total_parsed += bytes_read;
-      header.num_headers = std::size(header.headers);
+      request.num_headers = std::size(request.headers);
       int pret = phr_parse_request(
-          header.header_buf, total_parsed, &header.method, &header.method_len,
-          &header.path, &header.len_path, &header.minor_version, header.headers,
-          &header.num_headers, 0);
-      if (pret > 0) {
+          request.header_buf, total_parsed, &request.method,
+          &request.method_len, &request.path, &request.len_path,
+          &request.minor_version, request.headers, &request.num_headers, 0);
+
+      bool valid_request =
+          !(request.method == nullptr || request.method_len == 0 ||
+            request.path == nullptr || request.len_path == 0 ||
+            request.num_headers < 0 || request.num_headers > kMaxHeadersNum);
+
+      if (pret > 0 && valid_request) {
         // successful parse
         break;
       } else if (pret == -2) {
