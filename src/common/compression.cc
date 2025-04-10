@@ -3,6 +3,11 @@
 
 #include <zlib.h>
 
+#if defined(__linux__)
+#include <cassert>
+#include <functional>
+#endif
+
 namespace azugate {
 namespace utils {
 

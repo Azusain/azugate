@@ -23,6 +23,7 @@ file(GLOB_RECURSE API_SOURCES "src/api/*.cc")
 file(GLOB_RECURSE API_INCLUDES_DIR "src/api")
 file(GLOB_RECURSE THIRD_PARTY_SOURCES "third_party/*.cc" "third_party/*.c")
 
+
 # library for all the apps.
 add_library(common STATIC
 ${COMMON_SOURCES}
@@ -54,18 +55,26 @@ add_executable(azugate
 "src/app/azugate.cc"
 )
 
+target_compile_definitions(azugate PRIVATE
+  FMT_USE_CONSTEXPR=1
+  FMT_CONSTEXPR=constexpr
+  SPDLOG_FMT_EXTERNAL
+)
+
+
 target_link_libraries(azugate
 common
 )
 
-# I/O Perf.
-add_executable(io_perf
-"src/app/io_perf.cc"
-)
-target_link_libraries(io_perf
-${OPENSSL_LIBRARIES}
-common
-)
+
+# I/O Perf (uses kqueue therefore cannot run on Linux).
+# add_executable(io_perf
+# "src/app/io_perf.cc"
+# )
+# target_link_libraries(io_perf
+# ${OPENSSL_LIBRARIES}
+# common
+# )
 
 # Trie Perf.
 add_executable(trie_perf
