@@ -98,16 +98,6 @@ int main() {
     server->Wait();
   });
 
-  // setup http gateway for gRPC server.
-  std::thread http_gateway_thread([]() {
-    SPDLOG_INFO("http gateway runs on port 8081");
-    // TODO: this is way too violent.
-    if (!std::system("../grpc-proxy/proxy")) {
-      SPDLOG_WARN("some errors happened in the http gateway");
-    };
-    SPDLOG_WARN("http gateway process exits");
-  });
-
   // setup a basic OTPL server.
   auto io_context_ptr = boost::make_shared<boost::asio::io_context>();
 
