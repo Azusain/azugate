@@ -11,6 +11,7 @@
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <functional>
+#include <memory>
 #include <spdlog/spdlog.h>
 #include <utility>
 using namespace boost::asio;
@@ -56,18 +57,23 @@ void Dispatch(boost::shared_ptr<boost::asio::io_context> io_context_ptr,
                     GetRouterMapping(source_connection_info));
   }
   // HTTPS.
-  if (azugate::GetHttps()) {
-    auto ssl_sock_ptr = sslHandshake(sock_ptr, ssl_context);
-    if (!ssl_sock_ptr) {
-      SPDLOG_WARN("failed to do ssl handshake");
-      callback();
-    }
-    HttpProxyHandler<ssl::stream<ip::tcp::socket>>(
-        io_context_ptr, ssl_sock_ptr, source_connection_info, callback);
-  }
+  // if (azugate::GetHttps()) {
+  //   auto ssl_sock_ptr = sslHandshake(sock_ptr, ssl_context);
+  //   if (!ssl_sock_ptr) {
+  //     SPDLOG_WARN("failed to do ssl handshake");
+  //     callback();
+  //   }
+  //   HttpProxyHandler<ssl::stream<ip::tcp::socket>>(
+  //       io_context_ptr, ssl_sock_ptr, source_connection_info, callback);
+  // }
   // HTTP.
-  HttpProxyHandler<ip::tcp::socket>(io_context_ptr, sock_ptr,
-                                    source_connection_info, callback);
+
+  auto http_handler = std::make_shared<HttpProxyHandler<ip::tcp::socket>>(
+      io_context_ptr, sock_ptr, source_connection_info, callback);
+
+  http_handler->Start();
+  // HttpProxyHandler<ip::tcp::socket>(io_context_ptr, sock_ptr,
+  //                                   source_connection_info, callback);
 }
 
 } // namespace azugate

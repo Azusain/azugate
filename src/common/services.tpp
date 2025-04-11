@@ -1,9 +1,11 @@
 #include <boost/asio.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/read.hpp>
 #include <boost/asio/ssl/stream.hpp>
 #include <boost/asio/ssl/stream_base.hpp>
 
+#include <boost/smart_ptr/make_shared_object.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <cstdlib>
 #include <filesystem>
@@ -338,105 +340,163 @@ externalAuthorization(network::PicoHttpRequest &request,
   return true;
 }
 
-template <typename T>
-void HttpProxyHandler(
-    const boost::shared_ptr<boost::asio::io_context> io_context_ptr,
-    boost::shared_ptr<T> sock_ptr, ConnectionInfo source_connection_info,
-    std::function<void()> callback) {
-  using namespace boost::asio;
+// template <typename T>
+// void HttpProxyHandler(
+//     const boost::shared_ptr<boost::asio::io_context> io_context_ptr,
+//     boost::shared_ptr<T> sock_ptr, ConnectionInfo source_connection_info,
+//     std::function<void()> async_accpet_cb) {
 
-  network::PicoHttpRequest request;
-  boost::system::error_code ec;
+//   auto request_ptr = boost::make_shared<network::PicoHttpRequest>();
 
-  // init http client using established tcp connection.
-  network::HttpClient<T> http_client(std::move(sock_ptr));
+// init http client using established tcp connection.
+// network::HttpClient<T> http_client(sock_ptr);
 
-  // async read and parse HTTP header
-  http_client.ParseHttpRequest(request, [&](bool success) {
-    if (!success) {
-      SPDLOG_ERROR("failed to parse http headers");
-      callback();
-    }
+// async read and parse HTTP header
+// http_client.ParseHttpRequest(request, [&, async_accpet_cb](bool success) {
+//   if (!success) {
+//     SPDLOG_ERROR("failed to parse http headers");
+//     async_accpet_cb();
+//     return;
+//   }
+// });
 
-    utils::CompressionType compression_type;
-    std::string token;
-    if (!extractMetaFromHeaders(compression_type, request, token)) {
-      SPDLOG_WARN("failed to extract meta from headers");
-      CRequest::HttpResponse resp(CRequest::kHttpBadRequest);
-      resp.SetKeepAlive(false);
-      if (!http_client.SendHttpMessage(resp, ec)) {
-        SPDLOG_WARN("failed to write error response");
-      }
-      int fd = sock_ptr->lowest_layer().native_handle();
-      shutdown(fd, SHUT_RDWR);
-      callback();
-    }
+// parse HTTP request.
+// std::function<void(size_t)> loop_read_cb;
 
-    // external authoriation.
-    if (g_http_external_authorization &&
-        !externalAuthorization(request, io_context_ptr, http_client, ec,
-                               token)) {
-      callback();
-    }
+// loop_read_cb = [sock_ptr, request_ptr, async_accpet_cb,
+//                 loop_read_cb](size_t total_parsed) {
+//   if (total_parsed >= kMaxHttpHeaderSize) {
+//     SPDLOG_WARN("HTTP header size exceeded the limit");
+//     async_accpet_cb();
+//   }
+//   auto on_read = [async_accpet_cb, loop_read_cb, total_parsed, request_ptr,
+//                   sock_ptr](auto ec, auto bytes_read) {
+//     if (ec) {
+//       if (ec == boost::asio::error::eof) {
+//         SPDLOG_DEBUG("connection closed by peer");
+//         async_accpet_cb();
+//       }
+//       SPDLOG_WARN("failed to read HTTP header: {}", ec.message());
+//       async_accpet_cb();
+//     }
+//     auto &request = *request_ptr;
+//     total_parsed += bytes_read;
+//     request.num_headers = std::size(request.headers);
+//     int pret = phr_parse_request(
+//         request.header_buf, total_parsed, &request.method,
+//         &request.method_len, &request.path, &request.len_path,
+//         &request.minor_version, request.headers, &request.num_headers, 0);
+//     bool valid_request =
+//         !(request.method == nullptr || request.method_len == 0 ||
+//           request.path == nullptr || request.len_path == 0 ||
+//           request.num_headers < 0 || request.num_headers > kMaxHeadersNum);
 
-    // handle default page.
-    source_connection_info.http_url = request.path;
-    source_connection_info.type = ProtocolTypeHttp;
-    auto target_conn_info_opt = GetRouterMapping(source_connection_info);
-    if (request.len_path <= 0 || request.path == nullptr ||
-        !target_conn_info_opt) {
-      // TODO: redirect to error message page.
-      request.path = kPathDftPage.data();
-      request.len_path = kPathDftPage.length();
-    }
+//     if (pret > 0 && valid_request) {
+//       // successful parse
+//       std::string response =
+//           "HTTP/1.1 200 OK\r\nConnection: Close\r\nContent-Length: "
+//           "23\r\n\r\nHello, this is azugate\n";
+//       boost::asio::async_write(
+//           *sock_ptr, boost::asio::buffer(response),
+//           [async_accpet_cb](auto ec, auto bytes_transferred) {
+//             if (ec) {
+//               SPDLOG_WARN("failed to write response");
+//             }
+//             async_accpet_cb();
+//           });
+//     } else if (pret == -2) {
+//       // need more data.
+//       loop_read_cb(total_parsed);
+//     } else {
+//       SPDLOG_WARN("failed to parse HTTP request");
+//       async_accpet_cb();
+//     }
+//   };
+//   boost::asio::async_read(*sock_ptr, boost::asio::buffer(""), on_read);
+// };
 
-    std::shared_ptr<char[]> full_local_file_path =
-        assembleFullLocalFilePath(kPathResourceFolder, request);
-    auto full_local_file_path_str = full_local_file_path.get();
-    if (!std::filesystem::exists(full_local_file_path_str)) {
-      SPDLOG_ERROR("file not exists: {}", full_local_file_path_str);
-      callback();
-    }
-    std::ifstream local_file_stream(full_local_file_path_str, std::ios::binary);
-    if (!local_file_stream.is_open()) {
-      SPDLOG_ERROR("failed to open file: {}", full_local_file_path_str);
-      callback();
-    }
-    auto local_file_size = std::filesystem::file_size(full_local_file_path_str);
+// loop_read_cb(0);
 
-    // setup and send response headers.
-    CRequest::HttpResponse resp(CRequest::kHttpOk);
-    auto ext =
-        utils::FindFileExtension(std::string(request.path, request.len_path));
-    resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
-    resp.SetKeepAlive(false);
-    if (compression_type.code != utils::kCompressionTypeCodeNone) {
-      resp.SetContentEncoding(compression_type.str);
-      resp.SetTransferEncoding(CRequest::kTransferEncodingChunked);
-    } else {
-      resp.SetContentLength(local_file_size);
-    }
+// utils::CompressionType compression_type;
+// std::string token;
+// if (!extractMetaFromHeaders(compression_type, request, token)) {
+//   SPDLOG_WARN("failed to extract meta from headers");
+//   CRequest::HttpResponse resp(CRequest::kHttpBadRequest);
+//   resp.SetKeepAlive(false);
+//   if (!http_client.SendHttpMessage(resp, ec)) {
+//     SPDLOG_WARN("failed to write error response");
+//   }
+//   int fd = sock_ptr->lowest_layer().native_handle();
+//   shutdown(fd, SHUT_RDWR);
+//   async_accpet_cb();
+// }
 
-    if (!http_client.SendHttpMessage(resp, ec)) {
-      SPDLOG_ERROR("failed to send http response");
-      callback();
-    }
+// // external authoriation.
+// if (g_http_external_authorization &&
+//     !externalAuthorization(request, io_context_ptr, http_client, ec,
+//     token)) {
+//   async_accpet_cb();
+// }
 
-    // setup and send body.
-    // WARN: reuse buffer address.
-    memset(request.header_buf, '\0', sizeof(request.header_buf));
-    if (!compressAndWriteBody(sock_ptr, ec, local_file_stream, compression_type,
-                              request)) {
-      SPDLOG_WARN("failed to write body");
-    };
-    int fd = sock_ptr->lowest_layer().native_handle();
-    shutdown(fd, SHUT_RDWR);
-    close(fd);
-    callback();
-  });
+// // handle default page.
+// source_connection_info.http_url = request.path;
+// source_connection_info.type = ProtocolTypeHttp;
+// auto target_conn_info_opt = GetRouterMapping(source_connection_info);
+// if (request.len_path <= 0 || request.path == nullptr ||
+//     !target_conn_info_opt) {
+//   // TODO: redirect to error message page.
+//   request.path = kPathDftPage.data();
+//   request.len_path = kPathDftPage.length();
+// }
 
-  return;
-}
+// std::shared_ptr<char[]> full_local_file_path =
+//     assembleFullLocalFilePath(kPathResourceFolder, request);
+// auto full_local_file_path_str = full_local_file_path.get();
+// if (!std::filesystem::exists(full_local_file_path_str)) {
+//   SPDLOG_ERROR("file not exists: {}", full_local_file_path_str);
+//   async_accpet_cb();
+// }
+// std::ifstream local_file_stream(full_local_file_path_str,
+// std::ios::binary); if (!local_file_stream.is_open()) {
+//   SPDLOG_ERROR("failed to open file: {}", full_local_file_path_str);
+//   async_accpet_cb();
+// }
+// auto local_file_size =
+// std::filesystem::file_size(full_local_file_path_str);
+
+// // setup and send response headers.
+// CRequest::HttpResponse resp(CRequest::kHttpOk);
+// auto ext =
+//     utils::FindFileExtension(std::string(request.path,
+//     request.len_path));
+// resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
+// resp.SetKeepAlive(false);
+// if (compression_type.code != utils::kCompressionTypeCodeNone) {
+//   resp.SetContentEncoding(compression_type.str);
+//   resp.SetTransferEncoding(CRequest::kTransferEncodingChunked);
+// } else {
+//   resp.SetContentLength(local_file_size);
+// }
+
+// if (!http_client.SendHttpMessage(resp, ec)) {
+//   SPDLOG_ERROR("failed to send http response");
+//   async_accpet_cb();
+// }
+
+// // setup and send body.
+// // WARN: reuse buffer address.
+// memset(request.header_buf, '\0', sizeof(request.header_buf));
+// if (!compressAndWriteBody(sock_ptr, ec, local_file_stream,
+// compression_type,
+//                           request)) {
+//   SPDLOG_WARN("failed to write body");
+// };
+// int fd = sock_ptr->lowest_layer().native_handle();
+// shutdown(fd, SHUT_RDWR);
+// close(fd);
+//   async_accpet_cb();
+//   return;
+// }
 
 inline void TcpProxyHandler(
     const boost::shared_ptr<boost::asio::io_context> io_context_ptr,

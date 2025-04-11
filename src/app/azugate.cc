@@ -23,6 +23,7 @@
 #include <boost/thread.hpp>
 #include <boost/thread/detail/thread.hpp>
 
+#include <cstddef>
 #include <cstdlib>
 #include <exception>
 #include <fmt/base.h>
@@ -40,11 +41,64 @@
 
 #include <thread>
 #include <utility>
+#include <vector>
 #include <yaml-cpp/node/parse.h>
 #include <yaml-cpp/yaml.h>
 
-using namespace boost::asio;
-using namespace azugate;
+namespace azugate {
+class Server : public std::enable_shared_from_this<Server> {
+public:
+  Server(boost::shared_ptr<boost::asio::io_context> io_context_ptr,
+         boost::asio::ssl::context ssl_context, uint16_t port)
+      : io_context_ptr_(io_context_ptr), ssl_context_(std::move(ssl_context)),
+        acceptor_(*io_context_ptr, boost::asio::ip::tcp::endpoint(
+                                       boost::asio::ip::tcp::v4(), port)),
+        rate_limiter_(io_context_ptr) {
+    rate_limiter_.Start();
+  }
+
+  void Start() { accept(); }
+
+  void onAccept(boost::shared_ptr<boost::asio::ip::tcp::socket> sock_ptr,
+                boost::system::error_code ec) {
+    if (ec) {
+      SPDLOG_WARN("failed to accept new connection");
+      accept();
+    }
+    auto source_endpoint = sock_ptr->remote_endpoint(ec);
+    if (ec) {
+      SPDLOG_WARN("failed to get remote_endpoint");
+      accept();
+    }
+    ConnectionInfo src_conn_info;
+    src_conn_info.address = source_endpoint.address().to_string();
+    // TODO: async log.
+    // SPDLOG_INFO("connection from {}", src_conn_info.address);
+    if (azugate::Filter(sock_ptr, src_conn_info)) {
+      Dispatch(io_context_ptr_, sock_ptr, ssl_context_,
+               std::move(src_conn_info), rate_limiter_,
+               std::bind(&Server::accept, this));
+    }
+    accept();
+  }
+
+  void accept() {
+    boost::system::error_code ec;
+    auto sock_ptr =
+        boost::make_shared<boost::asio::ip::tcp::socket>(*io_context_ptr_);
+    acceptor_.async_accept(
+        *sock_ptr,
+        std::bind(&Server::onAccept, this, sock_ptr, std::placeholders::_1));
+  }
+
+private:
+  boost::shared_ptr<boost::asio::io_context> io_context_ptr_;
+  boost::asio::ssl::context ssl_context_;
+  azugate::TokenBucketRateLimiter rate_limiter_;
+  boost::asio::ip::tcp::acceptor acceptor_;
+};
+
+} // namespace azugate
 
 void ignoreSigpipe() {
   struct sigaction sa{};
@@ -53,6 +107,8 @@ void ignoreSigpipe() {
 }
 
 int main() {
+  using namespace boost::asio;
+  using namespace azugate;
   // ignore SIGPIPE.
   ignoreSigpipe();
 
@@ -105,20 +161,14 @@ int main() {
     ConfigServiceImpl config_service;
     server_builder.RegisterService(&config_service);
     std::unique_ptr<grpc::Server> server(server_builder.BuildAndStart());
-    SPDLOG_INFO("gRPC server runs on port {}", g_azugate_admin_port);
+    SPDLOG_INFO("gRPC server is listening on port {}", g_azugate_admin_port);
     server->Wait();
   });
 
   // setup a basic OTPL server.
   auto io_context_ptr = boost::make_shared<boost::asio::io_context>();
 
-  // TODO: ipv6?
-  ip::tcp::endpoint local_address(ip::tcp::v4(), g_azugate_port);
-  ip::tcp::acceptor acc(*io_context_ptr, local_address);
-  // dns resovler.
-  ip::tcp::resolver resolver(io_context);
-  ip::tcp::resolver::query query(g_target_host, std::to_string(g_target_port));
-  SPDLOG_INFO("azugate runs on port {}", g_azugate_port);
+  SPDLOG_INFO("azugate is listening on port {}", g_azugate_port);
 
   // TODO: for testing purpose.
   azugate::AddRouterMapping(
@@ -127,41 +177,23 @@ int main() {
           .type = ProtocolTypeTcp, .address = "127.0.0.1", .port = 6080});
 
   // setup rate limiter.
-  azugate::TokenBucketRateLimiter rate_limiter(io_context_ptr);
-  rate_limiter.Start();
 
-  std::function<void()> async_accept;
-  async_accept = [&]() {
-    boost::system::error_code ec;
-    auto sock_ptr = boost::make_shared<ip::tcp::socket>(*io_context_ptr);
-    acc.async_accept(*sock_ptr, [&, sock_ptr](auto ec) {
-      if (ec) {
-        SPDLOG_WARN("failed to accept new connection");
-        async_accept();
-      }
-      auto source_endpoint = sock_ptr->remote_endpoint(ec);
-      if (ec) {
-        SPDLOG_WARN("failed to get remote_endpoint");
-        async_accept();
-      }
-      ConnectionInfo src_conn_info;
-      src_conn_info.address = source_endpoint.address().to_string();
-      SPDLOG_INFO("connection from {}", src_conn_info.address);
-      if (azugate::Filter(sock_ptr, src_conn_info)) {
-        Dispatch(io_context_ptr, sock_ptr, ssl_context,
-                 std::move(src_conn_info), rate_limiter, async_accept);
-      }
-      async_accept();
-    });
-  };
-  async_accept();
+  Server s(io_context_ptr, std::move(ssl_context), g_azugate_port);
+  s.Start();
 
-  std::thread worker_thread([&]() {
-    // invoke asynchronous tasks.
-    io_context_ptr->run();
-  });
+  SPDLOG_INFO("server is running with {} threads", g_num_threads);
 
-  worker_thread.join();
+  std::vector<std::thread> worker_threads;
+
+  // invoke asynchronous tasks.
+  for (size_t i = 0; i < g_num_threads; ++i) {
+    worker_threads.emplace_back([io_context_ptr]() { io_context_ptr->run(); });
+  }
+  for (auto &t : worker_threads) {
+    t.join();
+  }
+
+  SPDLOG_WARN("server exits");
   return 0;
 }
 

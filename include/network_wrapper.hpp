@@ -111,58 +111,6 @@ public:
     return true;
   };
 
-  inline void ParseHttpRequest(PicoHttpRequest &request,
-                               std::function<void(bool)> callback) const {
-    using namespace boost::asio;
-    size_t total_parsed = 0;
-    std::function<void()> async_read;
-    async_read = [&]() {
-      boost::asio::async_read(
-          *sock_ptr_,
-          buffer(request.header_buf + total_parsed,
-                 kMaxHttpHeaderSize - total_parsed),
-          [&](auto ec, auto bytes_read) {
-            if (ec) {
-              if (ec == boost::asio::error::eof) {
-                SPDLOG_DEBUG("connection closed by peer");
-                callback(false);
-              }
-              SPDLOG_WARN("failed to read HTTP header: {}", ec.message());
-              callback(false);
-            }
-            if (total_parsed >= kMaxHttpHeaderSize) {
-              SPDLOG_WARN("HTTP header size exceeded the limit");
-              callback(false);
-            }
-            total_parsed += bytes_read;
-            request.num_headers = std::size(request.headers);
-            int pret = phr_parse_request(
-                request.header_buf, total_parsed, &request.method,
-                &request.method_len, &request.path, &request.len_path,
-                &request.minor_version, request.headers, &request.num_headers,
-                0);
-
-            bool valid_request =
-                !(request.method == nullptr || request.method_len == 0 ||
-                  request.path == nullptr || request.len_path == 0 ||
-                  request.num_headers < 0 ||
-                  request.num_headers > kMaxHeadersNum);
-
-            if (pret > 0 && valid_request) {
-              // successful parse
-              callback(true);
-            } else if (pret == -2) {
-              // need more data.
-              async_read();
-            } else {
-              SPDLOG_WARN("failed to parse HTTP request");
-              callback(false);
-            }
-          });
-    };
-    async_read();
-  }
-
   inline bool ParseHttpResponse(PicoHttpResponse &response,
                                 boost::system::error_code &ec) const {
     using namespace boost::asio;

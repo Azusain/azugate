@@ -65,6 +65,7 @@ extern std::string g_azugate_oauth_client_id;
 extern std::string g_azugate_oauth_client_secret;
 // mics
 extern bool g_enable_rate_limiter;
+extern size_t g_num_threads;
 
 std::string GetConfigPath();
 void SetConfigPath(std::string &&path);
