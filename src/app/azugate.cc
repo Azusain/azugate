@@ -46,6 +46,16 @@
 #include <yaml-cpp/yaml.h>
 
 namespace azugate {
+
+inline void
+safeCloseSocket(boost::shared_ptr<boost::asio::ip::tcp::socket> sock_ptr) {
+  if (sock_ptr && sock_ptr->is_open()) {
+    boost::system::error_code ec;
+    sock_ptr->shutdown(boost::asio::socket_base::shutdown_both, ec);
+    sock_ptr->close(ec);
+  }
+}
+
 class Server : public std::enable_shared_from_this<Server> {
 public:
   Server(boost::shared_ptr<boost::asio::io_context> io_context_ptr,
@@ -63,11 +73,13 @@ public:
                 boost::system::error_code ec) {
     if (ec) {
       SPDLOG_WARN("failed to accept new connection");
+      safeCloseSocket(sock_ptr);
       accept();
     }
     auto source_endpoint = sock_ptr->remote_endpoint(ec);
     if (ec) {
       SPDLOG_WARN("failed to get remote_endpoint");
+      safeCloseSocket(sock_ptr);
       accept();
     }
     ConnectionInfo src_conn_info;

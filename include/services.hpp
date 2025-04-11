@@ -16,6 +16,7 @@
 #include <functional>
 #include <memory>
 #include <optional>
+#include <spdlog/spdlog.h>
 #include <string>
 
 #if defined(__linux__)
@@ -354,10 +355,7 @@ public:
         async_accpet_cb_(async_accpet_cb), total_parsed_(0) {}
 
   // TODO: release connections properly.
-  ~HttpProxyHandler() {
-    sock_ptr_->shutdown(boost::asio::socket_base::shutdown_both);
-    sock_ptr_->close();
-  }
+  ~HttpProxyHandler() { Close(); }
 
   void Start() { parseRequest(); }
 
@@ -471,15 +469,19 @@ public:
     async_accpet_cb_();
   }
 
-  void writeResponse() {
-    std::string response =
-        "HTTP/1.1 200 OK\r\nConnection: Close\r\nContent-Length: "
-        "23\r\n\r\nHello, this is azugate\n";
-    boost::asio::async_write(
-        *sock_ptr_, boost::asio::buffer(response),
-        std::bind(&HttpProxyHandler<T>::onWrite, this->shared_from_this(),
-                  std::placeholders::_1, std::placeholders::_2));
-  };
+  void Close() {
+    if (sock_ptr_ && sock_ptr_->is_open()) {
+      boost::system::error_code ec;
+      sock_ptr_->shutdown(boost::asio::socket_base::shutdown_both, ec);
+      if (ec) {
+        SPDLOG_WARN("failed to do shutdown");
+      }
+      sock_ptr_->close(ec);
+      if (ec) {
+        SPDLOG_WARN("failed to do close");
+      }
+    }
+  }
 
 private:
   // io and parser.
