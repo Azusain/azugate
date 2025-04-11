@@ -7,10 +7,11 @@
 #include <boost/shared_ptr.hpp>
 
 namespace azugate {
-void Dispatch(const boost::shared_ptr<boost::asio::io_context> &io_context_ptr,
-              const boost::shared_ptr<boost::asio::ip::tcp::socket> &sock_ptr,
+void Dispatch(boost::shared_ptr<boost::asio::io_context> io_context_ptr,
+              boost::shared_ptr<boost::asio::ip::tcp::socket> sock_ptr,
               boost::asio::ssl::context &ssl_context,
               ConnectionInfo &&source_connection_info,
-              TokenBucketRateLimiter &rate_limiter);
+              TokenBucketRateLimiter &rate_limiter,
+              std::function<void()> callback);
 }
 #endif

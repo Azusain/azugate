@@ -5,14 +5,16 @@
 #include <boost/asio.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
+#include <functional>
 #include <optional>
 
 // TODO: these interfaces look pretty shity.
 template <typename T>
 void HttpProxyHandler(
     const boost::shared_ptr<boost::asio::io_context> io_context_ptr,
-    boost::shared_ptr<T> &sock_ptr,
-    azugate::ConnectionInfo source_connection_info);
+    boost::shared_ptr<T> sock_ptr,
+    azugate::ConnectionInfo source_connection_info,
+    std::function<void()> callback);
 
 void TcpProxyHandler(
     const boost::shared_ptr<boost::asio::io_context> io_context_ptr,

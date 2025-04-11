@@ -149,7 +149,7 @@ int main() {
       SPDLOG_INFO("connection from {}", src_conn_info.address);
       if (azugate::Filter(sock_ptr, src_conn_info)) {
         Dispatch(io_context_ptr, sock_ptr, ssl_context,
-                 std::move(src_conn_info), rate_limiter);
+                 std::move(src_conn_info), rate_limiter, async_accept);
       }
       async_accept();
     });

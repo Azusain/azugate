@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
+#include <functional>
 #include <nlohmann/json.hpp>
 #include <nlohmann/json_fwd.hpp>
 #include <optional>
@@ -340,7 +341,8 @@ externalAuthorization(network::PicoHttpRequest &request,
 template <typename T>
 void HttpProxyHandler(
     const boost::shared_ptr<boost::asio::io_context> io_context_ptr,
-    boost::shared_ptr<T> &sock_ptr, ConnectionInfo source_connection_info) {
+    boost::shared_ptr<T> sock_ptr, ConnectionInfo source_connection_info,
+    std::function<void()> callback) {
   using namespace boost::asio;
 
   network::PicoHttpRequest request;
@@ -349,85 +351,90 @@ void HttpProxyHandler(
   // init http client using established tcp connection.
   network::HttpClient<T> http_client(std::move(sock_ptr));
 
-  // read and parse HTTP header
-  if (!http_client.ParseHttpRequest(request, ec)) {
-    SPDLOG_ERROR("failed to parse http headers");
-    return;
-  }
-
-  utils::CompressionType compression_type;
-  std::string token;
-  if (!extractMetaFromHeaders(compression_type, request, token)) {
-    SPDLOG_WARN("failed to extract meta from headers");
-    CRequest::HttpResponse resp(CRequest::kHttpBadRequest);
-    resp.SetKeepAlive(false);
-    if (!http_client.SendHttpMessage(resp, ec)) {
-      SPDLOG_WARN("failed to write error response");
+  // async read and parse HTTP header
+  http_client.ParseHttpRequest(request, [&](bool success) {
+    if (!success) {
+      SPDLOG_ERROR("failed to parse http headers");
+      callback();
     }
+
+    utils::CompressionType compression_type;
+    std::string token;
+    if (!extractMetaFromHeaders(compression_type, request, token)) {
+      SPDLOG_WARN("failed to extract meta from headers");
+      CRequest::HttpResponse resp(CRequest::kHttpBadRequest);
+      resp.SetKeepAlive(false);
+      if (!http_client.SendHttpMessage(resp, ec)) {
+        SPDLOG_WARN("failed to write error response");
+      }
+      int fd = sock_ptr->lowest_layer().native_handle();
+      shutdown(fd, SHUT_RDWR);
+      callback();
+    }
+
+    // external authoriation.
+    if (g_http_external_authorization &&
+        !externalAuthorization(request, io_context_ptr, http_client, ec,
+                               token)) {
+      callback();
+    }
+
+    // handle default page.
+    source_connection_info.http_url = request.path;
+    source_connection_info.type = ProtocolTypeHttp;
+    auto target_conn_info_opt = GetRouterMapping(source_connection_info);
+    if (request.len_path <= 0 || request.path == nullptr ||
+        !target_conn_info_opt) {
+      // TODO: redirect to error message page.
+      request.path = kPathDftPage.data();
+      request.len_path = kPathDftPage.length();
+    }
+
+    std::shared_ptr<char[]> full_local_file_path =
+        assembleFullLocalFilePath(kPathResourceFolder, request);
+    auto full_local_file_path_str = full_local_file_path.get();
+    if (!std::filesystem::exists(full_local_file_path_str)) {
+      SPDLOG_ERROR("file not exists: {}", full_local_file_path_str);
+      callback();
+    }
+    std::ifstream local_file_stream(full_local_file_path_str, std::ios::binary);
+    if (!local_file_stream.is_open()) {
+      SPDLOG_ERROR("failed to open file: {}", full_local_file_path_str);
+      callback();
+    }
+    auto local_file_size = std::filesystem::file_size(full_local_file_path_str);
+
+    // setup and send response headers.
+    CRequest::HttpResponse resp(CRequest::kHttpOk);
+    auto ext =
+        utils::FindFileExtension(std::string(request.path, request.len_path));
+    resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
+    resp.SetKeepAlive(false);
+    if (compression_type.code != utils::kCompressionTypeCodeNone) {
+      resp.SetContentEncoding(compression_type.str);
+      resp.SetTransferEncoding(CRequest::kTransferEncodingChunked);
+    } else {
+      resp.SetContentLength(local_file_size);
+    }
+
+    if (!http_client.SendHttpMessage(resp, ec)) {
+      SPDLOG_ERROR("failed to send http response");
+      callback();
+    }
+
+    // setup and send body.
+    // WARN: reuse buffer address.
+    memset(request.header_buf, '\0', sizeof(request.header_buf));
+    if (!compressAndWriteBody(sock_ptr, ec, local_file_stream, compression_type,
+                              request)) {
+      SPDLOG_WARN("failed to write body");
+    };
     int fd = sock_ptr->lowest_layer().native_handle();
     shutdown(fd, SHUT_RDWR);
-    return;
-  }
+    close(fd);
+    callback();
+  });
 
-  // external authoriation.
-  if (g_http_external_authorization &&
-      !externalAuthorization(request, io_context_ptr, http_client, ec, token)) {
-    return;
-  }
-
-  // handle default page.
-  source_connection_info.http_url = request.path;
-  source_connection_info.type = ProtocolTypeHttp;
-  auto target_conn_info_opt = GetRouterMapping(source_connection_info);
-  if (request.len_path <= 0 || request.path == nullptr ||
-      !target_conn_info_opt) {
-    // TODO: redirect to error message page.
-    request.path = kPathDftPage.data();
-    request.len_path = kPathDftPage.length();
-  }
-
-  std::shared_ptr<char[]> full_local_file_path =
-      assembleFullLocalFilePath(kPathResourceFolder, request);
-  auto full_local_file_path_str = full_local_file_path.get();
-  if (!std::filesystem::exists(full_local_file_path_str)) {
-    SPDLOG_ERROR("file not exists: {}", full_local_file_path_str);
-    return;
-  }
-  std::ifstream local_file_stream(full_local_file_path_str, std::ios::binary);
-  if (!local_file_stream.is_open()) {
-    SPDLOG_ERROR("failed to open file: {}", full_local_file_path_str);
-    return;
-  }
-  auto local_file_size = std::filesystem::file_size(full_local_file_path_str);
-
-  // setup and send response headers.
-  CRequest::HttpResponse resp(CRequest::kHttpOk);
-  auto ext =
-      utils::FindFileExtension(std::string(request.path, request.len_path));
-  resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
-  resp.SetKeepAlive(false);
-  if (compression_type.code != utils::kCompressionTypeCodeNone) {
-    resp.SetContentEncoding(compression_type.str);
-    resp.SetTransferEncoding(CRequest::kTransferEncodingChunked);
-  } else {
-    resp.SetContentLength(local_file_size);
-  }
-
-  if (!http_client.SendHttpMessage(resp, ec)) {
-    SPDLOG_ERROR("failed to send http response");
-    return;
-  }
-
-  // setup and send body.
-  // WARN: reuse buffer address.
-  memset(request.header_buf, '\0', sizeof(request.header_buf));
-  if (!compressAndWriteBody(sock_ptr, ec, local_file_stream, compression_type,
-                            request)) {
-    SPDLOG_WARN("failed to write body");
-  };
-  int fd = sock_ptr->lowest_layer().native_handle();
-  shutdown(fd, SHUT_RDWR);
-  close(fd);
   return;
 }
 
