@@ -54,7 +54,7 @@ std::string g_authorization_token_secret;
 std::string g_azugate_oauth_client_id;
 std::string g_azugate_oauth_client_secret;
 // mics
-size_t g_num_threads = 1;
+size_t g_num_threads = 4;
 
 std::string GetConfigPath() {
   std::lock_guard<std::mutex> lock(g_config_mutex);

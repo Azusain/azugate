@@ -18,6 +18,10 @@
 #include <optional>
 #include <string>
 
+#if defined(__linux__)
+#include <sys/sendfile.h>
+#endif
+
 using namespace azugate;
 
 // TODO: file path should be configured by router.
@@ -70,11 +74,34 @@ inline bool handleGzipCompression(const boost::shared_ptr<T> sock_ptr,
   return true;
 }
 
+// TODO: async optimization.
 template <typename T>
 inline bool handleNoCompression(const boost::shared_ptr<T> sock_ptr,
                                 boost::system::error_code &ec,
-                                std::ifstream &local_file_stream,
+                                const char *full_local_file_path_str,
+                                size_t local_file_size,
                                 network::PicoHttpRequest &request) {
+
+#if defined(__linux__)
+  int file_fd = ::open(full_local_file_path_str, O_RDONLY);
+  if (file_fd < 0) {
+    SPDLOG_ERROR("failed to open file: {}", strerror(errno));
+    return false;
+  }
+  off_t offset = 0;
+  int fd = sock_ptr->lowest_layer().native_handle();
+  ssize_t sent_bytes = sendfile(fd, file_fd, &offset, local_file_size);
+  if (sent_bytes == -1) {
+    SPDLOG_ERROR("sendfile failed: {}", strerror(errno));
+    return false;
+  }
+#else
+  std::ifstream local_file_stream(full_local_file_path_str, std::ios::binary);
+  if (!local_file_stream.is_open()) {
+    SPDLOG_ERROR("failed to open file: {}", full_local_file_path_str);
+    return false;
+  }
+  // TODO: extremely inefficient.
   for (;;) {
     local_file_stream.read(request.header_buf, sizeof(request.header_buf));
     auto n_read = local_file_stream.gcount();
@@ -94,17 +121,24 @@ inline bool handleNoCompression(const boost::shared_ptr<T> sock_ptr,
       return false;
     }
   }
+#endif
   return true;
 }
 
 template <typename T>
 inline bool compressAndWriteBody(const boost::shared_ptr<T> sock_ptr,
-                                 std::ifstream &local_file_stream,
+                                 const char *full_local_file_path_str,
+                                 size_t local_file_size,
                                  utils::CompressionType compression_type,
                                  network::PicoHttpRequest &request) {
   boost::system::error_code ec;
   switch (compression_type.code) {
   case utils::kCompressionTypeCodeGzip: {
+    std::ifstream local_file_stream(full_local_file_path_str, std::ios::binary);
+    if (!local_file_stream.is_open()) {
+      SPDLOG_ERROR("failed to open file: {}", full_local_file_path_str);
+      return false;
+    }
     return handleGzipCompression(sock_ptr, ec, local_file_stream);
   }
   case utils::kCompressionTypeCodeBrotli:
@@ -120,7 +154,8 @@ inline bool compressAndWriteBody(const boost::shared_ptr<T> sock_ptr,
                 utils::kCompressionTypeStrDeflate);
     return false;
   default:
-    return handleNoCompression(sock_ptr, ec, local_file_stream, request);
+    return handleNoCompression(sock_ptr, ec, full_local_file_path_str,
+                               local_file_size, request);
   }
 }
 
@@ -397,11 +432,6 @@ public:
       async_accpet_cb_();
     }
 
-    std::ifstream local_file_stream(full_local_file_path_str, std::ios::binary);
-    if (!local_file_stream.is_open()) {
-      SPDLOG_ERROR("failed to open file: {}", full_local_file_path_str);
-      async_accpet_cb_();
-    }
     auto local_file_size = std::filesystem::file_size(full_local_file_path_str);
 
     // setup and send response headers.
@@ -425,8 +455,8 @@ public:
     // setup and send body.
     // WARN: reuse buffer address.
     memset(request_.header_buf, '\0', sizeof(request_.header_buf));
-    if (!compressAndWriteBody(sock_ptr_, local_file_stream, compression_type_,
-                              request_)) {
+    if (!compressAndWriteBody(sock_ptr_, full_local_file_path_str,
+                              local_file_size, compression_type_, request_)) {
       SPDLOG_WARN("failed to write body");
     };
     async_accpet_cb_();
