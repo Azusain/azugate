@@ -95,9 +95,9 @@ public:
 
   boost::shared_ptr<T> GetSocket() const { return sock_ptr_; }
 
-  inline bool SendHttpMessage(CRequest::HttpMessage &msg,
-                              boost::system::error_code &ec) const {
+  inline bool SendHttpHeader(CRequest::HttpMessage &msg) const {
     using namespace boost::asio;
+    boost::system::error_code ec;
     sock_ptr_->write_some(boost::asio::buffer(msg.StringifyFirstLine()), ec);
     if (ec) {
       SPDLOG_ERROR("failed to write the first line: {}", ec.message());

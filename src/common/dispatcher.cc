@@ -51,11 +51,11 @@ void Dispatch(boost::shared_ptr<boost::asio::io_context> io_context_ptr,
   }
   // TODO: configured by router.
   // TCP.
-  if (g_proxy_mode) {
-    source_connection_info.type = ProtocolTypeTcp;
-    TcpProxyHandler(io_context_ptr, sock_ptr,
-                    GetRouterMapping(source_connection_info));
-  }
+  // if (g_proxy_mode) {
+  //   source_connection_info.type = ProtocolTypeTcp;
+  //   TcpProxyHandler(io_context_ptr, sock_ptr,
+  //                   GetRouterMapping(source_connection_info));
+  // }
   // HTTPS.
   // if (azugate::GetHttps()) {
   //   auto ssl_sock_ptr = sslHandshake(sock_ptr, ssl_context);
