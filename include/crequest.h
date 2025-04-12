@@ -74,14 +74,17 @@ constexpr std::string_view kConnectionKeepAlive = "keep-alive";
 // http content type.
 // ref: https://www.iana.org/assignments/media-types/media-types.xhtml
 constexpr std::string_view kContentTypeAppJson = "application/json";
+constexpr std::string_view kContentTypeAppJs = "application/javascript";
 constexpr std::string_view kContentTypeAppUrlencoded =
     "application/x-www-form-urlencoded";
 constexpr std::string_view kContentTypeAppXml = "application/xml";
 constexpr std::string_view kContentTypeAppOctet = "application/octet-stream";
 constexpr std::string_view kContentTypeTextHtml = "text/html";
 constexpr std::string_view kContentTypeTextPlain = "text/plain";
+constexpr std::string_view kContentTypeTextCss = "text/css";
 constexpr std::string_view kContentTypeImgPng = "image/png";
 constexpr std::string_view kContentTypeImgJpeg = "image/jpeg";
+constexpr std::string_view kContentTypeImgSvg = "image/svg+xml";
 // official MIME type registered with IANA as an alternative to image/x-icon.
 constexpr std::string_view kContentTypeXIcon = "image/vnd.microsoft.icon";
 // supported versions.
@@ -119,8 +122,14 @@ constexpr uint32_t kFileExtensionJpg =
     azugate::utils::HashConstantString("jpg");
 constexpr uint32_t kFileExtensionJpeg =
     azugate::utils::HashConstantString("jpeg");
+constexpr uint32_t kFileExtensionSvg =
+    azugate::utils::HashConstantString("svg");
 constexpr uint32_t kFileExtensionXIcon =
     azugate::utils::HashConstantString("ico");
+constexpr uint32_t kFileExtensionCss =
+    azugate::utils::HashConstantString("css");
+constexpr uint32_t kFileExtensionJavaScript =
+    azugate::utils::HashConstantString("js");
 // mics.
 constexpr std::string_view kTransferEncodingChunked = "chunked";
 constexpr std::string_view kChunkedEncodingEndingStr = "0\r\n\r\n";

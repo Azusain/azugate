@@ -129,8 +129,17 @@ std::string_view GetContentTypeFromSuffix(const std::string_view &path) {
   case kFileExtensionJpeg:
     return kContentTypeImgJpeg;
 
+  case kFileExtensionSvg:
+    return kContentTypeImgSvg;
+
   case kFileExtensionXIcon:
     return kContentTypeXIcon;
+
+  case kFileExtensionCss:
+    return kContentTypeTextCss;
+
+  case kFileExtensionJavaScript:
+    return kContentTypeAppJs;
 
   default:
     return kContentTypeAppOctet;
