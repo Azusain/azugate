@@ -193,7 +193,7 @@ int main() {
   Server s(io_context_ptr, std::move(ssl_context), g_azugate_port);
   s.Start();
 
-  SPDLOG_INFO("server is running with {} threads", g_num_threads);
+  SPDLOG_INFO("server is running with {} thread(s)", g_num_threads);
 
   std::vector<std::thread> worker_threads;
 

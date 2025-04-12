@@ -5,3 +5,4 @@ lib/
 lib64
 include/
 pyvenv.cfg
+go_simple_server/go_simple_server
