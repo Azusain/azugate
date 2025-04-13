@@ -85,12 +85,14 @@ public:
     ConnectionInfo src_conn_info;
     src_conn_info.address = source_endpoint.address().to_string();
     // TODO: async log.
-    // SPDLOG_INFO("connection from {}", src_conn_info.address);
-    if (azugate::Filter(sock_ptr, src_conn_info)) {
-      Dispatch(io_context_ptr_, sock_ptr, ssl_context_,
-               std::move(src_conn_info), rate_limiter_,
-               std::bind(&Server::accept, this));
+    SPDLOG_DEBUG("connection from {}", src_conn_info.address);
+    if (!azugate::Filter(sock_ptr, src_conn_info)) {
+      SPDLOG_WARN("failed to pass filter");
+      safeCloseSocket(sock_ptr);
+      accept();
     }
+    Dispatch(io_context_ptr_, sock_ptr, ssl_context_, std::move(src_conn_info),
+             rate_limiter_, std::bind(&Server::accept, this));
     accept();
   }
 

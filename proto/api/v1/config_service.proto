@@ -13,15 +13,15 @@ service ConfigService {
   rpc UpdateConfig(UpdateConfigRequest) returns (UpdateConfigResponse) {
     option (google.api.http) = {
       post: "/config:update"
-      body: "*"h
+      body: "*"
     };
   }
 
-  rpc GetIpBlackList(GetIpBlacklistRequest) returns (GetIpBlacklistResponse) {
+  rpc GetIpBlackList(GetIpBlackListRequest) returns (GetIpBlackListResponse) {
     option (google.api.http) = {get: "/config/iplist"};
   }
 
-  rpc UpdateIpBlackList(UpdateIpBlacklistRequest) returns (UpdateIpBlacklistResponse) {
+  rpc UpdateIpBlackList(UpdateIpBlackListRequest) returns (UpdateIpBlackListResponse) {
     option (google.api.http) = {
       post: "/config/iplist:update"
       body: "*"
@@ -42,20 +42,20 @@ message UpdateConfigRequest {
 
 message UpdateConfigResponse {}
 
-message GetIpBlacklistRequest {}
+message GetIpBlackListRequest {}
 
-message GetIpBlacklistResponse {
+message GetIpBlackListResponse {
   repeated string ip_list = 1;
 }
 
-message UpdateIpBlacklistRequest {
+message UpdateIpBlackListRequest {
   enum ActionType {
-    ACTION_UNSPECIFIED = 0;
-    ADD = 1;
-    REMOVE = 2;
+    ACTION_TYPE_UNSPECIFIED = 0;
+    ACTION_TYPE_ADD = 1;
+    ACTION_TYPE_REMOVE = 2;
   }
   ActionType action = 1;
   repeated string ip_list = 2;
 }
 
-message UpdateIpBlacklistResponse {}
+message UpdateIpBlackListResponse {}
