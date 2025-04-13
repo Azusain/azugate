@@ -52,8 +52,8 @@ inline void
 safeCloseSocket(boost::shared_ptr<boost::asio::ip::tcp::socket> sock_ptr) {
   if (sock_ptr && sock_ptr->is_open()) {
     boost::system::error_code ec;
-    sock_ptr->shutdown(boost::asio::socket_base::shutdown_both, ec);
-    sock_ptr->close(ec);
+    auto _ = sock_ptr->shutdown(boost::asio::socket_base::shutdown_both, ec);
+    _ = sock_ptr->close(ec);
   }
 }
 
