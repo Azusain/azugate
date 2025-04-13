@@ -30,6 +30,7 @@
 #include <fmt/format.h>
 #include <functional>
 #include <grpcpp/create_channel.h>
+#include <grpcpp/ext/proto_server_reflection_plugin.h>
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/security/server_credentials.h>
 #include <grpcpp/server.h>
@@ -59,8 +60,8 @@ safeCloseSocket(boost::shared_ptr<boost::asio::ip::tcp::socket> sock_ptr) {
 class Server : public std::enable_shared_from_this<Server> {
 public:
   Server(boost::shared_ptr<boost::asio::io_context> io_context_ptr,
-         boost::asio::ssl::context ssl_context, uint16_t port)
-      : io_context_ptr_(io_context_ptr), ssl_context_(std::move(ssl_context)),
+         uint16_t port)
+      : io_context_ptr_(io_context_ptr),
         acceptor_(*io_context_ptr, boost::asio::ip::tcp::endpoint(
                                        boost::asio::ip::tcp::v4(), port)),
         rate_limiter_(io_context_ptr) {
@@ -91,8 +92,8 @@ public:
       safeCloseSocket(sock_ptr);
       accept();
     }
-    Dispatch(io_context_ptr_, sock_ptr, ssl_context_, std::move(src_conn_info),
-             rate_limiter_, std::bind(&Server::accept, this));
+    Dispatch(io_context_ptr_, sock_ptr, std::move(src_conn_info), rate_limiter_,
+             std::bind(&Server::accept, this));
     accept();
   }
 
@@ -107,7 +108,6 @@ public:
 
 private:
   boost::shared_ptr<boost::asio::io_context> io_context_ptr_;
-  boost::asio::ssl::context ssl_context_;
   azugate::TokenBucketRateLimiter rate_limiter_;
   boost::asio::ip::tcp::acceptor acceptor_;
 };
@@ -173,6 +173,7 @@ int main() {
         fmt::format("0.0.0.0:{}", g_azugate_admin_port),
         grpc::InsecureServerCredentials());
     ConfigServiceImpl config_service;
+    grpc::reflection::InitProtoReflectionServerBuilderPlugin();
     server_builder.RegisterService(&config_service);
     std::unique_ptr<grpc::Server> server(server_builder.BuildAndStart());
     SPDLOG_INFO("gRPC server is listening on port {}", g_azugate_admin_port);
@@ -192,7 +193,7 @@ int main() {
 
   // setup rate limiter.
 
-  Server s(io_context_ptr, std::move(ssl_context), g_azugate_port);
+  Server s(io_context_ptr, g_azugate_port);
   s.Start();
 
   SPDLOG_INFO("server is running with {} thread(s)", g_num_threads);

@@ -26,32 +26,32 @@ namespace _fl = ::google::protobuf::internal::field_layout;
 namespace api {
 namespace v1 {
               template <typename>
-PROTOBUF_CONSTEXPR UpdateIpBlacklistResponse::UpdateIpBlacklistResponse(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR UpdateIpBlackListResponse::UpdateIpBlackListResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::internal::ZeroFieldsBase() {
 }
 #endif  // PROTOBUF_CUSTOM_VTABLE
-struct UpdateIpBlacklistResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR UpdateIpBlacklistResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~UpdateIpBlacklistResponseDefaultTypeInternal() {}
+struct UpdateIpBlackListResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UpdateIpBlackListResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~UpdateIpBlackListResponseDefaultTypeInternal() {}
   union {
-    UpdateIpBlacklistResponse _instance;
+    UpdateIpBlackListResponse _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateIpBlacklistResponseDefaultTypeInternal _UpdateIpBlacklistResponse_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateIpBlackListResponseDefaultTypeInternal _UpdateIpBlackListResponse_default_instance_;
 
-inline constexpr UpdateIpBlacklistRequest::Impl_::Impl_(
+inline constexpr UpdateIpBlackListRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : ip_list_{},
-        action_{static_cast< ::api::v1::UpdateIpBlacklistRequest_ActionType >(0)},
+        action_{static_cast< ::api::v1::UpdateIpBlackListRequest_ActionType >(0)},
         _cached_size_{0} {}
 
 template <typename>
-PROTOBUF_CONSTEXPR UpdateIpBlacklistRequest::UpdateIpBlacklistRequest(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR UpdateIpBlackListRequest::UpdateIpBlackListRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
@@ -59,24 +59,32 @@ PROTOBUF_CONSTEXPR UpdateIpBlacklistRequest::UpdateIpBlacklistRequest(::_pbi::Co
 #endif  // PROTOBUF_CUSTOM_VTABLE
       _impl_(::_pbi::ConstantInitialized()) {
 }
-struct UpdateIpBlacklistRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR UpdateIpBlacklistRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~UpdateIpBlacklistRequestDefaultTypeInternal() {}
+struct UpdateIpBlackListRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UpdateIpBlackListRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~UpdateIpBlackListRequestDefaultTypeInternal() {}
   union {
-    UpdateIpBlacklistRequest _instance;
+    UpdateIpBlackListRequest _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateIpBlacklistRequestDefaultTypeInternal _UpdateIpBlacklistRequest_default_instance_;
-              template <typename>
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateIpBlackListRequestDefaultTypeInternal _UpdateIpBlackListRequest_default_instance_;
+
+inline constexpr UpdateConfigResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : http_compression_{false},
+        https_{false},
+        _cached_size_{0} {}
+
+template <typename>
 PROTOBUF_CONSTEXPR UpdateConfigResponse::UpdateConfigResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+    : ::google::protobuf::Message(_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase() {
-}
+    : ::google::protobuf::Message(),
 #endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct UpdateConfigResponseDefaultTypeInternal {
   PROTOBUF_CONSTEXPR UpdateConfigResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~UpdateConfigResponseDefaultTypeInternal() {}
@@ -92,6 +100,7 @@ inline constexpr UpdateConfigRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : path_{},
         http_compression_{false},
+        https_{false},
         _cached_size_{0} {}
 
 template <typename>
@@ -114,13 +123,13 @@ struct UpdateConfigRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateConfigRequestDefaultTypeInternal _UpdateConfigRequest_default_instance_;
 
-inline constexpr GetIpBlacklistResponse::Impl_::Impl_(
+inline constexpr GetIpBlackListResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : ip_list_{},
         _cached_size_{0} {}
 
 template <typename>
-PROTOBUF_CONSTEXPR GetIpBlacklistResponse::GetIpBlacklistResponse(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR GetIpBlackListResponse::GetIpBlackListResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
@@ -128,34 +137,34 @@ PROTOBUF_CONSTEXPR GetIpBlacklistResponse::GetIpBlacklistResponse(::_pbi::Consta
 #endif  // PROTOBUF_CUSTOM_VTABLE
       _impl_(::_pbi::ConstantInitialized()) {
 }
-struct GetIpBlacklistResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR GetIpBlacklistResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~GetIpBlacklistResponseDefaultTypeInternal() {}
+struct GetIpBlackListResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GetIpBlackListResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GetIpBlackListResponseDefaultTypeInternal() {}
   union {
-    GetIpBlacklistResponse _instance;
+    GetIpBlackListResponse _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetIpBlacklistResponseDefaultTypeInternal _GetIpBlacklistResponse_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetIpBlackListResponseDefaultTypeInternal _GetIpBlackListResponse_default_instance_;
               template <typename>
-PROTOBUF_CONSTEXPR GetIpBlacklistRequest::GetIpBlacklistRequest(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR GetIpBlackListRequest::GetIpBlackListRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::internal::ZeroFieldsBase() {
 }
 #endif  // PROTOBUF_CUSTOM_VTABLE
-struct GetIpBlacklistRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR GetIpBlacklistRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~GetIpBlacklistRequestDefaultTypeInternal() {}
+struct GetIpBlackListRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GetIpBlackListRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GetIpBlackListRequestDefaultTypeInternal() {}
   union {
-    GetIpBlacklistRequest _instance;
+    GetIpBlackListRequest _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetIpBlacklistRequestDefaultTypeInternal _GetIpBlacklistRequest_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetIpBlackListRequestDefaultTypeInternal _GetIpBlackListRequest_default_instance_;
 
 inline constexpr GetConfigResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -234,6 +243,7 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.path_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.http_compression_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.https_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -242,8 +252,10 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.http_compression_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.https_),
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::api::v1::GetIpBlacklistRequest, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::GetIpBlackListRequest, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
@@ -251,26 +263,26 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::api::v1::GetIpBlacklistResponse, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::GetIpBlackListResponse, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::api::v1::GetIpBlacklistResponse, _impl_.ip_list_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::GetIpBlackListResponse, _impl_.ip_list_),
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateIpBlacklistRequest, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateIpBlackListRequest, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateIpBlacklistRequest, _impl_.action_),
-        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateIpBlacklistRequest, _impl_.ip_list_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateIpBlackListRequest, _impl_.action_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateIpBlackListRequest, _impl_.ip_list_),
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateIpBlacklistResponse, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateIpBlackListResponse, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
@@ -284,51 +296,54 @@ static const ::_pbi::MigrationSchema
         {0, -1, -1, sizeof(::api::v1::GetConfigRequest)},
         {8, -1, -1, sizeof(::api::v1::GetConfigResponse)},
         {17, -1, -1, sizeof(::api::v1::UpdateConfigRequest)},
-        {27, -1, -1, sizeof(::api::v1::UpdateConfigResponse)},
-        {35, -1, -1, sizeof(::api::v1::GetIpBlacklistRequest)},
-        {43, -1, -1, sizeof(::api::v1::GetIpBlacklistResponse)},
-        {52, -1, -1, sizeof(::api::v1::UpdateIpBlacklistRequest)},
-        {62, -1, -1, sizeof(::api::v1::UpdateIpBlacklistResponse)},
+        {28, -1, -1, sizeof(::api::v1::UpdateConfigResponse)},
+        {38, -1, -1, sizeof(::api::v1::GetIpBlackListRequest)},
+        {46, -1, -1, sizeof(::api::v1::GetIpBlackListResponse)},
+        {55, -1, -1, sizeof(::api::v1::UpdateIpBlackListRequest)},
+        {65, -1, -1, sizeof(::api::v1::UpdateIpBlackListResponse)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::api::v1::_GetConfigRequest_default_instance_._instance,
     &::api::v1::_GetConfigResponse_default_instance_._instance,
     &::api::v1::_UpdateConfigRequest_default_instance_._instance,
     &::api::v1::_UpdateConfigResponse_default_instance_._instance,
-    &::api::v1::_GetIpBlacklistRequest_default_instance_._instance,
-    &::api::v1::_GetIpBlacklistResponse_default_instance_._instance,
-    &::api::v1::_UpdateIpBlacklistRequest_default_instance_._instance,
-    &::api::v1::_UpdateIpBlacklistResponse_default_instance_._instance,
+    &::api::v1::_GetIpBlackListRequest_default_instance_._instance,
+    &::api::v1::_GetIpBlackListResponse_default_instance_._instance,
+    &::api::v1::_UpdateIpBlackListRequest_default_instance_._instance,
+    &::api::v1::_UpdateIpBlackListResponse_default_instance_._instance,
 };
 const char descriptor_table_protodef_config_5fservice_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\024config_service.proto\022\006api.v1\032\034google/a"
     "pi/annotations.proto\"\022\n\020GetConfigRequest"
     "\">\n\021GetConfigResponse\022)\n\020http_compressio"
-    "n\030\001 \001(\010R\017httpCompression\"T\n\023UpdateConfig"
+    "n\030\001 \001(\010R\017httpCompression\"j\n\023UpdateConfig"
     "Request\022\022\n\004path\030\001 \003(\tR\004path\022)\n\020http_comp"
-    "ression\030\002 \001(\010R\017httpCompression\"\026\n\024Update"
-    "ConfigResponse\"\027\n\025GetIpBlacklistRequest\""
-    "1\n\026GetIpBlacklistResponse\022\027\n\007ip_list\030\001 \003"
-    "(\tR\006ipList\"\263\001\n\030UpdateIpBlacklistRequest\022"
-    "C\n\006action\030\001 \001(\0162+.api.v1.UpdateIpBlackli"
-    "stRequest.ActionTypeR\006action\022\027\n\007ip_list\030"
-    "\002 \003(\tR\006ipList\"9\n\nActionType\022\026\n\022ACTION_UN"
-    "SPECIFIED\020\000\022\007\n\003ADD\020\001\022\n\n\006REMOVE\020\002\"\033\n\031Upda"
-    "teIpBlacklistResponse2\255\003\n\rConfigService\022"
-    "Q\n\tGetConfig\022\030.api.v1.GetConfigRequest\032\031"
-    ".api.v1.GetConfigResponse\"\017\202\323\344\223\002\t\022\007/conf"
-    "ig\022d\n\014UpdateConfig\022\033.api.v1.UpdateConfig"
-    "Request\032\034.api.v1.UpdateConfigResponse\"\031\202"
-    "\323\344\223\002\023\"\016/config:update:\001*\022g\n\016GetIpBlackLi"
-    "st\022\035.api.v1.GetIpBlacklistRequest\032\036.api."
-    "v1.GetIpBlacklistResponse\"\026\202\323\344\223\002\020\022\016/conf"
-    "ig/iplist\022z\n\021UpdateIpBlackList\022 .api.v1."
-    "UpdateIpBlacklistRequest\032!.api.v1.Update"
-    "IpBlacklistResponse\" \202\323\344\223\002\032\"\025/config/ipl"
-    "ist:update:\001*B_\n\ncom.api.v1B\022ConfigServi"
-    "ceProtoP\001Z\004/api\242\002\003AXX\252\002\006Api.V1\312\002\006Api\\V1\342"
-    "\002\022Api\\V1\\GPBMetadata\352\002\007Api::V1b\006proto3"
+    "ression\030\002 \001(\010R\017httpCompression\022\024\n\005https\030"
+    "\003 \001(\010R\005https\"W\n\024UpdateConfigResponse\022)\n\020"
+    "http_compression\030\001 \001(\010R\017httpCompression\022"
+    "\024\n\005https\030\002 \001(\010R\005https\"\027\n\025GetIpBlackListR"
+    "equest\"1\n\026GetIpBlackListResponse\022\027\n\007ip_l"
+    "ist\030\001 \003(\tR\006ipList\"\320\001\n\030UpdateIpBlackListR"
+    "equest\022C\n\006action\030\001 \001(\0162+.api.v1.UpdateIp"
+    "BlackListRequest.ActionTypeR\006action\022\027\n\007i"
+    "p_list\030\002 \003(\tR\006ipList\"V\n\nActionType\022\033\n\027AC"
+    "TION_TYPE_UNSPECIFIED\020\000\022\023\n\017ACTION_TYPE_A"
+    "DD\020\001\022\026\n\022ACTION_TYPE_REMOVE\020\002\"\033\n\031UpdateIp"
+    "BlackListResponse2\255\003\n\rConfigService\022Q\n\tG"
+    "etConfig\022\030.api.v1.GetConfigRequest\032\031.api"
+    ".v1.GetConfigResponse\"\017\202\323\344\223\002\t\022\007/config\022d"
+    "\n\014UpdateConfig\022\033.api.v1.UpdateConfigRequ"
+    "est\032\034.api.v1.UpdateConfigResponse\"\031\202\323\344\223\002"
+    "\023\"\016/config:update:\001*\022g\n\016GetIpBlackList\022\035"
+    ".api.v1.GetIpBlackListRequest\032\036.api.v1.G"
+    "etIpBlackListResponse\"\026\202\323\344\223\002\020\022\016/config/i"
+    "plist\022z\n\021UpdateIpBlackList\022 .api.v1.Upda"
+    "teIpBlackListRequest\032!.api.v1.UpdateIpBl"
+    "ackListResponse\" \202\323\344\223\002\032\"\025/config/iplist:"
+    "update:\001*B_\n\ncom.api.v1B\022ConfigServicePr"
+    "otoP\001Z\004/api\242\002\003AXX\252\002\006Api.V1\312\002\006Api\\V1\342\002\022Ap"
+    "i\\V1\\GPBMetadata\352\002\007Api::V1b\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_config_5fservice_2eproto_deps[1] =
     {
@@ -338,7 +353,7 @@ static ::absl::once_flag descriptor_table_config_5fservice_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_config_5fservice_2eproto = {
     false,
     false,
-    1078,
+    1194,
     descriptor_table_protodef_config_5fservice_2eproto,
     "config_service.proto",
     &descriptor_table_config_5fservice_2eproto_once,
@@ -353,24 +368,24 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_config_5fservi
 };
 namespace api {
 namespace v1 {
-const ::google::protobuf::EnumDescriptor* UpdateIpBlacklistRequest_ActionType_descriptor() {
+const ::google::protobuf::EnumDescriptor* UpdateIpBlackListRequest_ActionType_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_config_5fservice_2eproto);
   return file_level_enum_descriptors_config_5fservice_2eproto[0];
 }
-PROTOBUF_CONSTINIT const uint32_t UpdateIpBlacklistRequest_ActionType_internal_data_[] = {
+PROTOBUF_CONSTINIT const uint32_t UpdateIpBlackListRequest_ActionType_internal_data_[] = {
     196608u, 0u, };
-bool UpdateIpBlacklistRequest_ActionType_IsValid(int value) {
+bool UpdateIpBlackListRequest_ActionType_IsValid(int value) {
   return 0 <= value && value <= 2;
 }
 #if (__cplusplus < 201703) && \
   (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
-constexpr UpdateIpBlacklistRequest_ActionType UpdateIpBlacklistRequest::ACTION_UNSPECIFIED;
-constexpr UpdateIpBlacklistRequest_ActionType UpdateIpBlacklistRequest::ADD;
-constexpr UpdateIpBlacklistRequest_ActionType UpdateIpBlacklistRequest::REMOVE;
-constexpr UpdateIpBlacklistRequest_ActionType UpdateIpBlacklistRequest::ActionType_MIN;
-constexpr UpdateIpBlacklistRequest_ActionType UpdateIpBlacklistRequest::ActionType_MAX;
-constexpr int UpdateIpBlacklistRequest::ActionType_ARRAYSIZE;
+constexpr UpdateIpBlackListRequest_ActionType UpdateIpBlackListRequest::ACTION_TYPE_UNSPECIFIED;
+constexpr UpdateIpBlackListRequest_ActionType UpdateIpBlackListRequest::ACTION_TYPE_ADD;
+constexpr UpdateIpBlackListRequest_ActionType UpdateIpBlackListRequest::ACTION_TYPE_REMOVE;
+constexpr UpdateIpBlackListRequest_ActionType UpdateIpBlackListRequest::ActionType_MIN;
+constexpr UpdateIpBlackListRequest_ActionType UpdateIpBlackListRequest::ActionType_MAX;
+constexpr int UpdateIpBlackListRequest::ActionType_ARRAYSIZE;
 
 #endif  // (__cplusplus < 201703) &&
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
@@ -702,7 +717,13 @@ UpdateConfigRequest::UpdateConfigRequest(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  _impl_.http_compression_ = from._impl_.http_compression_;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, http_compression_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, http_compression_),
+           offsetof(Impl_, https_) -
+               offsetof(Impl_, http_compression_) +
+               sizeof(Impl_::https_));
 
   // @@protoc_insertion_point(copy_constructor:api.v1.UpdateConfigRequest)
 }
@@ -714,7 +735,12 @@ inline PROTOBUF_NDEBUG_INLINE UpdateConfigRequest::Impl_::Impl_(
 
 inline void UpdateConfigRequest::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.http_compression_ = {};
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, http_compression_),
+           0,
+           offsetof(Impl_, https_) -
+               offsetof(Impl_, http_compression_) +
+               sizeof(Impl_::https_));
 }
 UpdateConfigRequest::~UpdateConfigRequest() {
   // @@protoc_insertion_point(destructor:api.v1.UpdateConfigRequest)
@@ -755,15 +781,15 @@ const ::google::protobuf::MessageLite::ClassData* UpdateConfigRequest::GetClassD
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 39, 2> UpdateConfigRequest::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 0, 39, 2> UpdateConfigRequest::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    3,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -773,12 +799,16 @@ const ::_pbi::TcParseTable<1, 2, 0, 39, 2> UpdateConfigRequest::_table_ = {
     ::_pbi::TcParser::GetTable<::api::v1::UpdateConfigRequest>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // bool http_compression = 2 [json_name = "httpCompression"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigRequest, _impl_.http_compression_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.http_compression_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // repeated string path = 1 [json_name = "path"];
     {::_pbi::TcParser::FastUR1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.path_)}},
+    // bool http_compression = 2 [json_name = "httpCompression"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigRequest, _impl_.http_compression_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.http_compression_)}},
+    // bool https = 3 [json_name = "https"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigRequest, _impl_.https_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.https_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -787,6 +817,9 @@ const ::_pbi::TcParseTable<1, 2, 0, 39, 2> UpdateConfigRequest::_table_ = {
     (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
     // bool http_compression = 2 [json_name = "httpCompression"];
     {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.http_compression_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool https = 3 [json_name = "https"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.https_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
   }},
   // no aux_entries
@@ -805,7 +838,9 @@ PROTOBUF_NOINLINE void UpdateConfigRequest::Clear() {
   (void) cached_has_bits;
 
   _impl_.path_.Clear();
-  _impl_.http_compression_ = false;
+  ::memset(&_impl_.http_compression_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.https_) -
+      reinterpret_cast<char*>(&_impl_.http_compression_)) + sizeof(_impl_.https_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -837,6 +872,13 @@ PROTOBUF_NOINLINE void UpdateConfigRequest::Clear() {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteBoolToArray(
                 2, this_._internal_http_compression(), target);
+          }
+
+          // bool https = 3 [json_name = "https"];
+          if (this_._internal_https() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                3, this_._internal_https(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -879,6 +921,10 @@ PROTOBUF_NOINLINE void UpdateConfigRequest::Clear() {
             if (this_._internal_http_compression() != 0) {
               total_size += 2;
             }
+            // bool https = 3 [json_name = "https"];
+            if (this_._internal_https() != 0) {
+              total_size += 2;
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -896,6 +942,9 @@ void UpdateConfigRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, con
   if (from._internal_http_compression() != 0) {
     _this->_impl_.http_compression_ = from._impl_.http_compression_;
   }
+  if (from._internal_https() != 0) {
+    _this->_impl_.https_ = from._impl_.https_;
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -911,7 +960,12 @@ void UpdateConfigRequest::InternalSwap(UpdateConfigRequest* PROTOBUF_RESTRICT ot
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _impl_.path_.InternalSwap(&other->_impl_.path_);
-        swap(_impl_.http_compression_, other->_impl_.http_compression_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.https_)
+      + sizeof(UpdateConfigRequest::_impl_.https_)
+      - PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.http_compression_)>(
+          reinterpret_cast<char*>(&_impl_.http_compression_),
+          reinterpret_cast<char*>(&other->_impl_.http_compression_));
 }
 
 ::google::protobuf::Metadata UpdateConfigRequest::GetMetadata() const {
@@ -925,42 +979,56 @@ class UpdateConfigResponse::_Internal {
 
 UpdateConfigResponse::UpdateConfigResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+    : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:api.v1.UpdateConfigResponse)
 }
 UpdateConfigResponse::UpdateConfigResponse(
-    ::google::protobuf::Arena* arena,
-    const UpdateConfigResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  UpdateConfigResponse* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
+    ::google::protobuf::Arena* arena, const UpdateConfigResponse& from)
+    : UpdateConfigResponse(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE UpdateConfigResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-  // @@protoc_insertion_point(copy_constructor:api.v1.UpdateConfigResponse)
+inline void UpdateConfigResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, http_compression_),
+           0,
+           offsetof(Impl_, https_) -
+               offsetof(Impl_, http_compression_) +
+               sizeof(Impl_::https_));
+}
+UpdateConfigResponse::~UpdateConfigResponse() {
+  // @@protoc_insertion_point(destructor:api.v1.UpdateConfigResponse)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void UpdateConfigResponse::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
 const ::google::protobuf::MessageLite::ClassDataFull
     UpdateConfigResponse::_class_data_ = {
-        ::google::protobuf::internal::ZeroFieldsBase::ClassData{
+        ::google::protobuf::Message::ClassData{
             &_UpdateConfigResponse_default_instance_._instance,
             &_table_.header,
             nullptr,  // OnDemandRegisterArenaDtor
             nullptr,  // IsInitialized
             &UpdateConfigResponse::MergeImpl,
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-            ::google::protobuf::internal::ZeroFieldsBase::GetDeleteImpl<UpdateConfigResponse>(),
-            ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<UpdateConfigResponse>(),
-            ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<UpdateConfigResponse>(), &UpdateConfigResponse::ByteSizeLong,
+            ::google::protobuf::Message::GetDeleteImpl<UpdateConfigResponse>(),
+            ::google::protobuf::Message::GetNewImpl<UpdateConfigResponse>(),
+            ::google::protobuf::Message::GetClearImpl<UpdateConfigResponse>(), &UpdateConfigResponse::ByteSizeLong,
                 &UpdateConfigResponse::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
             PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_._cached_size_),
@@ -976,15 +1044,15 @@ const ::google::protobuf::MessageLite::ClassData* UpdateConfigResponse::GetClass
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 0, 0, 0, 2> UpdateConfigResponse::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> UpdateConfigResponse::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    0, 0,  // max_field_number, fast_idx_mask
+    2, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967295,  // skipmap
-    offsetof(decltype(_table_), field_names),  // no field_entries
-    0,  // num_field_entries
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -994,85 +1062,206 @@ const ::_pbi::TcParseTable<0, 0, 0, 0, 2> UpdateConfigResponse::_table_ = {
     ::_pbi::TcParser::GetTable<::api::v1::UpdateConfigResponse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // bool https = 2 [json_name = "https"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigResponse, _impl_.https_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.https_)}},
+    // bool http_compression = 1 [json_name = "httpCompression"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigResponse, _impl_.http_compression_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.http_compression_)}},
   }}, {{
     65535, 65535
+  }}, {{
+    // bool http_compression = 1 [json_name = "httpCompression"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.http_compression_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool https = 2 [json_name = "https"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.https_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
   }},
-  // no field_entries, or aux_entries
+  // no aux_entries
   {{
   }},
 };
 
+PROTOBUF_NOINLINE void UpdateConfigResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:api.v1.UpdateConfigResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.http_compression_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.https_) -
+      reinterpret_cast<char*>(&_impl_.http_compression_)) + sizeof(_impl_.https_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* UpdateConfigResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const UpdateConfigResponse& this_ = static_cast<const UpdateConfigResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* UpdateConfigResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const UpdateConfigResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:api.v1.UpdateConfigResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // bool http_compression = 1 [json_name = "httpCompression"];
+          if (this_._internal_http_compression() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                1, this_._internal_http_compression(), target);
+          }
+
+          // bool https = 2 [json_name = "https"];
+          if (this_._internal_https() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                2, this_._internal_https(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:api.v1.UpdateConfigResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t UpdateConfigResponse::ByteSizeLong(const MessageLite& base) {
+          const UpdateConfigResponse& this_ = static_cast<const UpdateConfigResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t UpdateConfigResponse::ByteSizeLong() const {
+          const UpdateConfigResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:api.v1.UpdateConfigResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // bool http_compression = 1 [json_name = "httpCompression"];
+            if (this_._internal_http_compression() != 0) {
+              total_size += 2;
+            }
+            // bool https = 2 [json_name = "https"];
+            if (this_._internal_https() != 0) {
+              total_size += 2;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void UpdateConfigResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<UpdateConfigResponse*>(&to_msg);
+  auto& from = static_cast<const UpdateConfigResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.UpdateConfigResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_http_compression() != 0) {
+    _this->_impl_.http_compression_ = from._impl_.http_compression_;
+  }
+  if (from._internal_https() != 0) {
+    _this->_impl_.https_ = from._impl_.https_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void UpdateConfigResponse::CopyFrom(const UpdateConfigResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:api.v1.UpdateConfigResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
 
 
-
-
-
-
+void UpdateConfigResponse::InternalSwap(UpdateConfigResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.https_)
+      + sizeof(UpdateConfigResponse::_impl_.https_)
+      - PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.http_compression_)>(
+          reinterpret_cast<char*>(&_impl_.http_compression_),
+          reinterpret_cast<char*>(&other->_impl_.http_compression_));
+}
 
 ::google::protobuf::Metadata UpdateConfigResponse::GetMetadata() const {
-  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
-class GetIpBlacklistRequest::_Internal {
+class GetIpBlackListRequest::_Internal {
  public:
 };
 
-GetIpBlacklistRequest::GetIpBlacklistRequest(::google::protobuf::Arena* arena)
+GetIpBlackListRequest::GetIpBlackListRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(arena_constructor:api.v1.GetIpBlacklistRequest)
+  // @@protoc_insertion_point(arena_constructor:api.v1.GetIpBlackListRequest)
 }
-GetIpBlacklistRequest::GetIpBlacklistRequest(
+GetIpBlackListRequest::GetIpBlackListRequest(
     ::google::protobuf::Arena* arena,
-    const GetIpBlacklistRequest& from)
+    const GetIpBlackListRequest& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  GetIpBlacklistRequest* const _this = this;
+  GetIpBlackListRequest* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
 
-  // @@protoc_insertion_point(copy_constructor:api.v1.GetIpBlacklistRequest)
+  // @@protoc_insertion_point(copy_constructor:api.v1.GetIpBlackListRequest)
 }
 
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
 const ::google::protobuf::MessageLite::ClassDataFull
-    GetIpBlacklistRequest::_class_data_ = {
+    GetIpBlackListRequest::_class_data_ = {
         ::google::protobuf::internal::ZeroFieldsBase::ClassData{
-            &_GetIpBlacklistRequest_default_instance_._instance,
+            &_GetIpBlackListRequest_default_instance_._instance,
             &_table_.header,
             nullptr,  // OnDemandRegisterArenaDtor
             nullptr,  // IsInitialized
-            &GetIpBlacklistRequest::MergeImpl,
+            &GetIpBlackListRequest::MergeImpl,
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-            ::google::protobuf::internal::ZeroFieldsBase::GetDeleteImpl<GetIpBlacklistRequest>(),
-            ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<GetIpBlacklistRequest>(),
-            ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<GetIpBlacklistRequest>(), &GetIpBlacklistRequest::ByteSizeLong,
-                &GetIpBlacklistRequest::_InternalSerialize,
+            ::google::protobuf::internal::ZeroFieldsBase::GetDeleteImpl<GetIpBlackListRequest>(),
+            ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<GetIpBlackListRequest>(),
+            ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<GetIpBlackListRequest>(), &GetIpBlackListRequest::ByteSizeLong,
+                &GetIpBlackListRequest::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
-            PROTOBUF_FIELD_OFFSET(GetIpBlacklistRequest, _impl_._cached_size_),
+            PROTOBUF_FIELD_OFFSET(GetIpBlackListRequest, _impl_._cached_size_),
             false,
         },
-        &GetIpBlacklistRequest::kDescriptorMethods,
+        &GetIpBlackListRequest::kDescriptorMethods,
         &descriptor_table_config_5fservice_2eproto,
         nullptr,  // tracker
 };
-const ::google::protobuf::MessageLite::ClassData* GetIpBlacklistRequest::GetClassData() const {
+const ::google::protobuf::MessageLite::ClassData* GetIpBlackListRequest::GetClassData() const {
   ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
   ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 0, 0, 0, 2> GetIpBlacklistRequest::_table_ = {
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> GetIpBlackListRequest::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -1087,7 +1276,7 @@ const ::_pbi::TcParseTable<0, 0, 0, 0, 2> GetIpBlacklistRequest::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::api::v1::GetIpBlacklistRequest>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::api::v1::GetIpBlackListRequest>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
@@ -1106,61 +1295,61 @@ const ::_pbi::TcParseTable<0, 0, 0, 0, 2> GetIpBlacklistRequest::_table_ = {
 
 
 
-::google::protobuf::Metadata GetIpBlacklistRequest::GetMetadata() const {
+::google::protobuf::Metadata GetIpBlackListRequest::GetMetadata() const {
   return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
-class GetIpBlacklistResponse::_Internal {
+class GetIpBlackListResponse::_Internal {
  public:
 };
 
-GetIpBlacklistResponse::GetIpBlacklistResponse(::google::protobuf::Arena* arena)
+GetIpBlackListResponse::GetIpBlackListResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:api.v1.GetIpBlacklistResponse)
+  // @@protoc_insertion_point(arena_constructor:api.v1.GetIpBlackListResponse)
 }
-inline PROTOBUF_NDEBUG_INLINE GetIpBlacklistResponse::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE GetIpBlackListResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::api::v1::GetIpBlacklistResponse& from_msg)
+    const Impl_& from, const ::api::v1::GetIpBlackListResponse& from_msg)
       : ip_list_{visibility, arena, from.ip_list_},
         _cached_size_{0} {}
 
-GetIpBlacklistResponse::GetIpBlacklistResponse(
+GetIpBlackListResponse::GetIpBlackListResponse(
     ::google::protobuf::Arena* arena,
-    const GetIpBlacklistResponse& from)
+    const GetIpBlackListResponse& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  GetIpBlacklistResponse* const _this = this;
+  GetIpBlackListResponse* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
-  // @@protoc_insertion_point(copy_constructor:api.v1.GetIpBlacklistResponse)
+  // @@protoc_insertion_point(copy_constructor:api.v1.GetIpBlackListResponse)
 }
-inline PROTOBUF_NDEBUG_INLINE GetIpBlacklistResponse::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE GetIpBlackListResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
       : ip_list_{visibility, arena},
         _cached_size_{0} {}
 
-inline void GetIpBlacklistResponse::SharedCtor(::_pb::Arena* arena) {
+inline void GetIpBlackListResponse::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
 }
-GetIpBlacklistResponse::~GetIpBlacklistResponse() {
-  // @@protoc_insertion_point(destructor:api.v1.GetIpBlacklistResponse)
+GetIpBlackListResponse::~GetIpBlackListResponse() {
+  // @@protoc_insertion_point(destructor:api.v1.GetIpBlackListResponse)
   _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-inline void GetIpBlacklistResponse::SharedDtor() {
+inline void GetIpBlackListResponse::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
   _impl_.~Impl_();
 }
@@ -1168,33 +1357,33 @@ inline void GetIpBlacklistResponse::SharedDtor() {
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
 const ::google::protobuf::MessageLite::ClassDataFull
-    GetIpBlacklistResponse::_class_data_ = {
+    GetIpBlackListResponse::_class_data_ = {
         ::google::protobuf::Message::ClassData{
-            &_GetIpBlacklistResponse_default_instance_._instance,
+            &_GetIpBlackListResponse_default_instance_._instance,
             &_table_.header,
             nullptr,  // OnDemandRegisterArenaDtor
             nullptr,  // IsInitialized
-            &GetIpBlacklistResponse::MergeImpl,
+            &GetIpBlackListResponse::MergeImpl,
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-            ::google::protobuf::Message::GetDeleteImpl<GetIpBlacklistResponse>(),
-            ::google::protobuf::Message::GetNewImpl<GetIpBlacklistResponse>(),
-            ::google::protobuf::Message::GetClearImpl<GetIpBlacklistResponse>(), &GetIpBlacklistResponse::ByteSizeLong,
-                &GetIpBlacklistResponse::_InternalSerialize,
+            ::google::protobuf::Message::GetDeleteImpl<GetIpBlackListResponse>(),
+            ::google::protobuf::Message::GetNewImpl<GetIpBlackListResponse>(),
+            ::google::protobuf::Message::GetClearImpl<GetIpBlackListResponse>(), &GetIpBlackListResponse::ByteSizeLong,
+                &GetIpBlackListResponse::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
-            PROTOBUF_FIELD_OFFSET(GetIpBlacklistResponse, _impl_._cached_size_),
+            PROTOBUF_FIELD_OFFSET(GetIpBlackListResponse, _impl_._cached_size_),
             false,
         },
-        &GetIpBlacklistResponse::kDescriptorMethods,
+        &GetIpBlackListResponse::kDescriptorMethods,
         &descriptor_table_config_5fservice_2eproto,
         nullptr,  // tracker
 };
-const ::google::protobuf::MessageLite::ClassData* GetIpBlacklistResponse::GetClassData() const {
+const ::google::protobuf::MessageLite::ClassData* GetIpBlackListResponse::GetClassData() const {
   ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
   ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 45, 2> GetIpBlacklistResponse::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 45, 2> GetIpBlackListResponse::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -1209,29 +1398,29 @@ const ::_pbi::TcParseTable<0, 1, 0, 45, 2> GetIpBlacklistResponse::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::api::v1::GetIpBlacklistResponse>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::api::v1::GetIpBlackListResponse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     // repeated string ip_list = 1 [json_name = "ipList"];
     {::_pbi::TcParser::FastUR1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(GetIpBlacklistResponse, _impl_.ip_list_)}},
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(GetIpBlackListResponse, _impl_.ip_list_)}},
   }}, {{
     65535, 65535
   }}, {{
     // repeated string ip_list = 1 [json_name = "ipList"];
-    {PROTOBUF_FIELD_OFFSET(GetIpBlacklistResponse, _impl_.ip_list_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(GetIpBlackListResponse, _impl_.ip_list_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
   }},
   // no aux_entries
   {{
     "\35\7\0\0\0\0\0\0"
-    "api.v1.GetIpBlacklistResponse"
+    "api.v1.GetIpBlackListResponse"
     "ip_list"
   }},
 };
 
-PROTOBUF_NOINLINE void GetIpBlacklistResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:api.v1.GetIpBlacklistResponse)
+PROTOBUF_NOINLINE void GetIpBlackListResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:api.v1.GetIpBlackListResponse)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -1242,17 +1431,17 @@ PROTOBUF_NOINLINE void GetIpBlacklistResponse::Clear() {
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* GetIpBlacklistResponse::_InternalSerialize(
+        ::uint8_t* GetIpBlackListResponse::_InternalSerialize(
             const MessageLite& base, ::uint8_t* target,
             ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const GetIpBlacklistResponse& this_ = static_cast<const GetIpBlacklistResponse&>(base);
+          const GetIpBlackListResponse& this_ = static_cast<const GetIpBlackListResponse&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* GetIpBlacklistResponse::_InternalSerialize(
+        ::uint8_t* GetIpBlackListResponse::_InternalSerialize(
             ::uint8_t* target,
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const GetIpBlacklistResponse& this_ = *this;
+          const GetIpBlackListResponse& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:api.v1.GetIpBlacklistResponse)
+          // @@protoc_insertion_point(serialize_to_array_start:api.v1.GetIpBlackListResponse)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
@@ -1260,7 +1449,7 @@ PROTOBUF_NOINLINE void GetIpBlacklistResponse::Clear() {
           for (int i = 0, n = this_._internal_ip_list_size(); i < n; ++i) {
             const auto& s = this_._internal_ip_list().Get(i);
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.GetIpBlacklistResponse.ip_list");
+                s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.GetIpBlackListResponse.ip_list");
             target = stream->WriteString(1, s, target);
           }
 
@@ -1269,18 +1458,18 @@ PROTOBUF_NOINLINE void GetIpBlacklistResponse::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:api.v1.GetIpBlacklistResponse)
+          // @@protoc_insertion_point(serialize_to_array_end:api.v1.GetIpBlackListResponse)
           return target;
         }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t GetIpBlacklistResponse::ByteSizeLong(const MessageLite& base) {
-          const GetIpBlacklistResponse& this_ = static_cast<const GetIpBlacklistResponse&>(base);
+        ::size_t GetIpBlackListResponse::ByteSizeLong(const MessageLite& base) {
+          const GetIpBlackListResponse& this_ = static_cast<const GetIpBlackListResponse&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t GetIpBlacklistResponse::ByteSizeLong() const {
-          const GetIpBlacklistResponse& this_ = *this;
+        ::size_t GetIpBlackListResponse::ByteSizeLong() const {
+          const GetIpBlackListResponse& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:api.v1.GetIpBlacklistResponse)
+          // @@protoc_insertion_point(message_byte_size_start:api.v1.GetIpBlackListResponse)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -1303,10 +1492,10 @@ PROTOBUF_NOINLINE void GetIpBlacklistResponse::Clear() {
                                                      &this_._impl_._cached_size_);
         }
 
-void GetIpBlacklistResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<GetIpBlacklistResponse*>(&to_msg);
-  auto& from = static_cast<const GetIpBlacklistResponse&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.GetIpBlacklistResponse)
+void GetIpBlackListResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<GetIpBlackListResponse*>(&to_msg);
+  auto& from = static_cast<const GetIpBlackListResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.GetIpBlackListResponse)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -1315,77 +1504,77 @@ void GetIpBlacklistResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, 
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void GetIpBlacklistResponse::CopyFrom(const GetIpBlacklistResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:api.v1.GetIpBlacklistResponse)
+void GetIpBlackListResponse::CopyFrom(const GetIpBlackListResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:api.v1.GetIpBlackListResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 
-void GetIpBlacklistResponse::InternalSwap(GetIpBlacklistResponse* PROTOBUF_RESTRICT other) {
+void GetIpBlackListResponse::InternalSwap(GetIpBlackListResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _impl_.ip_list_.InternalSwap(&other->_impl_.ip_list_);
 }
 
-::google::protobuf::Metadata GetIpBlacklistResponse::GetMetadata() const {
+::google::protobuf::Metadata GetIpBlackListResponse::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
-class UpdateIpBlacklistRequest::_Internal {
+class UpdateIpBlackListRequest::_Internal {
  public:
 };
 
-UpdateIpBlacklistRequest::UpdateIpBlacklistRequest(::google::protobuf::Arena* arena)
+UpdateIpBlackListRequest::UpdateIpBlackListRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:api.v1.UpdateIpBlacklistRequest)
+  // @@protoc_insertion_point(arena_constructor:api.v1.UpdateIpBlackListRequest)
 }
-inline PROTOBUF_NDEBUG_INLINE UpdateIpBlacklistRequest::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE UpdateIpBlackListRequest::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::api::v1::UpdateIpBlacklistRequest& from_msg)
+    const Impl_& from, const ::api::v1::UpdateIpBlackListRequest& from_msg)
       : ip_list_{visibility, arena, from.ip_list_},
         _cached_size_{0} {}
 
-UpdateIpBlacklistRequest::UpdateIpBlacklistRequest(
+UpdateIpBlackListRequest::UpdateIpBlackListRequest(
     ::google::protobuf::Arena* arena,
-    const UpdateIpBlacklistRequest& from)
+    const UpdateIpBlackListRequest& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  UpdateIpBlacklistRequest* const _this = this;
+  UpdateIpBlackListRequest* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
   _impl_.action_ = from._impl_.action_;
 
-  // @@protoc_insertion_point(copy_constructor:api.v1.UpdateIpBlacklistRequest)
+  // @@protoc_insertion_point(copy_constructor:api.v1.UpdateIpBlackListRequest)
 }
-inline PROTOBUF_NDEBUG_INLINE UpdateIpBlacklistRequest::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE UpdateIpBlackListRequest::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
       : ip_list_{visibility, arena},
         _cached_size_{0} {}
 
-inline void UpdateIpBlacklistRequest::SharedCtor(::_pb::Arena* arena) {
+inline void UpdateIpBlackListRequest::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
   _impl_.action_ = {};
 }
-UpdateIpBlacklistRequest::~UpdateIpBlacklistRequest() {
-  // @@protoc_insertion_point(destructor:api.v1.UpdateIpBlacklistRequest)
+UpdateIpBlackListRequest::~UpdateIpBlackListRequest() {
+  // @@protoc_insertion_point(destructor:api.v1.UpdateIpBlackListRequest)
   _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-inline void UpdateIpBlacklistRequest::SharedDtor() {
+inline void UpdateIpBlackListRequest::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
   _impl_.~Impl_();
 }
@@ -1393,33 +1582,33 @@ inline void UpdateIpBlacklistRequest::SharedDtor() {
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
 const ::google::protobuf::MessageLite::ClassDataFull
-    UpdateIpBlacklistRequest::_class_data_ = {
+    UpdateIpBlackListRequest::_class_data_ = {
         ::google::protobuf::Message::ClassData{
-            &_UpdateIpBlacklistRequest_default_instance_._instance,
+            &_UpdateIpBlackListRequest_default_instance_._instance,
             &_table_.header,
             nullptr,  // OnDemandRegisterArenaDtor
             nullptr,  // IsInitialized
-            &UpdateIpBlacklistRequest::MergeImpl,
+            &UpdateIpBlackListRequest::MergeImpl,
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-            ::google::protobuf::Message::GetDeleteImpl<UpdateIpBlacklistRequest>(),
-            ::google::protobuf::Message::GetNewImpl<UpdateIpBlacklistRequest>(),
-            ::google::protobuf::Message::GetClearImpl<UpdateIpBlacklistRequest>(), &UpdateIpBlacklistRequest::ByteSizeLong,
-                &UpdateIpBlacklistRequest::_InternalSerialize,
+            ::google::protobuf::Message::GetDeleteImpl<UpdateIpBlackListRequest>(),
+            ::google::protobuf::Message::GetNewImpl<UpdateIpBlackListRequest>(),
+            ::google::protobuf::Message::GetClearImpl<UpdateIpBlackListRequest>(), &UpdateIpBlackListRequest::ByteSizeLong,
+                &UpdateIpBlackListRequest::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
-            PROTOBUF_FIELD_OFFSET(UpdateIpBlacklistRequest, _impl_._cached_size_),
+            PROTOBUF_FIELD_OFFSET(UpdateIpBlackListRequest, _impl_._cached_size_),
             false,
         },
-        &UpdateIpBlacklistRequest::kDescriptorMethods,
+        &UpdateIpBlackListRequest::kDescriptorMethods,
         &descriptor_table_config_5fservice_2eproto,
         nullptr,  // tracker
 };
-const ::google::protobuf::MessageLite::ClassData* UpdateIpBlacklistRequest::GetClassData() const {
+const ::google::protobuf::MessageLite::ClassData* UpdateIpBlackListRequest::GetClassData() const {
   ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
   ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 47, 2> UpdateIpBlacklistRequest::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 0, 47, 2> UpdateIpBlackListRequest::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -1434,35 +1623,35 @@ const ::_pbi::TcParseTable<1, 2, 0, 47, 2> UpdateIpBlacklistRequest::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::api::v1::UpdateIpBlacklistRequest>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::api::v1::UpdateIpBlackListRequest>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     // repeated string ip_list = 2 [json_name = "ipList"];
     {::_pbi::TcParser::FastUR1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateIpBlacklistRequest, _impl_.ip_list_)}},
-    // .api.v1.UpdateIpBlacklistRequest.ActionType action = 1 [json_name = "action"];
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UpdateIpBlacklistRequest, _impl_.action_), 63>(),
-     {8, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateIpBlacklistRequest, _impl_.action_)}},
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateIpBlackListRequest, _impl_.ip_list_)}},
+    // .api.v1.UpdateIpBlackListRequest.ActionType action = 1 [json_name = "action"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UpdateIpBlackListRequest, _impl_.action_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateIpBlackListRequest, _impl_.action_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // .api.v1.UpdateIpBlacklistRequest.ActionType action = 1 [json_name = "action"];
-    {PROTOBUF_FIELD_OFFSET(UpdateIpBlacklistRequest, _impl_.action_), 0, 0,
+    // .api.v1.UpdateIpBlackListRequest.ActionType action = 1 [json_name = "action"];
+    {PROTOBUF_FIELD_OFFSET(UpdateIpBlackListRequest, _impl_.action_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
     // repeated string ip_list = 2 [json_name = "ipList"];
-    {PROTOBUF_FIELD_OFFSET(UpdateIpBlacklistRequest, _impl_.ip_list_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(UpdateIpBlackListRequest, _impl_.ip_list_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
   }},
   // no aux_entries
   {{
     "\37\0\7\0\0\0\0\0"
-    "api.v1.UpdateIpBlacklistRequest"
+    "api.v1.UpdateIpBlackListRequest"
     "ip_list"
   }},
 };
 
-PROTOBUF_NOINLINE void UpdateIpBlacklistRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:api.v1.UpdateIpBlacklistRequest)
+PROTOBUF_NOINLINE void UpdateIpBlackListRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:api.v1.UpdateIpBlackListRequest)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -1474,21 +1663,21 @@ PROTOBUF_NOINLINE void UpdateIpBlacklistRequest::Clear() {
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* UpdateIpBlacklistRequest::_InternalSerialize(
+        ::uint8_t* UpdateIpBlackListRequest::_InternalSerialize(
             const MessageLite& base, ::uint8_t* target,
             ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const UpdateIpBlacklistRequest& this_ = static_cast<const UpdateIpBlacklistRequest&>(base);
+          const UpdateIpBlackListRequest& this_ = static_cast<const UpdateIpBlackListRequest&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* UpdateIpBlacklistRequest::_InternalSerialize(
+        ::uint8_t* UpdateIpBlackListRequest::_InternalSerialize(
             ::uint8_t* target,
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const UpdateIpBlacklistRequest& this_ = *this;
+          const UpdateIpBlackListRequest& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:api.v1.UpdateIpBlacklistRequest)
+          // @@protoc_insertion_point(serialize_to_array_start:api.v1.UpdateIpBlackListRequest)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // .api.v1.UpdateIpBlacklistRequest.ActionType action = 1 [json_name = "action"];
+          // .api.v1.UpdateIpBlackListRequest.ActionType action = 1 [json_name = "action"];
           if (this_._internal_action() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteEnumToArray(
@@ -1499,7 +1688,7 @@ PROTOBUF_NOINLINE void UpdateIpBlacklistRequest::Clear() {
           for (int i = 0, n = this_._internal_ip_list_size(); i < n; ++i) {
             const auto& s = this_._internal_ip_list().Get(i);
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.UpdateIpBlacklistRequest.ip_list");
+                s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.UpdateIpBlackListRequest.ip_list");
             target = stream->WriteString(2, s, target);
           }
 
@@ -1508,18 +1697,18 @@ PROTOBUF_NOINLINE void UpdateIpBlacklistRequest::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:api.v1.UpdateIpBlacklistRequest)
+          // @@protoc_insertion_point(serialize_to_array_end:api.v1.UpdateIpBlackListRequest)
           return target;
         }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t UpdateIpBlacklistRequest::ByteSizeLong(const MessageLite& base) {
-          const UpdateIpBlacklistRequest& this_ = static_cast<const UpdateIpBlacklistRequest&>(base);
+        ::size_t UpdateIpBlackListRequest::ByteSizeLong(const MessageLite& base) {
+          const UpdateIpBlackListRequest& this_ = static_cast<const UpdateIpBlackListRequest&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t UpdateIpBlacklistRequest::ByteSizeLong() const {
-          const UpdateIpBlacklistRequest& this_ = *this;
+        ::size_t UpdateIpBlackListRequest::ByteSizeLong() const {
+          const UpdateIpBlackListRequest& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:api.v1.UpdateIpBlacklistRequest)
+          // @@protoc_insertion_point(message_byte_size_start:api.v1.UpdateIpBlackListRequest)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -1539,7 +1728,7 @@ PROTOBUF_NOINLINE void UpdateIpBlacklistRequest::Clear() {
             }
           }
            {
-            // .api.v1.UpdateIpBlacklistRequest.ActionType action = 1 [json_name = "action"];
+            // .api.v1.UpdateIpBlackListRequest.ActionType action = 1 [json_name = "action"];
             if (this_._internal_action() != 0) {
               total_size += 1 +
                             ::_pbi::WireFormatLite::EnumSize(this_._internal_action());
@@ -1549,10 +1738,10 @@ PROTOBUF_NOINLINE void UpdateIpBlacklistRequest::Clear() {
                                                      &this_._impl_._cached_size_);
         }
 
-void UpdateIpBlacklistRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<UpdateIpBlacklistRequest*>(&to_msg);
-  auto& from = static_cast<const UpdateIpBlacklistRequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.UpdateIpBlacklistRequest)
+void UpdateIpBlackListRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<UpdateIpBlackListRequest*>(&to_msg);
+  auto& from = static_cast<const UpdateIpBlackListRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.UpdateIpBlackListRequest)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -1564,84 +1753,84 @@ void UpdateIpBlacklistRequest::MergeImpl(::google::protobuf::MessageLite& to_msg
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void UpdateIpBlacklistRequest::CopyFrom(const UpdateIpBlacklistRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:api.v1.UpdateIpBlacklistRequest)
+void UpdateIpBlackListRequest::CopyFrom(const UpdateIpBlackListRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:api.v1.UpdateIpBlackListRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 
-void UpdateIpBlacklistRequest::InternalSwap(UpdateIpBlacklistRequest* PROTOBUF_RESTRICT other) {
+void UpdateIpBlackListRequest::InternalSwap(UpdateIpBlackListRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _impl_.ip_list_.InternalSwap(&other->_impl_.ip_list_);
   swap(_impl_.action_, other->_impl_.action_);
 }
 
-::google::protobuf::Metadata UpdateIpBlacklistRequest::GetMetadata() const {
+::google::protobuf::Metadata UpdateIpBlackListRequest::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
-class UpdateIpBlacklistResponse::_Internal {
+class UpdateIpBlackListResponse::_Internal {
  public:
 };
 
-UpdateIpBlacklistResponse::UpdateIpBlacklistResponse(::google::protobuf::Arena* arena)
+UpdateIpBlackListResponse::UpdateIpBlackListResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(arena_constructor:api.v1.UpdateIpBlacklistResponse)
+  // @@protoc_insertion_point(arena_constructor:api.v1.UpdateIpBlackListResponse)
 }
-UpdateIpBlacklistResponse::UpdateIpBlacklistResponse(
+UpdateIpBlackListResponse::UpdateIpBlackListResponse(
     ::google::protobuf::Arena* arena,
-    const UpdateIpBlacklistResponse& from)
+    const UpdateIpBlackListResponse& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  UpdateIpBlacklistResponse* const _this = this;
+  UpdateIpBlackListResponse* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
 
-  // @@protoc_insertion_point(copy_constructor:api.v1.UpdateIpBlacklistResponse)
+  // @@protoc_insertion_point(copy_constructor:api.v1.UpdateIpBlackListResponse)
 }
 
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
 const ::google::protobuf::MessageLite::ClassDataFull
-    UpdateIpBlacklistResponse::_class_data_ = {
+    UpdateIpBlackListResponse::_class_data_ = {
         ::google::protobuf::internal::ZeroFieldsBase::ClassData{
-            &_UpdateIpBlacklistResponse_default_instance_._instance,
+            &_UpdateIpBlackListResponse_default_instance_._instance,
             &_table_.header,
             nullptr,  // OnDemandRegisterArenaDtor
             nullptr,  // IsInitialized
-            &UpdateIpBlacklistResponse::MergeImpl,
+            &UpdateIpBlackListResponse::MergeImpl,
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-            ::google::protobuf::internal::ZeroFieldsBase::GetDeleteImpl<UpdateIpBlacklistResponse>(),
-            ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<UpdateIpBlacklistResponse>(),
-            ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<UpdateIpBlacklistResponse>(), &UpdateIpBlacklistResponse::ByteSizeLong,
-                &UpdateIpBlacklistResponse::_InternalSerialize,
+            ::google::protobuf::internal::ZeroFieldsBase::GetDeleteImpl<UpdateIpBlackListResponse>(),
+            ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<UpdateIpBlackListResponse>(),
+            ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<UpdateIpBlackListResponse>(), &UpdateIpBlackListResponse::ByteSizeLong,
+                &UpdateIpBlackListResponse::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
-            PROTOBUF_FIELD_OFFSET(UpdateIpBlacklistResponse, _impl_._cached_size_),
+            PROTOBUF_FIELD_OFFSET(UpdateIpBlackListResponse, _impl_._cached_size_),
             false,
         },
-        &UpdateIpBlacklistResponse::kDescriptorMethods,
+        &UpdateIpBlackListResponse::kDescriptorMethods,
         &descriptor_table_config_5fservice_2eproto,
         nullptr,  // tracker
 };
-const ::google::protobuf::MessageLite::ClassData* UpdateIpBlacklistResponse::GetClassData() const {
+const ::google::protobuf::MessageLite::ClassData* UpdateIpBlackListResponse::GetClassData() const {
   ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
   ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 0, 0, 0, 2> UpdateIpBlacklistResponse::_table_ = {
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> UpdateIpBlackListResponse::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -1656,7 +1845,7 @@ const ::_pbi::TcParseTable<0, 0, 0, 0, 2> UpdateIpBlacklistResponse::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::api::v1::UpdateIpBlacklistResponse>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::api::v1::UpdateIpBlackListResponse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
@@ -1675,7 +1864,7 @@ const ::_pbi::TcParseTable<0, 0, 0, 0, 2> UpdateIpBlacklistResponse::_table_ = {
 
 
 
-::google::protobuf::Metadata UpdateIpBlacklistResponse::GetMetadata() const {
+::google::protobuf::Metadata UpdateIpBlackListResponse::GetMetadata() const {
   return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)

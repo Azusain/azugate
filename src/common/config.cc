@@ -31,7 +31,7 @@ uint16_t g_azugate_admin_port = 50051;
 std::string g_path_config_file;
 std::unordered_set<std::string> g_ip_blacklist;
 bool g_enable_http_compression = false;
-bool g_enable_https = false;
+bool g_enable_https = true;
 bool g_management_system_authentication = false;
 bool g_http_external_authorization = false;
 bool g_enable_rate_limiter = false;
@@ -54,7 +54,7 @@ std::string g_authorization_token_secret;
 std::string g_azugate_oauth_client_id;
 std::string g_azugate_oauth_client_secret;
 // mics
-size_t g_num_threads = 4;
+size_t g_num_threads = 1;
 
 std::string GetConfigPath() {
   std::lock_guard<std::mutex> lock(g_config_mutex);

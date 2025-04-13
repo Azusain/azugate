@@ -50,19 +50,19 @@ class ConfigService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateConfigResponse>> PrepareAsyncUpdateConfig(::grpc::ClientContext* context, const ::api::v1::UpdateConfigRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateConfigResponse>>(PrepareAsyncUpdateConfigRaw(context, request, cq));
     }
-    virtual ::grpc::Status GetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlacklistRequest& request, ::api::v1::GetIpBlacklistResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::GetIpBlacklistResponse>> AsyncGetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::GetIpBlacklistResponse>>(AsyncGetIpBlackListRaw(context, request, cq));
+    virtual ::grpc::Status GetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest& request, ::api::v1::GetIpBlackListResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::GetIpBlackListResponse>> AsyncGetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::GetIpBlackListResponse>>(AsyncGetIpBlackListRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::GetIpBlacklistResponse>> PrepareAsyncGetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::GetIpBlacklistResponse>>(PrepareAsyncGetIpBlackListRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::GetIpBlackListResponse>> PrepareAsyncGetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::GetIpBlackListResponse>>(PrepareAsyncGetIpBlackListRaw(context, request, cq));
     }
-    virtual ::grpc::Status UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlacklistRequest& request, ::api::v1::UpdateIpBlacklistResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlacklistResponse>> AsyncUpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlacklistResponse>>(AsyncUpdateIpBlackListRaw(context, request, cq));
+    virtual ::grpc::Status UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::api::v1::UpdateIpBlackListResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlackListResponse>> AsyncUpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlackListResponse>>(AsyncUpdateIpBlackListRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlacklistResponse>> PrepareAsyncUpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlacklistResponse>>(PrepareAsyncUpdateIpBlackListRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlackListResponse>> PrepareAsyncUpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlackListResponse>>(PrepareAsyncUpdateIpBlackListRaw(context, request, cq));
     }
     class async_interface {
      public:
@@ -71,10 +71,10 @@ class ConfigService final {
       virtual void GetConfig(::grpc::ClientContext* context, const ::api::v1::GetConfigRequest* request, ::api::v1::GetConfigResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void UpdateConfig(::grpc::ClientContext* context, const ::api::v1::UpdateConfigRequest* request, ::api::v1::UpdateConfigResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void UpdateConfig(::grpc::ClientContext* context, const ::api::v1::UpdateConfigRequest* request, ::api::v1::UpdateConfigResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void GetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlacklistRequest* request, ::api::v1::GetIpBlacklistResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlacklistRequest* request, ::api::v1::GetIpBlacklistResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlacklistRequest* request, ::api::v1::UpdateIpBlacklistResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlacklistRequest* request, ::api::v1::UpdateIpBlacklistResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void GetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest* request, ::api::v1::GetIpBlackListResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest* request, ::api::v1::GetIpBlackListResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest* request, ::api::v1::UpdateIpBlackListResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest* request, ::api::v1::UpdateIpBlackListResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -84,10 +84,10 @@ class ConfigService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::GetConfigResponse>* PrepareAsyncGetConfigRaw(::grpc::ClientContext* context, const ::api::v1::GetConfigRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateConfigResponse>* AsyncUpdateConfigRaw(::grpc::ClientContext* context, const ::api::v1::UpdateConfigRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateConfigResponse>* PrepareAsyncUpdateConfigRaw(::grpc::ClientContext* context, const ::api::v1::UpdateConfigRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::GetIpBlacklistResponse>* AsyncGetIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::GetIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::GetIpBlacklistResponse>* PrepareAsyncGetIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::GetIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlacklistResponse>* AsyncUpdateIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlacklistResponse>* PrepareAsyncUpdateIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::GetIpBlackListResponse>* AsyncGetIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::GetIpBlackListResponse>* PrepareAsyncGetIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlackListResponse>* AsyncUpdateIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlackListResponse>* PrepareAsyncUpdateIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -106,19 +106,19 @@ class ConfigService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateConfigResponse>> PrepareAsyncUpdateConfig(::grpc::ClientContext* context, const ::api::v1::UpdateConfigRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateConfigResponse>>(PrepareAsyncUpdateConfigRaw(context, request, cq));
     }
-    ::grpc::Status GetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlacklistRequest& request, ::api::v1::GetIpBlacklistResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::GetIpBlacklistResponse>> AsyncGetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::GetIpBlacklistResponse>>(AsyncGetIpBlackListRaw(context, request, cq));
+    ::grpc::Status GetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest& request, ::api::v1::GetIpBlackListResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::GetIpBlackListResponse>> AsyncGetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::GetIpBlackListResponse>>(AsyncGetIpBlackListRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::GetIpBlacklistResponse>> PrepareAsyncGetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::GetIpBlacklistResponse>>(PrepareAsyncGetIpBlackListRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::GetIpBlackListResponse>> PrepareAsyncGetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::GetIpBlackListResponse>>(PrepareAsyncGetIpBlackListRaw(context, request, cq));
     }
-    ::grpc::Status UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlacklistRequest& request, ::api::v1::UpdateIpBlacklistResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlacklistResponse>> AsyncUpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlacklistResponse>>(AsyncUpdateIpBlackListRaw(context, request, cq));
+    ::grpc::Status UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::api::v1::UpdateIpBlackListResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlackListResponse>> AsyncUpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlackListResponse>>(AsyncUpdateIpBlackListRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlacklistResponse>> PrepareAsyncUpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlacklistResponse>>(PrepareAsyncUpdateIpBlackListRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlackListResponse>> PrepareAsyncUpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlackListResponse>>(PrepareAsyncUpdateIpBlackListRaw(context, request, cq));
     }
     class async final :
       public StubInterface::async_interface {
@@ -127,10 +127,10 @@ class ConfigService final {
       void GetConfig(::grpc::ClientContext* context, const ::api::v1::GetConfigRequest* request, ::api::v1::GetConfigResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void UpdateConfig(::grpc::ClientContext* context, const ::api::v1::UpdateConfigRequest* request, ::api::v1::UpdateConfigResponse* response, std::function<void(::grpc::Status)>) override;
       void UpdateConfig(::grpc::ClientContext* context, const ::api::v1::UpdateConfigRequest* request, ::api::v1::UpdateConfigResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void GetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlacklistRequest* request, ::api::v1::GetIpBlacklistResponse* response, std::function<void(::grpc::Status)>) override;
-      void GetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlacklistRequest* request, ::api::v1::GetIpBlacklistResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlacklistRequest* request, ::api::v1::UpdateIpBlacklistResponse* response, std::function<void(::grpc::Status)>) override;
-      void UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlacklistRequest* request, ::api::v1::UpdateIpBlacklistResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void GetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest* request, ::api::v1::GetIpBlackListResponse* response, std::function<void(::grpc::Status)>) override;
+      void GetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest* request, ::api::v1::GetIpBlackListResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest* request, ::api::v1::UpdateIpBlackListResponse* response, std::function<void(::grpc::Status)>) override;
+      void UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest* request, ::api::v1::UpdateIpBlackListResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -146,10 +146,10 @@ class ConfigService final {
     ::grpc::ClientAsyncResponseReader< ::api::v1::GetConfigResponse>* PrepareAsyncGetConfigRaw(::grpc::ClientContext* context, const ::api::v1::GetConfigRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateConfigResponse>* AsyncUpdateConfigRaw(::grpc::ClientContext* context, const ::api::v1::UpdateConfigRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateConfigResponse>* PrepareAsyncUpdateConfigRaw(::grpc::ClientContext* context, const ::api::v1::UpdateConfigRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::api::v1::GetIpBlacklistResponse>* AsyncGetIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::GetIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::api::v1::GetIpBlacklistResponse>* PrepareAsyncGetIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::GetIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlacklistResponse>* AsyncUpdateIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlacklistResponse>* PrepareAsyncUpdateIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlacklistRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::api::v1::GetIpBlackListResponse>* AsyncGetIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::api::v1::GetIpBlackListResponse>* PrepareAsyncGetIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlackListResponse>* AsyncUpdateIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlackListResponse>* PrepareAsyncUpdateIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_GetConfig_;
     const ::grpc::internal::RpcMethod rpcmethod_UpdateConfig_;
     const ::grpc::internal::RpcMethod rpcmethod_GetIpBlackList_;
@@ -163,8 +163,8 @@ class ConfigService final {
     virtual ~Service();
     virtual ::grpc::Status GetConfig(::grpc::ServerContext* context, const ::api::v1::GetConfigRequest* request, ::api::v1::GetConfigResponse* response);
     virtual ::grpc::Status UpdateConfig(::grpc::ServerContext* context, const ::api::v1::UpdateConfigRequest* request, ::api::v1::UpdateConfigResponse* response);
-    virtual ::grpc::Status GetIpBlackList(::grpc::ServerContext* context, const ::api::v1::GetIpBlacklistRequest* request, ::api::v1::GetIpBlacklistResponse* response);
-    virtual ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* context, const ::api::v1::UpdateIpBlacklistRequest* request, ::api::v1::UpdateIpBlacklistResponse* response);
+    virtual ::grpc::Status GetIpBlackList(::grpc::ServerContext* context, const ::api::v1::GetIpBlackListRequest* request, ::api::v1::GetIpBlackListResponse* response);
+    virtual ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* context, const ::api::v1::UpdateIpBlackListRequest* request, ::api::v1::UpdateIpBlackListResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_GetConfig : public BaseClass {
@@ -218,11 +218,11 @@ class ConfigService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::GetIpBlacklistRequest* /*request*/, ::api::v1::GetIpBlacklistResponse* /*response*/) override {
+    ::grpc::Status GetIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::GetIpBlackListRequest* /*request*/, ::api::v1::GetIpBlackListResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetIpBlackList(::grpc::ServerContext* context, ::api::v1::GetIpBlacklistRequest* request, ::grpc::ServerAsyncResponseWriter< ::api::v1::GetIpBlacklistResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestGetIpBlackList(::grpc::ServerContext* context, ::api::v1::GetIpBlackListRequest* request, ::grpc::ServerAsyncResponseWriter< ::api::v1::GetIpBlackListResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -238,11 +238,11 @@ class ConfigService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateIpBlacklistRequest* /*request*/, ::api::v1::UpdateIpBlacklistResponse* /*response*/) override {
+    ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateIpBlackListRequest* /*request*/, ::api::v1::UpdateIpBlackListResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestUpdateIpBlackList(::grpc::ServerContext* context, ::api::v1::UpdateIpBlacklistRequest* request, ::grpc::ServerAsyncResponseWriter< ::api::v1::UpdateIpBlacklistResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestUpdateIpBlackList(::grpc::ServerContext* context, ::api::v1::UpdateIpBlackListRequest* request, ::grpc::ServerAsyncResponseWriter< ::api::v1::UpdateIpBlackListResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -308,25 +308,25 @@ class ConfigService final {
    public:
     WithCallbackMethod_GetIpBlackList() {
       ::grpc::Service::MarkMethodCallback(2,
-          new ::grpc::internal::CallbackUnaryHandler< ::api::v1::GetIpBlacklistRequest, ::api::v1::GetIpBlacklistResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::api::v1::GetIpBlackListRequest, ::api::v1::GetIpBlackListResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::api::v1::GetIpBlacklistRequest* request, ::api::v1::GetIpBlacklistResponse* response) { return this->GetIpBlackList(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::api::v1::GetIpBlackListRequest* request, ::api::v1::GetIpBlackListResponse* response) { return this->GetIpBlackList(context, request, response); }));}
     void SetMessageAllocatorFor_GetIpBlackList(
-        ::grpc::MessageAllocator< ::api::v1::GetIpBlacklistRequest, ::api::v1::GetIpBlacklistResponse>* allocator) {
+        ::grpc::MessageAllocator< ::api::v1::GetIpBlackListRequest, ::api::v1::GetIpBlackListResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::api::v1::GetIpBlacklistRequest, ::api::v1::GetIpBlacklistResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::api::v1::GetIpBlackListRequest, ::api::v1::GetIpBlackListResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~WithCallbackMethod_GetIpBlackList() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::GetIpBlacklistRequest* /*request*/, ::api::v1::GetIpBlacklistResponse* /*response*/) override {
+    ::grpc::Status GetIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::GetIpBlackListRequest* /*request*/, ::api::v1::GetIpBlackListResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* GetIpBlackList(
-      ::grpc::CallbackServerContext* /*context*/, const ::api::v1::GetIpBlacklistRequest* /*request*/, ::api::v1::GetIpBlacklistResponse* /*response*/)  { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::api::v1::GetIpBlackListRequest* /*request*/, ::api::v1::GetIpBlackListResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithCallbackMethod_UpdateIpBlackList : public BaseClass {
@@ -335,25 +335,25 @@ class ConfigService final {
    public:
     WithCallbackMethod_UpdateIpBlackList() {
       ::grpc::Service::MarkMethodCallback(3,
-          new ::grpc::internal::CallbackUnaryHandler< ::api::v1::UpdateIpBlacklistRequest, ::api::v1::UpdateIpBlacklistResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::api::v1::UpdateIpBlackListRequest, ::api::v1::UpdateIpBlackListResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::api::v1::UpdateIpBlacklistRequest* request, ::api::v1::UpdateIpBlacklistResponse* response) { return this->UpdateIpBlackList(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::api::v1::UpdateIpBlackListRequest* request, ::api::v1::UpdateIpBlackListResponse* response) { return this->UpdateIpBlackList(context, request, response); }));}
     void SetMessageAllocatorFor_UpdateIpBlackList(
-        ::grpc::MessageAllocator< ::api::v1::UpdateIpBlacklistRequest, ::api::v1::UpdateIpBlacklistResponse>* allocator) {
+        ::grpc::MessageAllocator< ::api::v1::UpdateIpBlackListRequest, ::api::v1::UpdateIpBlackListResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::api::v1::UpdateIpBlacklistRequest, ::api::v1::UpdateIpBlacklistResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::api::v1::UpdateIpBlackListRequest, ::api::v1::UpdateIpBlackListResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~WithCallbackMethod_UpdateIpBlackList() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateIpBlacklistRequest* /*request*/, ::api::v1::UpdateIpBlacklistResponse* /*response*/) override {
+    ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateIpBlackListRequest* /*request*/, ::api::v1::UpdateIpBlackListResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* UpdateIpBlackList(
-      ::grpc::CallbackServerContext* /*context*/, const ::api::v1::UpdateIpBlacklistRequest* /*request*/, ::api::v1::UpdateIpBlacklistResponse* /*response*/)  { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::api::v1::UpdateIpBlackListRequest* /*request*/, ::api::v1::UpdateIpBlackListResponse* /*response*/)  { return nullptr; }
   };
   typedef WithCallbackMethod_GetConfig<WithCallbackMethod_UpdateConfig<WithCallbackMethod_GetIpBlackList<WithCallbackMethod_UpdateIpBlackList<Service > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
@@ -403,7 +403,7 @@ class ConfigService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::GetIpBlacklistRequest* /*request*/, ::api::v1::GetIpBlacklistResponse* /*response*/) override {
+    ::grpc::Status GetIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::GetIpBlackListRequest* /*request*/, ::api::v1::GetIpBlackListResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -420,7 +420,7 @@ class ConfigService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateIpBlacklistRequest* /*request*/, ::api::v1::UpdateIpBlacklistResponse* /*response*/) override {
+    ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateIpBlackListRequest* /*request*/, ::api::v1::UpdateIpBlackListResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -477,7 +477,7 @@ class ConfigService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::GetIpBlacklistRequest* /*request*/, ::api::v1::GetIpBlacklistResponse* /*response*/) override {
+    ::grpc::Status GetIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::GetIpBlackListRequest* /*request*/, ::api::v1::GetIpBlackListResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -497,7 +497,7 @@ class ConfigService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateIpBlacklistRequest* /*request*/, ::api::v1::UpdateIpBlacklistResponse* /*response*/) override {
+    ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateIpBlackListRequest* /*request*/, ::api::v1::UpdateIpBlackListResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -564,7 +564,7 @@ class ConfigService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::GetIpBlacklistRequest* /*request*/, ::api::v1::GetIpBlacklistResponse* /*response*/) override {
+    ::grpc::Status GetIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::GetIpBlackListRequest* /*request*/, ::api::v1::GetIpBlackListResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -586,7 +586,7 @@ class ConfigService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateIpBlacklistRequest* /*request*/, ::api::v1::UpdateIpBlacklistResponse* /*response*/) override {
+    ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateIpBlackListRequest* /*request*/, ::api::v1::UpdateIpBlackListResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -655,10 +655,10 @@ class ConfigService final {
     WithStreamedUnaryMethod_GetIpBlackList() {
       ::grpc::Service::MarkMethodStreamed(2,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::api::v1::GetIpBlacklistRequest, ::api::v1::GetIpBlacklistResponse>(
+          ::api::v1::GetIpBlackListRequest, ::api::v1::GetIpBlackListResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::api::v1::GetIpBlacklistRequest, ::api::v1::GetIpBlacklistResponse>* streamer) {
+                     ::api::v1::GetIpBlackListRequest, ::api::v1::GetIpBlackListResponse>* streamer) {
                        return this->StreamedGetIpBlackList(context,
                          streamer);
                   }));
@@ -667,12 +667,12 @@ class ConfigService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status GetIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::GetIpBlacklistRequest* /*request*/, ::api::v1::GetIpBlacklistResponse* /*response*/) override {
+    ::grpc::Status GetIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::GetIpBlackListRequest* /*request*/, ::api::v1::GetIpBlackListResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedGetIpBlackList(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::api::v1::GetIpBlacklistRequest,::api::v1::GetIpBlacklistResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedGetIpBlackList(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::api::v1::GetIpBlackListRequest,::api::v1::GetIpBlackListResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_UpdateIpBlackList : public BaseClass {
@@ -682,10 +682,10 @@ class ConfigService final {
     WithStreamedUnaryMethod_UpdateIpBlackList() {
       ::grpc::Service::MarkMethodStreamed(3,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::api::v1::UpdateIpBlacklistRequest, ::api::v1::UpdateIpBlacklistResponse>(
+          ::api::v1::UpdateIpBlackListRequest, ::api::v1::UpdateIpBlackListResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::api::v1::UpdateIpBlacklistRequest, ::api::v1::UpdateIpBlacklistResponse>* streamer) {
+                     ::api::v1::UpdateIpBlackListRequest, ::api::v1::UpdateIpBlackListResponse>* streamer) {
                        return this->StreamedUpdateIpBlackList(context,
                          streamer);
                   }));
@@ -694,12 +694,12 @@ class ConfigService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateIpBlacklistRequest* /*request*/, ::api::v1::UpdateIpBlacklistResponse* /*response*/) override {
+    ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateIpBlackListRequest* /*request*/, ::api::v1::UpdateIpBlackListResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedUpdateIpBlackList(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::api::v1::UpdateIpBlacklistRequest,::api::v1::UpdateIpBlacklistResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedUpdateIpBlackList(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::api::v1::UpdateIpBlackListRequest,::api::v1::UpdateIpBlackListResponse>* server_unary_streamer) = 0;
   };
   typedef WithStreamedUnaryMethod_GetConfig<WithStreamedUnaryMethod_UpdateConfig<WithStreamedUnaryMethod_GetIpBlackList<WithStreamedUnaryMethod_UpdateIpBlackList<Service > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;

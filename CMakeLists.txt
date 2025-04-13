@@ -49,6 +49,7 @@ Boost::asio
 Boost::thread
 yaml-cpp::yaml-cpp
 gRPC::grpc++
+gRPC::grpc++_reflection
 protobuf::libprotobuf
 nlohmann_json::nlohmann_json
 ${OPENSSL_LIBRARIES}

@@ -82,21 +82,26 @@ inline bool handleNoCompression(const boost::shared_ptr<T> sock_ptr,
                                 const char *full_local_file_path_str,
                                 size_t local_file_size,
                                 network::PicoHttpRequest &request) {
-
+  constexpr bool is_ssl =
+      std::is_same_v<T, boost::asio::ssl::stream<boost::asio::ip::tcp::socket>>;
+  if constexpr (!is_ssl) {
 #if defined(__linux__)
-  int file_fd = ::open(full_local_file_path_str, O_RDONLY);
-  if (file_fd < 0) {
-    SPDLOG_ERROR("failed to open file: {}", strerror(errno));
-    return false;
+    int file_fd = ::open(full_local_file_path_str, O_RDONLY);
+    if (file_fd < 0) {
+      SPDLOG_ERROR("failed to open file: {}", strerror(errno));
+      return false;
+    }
+    off_t offset = 0;
+    int fd = sock_ptr->lowest_layer().native_handle();
+    ssize_t sent_bytes = sendfile(fd, file_fd, &offset, local_file_size);
+    if (sent_bytes == -1) {
+      SPDLOG_ERROR("sendfile failed: {}", strerror(errno));
+      return false;
+    }
+    return true;
+#endif
   }
-  off_t offset = 0;
-  int fd = sock_ptr->lowest_layer().native_handle();
-  ssize_t sent_bytes = sendfile(fd, file_fd, &offset, local_file_size);
-  if (sent_bytes == -1) {
-    SPDLOG_ERROR("sendfile failed: {}", strerror(errno));
-    return false;
-  }
-#else
+  // TODO: dead code in linux.
   std::ifstream local_file_stream(full_local_file_path_str, std::ios::binary);
   if (!local_file_stream.is_open()) {
     SPDLOG_ERROR("failed to open file: {}", full_local_file_path_str);
@@ -122,7 +127,7 @@ inline bool handleNoCompression(const boost::shared_ptr<T> sock_ptr,
       return false;
     }
   }
-#endif
+
   return true;
 }
 
@@ -200,7 +205,8 @@ extractTokenFromAuthorization(const std::string_view &auth_header) {
 //       std::string(request.path, request.len_path), "code");
 //   if (code != "") {
 //     network::HttpClient<T> code_http_client;
-//     code_http_client.Connect(io_context_ptr, g_external_oauth_server_domain,
+//     code_http_client.Connect(io_context_ptr,
+//     g_external_oauth_server_domain,
 //                              std::string(kDftHttpPort));
 //     // token exchange with the oauth server.
 //     std::string body;
@@ -352,7 +358,8 @@ public:
                    std::function<void()> async_accpet_cb)
       : io_context_ptr_(io_context_ptr), sock_ptr_(sock_ptr),
         source_connection_info_(source_connection_info),
-        async_accpet_cb_(async_accpet_cb), total_parsed_(0) {}
+        async_accpet_cb_(async_accpet_cb), total_parsed_(0),
+        strand_(boost::asio::make_strand(*io_context_ptr)) {}
 
   // TODO: release connections properly.
   ~HttpProxyHandler() { Close(); }
@@ -365,9 +372,11 @@ public:
       if (ec == boost::asio::error::eof) {
         SPDLOG_DEBUG("connection closed by peer");
         async_accpet_cb_();
+        return;
       }
-      SPDLOG_WARN("failed to read HTTP header: {}", ec.message());
+      // SPDLOG_WARN("failed to read HTTP header: {}", ec.message());
       async_accpet_cb_();
+      return;
     }
     total_parsed_ += bytes_read;
     request_.num_headers = std::size(request_.headers);
@@ -386,8 +395,9 @@ public:
       extractMetadata();
     } else if (pret == -2) {
       // need more data.'
-      SPDLOG_WARN("need more data");
+      // SPDLOG_WARN("need more data");
       parseRequest();
+      return;
     } else {
       SPDLOG_WARN("failed to parse HTTP request");
       async_accpet_cb_();
@@ -398,13 +408,31 @@ public:
     if (total_parsed_ >= azugate::kMaxHttpHeaderSize) {
       SPDLOG_WARN("HTTP header size exceeded the limit");
       async_accpet_cb_();
+      return;
     }
+
+    // if constexpr (std::is_same_v<T, boost::asio::ssl::stream<
+    //                                     boost::asio::ip::tcp::socket>>) {
+    //   boost::system::error_code ec;
+    //   std::size_t bytes_read = sock_ptr_->read_some(
+    //       boost::asio::buffer(request_.header_buf + total_parsed_,
+    //                           azugate::kMaxHttpHeaderSize - total_parsed_),
+    //       ec);
+    //   if (ec) {
+    //     SPDLOG_WARN("SSL read error: {}", ec.message());
+    //     async_accpet_cb_();
+    //     return;
+    //   }
+    //   HttpProxyHandler<T>::onRead(ec, bytes_read);
+    // } else {
+    // 非 SSL 流使用异步的 async_read_some
     sock_ptr_->async_read_some(
         boost::asio::buffer(request_.header_buf + total_parsed_,
                             azugate::kMaxHttpHeaderSize - total_parsed_),
         std::bind(&HttpProxyHandler<T>::onRead, this->shared_from_this(),
                   std::placeholders::_1, std::placeholders::_2));
-  };
+    // }
+  }
 
   inline void extractMetadata() {
     if (!extractMetaFromHeaders(compression_type_, request_, token_)) {
@@ -470,15 +498,16 @@ public:
   }
 
   void Close() {
-    if (sock_ptr_ && sock_ptr_->is_open()) {
+    if (sock_ptr_ && sock_ptr_->lowest_layer().is_open()) {
       boost::system::error_code ec;
-      sock_ptr_->shutdown(boost::asio::socket_base::shutdown_both, ec);
+      sock_ptr_->lowest_layer().shutdown(
+          boost::asio::socket_base::shutdown_both, ec);
       if (ec) {
-        SPDLOG_WARN("failed to do shutdown");
+        SPDLOG_WARN("failed to do shutdown: {}", ec.message());
       }
-      sock_ptr_->close(ec);
+      sock_ptr_->lowest_layer().close(ec);
       if (ec) {
-        SPDLOG_WARN("failed to do close");
+        SPDLOG_WARN("failed to do close: {}", ec.message());
       }
     }
   }
@@ -490,6 +519,7 @@ private:
   azugate::ConnectionInfo source_connection_info_;
   std::function<void()> async_accpet_cb_;
   azugate::network::PicoHttpRequest request_;
+  boost::asio::strand<boost::asio::any_io_executor> strand_;
   size_t total_parsed_;
   // services.
   utils::CompressionType compression_type_;

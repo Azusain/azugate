@@ -38,9 +38,13 @@ message GetConfigResponse {
 message UpdateConfigRequest {
   repeated string path = 1;
   bool http_compression = 2;
+  bool https = 3;
 }
 
-message UpdateConfigResponse {}
+message UpdateConfigResponse {
+  bool http_compression = 1;
+  bool https = 2;
+}
 
 message GetIpBlackListRequest {}
 
