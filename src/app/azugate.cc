@@ -76,12 +76,14 @@ public:
       SPDLOG_WARN("failed to accept new connection");
       safeCloseSocket(sock_ptr);
       accept();
+      return;
     }
     auto source_endpoint = sock_ptr->remote_endpoint(ec);
     if (ec) {
       SPDLOG_WARN("failed to get remote_endpoint");
       safeCloseSocket(sock_ptr);
       accept();
+      return;
     }
     ConnectionInfo src_conn_info;
     src_conn_info.address = source_endpoint.address().to_string();
@@ -91,10 +93,12 @@ public:
       SPDLOG_WARN("failed to pass filter");
       safeCloseSocket(sock_ptr);
       accept();
+      return;
     }
     Dispatch(io_context_ptr_, sock_ptr, std::move(src_conn_info), rate_limiter_,
              std::bind(&Server::accept, this));
     accept();
+    return;
   }
 
   void accept() {
