@@ -1,4 +1,4 @@
-#include "config.h"
+#include "../../include/config.h"
 #include "protocols.h"
 #include <cstddef>
 #include <cstdint>
@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
+#include <vector>
 
 namespace std {
 template <> struct hash<azugate::ConnectionInfo> {
@@ -34,7 +35,6 @@ bool g_enable_http_compression = false;
 bool g_enable_https = false;
 bool g_management_system_authentication = false;
 bool g_http_external_authorization = false;
-bool g_enable_rate_limiter = false;
 std::string g_external_oauth_server_domain = "localhost";
 std::string g_external_oauth_server_path = "/";
 std::string g_azugate_domain = "localhost";
@@ -53,8 +53,14 @@ std::string g_authorization_token_secret;
 // TODO: configured in config.yaml.
 std::string g_azugate_oauth_client_id;
 std::string g_azugate_oauth_client_secret;
-// mics
-size_t g_num_threads = 4;
+// rate limitor
+bool g_enable_rate_limiter = false;
+size_t g_num_token_per_sec = 100;
+size_t g_num_token_max = 1000;
+// io
+size_t g_num_threads = 1;
+// healthz.
+std::vector<std::string> g_healthz_list;
 
 std::string GetConfigPath() {
   std::lock_guard<std::mutex> lock(g_config_mutex);
@@ -95,13 +101,41 @@ void SetHttps(bool https) { g_enable_https = https; }
 
 bool GetHttps() { return g_enable_https; }
 
+void SetEnableRateLimitor(bool enable) { g_enable_rate_limiter = enable; };
+bool GetEnableRateLimitor() { return g_enable_rate_limiter; };
+
+void ConfigRateLimitor(size_t num_token_max, size_t num_token_per_sec) {
+  std::lock_guard<std::mutex> lock(g_config_mutex);
+  if (num_token_max > 0) {
+    g_num_token_max = num_token_max;
+  }
+  if (num_token_per_sec > 0) {
+    g_num_token_per_sec = num_token_per_sec;
+  }
+}
+// return g_num_token_max and g_num_token_per_sec.
+std::pair<size_t, size_t> GetRateLimitorConfig() {
+  std::lock_guard<std::mutex> lock(g_config_mutex);
+  return std::pair<size_t, size_t>(g_num_token_max, g_num_token_per_sec);
+}
+
+void AddHealthzList(std::string &&addr) {
+  std::lock_guard<std::mutex> lock(g_config_mutex);
+  g_healthz_list.emplace_back(addr);
+}
+
+const std::vector<std::string> &GetHealthzList() {
+  std::lock_guard<std::mutex> lock(g_config_mutex);
+  return g_healthz_list;
+}
+
 void AddRouterMapping(ConnectionInfo &&source, ConnectionInfo &&target) {
   std::lock_guard<std::mutex> lock(g_config_mutex);
   g_router_map.emplace(
       std::pair<ConnectionInfo, ConnectionInfo>{source, target});
 }
 
-// TODO: implement support for wildcards.
+// TODO: implement support for wildcards('*').
 std::optional<ConnectionInfo> GetRouterMapping(const ConnectionInfo &source) {
   std::lock_guard<std::mutex> lock(g_config_mutex);
   auto it = g_router_map.find(source);

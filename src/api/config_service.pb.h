@@ -54,30 +54,45 @@ extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_config_5fservice_2eproto;
 namespace api {
 namespace v1 {
+class ConfigRouterRequest;
+struct ConfigRouterRequestDefaultTypeInternal;
+extern ConfigRouterRequestDefaultTypeInternal _ConfigRouterRequest_default_instance_;
+class ConfigRouterResponse;
+struct ConfigRouterResponseDefaultTypeInternal;
+extern ConfigRouterResponseDefaultTypeInternal _ConfigRouterResponse_default_instance_;
 class GetConfigRequest;
 struct GetConfigRequestDefaultTypeInternal;
 extern GetConfigRequestDefaultTypeInternal _GetConfigRequest_default_instance_;
 class GetConfigResponse;
 struct GetConfigResponseDefaultTypeInternal;
 extern GetConfigResponseDefaultTypeInternal _GetConfigResponse_default_instance_;
-class GetIpBlacklistRequest;
-struct GetIpBlacklistRequestDefaultTypeInternal;
-extern GetIpBlacklistRequestDefaultTypeInternal _GetIpBlacklistRequest_default_instance_;
-class GetIpBlacklistResponse;
-struct GetIpBlacklistResponseDefaultTypeInternal;
-extern GetIpBlacklistResponseDefaultTypeInternal _GetIpBlacklistResponse_default_instance_;
+class GetIpBlackListRequest;
+struct GetIpBlackListRequestDefaultTypeInternal;
+extern GetIpBlackListRequestDefaultTypeInternal _GetIpBlackListRequest_default_instance_;
+class GetIpBlackListResponse;
+struct GetIpBlackListResponseDefaultTypeInternal;
+extern GetIpBlackListResponseDefaultTypeInternal _GetIpBlackListResponse_default_instance_;
+class RouterConfig;
+struct RouterConfigDefaultTypeInternal;
+extern RouterConfigDefaultTypeInternal _RouterConfig_default_instance_;
 class UpdateConfigRequest;
 struct UpdateConfigRequestDefaultTypeInternal;
 extern UpdateConfigRequestDefaultTypeInternal _UpdateConfigRequest_default_instance_;
 class UpdateConfigResponse;
 struct UpdateConfigResponseDefaultTypeInternal;
 extern UpdateConfigResponseDefaultTypeInternal _UpdateConfigResponse_default_instance_;
-class UpdateIpBlacklistRequest;
-struct UpdateIpBlacklistRequestDefaultTypeInternal;
-extern UpdateIpBlacklistRequestDefaultTypeInternal _UpdateIpBlacklistRequest_default_instance_;
-class UpdateIpBlacklistResponse;
-struct UpdateIpBlacklistResponseDefaultTypeInternal;
-extern UpdateIpBlacklistResponseDefaultTypeInternal _UpdateIpBlacklistResponse_default_instance_;
+class UpdateHealthzListRequest;
+struct UpdateHealthzListRequestDefaultTypeInternal;
+extern UpdateHealthzListRequestDefaultTypeInternal _UpdateHealthzListRequest_default_instance_;
+class UpdateHealthzListResponse;
+struct UpdateHealthzListResponseDefaultTypeInternal;
+extern UpdateHealthzListResponseDefaultTypeInternal _UpdateHealthzListResponse_default_instance_;
+class UpdateIpBlackListRequest;
+struct UpdateIpBlackListRequestDefaultTypeInternal;
+extern UpdateIpBlackListRequestDefaultTypeInternal _UpdateIpBlackListRequest_default_instance_;
+class UpdateIpBlackListResponse;
+struct UpdateIpBlackListResponseDefaultTypeInternal;
+extern UpdateIpBlackListResponseDefaultTypeInternal _UpdateIpBlackListResponse_default_instance_;
 }  // namespace v1
 }  // namespace api
 namespace google {
@@ -87,39 +102,39 @@ namespace protobuf {
 
 namespace api {
 namespace v1 {
-enum UpdateIpBlacklistRequest_ActionType : int {
-  UpdateIpBlacklistRequest_ActionType_ACTION_UNSPECIFIED = 0,
-  UpdateIpBlacklistRequest_ActionType_ADD = 1,
-  UpdateIpBlacklistRequest_ActionType_REMOVE = 2,
-  UpdateIpBlacklistRequest_ActionType_UpdateIpBlacklistRequest_ActionType_INT_MIN_SENTINEL_DO_NOT_USE_ =
+enum UpdateIpBlackListRequest_ActionType : int {
+  UpdateIpBlackListRequest_ActionType_ACTION_TYPE_UNSPECIFIED = 0,
+  UpdateIpBlackListRequest_ActionType_ACTION_TYPE_ADD = 1,
+  UpdateIpBlackListRequest_ActionType_ACTION_TYPE_REMOVE = 2,
+  UpdateIpBlackListRequest_ActionType_UpdateIpBlackListRequest_ActionType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
-  UpdateIpBlacklistRequest_ActionType_UpdateIpBlacklistRequest_ActionType_INT_MAX_SENTINEL_DO_NOT_USE_ =
+  UpdateIpBlackListRequest_ActionType_UpdateIpBlackListRequest_ActionType_INT_MAX_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::max(),
 };
 
-bool UpdateIpBlacklistRequest_ActionType_IsValid(int value);
-extern const uint32_t UpdateIpBlacklistRequest_ActionType_internal_data_[];
-constexpr UpdateIpBlacklistRequest_ActionType UpdateIpBlacklistRequest_ActionType_ActionType_MIN = static_cast<UpdateIpBlacklistRequest_ActionType>(0);
-constexpr UpdateIpBlacklistRequest_ActionType UpdateIpBlacklistRequest_ActionType_ActionType_MAX = static_cast<UpdateIpBlacklistRequest_ActionType>(2);
-constexpr int UpdateIpBlacklistRequest_ActionType_ActionType_ARRAYSIZE = 2 + 1;
+bool UpdateIpBlackListRequest_ActionType_IsValid(int value);
+extern const uint32_t UpdateIpBlackListRequest_ActionType_internal_data_[];
+constexpr UpdateIpBlackListRequest_ActionType UpdateIpBlackListRequest_ActionType_ActionType_MIN = static_cast<UpdateIpBlackListRequest_ActionType>(0);
+constexpr UpdateIpBlackListRequest_ActionType UpdateIpBlackListRequest_ActionType_ActionType_MAX = static_cast<UpdateIpBlackListRequest_ActionType>(2);
+constexpr int UpdateIpBlackListRequest_ActionType_ActionType_ARRAYSIZE = 2 + 1;
 const ::google::protobuf::EnumDescriptor*
-UpdateIpBlacklistRequest_ActionType_descriptor();
+UpdateIpBlackListRequest_ActionType_descriptor();
 template <typename T>
-const std::string& UpdateIpBlacklistRequest_ActionType_Name(T value) {
-  static_assert(std::is_same<T, UpdateIpBlacklistRequest_ActionType>::value ||
+const std::string& UpdateIpBlackListRequest_ActionType_Name(T value) {
+  static_assert(std::is_same<T, UpdateIpBlackListRequest_ActionType>::value ||
                     std::is_integral<T>::value,
                 "Incorrect type passed to ActionType_Name().");
-  return UpdateIpBlacklistRequest_ActionType_Name(static_cast<UpdateIpBlacklistRequest_ActionType>(value));
+  return UpdateIpBlackListRequest_ActionType_Name(static_cast<UpdateIpBlackListRequest_ActionType>(value));
 }
 template <>
-inline const std::string& UpdateIpBlacklistRequest_ActionType_Name(UpdateIpBlacklistRequest_ActionType value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<UpdateIpBlacklistRequest_ActionType_descriptor,
+inline const std::string& UpdateIpBlackListRequest_ActionType_Name(UpdateIpBlackListRequest_ActionType value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<UpdateIpBlackListRequest_ActionType_descriptor,
                                                  0, 2>(
       static_cast<int>(value));
 }
-inline bool UpdateIpBlacklistRequest_ActionType_Parse(absl::string_view name, UpdateIpBlacklistRequest_ActionType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<UpdateIpBlacklistRequest_ActionType>(
-      UpdateIpBlacklistRequest_ActionType_descriptor(), name, value);
+inline bool UpdateIpBlackListRequest_ActionType_Parse(absl::string_view name, UpdateIpBlackListRequest_ActionType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<UpdateIpBlackListRequest_ActionType>(
+      UpdateIpBlackListRequest_ActionType_descriptor(), name, value);
 }
 
 // ===================================================================
@@ -127,22 +142,22 @@ inline bool UpdateIpBlacklistRequest_ActionType_Parse(absl::string_view name, Up
 
 // -------------------------------------------------------------------
 
-class UpdateIpBlacklistResponse final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:api.v1.UpdateIpBlacklistResponse) */ {
+class UpdateIpBlackListResponse final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:api.v1.UpdateIpBlackListResponse) */ {
  public:
-  inline UpdateIpBlacklistResponse() : UpdateIpBlacklistResponse(nullptr) {}
+  inline UpdateIpBlackListResponse() : UpdateIpBlackListResponse(nullptr) {}
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR UpdateIpBlacklistResponse(
+  explicit PROTOBUF_CONSTEXPR UpdateIpBlackListResponse(
       ::google::protobuf::internal::ConstantInitialized);
 
-  inline UpdateIpBlacklistResponse(const UpdateIpBlacklistResponse& from) : UpdateIpBlacklistResponse(nullptr, from) {}
-  inline UpdateIpBlacklistResponse(UpdateIpBlacklistResponse&& from) noexcept
-      : UpdateIpBlacklistResponse(nullptr, std::move(from)) {}
-  inline UpdateIpBlacklistResponse& operator=(const UpdateIpBlacklistResponse& from) {
+  inline UpdateIpBlackListResponse(const UpdateIpBlackListResponse& from) : UpdateIpBlackListResponse(nullptr, from) {}
+  inline UpdateIpBlackListResponse(UpdateIpBlackListResponse&& from) noexcept
+      : UpdateIpBlackListResponse(nullptr, std::move(from)) {}
+  inline UpdateIpBlackListResponse& operator=(const UpdateIpBlackListResponse& from) {
     CopyFrom(from);
     return *this;
   }
-  inline UpdateIpBlacklistResponse& operator=(UpdateIpBlacklistResponse&& from) noexcept {
+  inline UpdateIpBlackListResponse& operator=(UpdateIpBlackListResponse&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
 #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -174,16 +189,16 @@ class UpdateIpBlacklistResponse final : public ::google::protobuf::internal::Zer
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const UpdateIpBlacklistResponse& default_instance() {
+  static const UpdateIpBlackListResponse& default_instance() {
     return *internal_default_instance();
   }
-  static inline const UpdateIpBlacklistResponse* internal_default_instance() {
-    return reinterpret_cast<const UpdateIpBlacklistResponse*>(
-        &_UpdateIpBlacklistResponse_default_instance_);
+  static inline const UpdateIpBlackListResponse* internal_default_instance() {
+    return reinterpret_cast<const UpdateIpBlackListResponse*>(
+        &_UpdateIpBlackListResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages = 7;
-  friend void swap(UpdateIpBlacklistResponse& a, UpdateIpBlacklistResponse& b) { a.Swap(&b); }
-  inline void Swap(UpdateIpBlacklistResponse* other) {
+  friend void swap(UpdateIpBlackListResponse& a, UpdateIpBlackListResponse& b) { a.Swap(&b); }
+  inline void Swap(UpdateIpBlackListResponse* other) {
     if (other == this) return;
 #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr && GetArena() == other->GetArena()) {
@@ -195,7 +210,7 @@ class UpdateIpBlacklistResponse final : public ::google::protobuf::internal::Zer
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(UpdateIpBlacklistResponse* other) {
+  void UnsafeArenaSwap(UpdateIpBlackListResponse* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -203,15 +218,15 @@ class UpdateIpBlacklistResponse final : public ::google::protobuf::internal::Zer
 
   // implements Message ----------------------------------------------
 
-  UpdateIpBlacklistResponse* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<UpdateIpBlacklistResponse>(arena);
+  UpdateIpBlackListResponse* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<UpdateIpBlackListResponse>(arena);
   }
   using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const UpdateIpBlacklistResponse& from) {
+  inline void CopyFrom(const UpdateIpBlackListResponse& from) {
     ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
   }
   using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const UpdateIpBlacklistResponse& from) {
+  void MergeFrom(const UpdateIpBlackListResponse& from) {
     ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
   }
 
@@ -221,13 +236,13 @@ class UpdateIpBlacklistResponse final : public ::google::protobuf::internal::Zer
   }
  private:
   friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() { return "api.v1.UpdateIpBlacklistResponse"; }
+  static ::absl::string_view FullMessageName() { return "api.v1.UpdateIpBlackListResponse"; }
 
  protected:
-  explicit UpdateIpBlacklistResponse(::google::protobuf::Arena* arena);
-  UpdateIpBlacklistResponse(::google::protobuf::Arena* arena, const UpdateIpBlacklistResponse& from);
-  UpdateIpBlacklistResponse(::google::protobuf::Arena* arena, UpdateIpBlacklistResponse&& from) noexcept
-      : UpdateIpBlacklistResponse(arena) {
+  explicit UpdateIpBlackListResponse(::google::protobuf::Arena* arena);
+  UpdateIpBlackListResponse(::google::protobuf::Arena* arena, const UpdateIpBlackListResponse& from);
+  UpdateIpBlackListResponse(::google::protobuf::Arena* arena, UpdateIpBlackListResponse&& from) noexcept
+      : UpdateIpBlackListResponse(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::internal::ZeroFieldsBase::ClassData* GetClassData() const PROTOBUF_FINAL;
@@ -238,7 +253,7 @@ class UpdateIpBlacklistResponse final : public ::google::protobuf::internal::Zer
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:api.v1.UpdateIpBlacklistResponse)
+  // @@protoc_insertion_point(class_scope:api.v1.UpdateIpBlackListResponse)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
@@ -248,7 +263,7 @@ class UpdateIpBlacklistResponse final : public ::google::protobuf::internal::Zer
       _table_;
 
   static constexpr const void* _raw_default_instance_ =
-      &_UpdateIpBlacklistResponse_default_instance_;
+      &_UpdateIpBlackListResponse_default_instance_;
 
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
@@ -263,30 +278,30 @@ class UpdateIpBlacklistResponse final : public ::google::protobuf::internal::Zer
                           ::google::protobuf::Arena* arena);
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
-                          const UpdateIpBlacklistResponse& from_msg);
+                          const UpdateIpBlackListResponse& from_msg);
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   friend struct ::TableStruct_config_5fservice_2eproto;
 };
 // -------------------------------------------------------------------
 
-class UpdateIpBlacklistRequest final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:api.v1.UpdateIpBlacklistRequest) */ {
+class UpdateIpBlackListRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:api.v1.UpdateIpBlackListRequest) */ {
  public:
-  inline UpdateIpBlacklistRequest() : UpdateIpBlacklistRequest(nullptr) {}
-  ~UpdateIpBlacklistRequest() PROTOBUF_FINAL;
+  inline UpdateIpBlackListRequest() : UpdateIpBlackListRequest(nullptr) {}
+  ~UpdateIpBlackListRequest() PROTOBUF_FINAL;
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR UpdateIpBlacklistRequest(
+  explicit PROTOBUF_CONSTEXPR UpdateIpBlackListRequest(
       ::google::protobuf::internal::ConstantInitialized);
 
-  inline UpdateIpBlacklistRequest(const UpdateIpBlacklistRequest& from) : UpdateIpBlacklistRequest(nullptr, from) {}
-  inline UpdateIpBlacklistRequest(UpdateIpBlacklistRequest&& from) noexcept
-      : UpdateIpBlacklistRequest(nullptr, std::move(from)) {}
-  inline UpdateIpBlacklistRequest& operator=(const UpdateIpBlacklistRequest& from) {
+  inline UpdateIpBlackListRequest(const UpdateIpBlackListRequest& from) : UpdateIpBlackListRequest(nullptr, from) {}
+  inline UpdateIpBlackListRequest(UpdateIpBlackListRequest&& from) noexcept
+      : UpdateIpBlackListRequest(nullptr, std::move(from)) {}
+  inline UpdateIpBlackListRequest& operator=(const UpdateIpBlackListRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline UpdateIpBlacklistRequest& operator=(UpdateIpBlacklistRequest&& from) noexcept {
+  inline UpdateIpBlackListRequest& operator=(UpdateIpBlackListRequest&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
 #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -318,16 +333,16 @@ class UpdateIpBlacklistRequest final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const UpdateIpBlacklistRequest& default_instance() {
+  static const UpdateIpBlackListRequest& default_instance() {
     return *internal_default_instance();
   }
-  static inline const UpdateIpBlacklistRequest* internal_default_instance() {
-    return reinterpret_cast<const UpdateIpBlacklistRequest*>(
-        &_UpdateIpBlacklistRequest_default_instance_);
+  static inline const UpdateIpBlackListRequest* internal_default_instance() {
+    return reinterpret_cast<const UpdateIpBlackListRequest*>(
+        &_UpdateIpBlackListRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages = 6;
-  friend void swap(UpdateIpBlacklistRequest& a, UpdateIpBlacklistRequest& b) { a.Swap(&b); }
-  inline void Swap(UpdateIpBlacklistRequest* other) {
+  friend void swap(UpdateIpBlackListRequest& a, UpdateIpBlackListRequest& b) { a.Swap(&b); }
+  inline void Swap(UpdateIpBlackListRequest* other) {
     if (other == this) return;
 #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr && GetArena() == other->GetArena()) {
@@ -339,7 +354,7 @@ class UpdateIpBlacklistRequest final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(UpdateIpBlacklistRequest* other) {
+  void UnsafeArenaSwap(UpdateIpBlackListRequest* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -347,13 +362,13 @@ class UpdateIpBlacklistRequest final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  UpdateIpBlacklistRequest* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
-    return ::google::protobuf::Message::DefaultConstruct<UpdateIpBlacklistRequest>(arena);
+  UpdateIpBlackListRequest* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<UpdateIpBlackListRequest>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const UpdateIpBlacklistRequest& from);
+  void CopyFrom(const UpdateIpBlackListRequest& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const UpdateIpBlacklistRequest& from) { UpdateIpBlacklistRequest::MergeImpl(*this, from); }
+  void MergeFrom(const UpdateIpBlackListRequest& from) { UpdateIpBlackListRequest::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(
@@ -390,16 +405,16 @@ class UpdateIpBlacklistRequest final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(UpdateIpBlacklistRequest* other);
+  void InternalSwap(UpdateIpBlackListRequest* other);
  private:
   friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() { return "api.v1.UpdateIpBlacklistRequest"; }
+  static ::absl::string_view FullMessageName() { return "api.v1.UpdateIpBlackListRequest"; }
 
  protected:
-  explicit UpdateIpBlacklistRequest(::google::protobuf::Arena* arena);
-  UpdateIpBlacklistRequest(::google::protobuf::Arena* arena, const UpdateIpBlacklistRequest& from);
-  UpdateIpBlacklistRequest(::google::protobuf::Arena* arena, UpdateIpBlacklistRequest&& from) noexcept
-      : UpdateIpBlacklistRequest(arena) {
+  explicit UpdateIpBlackListRequest(::google::protobuf::Arena* arena);
+  UpdateIpBlackListRequest(::google::protobuf::Arena* arena, const UpdateIpBlackListRequest& from);
+  UpdateIpBlackListRequest(::google::protobuf::Arena* arena, UpdateIpBlackListRequest&& from) noexcept
+      : UpdateIpBlackListRequest(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
@@ -408,25 +423,25 @@ class UpdateIpBlacklistRequest final : public ::google::protobuf::Message
  public:
   ::google::protobuf::Metadata GetMetadata() const;
   // nested types ----------------------------------------------------
-  using ActionType = UpdateIpBlacklistRequest_ActionType;
-  static constexpr ActionType ACTION_UNSPECIFIED = UpdateIpBlacklistRequest_ActionType_ACTION_UNSPECIFIED;
-  static constexpr ActionType ADD = UpdateIpBlacklistRequest_ActionType_ADD;
-  static constexpr ActionType REMOVE = UpdateIpBlacklistRequest_ActionType_REMOVE;
+  using ActionType = UpdateIpBlackListRequest_ActionType;
+  static constexpr ActionType ACTION_TYPE_UNSPECIFIED = UpdateIpBlackListRequest_ActionType_ACTION_TYPE_UNSPECIFIED;
+  static constexpr ActionType ACTION_TYPE_ADD = UpdateIpBlackListRequest_ActionType_ACTION_TYPE_ADD;
+  static constexpr ActionType ACTION_TYPE_REMOVE = UpdateIpBlackListRequest_ActionType_ACTION_TYPE_REMOVE;
   static inline bool ActionType_IsValid(int value) {
-    return UpdateIpBlacklistRequest_ActionType_IsValid(value);
+    return UpdateIpBlackListRequest_ActionType_IsValid(value);
   }
-  static constexpr ActionType ActionType_MIN = UpdateIpBlacklistRequest_ActionType_ActionType_MIN;
-  static constexpr ActionType ActionType_MAX = UpdateIpBlacklistRequest_ActionType_ActionType_MAX;
-  static constexpr int ActionType_ARRAYSIZE = UpdateIpBlacklistRequest_ActionType_ActionType_ARRAYSIZE;
+  static constexpr ActionType ActionType_MIN = UpdateIpBlackListRequest_ActionType_ActionType_MIN;
+  static constexpr ActionType ActionType_MAX = UpdateIpBlackListRequest_ActionType_ActionType_MAX;
+  static constexpr int ActionType_ARRAYSIZE = UpdateIpBlackListRequest_ActionType_ActionType_ARRAYSIZE;
   static inline const ::google::protobuf::EnumDescriptor* ActionType_descriptor() {
-    return UpdateIpBlacklistRequest_ActionType_descriptor();
+    return UpdateIpBlackListRequest_ActionType_descriptor();
   }
   template <typename T>
   static inline const std::string& ActionType_Name(T value) {
-    return UpdateIpBlacklistRequest_ActionType_Name(value);
+    return UpdateIpBlackListRequest_ActionType_Name(value);
   }
   static inline bool ActionType_Parse(absl::string_view name, ActionType* value) {
-    return UpdateIpBlacklistRequest_ActionType_Parse(name, value);
+    return UpdateIpBlackListRequest_ActionType_Parse(name, value);
   }
 
   // accessors -------------------------------------------------------
@@ -456,17 +471,17 @@ class UpdateIpBlacklistRequest final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_ip_list();
 
   public:
-  // .api.v1.UpdateIpBlacklistRequest.ActionType action = 1 [json_name = "action"];
+  // .api.v1.UpdateIpBlackListRequest.ActionType action = 1 [json_name = "action"];
   void clear_action() ;
-  ::api::v1::UpdateIpBlacklistRequest_ActionType action() const;
-  void set_action(::api::v1::UpdateIpBlacklistRequest_ActionType value);
+  ::api::v1::UpdateIpBlackListRequest_ActionType action() const;
+  void set_action(::api::v1::UpdateIpBlackListRequest_ActionType value);
 
   private:
-  ::api::v1::UpdateIpBlacklistRequest_ActionType _internal_action() const;
-  void _internal_set_action(::api::v1::UpdateIpBlacklistRequest_ActionType value);
+  ::api::v1::UpdateIpBlackListRequest_ActionType _internal_action() const;
+  void _internal_set_action(::api::v1::UpdateIpBlackListRequest_ActionType value);
 
   public:
-  // @@protoc_insertion_point(class_scope:api.v1.UpdateIpBlacklistRequest)
+  // @@protoc_insertion_point(class_scope:api.v1.UpdateIpBlackListRequest)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
@@ -476,7 +491,7 @@ class UpdateIpBlacklistRequest final : public ::google::protobuf::Message
       _table_;
 
   static constexpr const void* _raw_default_instance_ =
-      &_UpdateIpBlacklistRequest_default_instance_;
+      &_UpdateIpBlackListRequest_default_instance_;
 
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
@@ -491,7 +506,7 @@ class UpdateIpBlacklistRequest final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena);
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
-                          const UpdateIpBlacklistRequest& from_msg);
+                          const UpdateIpBlackListRequest& from_msg);
     ::google::protobuf::RepeatedPtrField<std::string> ip_list_;
     int action_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
@@ -502,10 +517,423 @@ class UpdateIpBlacklistRequest final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
-class UpdateConfigResponse final : public ::google::protobuf::internal::ZeroFieldsBase
+class UpdateHealthzListResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:api.v1.UpdateHealthzListResponse) */ {
+ public:
+  inline UpdateHealthzListResponse() : UpdateHealthzListResponse(nullptr) {}
+  ~UpdateHealthzListResponse() PROTOBUF_FINAL;
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR UpdateHealthzListResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline UpdateHealthzListResponse(const UpdateHealthzListResponse& from) : UpdateHealthzListResponse(nullptr, from) {}
+  inline UpdateHealthzListResponse(UpdateHealthzListResponse&& from) noexcept
+      : UpdateHealthzListResponse(nullptr, std::move(from)) {}
+  inline UpdateHealthzListResponse& operator=(const UpdateHealthzListResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UpdateHealthzListResponse& operator=(UpdateHealthzListResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+#ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+#endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UpdateHealthzListResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UpdateHealthzListResponse* internal_default_instance() {
+    return reinterpret_cast<const UpdateHealthzListResponse*>(
+        &_UpdateHealthzListResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 12;
+  friend void swap(UpdateHealthzListResponse& a, UpdateHealthzListResponse& b) { a.Swap(&b); }
+  inline void Swap(UpdateHealthzListResponse* other) {
+    if (other == this) return;
+#ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr && GetArena() == other->GetArena()) {
+#else   // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+#endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UpdateHealthzListResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  UpdateHealthzListResponse* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<UpdateHealthzListResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const UpdateHealthzListResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const UpdateHealthzListResponse& from) { UpdateHealthzListResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(UpdateHealthzListResponse* other);
+ private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() { return "api.v1.UpdateHealthzListResponse"; }
+
+ protected:
+  explicit UpdateHealthzListResponse(::google::protobuf::Arena* arena);
+  UpdateHealthzListResponse(::google::protobuf::Arena* arena, const UpdateHealthzListResponse& from);
+  UpdateHealthzListResponse(::google::protobuf::Arena* arena, UpdateHealthzListResponse&& from) noexcept
+      : UpdateHealthzListResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static const ::google::protobuf::Message::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMessageFieldNumber = 1,
+  };
+  // string message = 1 [json_name = "message"];
+  void clear_message() ;
+  const std::string& message() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_message(Arg_&& arg, Args_... args);
+  std::string* mutable_message();
+  PROTOBUF_NODISCARD std::string* release_message();
+  void set_allocated_message(std::string* value);
+
+  private:
+  const std::string& _internal_message() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_message(
+      const std::string& value);
+  std::string* _internal_mutable_message();
+
+  public:
+  // @@protoc_insertion_point(class_scope:api.v1.UpdateHealthzListResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      48, 2>
+      _table_;
+
+  static constexpr const void* _raw_default_instance_ =
+      &_UpdateHealthzListResponse_default_instance_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const UpdateHealthzListResponse& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr message_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_config_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
+class UpdateHealthzListRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:api.v1.UpdateHealthzListRequest) */ {
+ public:
+  inline UpdateHealthzListRequest() : UpdateHealthzListRequest(nullptr) {}
+  ~UpdateHealthzListRequest() PROTOBUF_FINAL;
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR UpdateHealthzListRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline UpdateHealthzListRequest(const UpdateHealthzListRequest& from) : UpdateHealthzListRequest(nullptr, from) {}
+  inline UpdateHealthzListRequest(UpdateHealthzListRequest&& from) noexcept
+      : UpdateHealthzListRequest(nullptr, std::move(from)) {}
+  inline UpdateHealthzListRequest& operator=(const UpdateHealthzListRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UpdateHealthzListRequest& operator=(UpdateHealthzListRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+#ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+#endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UpdateHealthzListRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UpdateHealthzListRequest* internal_default_instance() {
+    return reinterpret_cast<const UpdateHealthzListRequest*>(
+        &_UpdateHealthzListRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 11;
+  friend void swap(UpdateHealthzListRequest& a, UpdateHealthzListRequest& b) { a.Swap(&b); }
+  inline void Swap(UpdateHealthzListRequest* other) {
+    if (other == this) return;
+#ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr && GetArena() == other->GetArena()) {
+#else   // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+#endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UpdateHealthzListRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  UpdateHealthzListRequest* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<UpdateHealthzListRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const UpdateHealthzListRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const UpdateHealthzListRequest& from) { UpdateHealthzListRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(UpdateHealthzListRequest* other);
+ private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() { return "api.v1.UpdateHealthzListRequest"; }
+
+ protected:
+  explicit UpdateHealthzListRequest(::google::protobuf::Arena* arena);
+  UpdateHealthzListRequest(::google::protobuf::Arena* arena, const UpdateHealthzListRequest& from);
+  UpdateHealthzListRequest(::google::protobuf::Arena* arena, UpdateHealthzListRequest&& from) noexcept
+      : UpdateHealthzListRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static const ::google::protobuf::Message::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kAddrsFieldNumber = 2,
+    kActionFieldNumber = 1,
+  };
+  // repeated string addrs = 2 [json_name = "addrs"];
+  int addrs_size() const;
+  private:
+  int _internal_addrs_size() const;
+
+  public:
+  void clear_addrs() ;
+  const std::string& addrs(int index) const;
+  std::string* mutable_addrs(int index);
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_addrs(int index, Arg_&& value, Args_... args);
+  std::string* add_addrs();
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void add_addrs(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<std::string>& addrs() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* mutable_addrs();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<std::string>& _internal_addrs() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_addrs();
+
+  public:
+  // string action = 1 [json_name = "action"];
+  void clear_action() ;
+  const std::string& action() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_action(Arg_&& arg, Args_... args);
+  std::string* mutable_action();
+  PROTOBUF_NODISCARD std::string* release_action();
+  void set_allocated_action(std::string* value);
+
+  private:
+  const std::string& _internal_action() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_action(
+      const std::string& value);
+  std::string* _internal_mutable_action();
+
+  public:
+  // @@protoc_insertion_point(class_scope:api.v1.UpdateHealthzListRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      51, 2>
+      _table_;
+
+  static constexpr const void* _raw_default_instance_ =
+      &_UpdateHealthzListRequest_default_instance_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const UpdateHealthzListRequest& from_msg);
+    ::google::protobuf::RepeatedPtrField<std::string> addrs_;
+    ::google::protobuf::internal::ArenaStringPtr action_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_config_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
+class UpdateConfigResponse final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:api.v1.UpdateConfigResponse) */ {
  public:
   inline UpdateConfigResponse() : UpdateConfigResponse(nullptr) {}
+  ~UpdateConfigResponse() PROTOBUF_FINAL;
   template <typename = void>
   explicit PROTOBUF_CONSTEXPR UpdateConfigResponse(
       ::google::protobuf::internal::ConstantInitialized);
@@ -579,21 +1007,49 @@ class UpdateConfigResponse final : public ::google::protobuf::internal::ZeroFiel
   // implements Message ----------------------------------------------
 
   UpdateConfigResponse* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<UpdateConfigResponse>(arena);
+    return ::google::protobuf::Message::DefaultConstruct<UpdateConfigResponse>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const UpdateConfigResponse& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const UpdateConfigResponse& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const UpdateConfigResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const UpdateConfigResponse& from) { UpdateConfigResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
   public:
   bool IsInitialized() const {
     return true;
   }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(UpdateConfigResponse* other);
  private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() { return "api.v1.UpdateConfigResponse"; }
@@ -605,20 +1061,88 @@ class UpdateConfigResponse final : public ::google::protobuf::internal::ZeroFiel
       : UpdateConfigResponse(arena) {
     *this = ::std::move(from);
   }
-  const ::google::protobuf::internal::ZeroFieldsBase::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static const ::google::protobuf::internal::ZeroFieldsBase::ClassDataFull _class_data_;
+  const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static const ::google::protobuf::Message::ClassDataFull _class_data_;
 
  public:
   ::google::protobuf::Metadata GetMetadata() const;
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
+  enum : int {
+    kHttpCompressionFieldNumber = 1,
+    kHttpsFieldNumber = 2,
+    kEnableRateLimitorFieldNumber = 3,
+    kEnableExternalAuthFieldNumber = 6,
+    kNumTokenMaxFieldNumber = 4,
+    kNumTokenPerSecFieldNumber = 5,
+  };
+  // bool http_compression = 1 [json_name = "httpCompression"];
+  void clear_http_compression() ;
+  bool http_compression() const;
+  void set_http_compression(bool value);
+
+  private:
+  bool _internal_http_compression() const;
+  void _internal_set_http_compression(bool value);
+
+  public:
+  // bool https = 2 [json_name = "https"];
+  void clear_https() ;
+  bool https() const;
+  void set_https(bool value);
+
+  private:
+  bool _internal_https() const;
+  void _internal_set_https(bool value);
+
+  public:
+  // bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+  void clear_enable_rate_limitor() ;
+  bool enable_rate_limitor() const;
+  void set_enable_rate_limitor(bool value);
+
+  private:
+  bool _internal_enable_rate_limitor() const;
+  void _internal_set_enable_rate_limitor(bool value);
+
+  public:
+  // bool enable_external_auth = 6 [json_name = "enableExternalAuth"];
+  void clear_enable_external_auth() ;
+  bool enable_external_auth() const;
+  void set_enable_external_auth(bool value);
+
+  private:
+  bool _internal_enable_external_auth() const;
+  void _internal_set_enable_external_auth(bool value);
+
+  public:
+  // uint32 num_token_max = 4 [json_name = "numTokenMax"];
+  void clear_num_token_max() ;
+  ::uint32_t num_token_max() const;
+  void set_num_token_max(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_num_token_max() const;
+  void _internal_set_num_token_max(::uint32_t value);
+
+  public:
+  // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+  void clear_num_token_per_sec() ;
+  ::uint32_t num_token_per_sec() const;
+  void set_num_token_per_sec(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_num_token_per_sec() const;
+  void _internal_set_num_token_per_sec(::uint32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:api.v1.UpdateConfigResponse)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
+      3, 6, 0,
       0, 2>
       _table_;
 
@@ -639,8 +1163,16 @@ class UpdateConfigResponse final : public ::google::protobuf::internal::ZeroFiel
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const UpdateConfigResponse& from_msg);
+    bool http_compression_;
+    bool https_;
+    bool enable_rate_limitor_;
+    bool enable_external_auth_;
+    ::uint32_t num_token_max_;
+    ::uint32_t num_token_per_sec_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_config_5fservice_2eproto;
 };
 // -------------------------------------------------------------------
@@ -788,6 +1320,10 @@ class UpdateConfigRequest final : public ::google::protobuf::Message
   enum : int {
     kPathFieldNumber = 1,
     kHttpCompressionFieldNumber = 2,
+    kHttpsFieldNumber = 3,
+    kEnableRateLimitorFieldNumber = 4,
+    kNumTokenMaxFieldNumber = 5,
+    kNumTokenPerSecFieldNumber = 6,
   };
   // repeated string path = 1 [json_name = "path"];
   int path_size() const;
@@ -821,12 +1357,52 @@ class UpdateConfigRequest final : public ::google::protobuf::Message
   void _internal_set_http_compression(bool value);
 
   public:
+  // bool https = 3 [json_name = "https"];
+  void clear_https() ;
+  bool https() const;
+  void set_https(bool value);
+
+  private:
+  bool _internal_https() const;
+  void _internal_set_https(bool value);
+
+  public:
+  // bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
+  void clear_enable_rate_limitor() ;
+  bool enable_rate_limitor() const;
+  void set_enable_rate_limitor(bool value);
+
+  private:
+  bool _internal_enable_rate_limitor() const;
+  void _internal_set_enable_rate_limitor(bool value);
+
+  public:
+  // uint32 num_token_max = 5 [json_name = "numTokenMax"];
+  void clear_num_token_max() ;
+  ::uint32_t num_token_max() const;
+  void set_num_token_max(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_num_token_max() const;
+  void _internal_set_num_token_max(::uint32_t value);
+
+  public:
+  // uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
+  void clear_num_token_per_sec() ;
+  ::uint32_t num_token_per_sec() const;
+  void set_num_token_per_sec(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_num_token_per_sec() const;
+  void _internal_set_num_token_per_sec(::uint32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:api.v1.UpdateConfigRequest)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 0,
+      3, 6, 0,
       39, 2>
       _table_;
 
@@ -849,6 +1425,10 @@ class UpdateConfigRequest final : public ::google::protobuf::Message
                           const UpdateConfigRequest& from_msg);
     ::google::protobuf::RepeatedPtrField<std::string> path_;
     bool http_compression_;
+    bool https_;
+    bool enable_rate_limitor_;
+    ::uint32_t num_token_max_;
+    ::uint32_t num_token_per_sec_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -857,23 +1437,23 @@ class UpdateConfigRequest final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
-class GetIpBlacklistResponse final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:api.v1.GetIpBlacklistResponse) */ {
+class RouterConfig final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:api.v1.RouterConfig) */ {
  public:
-  inline GetIpBlacklistResponse() : GetIpBlacklistResponse(nullptr) {}
-  ~GetIpBlacklistResponse() PROTOBUF_FINAL;
+  inline RouterConfig() : RouterConfig(nullptr) {}
+  ~RouterConfig() PROTOBUF_FINAL;
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR GetIpBlacklistResponse(
+  explicit PROTOBUF_CONSTEXPR RouterConfig(
       ::google::protobuf::internal::ConstantInitialized);
 
-  inline GetIpBlacklistResponse(const GetIpBlacklistResponse& from) : GetIpBlacklistResponse(nullptr, from) {}
-  inline GetIpBlacklistResponse(GetIpBlacklistResponse&& from) noexcept
-      : GetIpBlacklistResponse(nullptr, std::move(from)) {}
-  inline GetIpBlacklistResponse& operator=(const GetIpBlacklistResponse& from) {
+  inline RouterConfig(const RouterConfig& from) : RouterConfig(nullptr, from) {}
+  inline RouterConfig(RouterConfig&& from) noexcept
+      : RouterConfig(nullptr, std::move(from)) {}
+  inline RouterConfig& operator=(const RouterConfig& from) {
     CopyFrom(from);
     return *this;
   }
-  inline GetIpBlacklistResponse& operator=(GetIpBlacklistResponse&& from) noexcept {
+  inline RouterConfig& operator=(RouterConfig&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
 #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -905,16 +1485,16 @@ class GetIpBlacklistResponse final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const GetIpBlacklistResponse& default_instance() {
+  static const RouterConfig& default_instance() {
     return *internal_default_instance();
   }
-  static inline const GetIpBlacklistResponse* internal_default_instance() {
-    return reinterpret_cast<const GetIpBlacklistResponse*>(
-        &_GetIpBlacklistResponse_default_instance_);
+  static inline const RouterConfig* internal_default_instance() {
+    return reinterpret_cast<const RouterConfig*>(
+        &_RouterConfig_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
-  friend void swap(GetIpBlacklistResponse& a, GetIpBlacklistResponse& b) { a.Swap(&b); }
-  inline void Swap(GetIpBlacklistResponse* other) {
+  static constexpr int kIndexInFileMessages = 9;
+  friend void swap(RouterConfig& a, RouterConfig& b) { a.Swap(&b); }
+  inline void Swap(RouterConfig* other) {
     if (other == this) return;
 #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr && GetArena() == other->GetArena()) {
@@ -926,7 +1506,7 @@ class GetIpBlacklistResponse final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(GetIpBlacklistResponse* other) {
+  void UnsafeArenaSwap(RouterConfig* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -934,13 +1514,13 @@ class GetIpBlacklistResponse final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  GetIpBlacklistResponse* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
-    return ::google::protobuf::Message::DefaultConstruct<GetIpBlacklistResponse>(arena);
+  RouterConfig* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<RouterConfig>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const GetIpBlacklistResponse& from);
+  void CopyFrom(const RouterConfig& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const GetIpBlacklistResponse& from) { GetIpBlacklistResponse::MergeImpl(*this, from); }
+  void MergeFrom(const RouterConfig& from) { RouterConfig::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(
@@ -977,16 +1557,246 @@ class GetIpBlacklistResponse final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(GetIpBlacklistResponse* other);
+  void InternalSwap(RouterConfig* other);
  private:
   friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() { return "api.v1.GetIpBlacklistResponse"; }
+  static ::absl::string_view FullMessageName() { return "api.v1.RouterConfig"; }
 
  protected:
-  explicit GetIpBlacklistResponse(::google::protobuf::Arena* arena);
-  GetIpBlacklistResponse(::google::protobuf::Arena* arena, const GetIpBlacklistResponse& from);
-  GetIpBlacklistResponse(::google::protobuf::Arena* arena, GetIpBlacklistResponse&& from) noexcept
-      : GetIpBlacklistResponse(arena) {
+  explicit RouterConfig(::google::protobuf::Arena* arena);
+  RouterConfig(::google::protobuf::Arena* arena, const RouterConfig& from);
+  RouterConfig(::google::protobuf::Arena* arena, RouterConfig&& from) noexcept
+      : RouterConfig(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static const ::google::protobuf::Message::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMethodFieldNumber = 1,
+    kSourceFieldNumber = 2,
+    kDestinationFieldNumber = 3,
+  };
+  // string method = 1 [json_name = "method"];
+  void clear_method() ;
+  const std::string& method() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_method(Arg_&& arg, Args_... args);
+  std::string* mutable_method();
+  PROTOBUF_NODISCARD std::string* release_method();
+  void set_allocated_method(std::string* value);
+
+  private:
+  const std::string& _internal_method() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_method(
+      const std::string& value);
+  std::string* _internal_mutable_method();
+
+  public:
+  // string source = 2 [json_name = "source"];
+  void clear_source() ;
+  const std::string& source() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_source(Arg_&& arg, Args_... args);
+  std::string* mutable_source();
+  PROTOBUF_NODISCARD std::string* release_source();
+  void set_allocated_source(std::string* value);
+
+  private:
+  const std::string& _internal_source() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_source(
+      const std::string& value);
+  std::string* _internal_mutable_source();
+
+  public:
+  // string destination = 3 [json_name = "destination"];
+  void clear_destination() ;
+  const std::string& destination() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_destination(Arg_&& arg, Args_... args);
+  std::string* mutable_destination();
+  PROTOBUF_NODISCARD std::string* release_destination();
+  void set_allocated_destination(std::string* value);
+
+  private:
+  const std::string& _internal_destination() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_destination(
+      const std::string& value);
+  std::string* _internal_mutable_destination();
+
+  public:
+  // @@protoc_insertion_point(class_scope:api.v1.RouterConfig)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 3, 0,
+      51, 2>
+      _table_;
+
+  static constexpr const void* _raw_default_instance_ =
+      &_RouterConfig_default_instance_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RouterConfig& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr method_;
+    ::google::protobuf::internal::ArenaStringPtr source_;
+    ::google::protobuf::internal::ArenaStringPtr destination_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_config_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
+class GetIpBlackListResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:api.v1.GetIpBlackListResponse) */ {
+ public:
+  inline GetIpBlackListResponse() : GetIpBlackListResponse(nullptr) {}
+  ~GetIpBlackListResponse() PROTOBUF_FINAL;
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR GetIpBlackListResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline GetIpBlackListResponse(const GetIpBlackListResponse& from) : GetIpBlackListResponse(nullptr, from) {}
+  inline GetIpBlackListResponse(GetIpBlackListResponse&& from) noexcept
+      : GetIpBlackListResponse(nullptr, std::move(from)) {}
+  inline GetIpBlackListResponse& operator=(const GetIpBlackListResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetIpBlackListResponse& operator=(GetIpBlackListResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+#ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+#endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetIpBlackListResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetIpBlackListResponse* internal_default_instance() {
+    return reinterpret_cast<const GetIpBlackListResponse*>(
+        &_GetIpBlackListResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 5;
+  friend void swap(GetIpBlackListResponse& a, GetIpBlackListResponse& b) { a.Swap(&b); }
+  inline void Swap(GetIpBlackListResponse* other) {
+    if (other == this) return;
+#ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr && GetArena() == other->GetArena()) {
+#else   // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+#endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetIpBlackListResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetIpBlackListResponse* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<GetIpBlackListResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetIpBlackListResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const GetIpBlackListResponse& from) { GetIpBlackListResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(GetIpBlackListResponse* other);
+ private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() { return "api.v1.GetIpBlackListResponse"; }
+
+ protected:
+  explicit GetIpBlackListResponse(::google::protobuf::Arena* arena);
+  GetIpBlackListResponse(::google::protobuf::Arena* arena, const GetIpBlackListResponse& from);
+  GetIpBlackListResponse(::google::protobuf::Arena* arena, GetIpBlackListResponse&& from) noexcept
+      : GetIpBlackListResponse(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
@@ -1022,7 +1832,7 @@ class GetIpBlacklistResponse final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_ip_list();
 
   public:
-  // @@protoc_insertion_point(class_scope:api.v1.GetIpBlacklistResponse)
+  // @@protoc_insertion_point(class_scope:api.v1.GetIpBlackListResponse)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
@@ -1032,7 +1842,7 @@ class GetIpBlacklistResponse final : public ::google::protobuf::Message
       _table_;
 
   static constexpr const void* _raw_default_instance_ =
-      &_GetIpBlacklistResponse_default_instance_;
+      &_GetIpBlackListResponse_default_instance_;
 
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
@@ -1047,7 +1857,7 @@ class GetIpBlacklistResponse final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena);
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
-                          const GetIpBlacklistResponse& from_msg);
+                          const GetIpBlackListResponse& from_msg);
     ::google::protobuf::RepeatedPtrField<std::string> ip_list_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -1057,22 +1867,22 @@ class GetIpBlacklistResponse final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
-class GetIpBlacklistRequest final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:api.v1.GetIpBlacklistRequest) */ {
+class GetIpBlackListRequest final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:api.v1.GetIpBlackListRequest) */ {
  public:
-  inline GetIpBlacklistRequest() : GetIpBlacklistRequest(nullptr) {}
+  inline GetIpBlackListRequest() : GetIpBlackListRequest(nullptr) {}
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR GetIpBlacklistRequest(
+  explicit PROTOBUF_CONSTEXPR GetIpBlackListRequest(
       ::google::protobuf::internal::ConstantInitialized);
 
-  inline GetIpBlacklistRequest(const GetIpBlacklistRequest& from) : GetIpBlacklistRequest(nullptr, from) {}
-  inline GetIpBlacklistRequest(GetIpBlacklistRequest&& from) noexcept
-      : GetIpBlacklistRequest(nullptr, std::move(from)) {}
-  inline GetIpBlacklistRequest& operator=(const GetIpBlacklistRequest& from) {
+  inline GetIpBlackListRequest(const GetIpBlackListRequest& from) : GetIpBlackListRequest(nullptr, from) {}
+  inline GetIpBlackListRequest(GetIpBlackListRequest&& from) noexcept
+      : GetIpBlackListRequest(nullptr, std::move(from)) {}
+  inline GetIpBlackListRequest& operator=(const GetIpBlackListRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline GetIpBlacklistRequest& operator=(GetIpBlacklistRequest&& from) noexcept {
+  inline GetIpBlackListRequest& operator=(GetIpBlackListRequest&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
 #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -1104,16 +1914,16 @@ class GetIpBlacklistRequest final : public ::google::protobuf::internal::ZeroFie
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const GetIpBlacklistRequest& default_instance() {
+  static const GetIpBlackListRequest& default_instance() {
     return *internal_default_instance();
   }
-  static inline const GetIpBlacklistRequest* internal_default_instance() {
-    return reinterpret_cast<const GetIpBlacklistRequest*>(
-        &_GetIpBlacklistRequest_default_instance_);
+  static inline const GetIpBlackListRequest* internal_default_instance() {
+    return reinterpret_cast<const GetIpBlackListRequest*>(
+        &_GetIpBlackListRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages = 4;
-  friend void swap(GetIpBlacklistRequest& a, GetIpBlacklistRequest& b) { a.Swap(&b); }
-  inline void Swap(GetIpBlacklistRequest* other) {
+  friend void swap(GetIpBlackListRequest& a, GetIpBlackListRequest& b) { a.Swap(&b); }
+  inline void Swap(GetIpBlackListRequest* other) {
     if (other == this) return;
 #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr && GetArena() == other->GetArena()) {
@@ -1125,7 +1935,7 @@ class GetIpBlacklistRequest final : public ::google::protobuf::internal::ZeroFie
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(GetIpBlacklistRequest* other) {
+  void UnsafeArenaSwap(GetIpBlackListRequest* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -1133,15 +1943,15 @@ class GetIpBlacklistRequest final : public ::google::protobuf::internal::ZeroFie
 
   // implements Message ----------------------------------------------
 
-  GetIpBlacklistRequest* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<GetIpBlacklistRequest>(arena);
+  GetIpBlackListRequest* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<GetIpBlackListRequest>(arena);
   }
   using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const GetIpBlacklistRequest& from) {
+  inline void CopyFrom(const GetIpBlackListRequest& from) {
     ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
   }
   using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const GetIpBlacklistRequest& from) {
+  void MergeFrom(const GetIpBlackListRequest& from) {
     ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
   }
 
@@ -1151,13 +1961,13 @@ class GetIpBlacklistRequest final : public ::google::protobuf::internal::ZeroFie
   }
  private:
   friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() { return "api.v1.GetIpBlacklistRequest"; }
+  static ::absl::string_view FullMessageName() { return "api.v1.GetIpBlackListRequest"; }
 
  protected:
-  explicit GetIpBlacklistRequest(::google::protobuf::Arena* arena);
-  GetIpBlacklistRequest(::google::protobuf::Arena* arena, const GetIpBlacklistRequest& from);
-  GetIpBlacklistRequest(::google::protobuf::Arena* arena, GetIpBlacklistRequest&& from) noexcept
-      : GetIpBlacklistRequest(arena) {
+  explicit GetIpBlackListRequest(::google::protobuf::Arena* arena);
+  GetIpBlackListRequest(::google::protobuf::Arena* arena, const GetIpBlackListRequest& from);
+  GetIpBlackListRequest(::google::protobuf::Arena* arena, GetIpBlackListRequest&& from) noexcept
+      : GetIpBlackListRequest(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::internal::ZeroFieldsBase::ClassData* GetClassData() const PROTOBUF_FINAL;
@@ -1168,7 +1978,7 @@ class GetIpBlacklistRequest final : public ::google::protobuf::internal::ZeroFie
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:api.v1.GetIpBlacklistRequest)
+  // @@protoc_insertion_point(class_scope:api.v1.GetIpBlackListRequest)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
@@ -1178,7 +1988,7 @@ class GetIpBlacklistRequest final : public ::google::protobuf::internal::ZeroFie
       _table_;
 
   static constexpr const void* _raw_default_instance_ =
-      &_GetIpBlacklistRequest_default_instance_;
+      &_GetIpBlackListRequest_default_instance_;
 
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
@@ -1193,7 +2003,7 @@ class GetIpBlacklistRequest final : public ::google::protobuf::internal::ZeroFie
                           ::google::protobuf::Arena* arena);
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
-                          const GetIpBlacklistRequest& from_msg);
+                          const GetIpBlackListRequest& from_msg);
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   friend struct ::TableStruct_config_5fservice_2eproto;
@@ -1342,6 +2152,10 @@ class GetConfigResponse final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kHttpCompressionFieldNumber = 1,
+    kHttpsFieldNumber = 2,
+    kEnableRateLimitorFieldNumber = 3,
+    kNumTokenMaxFieldNumber = 4,
+    kNumTokenPerSecFieldNumber = 5,
   };
   // bool http_compression = 1 [json_name = "httpCompression"];
   void clear_http_compression() ;
@@ -1353,12 +2167,52 @@ class GetConfigResponse final : public ::google::protobuf::Message
   void _internal_set_http_compression(bool value);
 
   public:
+  // bool https = 2 [json_name = "https"];
+  void clear_https() ;
+  bool https() const;
+  void set_https(bool value);
+
+  private:
+  bool _internal_https() const;
+  void _internal_set_https(bool value);
+
+  public:
+  // bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+  void clear_enable_rate_limitor() ;
+  bool enable_rate_limitor() const;
+  void set_enable_rate_limitor(bool value);
+
+  private:
+  bool _internal_enable_rate_limitor() const;
+  void _internal_set_enable_rate_limitor(bool value);
+
+  public:
+  // uint32 num_token_max = 4 [json_name = "numTokenMax"];
+  void clear_num_token_max() ;
+  ::uint32_t num_token_max() const;
+  void set_num_token_max(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_num_token_max() const;
+  void _internal_set_num_token_max(::uint32_t value);
+
+  public:
+  // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+  void clear_num_token_per_sec() ;
+  ::uint32_t num_token_per_sec() const;
+  void set_num_token_per_sec(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_num_token_per_sec() const;
+  void _internal_set_num_token_per_sec(::uint32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:api.v1.GetConfigResponse)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
+      3, 5, 0,
       0, 2>
       _table_;
 
@@ -1380,6 +2234,10 @@ class GetConfigResponse final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const GetConfigResponse& from_msg);
     bool http_compression_;
+    bool https_;
+    bool enable_rate_limitor_;
+    ::uint32_t num_token_max_;
+    ::uint32_t num_token_per_sec_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -1529,6 +2387,395 @@ class GetConfigRequest final : public ::google::protobuf::internal::ZeroFieldsBa
   };
   friend struct ::TableStruct_config_5fservice_2eproto;
 };
+// -------------------------------------------------------------------
+
+class ConfigRouterResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:api.v1.ConfigRouterResponse) */ {
+ public:
+  inline ConfigRouterResponse() : ConfigRouterResponse(nullptr) {}
+  ~ConfigRouterResponse() PROTOBUF_FINAL;
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ConfigRouterResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline ConfigRouterResponse(const ConfigRouterResponse& from) : ConfigRouterResponse(nullptr, from) {}
+  inline ConfigRouterResponse(ConfigRouterResponse&& from) noexcept
+      : ConfigRouterResponse(nullptr, std::move(from)) {}
+  inline ConfigRouterResponse& operator=(const ConfigRouterResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ConfigRouterResponse& operator=(ConfigRouterResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+#ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+#endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ConfigRouterResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ConfigRouterResponse* internal_default_instance() {
+    return reinterpret_cast<const ConfigRouterResponse*>(
+        &_ConfigRouterResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 10;
+  friend void swap(ConfigRouterResponse& a, ConfigRouterResponse& b) { a.Swap(&b); }
+  inline void Swap(ConfigRouterResponse* other) {
+    if (other == this) return;
+#ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr && GetArena() == other->GetArena()) {
+#else   // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+#endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ConfigRouterResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ConfigRouterResponse* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<ConfigRouterResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ConfigRouterResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ConfigRouterResponse& from) { ConfigRouterResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(ConfigRouterResponse* other);
+ private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() { return "api.v1.ConfigRouterResponse"; }
+
+ protected:
+  explicit ConfigRouterResponse(::google::protobuf::Arena* arena);
+  ConfigRouterResponse(::google::protobuf::Arena* arena, const ConfigRouterResponse& from);
+  ConfigRouterResponse(::google::protobuf::Arena* arena, ConfigRouterResponse&& from) noexcept
+      : ConfigRouterResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static const ::google::protobuf::Message::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMessageFieldNumber = 1,
+  };
+  // string message = 1 [json_name = "message"];
+  void clear_message() ;
+  const std::string& message() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_message(Arg_&& arg, Args_... args);
+  std::string* mutable_message();
+  PROTOBUF_NODISCARD std::string* release_message();
+  void set_allocated_message(std::string* value);
+
+  private:
+  const std::string& _internal_message() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_message(
+      const std::string& value);
+  std::string* _internal_mutable_message();
+
+  public:
+  // @@protoc_insertion_point(class_scope:api.v1.ConfigRouterResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      43, 2>
+      _table_;
+
+  static constexpr const void* _raw_default_instance_ =
+      &_ConfigRouterResponse_default_instance_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ConfigRouterResponse& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr message_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_config_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ConfigRouterRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:api.v1.ConfigRouterRequest) */ {
+ public:
+  inline ConfigRouterRequest() : ConfigRouterRequest(nullptr) {}
+  ~ConfigRouterRequest() PROTOBUF_FINAL;
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ConfigRouterRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline ConfigRouterRequest(const ConfigRouterRequest& from) : ConfigRouterRequest(nullptr, from) {}
+  inline ConfigRouterRequest(ConfigRouterRequest&& from) noexcept
+      : ConfigRouterRequest(nullptr, std::move(from)) {}
+  inline ConfigRouterRequest& operator=(const ConfigRouterRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ConfigRouterRequest& operator=(ConfigRouterRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+#ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+#endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ConfigRouterRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ConfigRouterRequest* internal_default_instance() {
+    return reinterpret_cast<const ConfigRouterRequest*>(
+        &_ConfigRouterRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 8;
+  friend void swap(ConfigRouterRequest& a, ConfigRouterRequest& b) { a.Swap(&b); }
+  inline void Swap(ConfigRouterRequest* other) {
+    if (other == this) return;
+#ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr && GetArena() == other->GetArena()) {
+#else   // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+#endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ConfigRouterRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ConfigRouterRequest* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<ConfigRouterRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ConfigRouterRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ConfigRouterRequest& from) { ConfigRouterRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(ConfigRouterRequest* other);
+ private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() { return "api.v1.ConfigRouterRequest"; }
+
+ protected:
+  explicit ConfigRouterRequest(::google::protobuf::Arena* arena);
+  ConfigRouterRequest(::google::protobuf::Arena* arena, const ConfigRouterRequest& from);
+  ConfigRouterRequest(::google::protobuf::Arena* arena, ConfigRouterRequest&& from) noexcept
+      : ConfigRouterRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static const ::google::protobuf::Message::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRoutersFieldNumber = 1,
+  };
+  // repeated .api.v1.RouterConfig routers = 1 [json_name = "routers"];
+  int routers_size() const;
+  private:
+  int _internal_routers_size() const;
+
+  public:
+  void clear_routers() ;
+  ::api::v1::RouterConfig* mutable_routers(int index);
+  ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>* mutable_routers();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>& _internal_routers() const;
+  ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>* _internal_mutable_routers();
+  public:
+  const ::api::v1::RouterConfig& routers(int index) const;
+  ::api::v1::RouterConfig* add_routers();
+  const ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>& routers() const;
+  // @@protoc_insertion_point(class_scope:api.v1.ConfigRouterRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  static constexpr const void* _raw_default_instance_ =
+      &_ConfigRouterRequest_default_instance_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ConfigRouterRequest& from_msg);
+    ::google::protobuf::RepeatedPtrField< ::api::v1::RouterConfig > routers_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_config_5fservice_2eproto;
+};
 
 // ===================================================================
 
@@ -1570,6 +2817,94 @@ inline bool GetConfigResponse::_internal_http_compression() const {
 inline void GetConfigResponse::_internal_set_http_compression(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.http_compression_ = value;
+}
+
+// bool https = 2 [json_name = "https"];
+inline void GetConfigResponse::clear_https() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.https_ = false;
+}
+inline bool GetConfigResponse::https() const {
+  // @@protoc_insertion_point(field_get:api.v1.GetConfigResponse.https)
+  return _internal_https();
+}
+inline void GetConfigResponse::set_https(bool value) {
+  _internal_set_https(value);
+  // @@protoc_insertion_point(field_set:api.v1.GetConfigResponse.https)
+}
+inline bool GetConfigResponse::_internal_https() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.https_;
+}
+inline void GetConfigResponse::_internal_set_https(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.https_ = value;
+}
+
+// bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+inline void GetConfigResponse::clear_enable_rate_limitor() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_rate_limitor_ = false;
+}
+inline bool GetConfigResponse::enable_rate_limitor() const {
+  // @@protoc_insertion_point(field_get:api.v1.GetConfigResponse.enable_rate_limitor)
+  return _internal_enable_rate_limitor();
+}
+inline void GetConfigResponse::set_enable_rate_limitor(bool value) {
+  _internal_set_enable_rate_limitor(value);
+  // @@protoc_insertion_point(field_set:api.v1.GetConfigResponse.enable_rate_limitor)
+}
+inline bool GetConfigResponse::_internal_enable_rate_limitor() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_rate_limitor_;
+}
+inline void GetConfigResponse::_internal_set_enable_rate_limitor(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_rate_limitor_ = value;
+}
+
+// uint32 num_token_max = 4 [json_name = "numTokenMax"];
+inline void GetConfigResponse::clear_num_token_max() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_max_ = 0u;
+}
+inline ::uint32_t GetConfigResponse::num_token_max() const {
+  // @@protoc_insertion_point(field_get:api.v1.GetConfigResponse.num_token_max)
+  return _internal_num_token_max();
+}
+inline void GetConfigResponse::set_num_token_max(::uint32_t value) {
+  _internal_set_num_token_max(value);
+  // @@protoc_insertion_point(field_set:api.v1.GetConfigResponse.num_token_max)
+}
+inline ::uint32_t GetConfigResponse::_internal_num_token_max() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.num_token_max_;
+}
+inline void GetConfigResponse::_internal_set_num_token_max(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_max_ = value;
+}
+
+// uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+inline void GetConfigResponse::clear_num_token_per_sec() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_per_sec_ = 0u;
+}
+inline ::uint32_t GetConfigResponse::num_token_per_sec() const {
+  // @@protoc_insertion_point(field_get:api.v1.GetConfigResponse.num_token_per_sec)
+  return _internal_num_token_per_sec();
+}
+inline void GetConfigResponse::set_num_token_per_sec(::uint32_t value) {
+  _internal_set_num_token_per_sec(value);
+  // @@protoc_insertion_point(field_set:api.v1.GetConfigResponse.num_token_per_sec)
+}
+inline ::uint32_t GetConfigResponse::_internal_num_token_per_sec() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.num_token_per_sec_;
+}
+inline void GetConfigResponse::_internal_set_num_token_per_sec(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_per_sec_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -1662,175 +2997,828 @@ inline void UpdateConfigRequest::_internal_set_http_compression(bool value) {
   _impl_.http_compression_ = value;
 }
 
+// bool https = 3 [json_name = "https"];
+inline void UpdateConfigRequest::clear_https() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.https_ = false;
+}
+inline bool UpdateConfigRequest::https() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigRequest.https)
+  return _internal_https();
+}
+inline void UpdateConfigRequest::set_https(bool value) {
+  _internal_set_https(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigRequest.https)
+}
+inline bool UpdateConfigRequest::_internal_https() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.https_;
+}
+inline void UpdateConfigRequest::_internal_set_https(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.https_ = value;
+}
+
+// bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
+inline void UpdateConfigRequest::clear_enable_rate_limitor() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_rate_limitor_ = false;
+}
+inline bool UpdateConfigRequest::enable_rate_limitor() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigRequest.enable_rate_limitor)
+  return _internal_enable_rate_limitor();
+}
+inline void UpdateConfigRequest::set_enable_rate_limitor(bool value) {
+  _internal_set_enable_rate_limitor(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigRequest.enable_rate_limitor)
+}
+inline bool UpdateConfigRequest::_internal_enable_rate_limitor() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_rate_limitor_;
+}
+inline void UpdateConfigRequest::_internal_set_enable_rate_limitor(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_rate_limitor_ = value;
+}
+
+// uint32 num_token_max = 5 [json_name = "numTokenMax"];
+inline void UpdateConfigRequest::clear_num_token_max() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_max_ = 0u;
+}
+inline ::uint32_t UpdateConfigRequest::num_token_max() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigRequest.num_token_max)
+  return _internal_num_token_max();
+}
+inline void UpdateConfigRequest::set_num_token_max(::uint32_t value) {
+  _internal_set_num_token_max(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigRequest.num_token_max)
+}
+inline ::uint32_t UpdateConfigRequest::_internal_num_token_max() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.num_token_max_;
+}
+inline void UpdateConfigRequest::_internal_set_num_token_max(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_max_ = value;
+}
+
+// uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
+inline void UpdateConfigRequest::clear_num_token_per_sec() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_per_sec_ = 0u;
+}
+inline ::uint32_t UpdateConfigRequest::num_token_per_sec() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigRequest.num_token_per_sec)
+  return _internal_num_token_per_sec();
+}
+inline void UpdateConfigRequest::set_num_token_per_sec(::uint32_t value) {
+  _internal_set_num_token_per_sec(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigRequest.num_token_per_sec)
+}
+inline ::uint32_t UpdateConfigRequest::_internal_num_token_per_sec() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.num_token_per_sec_;
+}
+inline void UpdateConfigRequest::_internal_set_num_token_per_sec(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_per_sec_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // UpdateConfigResponse
 
+// bool http_compression = 1 [json_name = "httpCompression"];
+inline void UpdateConfigResponse::clear_http_compression() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.http_compression_ = false;
+}
+inline bool UpdateConfigResponse::http_compression() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigResponse.http_compression)
+  return _internal_http_compression();
+}
+inline void UpdateConfigResponse::set_http_compression(bool value) {
+  _internal_set_http_compression(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigResponse.http_compression)
+}
+inline bool UpdateConfigResponse::_internal_http_compression() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.http_compression_;
+}
+inline void UpdateConfigResponse::_internal_set_http_compression(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.http_compression_ = value;
+}
+
+// bool https = 2 [json_name = "https"];
+inline void UpdateConfigResponse::clear_https() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.https_ = false;
+}
+inline bool UpdateConfigResponse::https() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigResponse.https)
+  return _internal_https();
+}
+inline void UpdateConfigResponse::set_https(bool value) {
+  _internal_set_https(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigResponse.https)
+}
+inline bool UpdateConfigResponse::_internal_https() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.https_;
+}
+inline void UpdateConfigResponse::_internal_set_https(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.https_ = value;
+}
+
+// bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+inline void UpdateConfigResponse::clear_enable_rate_limitor() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_rate_limitor_ = false;
+}
+inline bool UpdateConfigResponse::enable_rate_limitor() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigResponse.enable_rate_limitor)
+  return _internal_enable_rate_limitor();
+}
+inline void UpdateConfigResponse::set_enable_rate_limitor(bool value) {
+  _internal_set_enable_rate_limitor(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigResponse.enable_rate_limitor)
+}
+inline bool UpdateConfigResponse::_internal_enable_rate_limitor() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_rate_limitor_;
+}
+inline void UpdateConfigResponse::_internal_set_enable_rate_limitor(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_rate_limitor_ = value;
+}
+
+// uint32 num_token_max = 4 [json_name = "numTokenMax"];
+inline void UpdateConfigResponse::clear_num_token_max() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_max_ = 0u;
+}
+inline ::uint32_t UpdateConfigResponse::num_token_max() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigResponse.num_token_max)
+  return _internal_num_token_max();
+}
+inline void UpdateConfigResponse::set_num_token_max(::uint32_t value) {
+  _internal_set_num_token_max(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigResponse.num_token_max)
+}
+inline ::uint32_t UpdateConfigResponse::_internal_num_token_max() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.num_token_max_;
+}
+inline void UpdateConfigResponse::_internal_set_num_token_max(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_max_ = value;
+}
+
+// uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+inline void UpdateConfigResponse::clear_num_token_per_sec() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_per_sec_ = 0u;
+}
+inline ::uint32_t UpdateConfigResponse::num_token_per_sec() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigResponse.num_token_per_sec)
+  return _internal_num_token_per_sec();
+}
+inline void UpdateConfigResponse::set_num_token_per_sec(::uint32_t value) {
+  _internal_set_num_token_per_sec(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigResponse.num_token_per_sec)
+}
+inline ::uint32_t UpdateConfigResponse::_internal_num_token_per_sec() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.num_token_per_sec_;
+}
+inline void UpdateConfigResponse::_internal_set_num_token_per_sec(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_per_sec_ = value;
+}
+
+// bool enable_external_auth = 6 [json_name = "enableExternalAuth"];
+inline void UpdateConfigResponse::clear_enable_external_auth() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_external_auth_ = false;
+}
+inline bool UpdateConfigResponse::enable_external_auth() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigResponse.enable_external_auth)
+  return _internal_enable_external_auth();
+}
+inline void UpdateConfigResponse::set_enable_external_auth(bool value) {
+  _internal_set_enable_external_auth(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigResponse.enable_external_auth)
+}
+inline bool UpdateConfigResponse::_internal_enable_external_auth() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_external_auth_;
+}
+inline void UpdateConfigResponse::_internal_set_enable_external_auth(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_external_auth_ = value;
+}
+
 // -------------------------------------------------------------------
 
-// GetIpBlacklistRequest
+// GetIpBlackListRequest
 
 // -------------------------------------------------------------------
 
-// GetIpBlacklistResponse
+// GetIpBlackListResponse
 
 // repeated string ip_list = 1 [json_name = "ipList"];
-inline int GetIpBlacklistResponse::_internal_ip_list_size() const {
+inline int GetIpBlackListResponse::_internal_ip_list_size() const {
   return _internal_ip_list().size();
 }
-inline int GetIpBlacklistResponse::ip_list_size() const {
+inline int GetIpBlackListResponse::ip_list_size() const {
   return _internal_ip_list_size();
 }
-inline void GetIpBlacklistResponse::clear_ip_list() {
+inline void GetIpBlackListResponse::clear_ip_list() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.ip_list_.Clear();
 }
-inline std::string* GetIpBlacklistResponse::add_ip_list() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline std::string* GetIpBlackListResponse::add_ip_list() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   std::string* _s = _internal_mutable_ip_list()->Add();
-  // @@protoc_insertion_point(field_add_mutable:api.v1.GetIpBlacklistResponse.ip_list)
+  // @@protoc_insertion_point(field_add_mutable:api.v1.GetIpBlackListResponse.ip_list)
   return _s;
 }
-inline const std::string& GetIpBlacklistResponse::ip_list(int index) const
+inline const std::string& GetIpBlackListResponse::ip_list(int index) const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:api.v1.GetIpBlacklistResponse.ip_list)
+  // @@protoc_insertion_point(field_get:api.v1.GetIpBlackListResponse.ip_list)
   return _internal_ip_list().Get(index);
 }
-inline std::string* GetIpBlacklistResponse::mutable_ip_list(int index)
+inline std::string* GetIpBlackListResponse::mutable_ip_list(int index)
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:api.v1.GetIpBlacklistResponse.ip_list)
+  // @@protoc_insertion_point(field_mutable:api.v1.GetIpBlackListResponse.ip_list)
   return _internal_mutable_ip_list()->Mutable(index);
 }
 template <typename Arg_, typename... Args_>
-inline void GetIpBlacklistResponse::set_ip_list(int index, Arg_&& value, Args_... args) {
+inline void GetIpBlackListResponse::set_ip_list(int index, Arg_&& value, Args_... args) {
   ::google::protobuf::internal::AssignToString(
       *_internal_mutable_ip_list()->Mutable(index),
       std::forward<Arg_>(value), args... );
-  // @@protoc_insertion_point(field_set:api.v1.GetIpBlacklistResponse.ip_list)
+  // @@protoc_insertion_point(field_set:api.v1.GetIpBlackListResponse.ip_list)
 }
 template <typename Arg_, typename... Args_>
-inline void GetIpBlacklistResponse::add_ip_list(Arg_&& value, Args_... args) {
+inline void GetIpBlackListResponse::add_ip_list(Arg_&& value, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_ip_list(),
                                std::forward<Arg_>(value),
                                args... );
-  // @@protoc_insertion_point(field_add:api.v1.GetIpBlacklistResponse.ip_list)
+  // @@protoc_insertion_point(field_add:api.v1.GetIpBlackListResponse.ip_list)
 }
 inline const ::google::protobuf::RepeatedPtrField<std::string>&
-GetIpBlacklistResponse::ip_list() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:api.v1.GetIpBlacklistResponse.ip_list)
+GetIpBlackListResponse::ip_list() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:api.v1.GetIpBlackListResponse.ip_list)
   return _internal_ip_list();
 }
 inline ::google::protobuf::RepeatedPtrField<std::string>*
-GetIpBlacklistResponse::mutable_ip_list() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:api.v1.GetIpBlacklistResponse.ip_list)
+GetIpBlackListResponse::mutable_ip_list() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:api.v1.GetIpBlackListResponse.ip_list)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   return _internal_mutable_ip_list();
 }
 inline const ::google::protobuf::RepeatedPtrField<std::string>&
-GetIpBlacklistResponse::_internal_ip_list() const {
+GetIpBlackListResponse::_internal_ip_list() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.ip_list_;
 }
 inline ::google::protobuf::RepeatedPtrField<std::string>*
-GetIpBlacklistResponse::_internal_mutable_ip_list() {
+GetIpBlackListResponse::_internal_mutable_ip_list() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.ip_list_;
 }
 
 // -------------------------------------------------------------------
 
-// UpdateIpBlacklistRequest
+// UpdateIpBlackListRequest
 
-// .api.v1.UpdateIpBlacklistRequest.ActionType action = 1 [json_name = "action"];
-inline void UpdateIpBlacklistRequest::clear_action() {
+// .api.v1.UpdateIpBlackListRequest.ActionType action = 1 [json_name = "action"];
+inline void UpdateIpBlackListRequest::clear_action() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.action_ = 0;
 }
-inline ::api::v1::UpdateIpBlacklistRequest_ActionType UpdateIpBlacklistRequest::action() const {
-  // @@protoc_insertion_point(field_get:api.v1.UpdateIpBlacklistRequest.action)
+inline ::api::v1::UpdateIpBlackListRequest_ActionType UpdateIpBlackListRequest::action() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateIpBlackListRequest.action)
   return _internal_action();
 }
-inline void UpdateIpBlacklistRequest::set_action(::api::v1::UpdateIpBlacklistRequest_ActionType value) {
+inline void UpdateIpBlackListRequest::set_action(::api::v1::UpdateIpBlackListRequest_ActionType value) {
   _internal_set_action(value);
-  // @@protoc_insertion_point(field_set:api.v1.UpdateIpBlacklistRequest.action)
+  // @@protoc_insertion_point(field_set:api.v1.UpdateIpBlackListRequest.action)
 }
-inline ::api::v1::UpdateIpBlacklistRequest_ActionType UpdateIpBlacklistRequest::_internal_action() const {
+inline ::api::v1::UpdateIpBlackListRequest_ActionType UpdateIpBlackListRequest::_internal_action() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return static_cast<::api::v1::UpdateIpBlacklistRequest_ActionType>(_impl_.action_);
+  return static_cast<::api::v1::UpdateIpBlackListRequest_ActionType>(_impl_.action_);
 }
-inline void UpdateIpBlacklistRequest::_internal_set_action(::api::v1::UpdateIpBlacklistRequest_ActionType value) {
+inline void UpdateIpBlackListRequest::_internal_set_action(::api::v1::UpdateIpBlackListRequest_ActionType value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.action_ = value;
 }
 
 // repeated string ip_list = 2 [json_name = "ipList"];
-inline int UpdateIpBlacklistRequest::_internal_ip_list_size() const {
+inline int UpdateIpBlackListRequest::_internal_ip_list_size() const {
   return _internal_ip_list().size();
 }
-inline int UpdateIpBlacklistRequest::ip_list_size() const {
+inline int UpdateIpBlackListRequest::ip_list_size() const {
   return _internal_ip_list_size();
 }
-inline void UpdateIpBlacklistRequest::clear_ip_list() {
+inline void UpdateIpBlackListRequest::clear_ip_list() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.ip_list_.Clear();
 }
-inline std::string* UpdateIpBlacklistRequest::add_ip_list() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline std::string* UpdateIpBlackListRequest::add_ip_list() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   std::string* _s = _internal_mutable_ip_list()->Add();
-  // @@protoc_insertion_point(field_add_mutable:api.v1.UpdateIpBlacklistRequest.ip_list)
+  // @@protoc_insertion_point(field_add_mutable:api.v1.UpdateIpBlackListRequest.ip_list)
   return _s;
 }
-inline const std::string& UpdateIpBlacklistRequest::ip_list(int index) const
+inline const std::string& UpdateIpBlackListRequest::ip_list(int index) const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:api.v1.UpdateIpBlacklistRequest.ip_list)
+  // @@protoc_insertion_point(field_get:api.v1.UpdateIpBlackListRequest.ip_list)
   return _internal_ip_list().Get(index);
 }
-inline std::string* UpdateIpBlacklistRequest::mutable_ip_list(int index)
+inline std::string* UpdateIpBlackListRequest::mutable_ip_list(int index)
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:api.v1.UpdateIpBlacklistRequest.ip_list)
+  // @@protoc_insertion_point(field_mutable:api.v1.UpdateIpBlackListRequest.ip_list)
   return _internal_mutable_ip_list()->Mutable(index);
 }
 template <typename Arg_, typename... Args_>
-inline void UpdateIpBlacklistRequest::set_ip_list(int index, Arg_&& value, Args_... args) {
+inline void UpdateIpBlackListRequest::set_ip_list(int index, Arg_&& value, Args_... args) {
   ::google::protobuf::internal::AssignToString(
       *_internal_mutable_ip_list()->Mutable(index),
       std::forward<Arg_>(value), args... );
-  // @@protoc_insertion_point(field_set:api.v1.UpdateIpBlacklistRequest.ip_list)
+  // @@protoc_insertion_point(field_set:api.v1.UpdateIpBlackListRequest.ip_list)
 }
 template <typename Arg_, typename... Args_>
-inline void UpdateIpBlacklistRequest::add_ip_list(Arg_&& value, Args_... args) {
+inline void UpdateIpBlackListRequest::add_ip_list(Arg_&& value, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_ip_list(),
                                std::forward<Arg_>(value),
                                args... );
-  // @@protoc_insertion_point(field_add:api.v1.UpdateIpBlacklistRequest.ip_list)
+  // @@protoc_insertion_point(field_add:api.v1.UpdateIpBlackListRequest.ip_list)
 }
 inline const ::google::protobuf::RepeatedPtrField<std::string>&
-UpdateIpBlacklistRequest::ip_list() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:api.v1.UpdateIpBlacklistRequest.ip_list)
+UpdateIpBlackListRequest::ip_list() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:api.v1.UpdateIpBlackListRequest.ip_list)
   return _internal_ip_list();
 }
 inline ::google::protobuf::RepeatedPtrField<std::string>*
-UpdateIpBlacklistRequest::mutable_ip_list() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:api.v1.UpdateIpBlacklistRequest.ip_list)
+UpdateIpBlackListRequest::mutable_ip_list() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:api.v1.UpdateIpBlackListRequest.ip_list)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   return _internal_mutable_ip_list();
 }
 inline const ::google::protobuf::RepeatedPtrField<std::string>&
-UpdateIpBlacklistRequest::_internal_ip_list() const {
+UpdateIpBlackListRequest::_internal_ip_list() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.ip_list_;
 }
 inline ::google::protobuf::RepeatedPtrField<std::string>*
-UpdateIpBlacklistRequest::_internal_mutable_ip_list() {
+UpdateIpBlackListRequest::_internal_mutable_ip_list() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.ip_list_;
 }
 
 // -------------------------------------------------------------------
 
-// UpdateIpBlacklistResponse
+// UpdateIpBlackListResponse
+
+// -------------------------------------------------------------------
+
+// ConfigRouterRequest
+
+// repeated .api.v1.RouterConfig routers = 1 [json_name = "routers"];
+inline int ConfigRouterRequest::_internal_routers_size() const {
+  return _internal_routers().size();
+}
+inline int ConfigRouterRequest::routers_size() const {
+  return _internal_routers_size();
+}
+inline void ConfigRouterRequest::clear_routers() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.routers_.Clear();
+}
+inline ::api::v1::RouterConfig* ConfigRouterRequest::mutable_routers(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:api.v1.ConfigRouterRequest.routers)
+  return _internal_mutable_routers()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>* ConfigRouterRequest::mutable_routers()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:api.v1.ConfigRouterRequest.routers)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_routers();
+}
+inline const ::api::v1::RouterConfig& ConfigRouterRequest::routers(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.ConfigRouterRequest.routers)
+  return _internal_routers().Get(index);
+}
+inline ::api::v1::RouterConfig* ConfigRouterRequest::add_routers() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::api::v1::RouterConfig* _add = _internal_mutable_routers()->Add();
+  // @@protoc_insertion_point(field_add:api.v1.ConfigRouterRequest.routers)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>& ConfigRouterRequest::routers() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:api.v1.ConfigRouterRequest.routers)
+  return _internal_routers();
+}
+inline const ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>&
+ConfigRouterRequest::_internal_routers() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.routers_;
+}
+inline ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>*
+ConfigRouterRequest::_internal_mutable_routers() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.routers_;
+}
+
+// -------------------------------------------------------------------
+
+// RouterConfig
+
+// string method = 1 [json_name = "method"];
+inline void RouterConfig::clear_method() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.method_.ClearToEmpty();
+}
+inline const std::string& RouterConfig::method() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.RouterConfig.method)
+  return _internal_method();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void RouterConfig::set_method(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.method_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.v1.RouterConfig.method)
+}
+inline std::string* RouterConfig::mutable_method() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_method();
+  // @@protoc_insertion_point(field_mutable:api.v1.RouterConfig.method)
+  return _s;
+}
+inline const std::string& RouterConfig::_internal_method() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.method_.Get();
+}
+inline void RouterConfig::_internal_set_method(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.method_.Set(value, GetArena());
+}
+inline std::string* RouterConfig::_internal_mutable_method() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.method_.Mutable( GetArena());
+}
+inline std::string* RouterConfig::release_method() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:api.v1.RouterConfig.method)
+  return _impl_.method_.Release();
+}
+inline void RouterConfig::set_allocated_method(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.method_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.method_.IsDefault()) {
+          _impl_.method_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:api.v1.RouterConfig.method)
+}
+
+// string source = 2 [json_name = "source"];
+inline void RouterConfig::clear_source() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_.ClearToEmpty();
+}
+inline const std::string& RouterConfig::source() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.RouterConfig.source)
+  return _internal_source();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void RouterConfig::set_source(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.v1.RouterConfig.source)
+}
+inline std::string* RouterConfig::mutable_source() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_source();
+  // @@protoc_insertion_point(field_mutable:api.v1.RouterConfig.source)
+  return _s;
+}
+inline const std::string& RouterConfig::_internal_source() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_.Get();
+}
+inline void RouterConfig::_internal_set_source(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_.Set(value, GetArena());
+}
+inline std::string* RouterConfig::_internal_mutable_source() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.source_.Mutable( GetArena());
+}
+inline std::string* RouterConfig::release_source() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:api.v1.RouterConfig.source)
+  return _impl_.source_.Release();
+}
+inline void RouterConfig::set_allocated_source(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.source_.IsDefault()) {
+          _impl_.source_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:api.v1.RouterConfig.source)
+}
+
+// string destination = 3 [json_name = "destination"];
+inline void RouterConfig::clear_destination() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.destination_.ClearToEmpty();
+}
+inline const std::string& RouterConfig::destination() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.RouterConfig.destination)
+  return _internal_destination();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void RouterConfig::set_destination(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.destination_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.v1.RouterConfig.destination)
+}
+inline std::string* RouterConfig::mutable_destination() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_destination();
+  // @@protoc_insertion_point(field_mutable:api.v1.RouterConfig.destination)
+  return _s;
+}
+inline const std::string& RouterConfig::_internal_destination() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.destination_.Get();
+}
+inline void RouterConfig::_internal_set_destination(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.destination_.Set(value, GetArena());
+}
+inline std::string* RouterConfig::_internal_mutable_destination() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.destination_.Mutable( GetArena());
+}
+inline std::string* RouterConfig::release_destination() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:api.v1.RouterConfig.destination)
+  return _impl_.destination_.Release();
+}
+inline void RouterConfig::set_allocated_destination(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.destination_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.destination_.IsDefault()) {
+          _impl_.destination_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:api.v1.RouterConfig.destination)
+}
+
+// -------------------------------------------------------------------
+
+// ConfigRouterResponse
+
+// string message = 1 [json_name = "message"];
+inline void ConfigRouterResponse::clear_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.ClearToEmpty();
+}
+inline const std::string& ConfigRouterResponse::message() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.ConfigRouterResponse.message)
+  return _internal_message();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void ConfigRouterResponse::set_message(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.v1.ConfigRouterResponse.message)
+}
+inline std::string* ConfigRouterResponse::mutable_message() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_message();
+  // @@protoc_insertion_point(field_mutable:api.v1.ConfigRouterResponse.message)
+  return _s;
+}
+inline const std::string& ConfigRouterResponse::_internal_message() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.message_.Get();
+}
+inline void ConfigRouterResponse::_internal_set_message(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.Set(value, GetArena());
+}
+inline std::string* ConfigRouterResponse::_internal_mutable_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.message_.Mutable( GetArena());
+}
+inline std::string* ConfigRouterResponse::release_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:api.v1.ConfigRouterResponse.message)
+  return _impl_.message_.Release();
+}
+inline void ConfigRouterResponse::set_allocated_message(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.message_.IsDefault()) {
+          _impl_.message_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:api.v1.ConfigRouterResponse.message)
+}
+
+// -------------------------------------------------------------------
+
+// UpdateHealthzListRequest
+
+// string action = 1 [json_name = "action"];
+inline void UpdateHealthzListRequest::clear_action() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.action_.ClearToEmpty();
+}
+inline const std::string& UpdateHealthzListRequest::action() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateHealthzListRequest.action)
+  return _internal_action();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void UpdateHealthzListRequest::set_action(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.action_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.v1.UpdateHealthzListRequest.action)
+}
+inline std::string* UpdateHealthzListRequest::mutable_action() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_action();
+  // @@protoc_insertion_point(field_mutable:api.v1.UpdateHealthzListRequest.action)
+  return _s;
+}
+inline const std::string& UpdateHealthzListRequest::_internal_action() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.action_.Get();
+}
+inline void UpdateHealthzListRequest::_internal_set_action(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.action_.Set(value, GetArena());
+}
+inline std::string* UpdateHealthzListRequest::_internal_mutable_action() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.action_.Mutable( GetArena());
+}
+inline std::string* UpdateHealthzListRequest::release_action() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:api.v1.UpdateHealthzListRequest.action)
+  return _impl_.action_.Release();
+}
+inline void UpdateHealthzListRequest::set_allocated_action(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.action_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.action_.IsDefault()) {
+          _impl_.action_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:api.v1.UpdateHealthzListRequest.action)
+}
+
+// repeated string addrs = 2 [json_name = "addrs"];
+inline int UpdateHealthzListRequest::_internal_addrs_size() const {
+  return _internal_addrs().size();
+}
+inline int UpdateHealthzListRequest::addrs_size() const {
+  return _internal_addrs_size();
+}
+inline void UpdateHealthzListRequest::clear_addrs() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.addrs_.Clear();
+}
+inline std::string* UpdateHealthzListRequest::add_addrs() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  std::string* _s = _internal_mutable_addrs()->Add();
+  // @@protoc_insertion_point(field_add_mutable:api.v1.UpdateHealthzListRequest.addrs)
+  return _s;
+}
+inline const std::string& UpdateHealthzListRequest::addrs(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateHealthzListRequest.addrs)
+  return _internal_addrs().Get(index);
+}
+inline std::string* UpdateHealthzListRequest::mutable_addrs(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:api.v1.UpdateHealthzListRequest.addrs)
+  return _internal_mutable_addrs()->Mutable(index);
+}
+template <typename Arg_, typename... Args_>
+inline void UpdateHealthzListRequest::set_addrs(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(
+      *_internal_mutable_addrs()->Mutable(index),
+      std::forward<Arg_>(value), args... );
+  // @@protoc_insertion_point(field_set:api.v1.UpdateHealthzListRequest.addrs)
+}
+template <typename Arg_, typename... Args_>
+inline void UpdateHealthzListRequest::add_addrs(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_addrs(),
+                               std::forward<Arg_>(value),
+                               args... );
+  // @@protoc_insertion_point(field_add:api.v1.UpdateHealthzListRequest.addrs)
+}
+inline const ::google::protobuf::RepeatedPtrField<std::string>&
+UpdateHealthzListRequest::addrs() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:api.v1.UpdateHealthzListRequest.addrs)
+  return _internal_addrs();
+}
+inline ::google::protobuf::RepeatedPtrField<std::string>*
+UpdateHealthzListRequest::mutable_addrs() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:api.v1.UpdateHealthzListRequest.addrs)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_addrs();
+}
+inline const ::google::protobuf::RepeatedPtrField<std::string>&
+UpdateHealthzListRequest::_internal_addrs() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.addrs_;
+}
+inline ::google::protobuf::RepeatedPtrField<std::string>*
+UpdateHealthzListRequest::_internal_mutable_addrs() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.addrs_;
+}
+
+// -------------------------------------------------------------------
+
+// UpdateHealthzListResponse
+
+// string message = 1 [json_name = "message"];
+inline void UpdateHealthzListResponse::clear_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.ClearToEmpty();
+}
+inline const std::string& UpdateHealthzListResponse::message() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateHealthzListResponse.message)
+  return _internal_message();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void UpdateHealthzListResponse::set_message(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.v1.UpdateHealthzListResponse.message)
+}
+inline std::string* UpdateHealthzListResponse::mutable_message() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_message();
+  // @@protoc_insertion_point(field_mutable:api.v1.UpdateHealthzListResponse.message)
+  return _s;
+}
+inline const std::string& UpdateHealthzListResponse::_internal_message() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.message_.Get();
+}
+inline void UpdateHealthzListResponse::_internal_set_message(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.Set(value, GetArena());
+}
+inline std::string* UpdateHealthzListResponse::_internal_mutable_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.message_.Mutable( GetArena());
+}
+inline std::string* UpdateHealthzListResponse::release_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:api.v1.UpdateHealthzListResponse.message)
+  return _impl_.message_.Release();
+}
+inline void UpdateHealthzListResponse::set_allocated_message(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.message_.IsDefault()) {
+          _impl_.message_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:api.v1.UpdateHealthzListResponse.message)
+}
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
@@ -1845,10 +3833,10 @@ namespace google {
 namespace protobuf {
 
 template <>
-struct is_proto_enum<::api::v1::UpdateIpBlacklistRequest_ActionType> : std::true_type {};
+struct is_proto_enum<::api::v1::UpdateIpBlackListRequest_ActionType> : std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor<::api::v1::UpdateIpBlacklistRequest_ActionType>() {
-  return ::api::v1::UpdateIpBlacklistRequest_ActionType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor<::api::v1::UpdateIpBlackListRequest_ActionType>() {
+  return ::api::v1::UpdateIpBlackListRequest_ActionType_descriptor();
 }
 
 }  // namespace protobuf

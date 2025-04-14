@@ -9,7 +9,6 @@
 namespace azugate {
 void Dispatch(boost::shared_ptr<boost::asio::io_context> io_context_ptr,
               boost::shared_ptr<boost::asio::ip::tcp::socket> sock_ptr,
-              boost::asio::ssl::context &ssl_context,
               ConnectionInfo &&source_connection_info,
               TokenBucketRateLimiter &rate_limiter,
               std::function<void()> callback);

@@ -49,6 +49,7 @@ Boost::asio
 Boost::thread
 yaml-cpp::yaml-cpp
 gRPC::grpc++
+gRPC::grpc++_reflection
 protobuf::libprotobuf
 nlohmann_json::nlohmann_json
 ${OPENSSL_LIBRARIES}
@@ -69,10 +70,11 @@ target_compile_definitions(azugate PRIVATE
 
 target_link_libraries(azugate
 common
+Boost::system
 )
 
 
-# I/O Perf (uses kqueue therefore cannot run on Linux).
+# I/O Perf (uses kqueue thus cannot run on Linux).
 # add_executable(io_perf
 # "src/app/io_perf.cc"
 # )
@@ -82,10 +84,10 @@ common
 # )
 
 # Perf.
-add_executable(perf
-"src/app/perf.cc"
+add_executable(azugate_
+"src/app/azugate_.cc"
 )
-target_link_libraries(perf
+target_link_libraries(azugate_
 ${OPENSSL_LIBRARIES}
 common
 Boost::system

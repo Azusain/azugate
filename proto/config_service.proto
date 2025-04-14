@@ -13,49 +13,98 @@ service ConfigService {
   rpc UpdateConfig(UpdateConfigRequest) returns (UpdateConfigResponse) {
     option (google.api.http) = {
       post: "/config:update"
-      body: "*"h
+      body: "*"
     };
   }
 
-  rpc GetIpBlackList(GetIpBlacklistRequest) returns (GetIpBlacklistResponse) {
+  rpc GetIpBlackList(GetIpBlackListRequest) returns (GetIpBlackListResponse) {
     option (google.api.http) = {get: "/config/iplist"};
   }
 
-  rpc UpdateIpBlackList(UpdateIpBlacklistRequest) returns (UpdateIpBlacklistResponse) {
+  rpc UpdateIpBlackList(UpdateIpBlackListRequest) returns (UpdateIpBlackListResponse) {
     option (google.api.http) = {
       post: "/config/iplist:update"
       body: "*"
     };
   }
+
+  rpc ConfigRouter(ConfigRouterRequest) returns (ConfigRouterResponse) {}
+
+  rpc UpdateHealthzList(UpdateHealthzListRequest) returns (UpdateHealthzListResponse) {}
 }
 
 message GetConfigRequest {}
 
 message GetConfigResponse {
   bool http_compression = 1;
+  bool https = 2;
+  bool enable_rate_limitor = 3;
+  uint32 num_token_max = 4;
+  uint32 num_token_per_sec = 5;
 }
 
 message UpdateConfigRequest {
   repeated string path = 1;
   bool http_compression = 2;
+  bool https = 3;
+  bool enable_rate_limitor = 4;
+  uint32 num_token_max = 5;
+  uint32 num_token_per_sec = 6;
 }
 
-message UpdateConfigResponse {}
+// TODO: capsulate it with 'Config' struct.
+message UpdateConfigResponse {
+  bool http_compression = 1;
+  bool https = 2;
+  bool enable_rate_limitor = 3;
+  uint32 num_token_max = 4;
+  uint32 num_token_per_sec = 5;
+  bool enable_external_auth = 6;
+}
 
-message GetIpBlacklistRequest {}
+message GetIpBlackListRequest {}
 
-message GetIpBlacklistResponse {
+message GetIpBlackListResponse {
   repeated string ip_list = 1;
 }
 
-message UpdateIpBlacklistRequest {
+message UpdateIpBlackListRequest {
   enum ActionType {
-    ACTION_UNSPECIFIED = 0;
-    ADD = 1;
-    REMOVE = 2;
+    ACTION_TYPE_UNSPECIFIED = 0;
+    ACTION_TYPE_ADD = 1;
+    ACTION_TYPE_REMOVE = 2;
   }
   ActionType action = 1;
   repeated string ip_list = 2;
 }
 
-message UpdateIpBlacklistResponse {}
+message UpdateIpBlackListResponse {}
+
+message ConfigRouterRequest {
+  repeated RouterConfig routers = 1;
+}
+
+message RouterConfig {
+  // "GET", "POST"
+  string method = 1;
+  // "/api/v1/user"
+  string source = 2;
+  // "/v1/user-service"
+  string destination = 3;
+}
+
+message ConfigRouterResponse {
+  // TODO: only for demo...
+  string message = 1;
+}
+
+// TODO: action type.
+message UpdateHealthzListRequest {
+  string action = 1;
+  repeated string addrs = 2;
+  // TODO: only for demo...
+}
+
+message UpdateHealthzListResponse {
+  string message = 1;
+}
