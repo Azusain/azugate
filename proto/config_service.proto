@@ -27,23 +27,36 @@ service ConfigService {
       body: "*"
     };
   }
+
+  rpc ConfigRouter(ConfigRouterRequest) returns (ConfigRouterResponse) {}
 }
 
 message GetConfigRequest {}
 
 message GetConfigResponse {
   bool http_compression = 1;
+  bool https = 2;
+  bool enable_rate_limitor = 3;
+  uint32 num_token_max = 4;
+  uint32 num_token_per_sec = 5;
 }
 
 message UpdateConfigRequest {
   repeated string path = 1;
   bool http_compression = 2;
   bool https = 3;
+  bool enable_rate_limitor = 4;
+  uint32 num_token_max = 5;
+  uint32 num_token_per_sec = 6;
 }
 
+// TODO: capsulate it with 'Config' struct.
 message UpdateConfigResponse {
   bool http_compression = 1;
   bool https = 2;
+  bool enable_rate_limitor = 3;
+  uint32 num_token_max = 4;
+  uint32 num_token_per_sec = 5;
 }
 
 message GetIpBlackListRequest {}
@@ -63,3 +76,21 @@ message UpdateIpBlackListRequest {
 }
 
 message UpdateIpBlackListResponse {}
+
+message ConfigRouterRequest{
+  repeated RouterConfig routers = 1;
+}
+
+message RouterConfig {
+  // "GET", "POST"
+  string method = 1;       
+  // "/api/v1/user"
+  string source = 2;        
+  // "/v1/user-service"
+  string destination = 3;    
+}
+
+message ConfigRouterResponse{
+  // TODO: only for demo...
+  string message = 1;
+}

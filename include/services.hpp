@@ -1,7 +1,6 @@
 #ifndef __SERVICES_H
 #define __SERVICES_H
 
-#include "auth.h"
 #include "compression.hpp"
 #include "config.h"
 #include "network_wrapper.hpp"

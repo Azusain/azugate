@@ -63,8 +63,13 @@ extern std::string g_authorization_token_secret;
 // oauth.
 extern std::string g_azugate_oauth_client_id;
 extern std::string g_azugate_oauth_client_secret;
-// mics
+// rate limitor.
 extern bool g_enable_rate_limiter;
+// TODO: make it configuable.
+extern size_t g_num_token_per_sec;
+extern size_t g_num_token_max;
+
+// io
 extern size_t g_num_threads;
 
 std::string GetConfigPath();
@@ -79,6 +84,13 @@ void RemoveBlacklistIp(const std::string &&ip);
 
 void SetHttps(bool https);
 bool GetHttps();
+
+void SetEnableRateLimitor(bool enable);
+bool GetEnableRateLimitor();
+
+void ConfigRateLimitor(size_t num_token_max, size_t num_token_per_sec);
+// return g_num_token_max and g_num_token_per_sec.
+std::pair<size_t, size_t> GetRateLimitorConfig();
 
 // router.
 struct ConnectionInfo {

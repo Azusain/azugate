@@ -73,7 +73,7 @@ common
 )
 
 
-# I/O Perf (uses kqueue therefore cannot run on Linux).
+# I/O Perf (uses kqueue thus cannot run on Linux).
 # add_executable(io_perf
 # "src/app/io_perf.cc"
 # )
@@ -83,10 +83,10 @@ common
 # )
 
 # Perf.
-add_executable(perf
-"src/app/perf.cc"
+add_executable(azugate_
+"src/app/azugate_.cc"
 )
-target_link_libraries(perf
+target_link_libraries(azugate_
 ${OPENSSL_LIBRARIES}
 common
 Boost::system

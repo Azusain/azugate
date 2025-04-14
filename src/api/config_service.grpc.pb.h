@@ -64,6 +64,13 @@ class ConfigService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlackListResponse>> PrepareAsyncUpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlackListResponse>>(PrepareAsyncUpdateIpBlackListRaw(context, request, cq));
     }
+    virtual ::grpc::Status ConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::api::v1::ConfigRouterResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::ConfigRouterResponse>> AsyncConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::ConfigRouterResponse>>(AsyncConfigRouterRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::ConfigRouterResponse>> PrepareAsyncConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::ConfigRouterResponse>>(PrepareAsyncConfigRouterRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -75,6 +82,8 @@ class ConfigService final {
       virtual void GetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest* request, ::api::v1::GetIpBlackListResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest* request, ::api::v1::UpdateIpBlackListResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest* request, ::api::v1::UpdateIpBlackListResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void ConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest* request, ::api::v1::ConfigRouterResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void ConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest* request, ::api::v1::ConfigRouterResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -88,6 +97,8 @@ class ConfigService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::GetIpBlackListResponse>* PrepareAsyncGetIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlackListResponse>* AsyncUpdateIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlackListResponse>* PrepareAsyncUpdateIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::ConfigRouterResponse>* AsyncConfigRouterRaw(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::ConfigRouterResponse>* PrepareAsyncConfigRouterRaw(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -120,6 +131,13 @@ class ConfigService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlackListResponse>> PrepareAsyncUpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlackListResponse>>(PrepareAsyncUpdateIpBlackListRaw(context, request, cq));
     }
+    ::grpc::Status ConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::api::v1::ConfigRouterResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::ConfigRouterResponse>> AsyncConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::ConfigRouterResponse>>(AsyncConfigRouterRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::ConfigRouterResponse>> PrepareAsyncConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::ConfigRouterResponse>>(PrepareAsyncConfigRouterRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -131,6 +149,8 @@ class ConfigService final {
       void GetIpBlackList(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest* request, ::api::v1::GetIpBlackListResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest* request, ::api::v1::UpdateIpBlackListResponse* response, std::function<void(::grpc::Status)>) override;
       void UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest* request, ::api::v1::UpdateIpBlackListResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void ConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest* request, ::api::v1::ConfigRouterResponse* response, std::function<void(::grpc::Status)>) override;
+      void ConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest* request, ::api::v1::ConfigRouterResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -150,10 +170,13 @@ class ConfigService final {
     ::grpc::ClientAsyncResponseReader< ::api::v1::GetIpBlackListResponse>* PrepareAsyncGetIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::GetIpBlackListRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlackListResponse>* AsyncUpdateIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlackListResponse>* PrepareAsyncUpdateIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::api::v1::ConfigRouterResponse>* AsyncConfigRouterRaw(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::api::v1::ConfigRouterResponse>* PrepareAsyncConfigRouterRaw(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_GetConfig_;
     const ::grpc::internal::RpcMethod rpcmethod_UpdateConfig_;
     const ::grpc::internal::RpcMethod rpcmethod_GetIpBlackList_;
     const ::grpc::internal::RpcMethod rpcmethod_UpdateIpBlackList_;
+    const ::grpc::internal::RpcMethod rpcmethod_ConfigRouter_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -165,6 +188,7 @@ class ConfigService final {
     virtual ::grpc::Status UpdateConfig(::grpc::ServerContext* context, const ::api::v1::UpdateConfigRequest* request, ::api::v1::UpdateConfigResponse* response);
     virtual ::grpc::Status GetIpBlackList(::grpc::ServerContext* context, const ::api::v1::GetIpBlackListRequest* request, ::api::v1::GetIpBlackListResponse* response);
     virtual ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* context, const ::api::v1::UpdateIpBlackListRequest* request, ::api::v1::UpdateIpBlackListResponse* response);
+    virtual ::grpc::Status ConfigRouter(::grpc::ServerContext* context, const ::api::v1::ConfigRouterRequest* request, ::api::v1::ConfigRouterResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_GetConfig : public BaseClass {
@@ -246,7 +270,27 @@ class ConfigService final {
       ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetConfig<WithAsyncMethod_UpdateConfig<WithAsyncMethod_GetIpBlackList<WithAsyncMethod_UpdateIpBlackList<Service > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_ConfigRouter : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_ConfigRouter() {
+      ::grpc::Service::MarkMethodAsync(4);
+    }
+    ~WithAsyncMethod_ConfigRouter() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ConfigRouter(::grpc::ServerContext* /*context*/, const ::api::v1::ConfigRouterRequest* /*request*/, ::api::v1::ConfigRouterResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestConfigRouter(::grpc::ServerContext* context, ::api::v1::ConfigRouterRequest* request, ::grpc::ServerAsyncResponseWriter< ::api::v1::ConfigRouterResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_GetConfig<WithAsyncMethod_UpdateConfig<WithAsyncMethod_GetIpBlackList<WithAsyncMethod_UpdateIpBlackList<WithAsyncMethod_ConfigRouter<Service > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_GetConfig : public BaseClass {
    private:
@@ -355,7 +399,34 @@ class ConfigService final {
     virtual ::grpc::ServerUnaryReactor* UpdateIpBlackList(
       ::grpc::CallbackServerContext* /*context*/, const ::api::v1::UpdateIpBlackListRequest* /*request*/, ::api::v1::UpdateIpBlackListResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_GetConfig<WithCallbackMethod_UpdateConfig<WithCallbackMethod_GetIpBlackList<WithCallbackMethod_UpdateIpBlackList<Service > > > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_ConfigRouter : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_ConfigRouter() {
+      ::grpc::Service::MarkMethodCallback(4,
+          new ::grpc::internal::CallbackUnaryHandler< ::api::v1::ConfigRouterRequest, ::api::v1::ConfigRouterResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::api::v1::ConfigRouterRequest* request, ::api::v1::ConfigRouterResponse* response) { return this->ConfigRouter(context, request, response); }));}
+    void SetMessageAllocatorFor_ConfigRouter(
+        ::grpc::MessageAllocator< ::api::v1::ConfigRouterRequest, ::api::v1::ConfigRouterResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::api::v1::ConfigRouterRequest, ::api::v1::ConfigRouterResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_ConfigRouter() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ConfigRouter(::grpc::ServerContext* /*context*/, const ::api::v1::ConfigRouterRequest* /*request*/, ::api::v1::ConfigRouterResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* ConfigRouter(
+      ::grpc::CallbackServerContext* /*context*/, const ::api::v1::ConfigRouterRequest* /*request*/, ::api::v1::ConfigRouterResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_GetConfig<WithCallbackMethod_UpdateConfig<WithCallbackMethod_GetIpBlackList<WithCallbackMethod_UpdateIpBlackList<WithCallbackMethod_ConfigRouter<Service > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_GetConfig : public BaseClass {
@@ -421,6 +492,23 @@ class ConfigService final {
     }
     // disable synchronous version of this method
     ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateIpBlackListRequest* /*request*/, ::api::v1::UpdateIpBlackListResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_ConfigRouter : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_ConfigRouter() {
+      ::grpc::Service::MarkMethodGeneric(4);
+    }
+    ~WithGenericMethod_ConfigRouter() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ConfigRouter(::grpc::ServerContext* /*context*/, const ::api::v1::ConfigRouterRequest* /*request*/, ::api::v1::ConfigRouterResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -503,6 +591,26 @@ class ConfigService final {
     }
     void RequestUpdateIpBlackList(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_ConfigRouter : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_ConfigRouter() {
+      ::grpc::Service::MarkMethodRaw(4);
+    }
+    ~WithRawMethod_ConfigRouter() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ConfigRouter(::grpc::ServerContext* /*context*/, const ::api::v1::ConfigRouterRequest* /*request*/, ::api::v1::ConfigRouterResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestConfigRouter(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -591,6 +699,28 @@ class ConfigService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* UpdateIpBlackList(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_ConfigRouter : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_ConfigRouter() {
+      ::grpc::Service::MarkMethodRawCallback(4,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ConfigRouter(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_ConfigRouter() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ConfigRouter(::grpc::ServerContext* /*context*/, const ::api::v1::ConfigRouterRequest* /*request*/, ::api::v1::ConfigRouterResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* ConfigRouter(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -701,9 +831,36 @@ class ConfigService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedUpdateIpBlackList(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::api::v1::UpdateIpBlackListRequest,::api::v1::UpdateIpBlackListResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetConfig<WithStreamedUnaryMethod_UpdateConfig<WithStreamedUnaryMethod_GetIpBlackList<WithStreamedUnaryMethod_UpdateIpBlackList<Service > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_ConfigRouter : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_ConfigRouter() {
+      ::grpc::Service::MarkMethodStreamed(4,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::api::v1::ConfigRouterRequest, ::api::v1::ConfigRouterResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::api::v1::ConfigRouterRequest, ::api::v1::ConfigRouterResponse>* streamer) {
+                       return this->StreamedConfigRouter(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_ConfigRouter() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status ConfigRouter(::grpc::ServerContext* /*context*/, const ::api::v1::ConfigRouterRequest* /*request*/, ::api::v1::ConfigRouterResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedConfigRouter(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::api::v1::ConfigRouterRequest,::api::v1::ConfigRouterResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_GetConfig<WithStreamedUnaryMethod_UpdateConfig<WithStreamedUnaryMethod_GetIpBlackList<WithStreamedUnaryMethod_UpdateIpBlackList<WithStreamedUnaryMethod_ConfigRouter<Service > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetConfig<WithStreamedUnaryMethod_UpdateConfig<WithStreamedUnaryMethod_GetIpBlackList<WithStreamedUnaryMethod_UpdateIpBlackList<Service > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_GetConfig<WithStreamedUnaryMethod_UpdateConfig<WithStreamedUnaryMethod_GetIpBlackList<WithStreamedUnaryMethod_UpdateIpBlackList<WithStreamedUnaryMethod_ConfigRouter<Service > > > > > StreamedService;
 };
 
 }  // namespace v1

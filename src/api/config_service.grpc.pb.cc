@@ -27,6 +27,7 @@ static const char* ConfigService_method_names[] = {
   "/api.v1.ConfigService/UpdateConfig",
   "/api.v1.ConfigService/GetIpBlackList",
   "/api.v1.ConfigService/UpdateIpBlackList",
+  "/api.v1.ConfigService/ConfigRouter",
 };
 
 std::unique_ptr< ConfigService::Stub> ConfigService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -40,6 +41,7 @@ ConfigService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chan
   , rpcmethod_UpdateConfig_(ConfigService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetIpBlackList_(ConfigService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_UpdateIpBlackList_(ConfigService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_ConfigRouter_(ConfigService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status ConfigService::Stub::GetConfig(::grpc::ClientContext* context, const ::api::v1::GetConfigRequest& request, ::api::v1::GetConfigResponse* response) {
@@ -134,6 +136,29 @@ void ConfigService::Stub::async::UpdateIpBlackList(::grpc::ClientContext* contex
   return result;
 }
 
+::grpc::Status ConfigService::Stub::ConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::api::v1::ConfigRouterResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::api::v1::ConfigRouterRequest, ::api::v1::ConfigRouterResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_ConfigRouter_, context, request, response);
+}
+
+void ConfigService::Stub::async::ConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest* request, ::api::v1::ConfigRouterResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::api::v1::ConfigRouterRequest, ::api::v1::ConfigRouterResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ConfigRouter_, context, request, response, std::move(f));
+}
+
+void ConfigService::Stub::async::ConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest* request, ::api::v1::ConfigRouterResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ConfigRouter_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::api::v1::ConfigRouterResponse>* ConfigService::Stub::PrepareAsyncConfigRouterRaw(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::api::v1::ConfigRouterResponse, ::api::v1::ConfigRouterRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_ConfigRouter_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::api::v1::ConfigRouterResponse>* ConfigService::Stub::AsyncConfigRouterRaw(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncConfigRouterRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 ConfigService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ConfigService_method_names[0],
@@ -175,6 +200,16 @@ ConfigService::Service::Service() {
              ::api::v1::UpdateIpBlackListResponse* resp) {
                return service->UpdateIpBlackList(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      ConfigService_method_names[4],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< ConfigService::Service, ::api::v1::ConfigRouterRequest, ::api::v1::ConfigRouterResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](ConfigService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::api::v1::ConfigRouterRequest* req,
+             ::api::v1::ConfigRouterResponse* resp) {
+               return service->ConfigRouter(ctx, req, resp);
+             }, this)));
 }
 
 ConfigService::Service::~Service() {
@@ -202,6 +237,13 @@ ConfigService::Service::~Service() {
 }
 
 ::grpc::Status ConfigService::Service::UpdateIpBlackList(::grpc::ServerContext* context, const ::api::v1::UpdateIpBlackListRequest* request, ::api::v1::UpdateIpBlackListResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status ConfigService::Service::ConfigRouter(::grpc::ServerContext* context, const ::api::v1::ConfigRouterRequest* request, ::api::v1::ConfigRouterResponse* response) {
   (void) context;
   (void) request;
   (void) response;

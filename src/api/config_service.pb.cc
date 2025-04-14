@@ -74,6 +74,9 @@ inline constexpr UpdateConfigResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : http_compression_{false},
         https_{false},
+        enable_rate_limitor_{false},
+        num_token_max_{0u},
+        num_token_per_sec_{0u},
         _cached_size_{0} {}
 
 template <typename>
@@ -101,6 +104,9 @@ inline constexpr UpdateConfigRequest::Impl_::Impl_(
       : path_{},
         http_compression_{false},
         https_{false},
+        enable_rate_limitor_{false},
+        num_token_max_{0u},
+        num_token_per_sec_{0u},
         _cached_size_{0} {}
 
 template <typename>
@@ -122,6 +128,39 @@ struct UpdateConfigRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateConfigRequestDefaultTypeInternal _UpdateConfigRequest_default_instance_;
+
+inline constexpr RouterConfig::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : method_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        source_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        destination_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RouterConfig::RouterConfig(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct RouterConfigDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RouterConfigDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RouterConfigDefaultTypeInternal() {}
+  union {
+    RouterConfig _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RouterConfigDefaultTypeInternal _RouterConfig_default_instance_;
 
 inline constexpr GetIpBlackListResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -169,6 +208,10 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 inline constexpr GetConfigResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : http_compression_{false},
+        https_{false},
+        enable_rate_limitor_{false},
+        num_token_max_{0u},
+        num_token_per_sec_{0u},
         _cached_size_{0} {}
 
 template <typename>
@@ -208,6 +251,58 @@ struct GetConfigRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetConfigRequestDefaultTypeInternal _GetConfigRequest_default_instance_;
+
+inline constexpr ConfigRouterResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : message_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ConfigRouterResponse::ConfigRouterResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct ConfigRouterResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ConfigRouterResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ConfigRouterResponseDefaultTypeInternal() {}
+  union {
+    ConfigRouterResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConfigRouterResponseDefaultTypeInternal _ConfigRouterResponse_default_instance_;
+
+inline constexpr ConfigRouterRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : routers_{},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ConfigRouterRequest::ConfigRouterRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct ConfigRouterRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ConfigRouterRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ConfigRouterRequestDefaultTypeInternal() {}
+  union {
+    ConfigRouterRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConfigRouterRequestDefaultTypeInternal _ConfigRouterRequest_default_instance_;
 }  // namespace v1
 }  // namespace api
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_config_5fservice_2eproto[1];
@@ -233,6 +328,10 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::api::v1::GetConfigResponse, _impl_.http_compression_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::GetConfigResponse, _impl_.https_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::GetConfigResponse, _impl_.enable_rate_limitor_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::GetConfigResponse, _impl_.num_token_max_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::GetConfigResponse, _impl_.num_token_per_sec_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -244,6 +343,9 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.path_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.http_compression_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.https_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.enable_rate_limitor_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.num_token_max_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.num_token_per_sec_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -254,6 +356,9 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.http_compression_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.https_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.enable_rate_limitor_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.num_token_max_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.num_token_per_sec_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::api::v1::GetIpBlackListRequest, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -289,18 +394,50 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::api::v1::ConfigRouterRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::api::v1::ConfigRouterRequest, _impl_.routers_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::api::v1::RouterConfig, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::api::v1::RouterConfig, _impl_.method_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::RouterConfig, _impl_.source_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::RouterConfig, _impl_.destination_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::api::v1::ConfigRouterResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::api::v1::ConfigRouterResponse, _impl_.message_),
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, -1, -1, sizeof(::api::v1::GetConfigRequest)},
         {8, -1, -1, sizeof(::api::v1::GetConfigResponse)},
-        {17, -1, -1, sizeof(::api::v1::UpdateConfigRequest)},
-        {28, -1, -1, sizeof(::api::v1::UpdateConfigResponse)},
-        {38, -1, -1, sizeof(::api::v1::GetIpBlackListRequest)},
-        {46, -1, -1, sizeof(::api::v1::GetIpBlackListResponse)},
-        {55, -1, -1, sizeof(::api::v1::UpdateIpBlackListRequest)},
-        {65, -1, -1, sizeof(::api::v1::UpdateIpBlackListResponse)},
+        {21, -1, -1, sizeof(::api::v1::UpdateConfigRequest)},
+        {35, -1, -1, sizeof(::api::v1::UpdateConfigResponse)},
+        {48, -1, -1, sizeof(::api::v1::GetIpBlackListRequest)},
+        {56, -1, -1, sizeof(::api::v1::GetIpBlackListResponse)},
+        {65, -1, -1, sizeof(::api::v1::UpdateIpBlackListRequest)},
+        {75, -1, -1, sizeof(::api::v1::UpdateIpBlackListResponse)},
+        {83, -1, -1, sizeof(::api::v1::ConfigRouterRequest)},
+        {92, -1, -1, sizeof(::api::v1::RouterConfig)},
+        {103, -1, -1, sizeof(::api::v1::ConfigRouterResponse)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::api::v1::_GetConfigRequest_default_instance_._instance,
@@ -311,39 +448,60 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::api::v1::_GetIpBlackListResponse_default_instance_._instance,
     &::api::v1::_UpdateIpBlackListRequest_default_instance_._instance,
     &::api::v1::_UpdateIpBlackListResponse_default_instance_._instance,
+    &::api::v1::_ConfigRouterRequest_default_instance_._instance,
+    &::api::v1::_RouterConfig_default_instance_._instance,
+    &::api::v1::_ConfigRouterResponse_default_instance_._instance,
 };
 const char descriptor_table_protodef_config_5fservice_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\024config_service.proto\022\006api.v1\032\034google/a"
     "pi/annotations.proto\"\022\n\020GetConfigRequest"
-    "\">\n\021GetConfigResponse\022)\n\020http_compressio"
-    "n\030\001 \001(\010R\017httpCompression\"j\n\023UpdateConfig"
-    "Request\022\022\n\004path\030\001 \003(\tR\004path\022)\n\020http_comp"
-    "ression\030\002 \001(\010R\017httpCompression\022\024\n\005https\030"
-    "\003 \001(\010R\005https\"W\n\024UpdateConfigResponse\022)\n\020"
-    "http_compression\030\001 \001(\010R\017httpCompression\022"
-    "\024\n\005https\030\002 \001(\010R\005https\"\027\n\025GetIpBlackListR"
-    "equest\"1\n\026GetIpBlackListResponse\022\027\n\007ip_l"
-    "ist\030\001 \003(\tR\006ipList\"\320\001\n\030UpdateIpBlackListR"
-    "equest\022C\n\006action\030\001 \001(\0162+.api.v1.UpdateIp"
-    "BlackListRequest.ActionTypeR\006action\022\027\n\007i"
-    "p_list\030\002 \003(\tR\006ipList\"V\n\nActionType\022\033\n\027AC"
-    "TION_TYPE_UNSPECIFIED\020\000\022\023\n\017ACTION_TYPE_A"
-    "DD\020\001\022\026\n\022ACTION_TYPE_REMOVE\020\002\"\033\n\031UpdateIp"
-    "BlackListResponse2\255\003\n\rConfigService\022Q\n\tG"
-    "etConfig\022\030.api.v1.GetConfigRequest\032\031.api"
-    ".v1.GetConfigResponse\"\017\202\323\344\223\002\t\022\007/config\022d"
-    "\n\014UpdateConfig\022\033.api.v1.UpdateConfigRequ"
-    "est\032\034.api.v1.UpdateConfigResponse\"\031\202\323\344\223\002"
-    "\023\"\016/config:update:\001*\022g\n\016GetIpBlackList\022\035"
-    ".api.v1.GetIpBlackListRequest\032\036.api.v1.G"
-    "etIpBlackListResponse\"\026\202\323\344\223\002\020\022\016/config/i"
-    "plist\022z\n\021UpdateIpBlackList\022 .api.v1.Upda"
-    "teIpBlackListRequest\032!.api.v1.UpdateIpBl"
-    "ackListResponse\" \202\323\344\223\002\032\"\025/config/iplist:"
-    "update:\001*B_\n\ncom.api.v1B\022ConfigServicePr"
-    "otoP\001Z\004/api\242\002\003AXX\252\002\006Api.V1\312\002\006Api\\V1\342\002\022Ap"
-    "i\\V1\\GPBMetadata\352\002\007Api::V1b\006proto3"
+    "\"\323\001\n\021GetConfigResponse\022)\n\020http_compressi"
+    "on\030\001 \001(\010R\017httpCompression\022\024\n\005https\030\002 \001(\010"
+    "R\005https\022.\n\023enable_rate_limitor\030\003 \001(\010R\021en"
+    "ableRateLimitor\022\"\n\rnum_token_max\030\004 \001(\rR\013"
+    "numTokenMax\022)\n\021num_token_per_sec\030\005 \001(\rR\016"
+    "numTokenPerSec\"\351\001\n\023UpdateConfigRequest\022\022"
+    "\n\004path\030\001 \003(\tR\004path\022)\n\020http_compression\030\002"
+    " \001(\010R\017httpCompression\022\024\n\005https\030\003 \001(\010R\005ht"
+    "tps\022.\n\023enable_rate_limitor\030\004 \001(\010R\021enable"
+    "RateLimitor\022\"\n\rnum_token_max\030\005 \001(\rR\013numT"
+    "okenMax\022)\n\021num_token_per_sec\030\006 \001(\rR\016numT"
+    "okenPerSec\"\326\001\n\024UpdateConfigResponse\022)\n\020h"
+    "ttp_compression\030\001 \001(\010R\017httpCompression\022\024"
+    "\n\005https\030\002 \001(\010R\005https\022.\n\023enable_rate_limi"
+    "tor\030\003 \001(\010R\021enableRateLimitor\022\"\n\rnum_toke"
+    "n_max\030\004 \001(\rR\013numTokenMax\022)\n\021num_token_pe"
+    "r_sec\030\005 \001(\rR\016numTokenPerSec\"\027\n\025GetIpBlac"
+    "kListRequest\"1\n\026GetIpBlackListResponse\022\027"
+    "\n\007ip_list\030\001 \003(\tR\006ipList\"\320\001\n\030UpdateIpBlac"
+    "kListRequest\022C\n\006action\030\001 \001(\0162+.api.v1.Up"
+    "dateIpBlackListRequest.ActionTypeR\006actio"
+    "n\022\027\n\007ip_list\030\002 \003(\tR\006ipList\"V\n\nActionType"
+    "\022\033\n\027ACTION_TYPE_UNSPECIFIED\020\000\022\023\n\017ACTION_"
+    "TYPE_ADD\020\001\022\026\n\022ACTION_TYPE_REMOVE\020\002\"\033\n\031Up"
+    "dateIpBlackListResponse\"E\n\023ConfigRouterR"
+    "equest\022.\n\007routers\030\001 \003(\0132\024.api.v1.RouterC"
+    "onfigR\007routers\"`\n\014RouterConfig\022\026\n\006method"
+    "\030\001 \001(\tR\006method\022\026\n\006source\030\002 \001(\tR\006source\022 "
+    "\n\013destination\030\003 \001(\tR\013destination\"0\n\024Conf"
+    "igRouterResponse\022\030\n\007message\030\001 \001(\tR\007messa"
+    "ge2\372\003\n\rConfigService\022Q\n\tGetConfig\022\030.api."
+    "v1.GetConfigRequest\032\031.api.v1.GetConfigRe"
+    "sponse\"\017\202\323\344\223\002\t\022\007/config\022d\n\014UpdateConfig\022"
+    "\033.api.v1.UpdateConfigRequest\032\034.api.v1.Up"
+    "dateConfigResponse\"\031\202\323\344\223\002\023\"\016/config:upda"
+    "te:\001*\022g\n\016GetIpBlackList\022\035.api.v1.GetIpBl"
+    "ackListRequest\032\036.api.v1.GetIpBlackListRe"
+    "sponse\"\026\202\323\344\223\002\020\022\016/config/iplist\022z\n\021Update"
+    "IpBlackList\022 .api.v1.UpdateIpBlackListRe"
+    "quest\032!.api.v1.UpdateIpBlackListResponse"
+    "\" \202\323\344\223\002\032\"\025/config/iplist:update:\001*\022K\n\014Co"
+    "nfigRouter\022\033.api.v1.ConfigRouterRequest\032"
+    "\034.api.v1.ConfigRouterResponse\"\000B_\n\ncom.a"
+    "pi.v1B\022ConfigServiceProtoP\001Z\004/api\242\002\003AXX\252"
+    "\002\006Api.V1\312\002\006Api\\V1\342\002\022Api\\V1\\GPBMetadata\352\002"
+    "\007Api::V1b\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_config_5fservice_2eproto_deps[1] =
     {
@@ -353,13 +511,13 @@ static ::absl::once_flag descriptor_table_config_5fservice_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_config_5fservice_2eproto = {
     false,
     false,
-    1194,
+    1896,
     descriptor_table_protodef_config_5fservice_2eproto,
     "config_service.proto",
     &descriptor_table_config_5fservice_2eproto_once,
     descriptor_table_config_5fservice_2eproto_deps,
     1,
-    8,
+    11,
     schemas,
     file_default_instances,
     TableStruct_config_5fservice_2eproto::offsets,
@@ -512,7 +670,12 @@ inline PROTOBUF_NDEBUG_INLINE GetConfigResponse::Impl_::Impl_(
 
 inline void GetConfigResponse::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.http_compression_ = {};
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, http_compression_),
+           0,
+           offsetof(Impl_, num_token_per_sec_) -
+               offsetof(Impl_, http_compression_) +
+               sizeof(Impl_::num_token_per_sec_));
 }
 GetConfigResponse::~GetConfigResponse() {
   // @@protoc_insertion_point(destructor:api.v1.GetConfigResponse)
@@ -553,15 +716,15 @@ const ::google::protobuf::MessageLite::ClassData* GetConfigResponse::GetClassDat
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 0, 2> GetConfigResponse::_table_ = {
+const ::_pbi::TcParseTable<3, 5, 0, 0, 2> GetConfigResponse::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    5, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
+    5,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -571,15 +734,42 @@ const ::_pbi::TcParseTable<0, 1, 0, 0, 2> GetConfigResponse::_table_ = {
     ::_pbi::TcParser::GetTable<::api::v1::GetConfigResponse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
+    {::_pbi::TcParser::MiniParse, {}},
     // bool http_compression = 1 [json_name = "httpCompression"];
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(GetConfigResponse, _impl_.http_compression_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.http_compression_)}},
+    // bool https = 2 [json_name = "https"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(GetConfigResponse, _impl_.https_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.https_)}},
+    // bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(GetConfigResponse, _impl_.enable_rate_limitor_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.enable_rate_limitor_)}},
+    // uint32 num_token_max = 4 [json_name = "numTokenMax"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GetConfigResponse, _impl_.num_token_max_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.num_token_max_)}},
+    // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GetConfigResponse, _impl_.num_token_per_sec_), 63>(),
+     {40, 63, 0, PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.num_token_per_sec_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
     // bool http_compression = 1 [json_name = "httpCompression"];
     {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.http_compression_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool https = 2 [json_name = "https"];
+    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.https_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.enable_rate_limitor_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // uint32 num_token_max = 4 [json_name = "numTokenMax"];
+    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.num_token_max_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.num_token_per_sec_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
   }},
   // no aux_entries
   {{
@@ -593,7 +783,9 @@ PROTOBUF_NOINLINE void GetConfigResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.http_compression_ = false;
+  ::memset(&_impl_.http_compression_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.num_token_per_sec_) -
+      reinterpret_cast<char*>(&_impl_.http_compression_)) + sizeof(_impl_.num_token_per_sec_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -619,6 +811,34 @@ PROTOBUF_NOINLINE void GetConfigResponse::Clear() {
                 1, this_._internal_http_compression(), target);
           }
 
+          // bool https = 2 [json_name = "https"];
+          if (this_._internal_https() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                2, this_._internal_https(), target);
+          }
+
+          // bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+          if (this_._internal_enable_rate_limitor() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                3, this_._internal_enable_rate_limitor(), target);
+          }
+
+          // uint32 num_token_max = 4 [json_name = "numTokenMax"];
+          if (this_._internal_num_token_max() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                4, this_._internal_num_token_max(), target);
+          }
+
+          // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+          if (this_._internal_num_token_per_sec() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                5, this_._internal_num_token_per_sec(), target);
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -642,10 +862,29 @@ PROTOBUF_NOINLINE void GetConfigResponse::Clear() {
           // Prevent compiler warnings about cached_has_bits being unused
           (void)cached_has_bits;
 
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
             // bool http_compression = 1 [json_name = "httpCompression"];
             if (this_._internal_http_compression() != 0) {
               total_size += 2;
+            }
+            // bool https = 2 [json_name = "https"];
+            if (this_._internal_https() != 0) {
+              total_size += 2;
+            }
+            // bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+            if (this_._internal_enable_rate_limitor() != 0) {
+              total_size += 2;
+            }
+            // uint32 num_token_max = 4 [json_name = "numTokenMax"];
+            if (this_._internal_num_token_max() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_num_token_max());
+            }
+            // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+            if (this_._internal_num_token_per_sec() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_num_token_per_sec());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -663,6 +902,18 @@ void GetConfigResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const
   if (from._internal_http_compression() != 0) {
     _this->_impl_.http_compression_ = from._impl_.http_compression_;
   }
+  if (from._internal_https() != 0) {
+    _this->_impl_.https_ = from._impl_.https_;
+  }
+  if (from._internal_enable_rate_limitor() != 0) {
+    _this->_impl_.enable_rate_limitor_ = from._impl_.enable_rate_limitor_;
+  }
+  if (from._internal_num_token_max() != 0) {
+    _this->_impl_.num_token_max_ = from._impl_.num_token_max_;
+  }
+  if (from._internal_num_token_per_sec() != 0) {
+    _this->_impl_.num_token_per_sec_ = from._impl_.num_token_per_sec_;
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -677,7 +928,12 @@ void GetConfigResponse::CopyFrom(const GetConfigResponse& from) {
 void GetConfigResponse::InternalSwap(GetConfigResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-        swap(_impl_.http_compression_, other->_impl_.http_compression_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.num_token_per_sec_)
+      + sizeof(GetConfigResponse::_impl_.num_token_per_sec_)
+      - PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.http_compression_)>(
+          reinterpret_cast<char*>(&_impl_.http_compression_),
+          reinterpret_cast<char*>(&other->_impl_.http_compression_));
 }
 
 ::google::protobuf::Metadata GetConfigResponse::GetMetadata() const {
@@ -721,9 +977,9 @@ UpdateConfigRequest::UpdateConfigRequest(
                offsetof(Impl_, http_compression_),
            reinterpret_cast<const char *>(&from._impl_) +
                offsetof(Impl_, http_compression_),
-           offsetof(Impl_, https_) -
+           offsetof(Impl_, num_token_per_sec_) -
                offsetof(Impl_, http_compression_) +
-               sizeof(Impl_::https_));
+               sizeof(Impl_::num_token_per_sec_));
 
   // @@protoc_insertion_point(copy_constructor:api.v1.UpdateConfigRequest)
 }
@@ -738,9 +994,9 @@ inline void UpdateConfigRequest::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, http_compression_),
            0,
-           offsetof(Impl_, https_) -
+           offsetof(Impl_, num_token_per_sec_) -
                offsetof(Impl_, http_compression_) +
-               sizeof(Impl_::https_));
+               sizeof(Impl_::num_token_per_sec_));
 }
 UpdateConfigRequest::~UpdateConfigRequest() {
   // @@protoc_insertion_point(destructor:api.v1.UpdateConfigRequest)
@@ -781,15 +1037,15 @@ const ::google::protobuf::MessageLite::ClassData* UpdateConfigRequest::GetClassD
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 39, 2> UpdateConfigRequest::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 0, 39, 2> UpdateConfigRequest::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
+    6,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -809,6 +1065,16 @@ const ::_pbi::TcParseTable<2, 3, 0, 39, 2> UpdateConfigRequest::_table_ = {
     // bool https = 3 [json_name = "https"];
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigRequest, _impl_.https_), 63>(),
      {24, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.https_)}},
+    // bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigRequest, _impl_.enable_rate_limitor_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.enable_rate_limitor_)}},
+    // uint32 num_token_max = 5 [json_name = "numTokenMax"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UpdateConfigRequest, _impl_.num_token_max_), 63>(),
+     {40, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.num_token_max_)}},
+    // uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UpdateConfigRequest, _impl_.num_token_per_sec_), 63>(),
+     {48, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.num_token_per_sec_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -821,6 +1087,15 @@ const ::_pbi::TcParseTable<2, 3, 0, 39, 2> UpdateConfigRequest::_table_ = {
     // bool https = 3 [json_name = "https"];
     {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.https_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.enable_rate_limitor_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // uint32 num_token_max = 5 [json_name = "numTokenMax"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.num_token_max_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.num_token_per_sec_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
   }},
   // no aux_entries
   {{
@@ -839,8 +1114,8 @@ PROTOBUF_NOINLINE void UpdateConfigRequest::Clear() {
 
   _impl_.path_.Clear();
   ::memset(&_impl_.http_compression_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.https_) -
-      reinterpret_cast<char*>(&_impl_.http_compression_)) + sizeof(_impl_.https_));
+      reinterpret_cast<char*>(&_impl_.num_token_per_sec_) -
+      reinterpret_cast<char*>(&_impl_.http_compression_)) + sizeof(_impl_.num_token_per_sec_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -879,6 +1154,27 @@ PROTOBUF_NOINLINE void UpdateConfigRequest::Clear() {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteBoolToArray(
                 3, this_._internal_https(), target);
+          }
+
+          // bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
+          if (this_._internal_enable_rate_limitor() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                4, this_._internal_enable_rate_limitor(), target);
+          }
+
+          // uint32 num_token_max = 5 [json_name = "numTokenMax"];
+          if (this_._internal_num_token_max() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                5, this_._internal_num_token_max(), target);
+          }
+
+          // uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
+          if (this_._internal_num_token_per_sec() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                6, this_._internal_num_token_per_sec(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -925,6 +1221,20 @@ PROTOBUF_NOINLINE void UpdateConfigRequest::Clear() {
             if (this_._internal_https() != 0) {
               total_size += 2;
             }
+            // bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
+            if (this_._internal_enable_rate_limitor() != 0) {
+              total_size += 2;
+            }
+            // uint32 num_token_max = 5 [json_name = "numTokenMax"];
+            if (this_._internal_num_token_max() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_num_token_max());
+            }
+            // uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
+            if (this_._internal_num_token_per_sec() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_num_token_per_sec());
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -945,6 +1255,15 @@ void UpdateConfigRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, con
   if (from._internal_https() != 0) {
     _this->_impl_.https_ = from._impl_.https_;
   }
+  if (from._internal_enable_rate_limitor() != 0) {
+    _this->_impl_.enable_rate_limitor_ = from._impl_.enable_rate_limitor_;
+  }
+  if (from._internal_num_token_max() != 0) {
+    _this->_impl_.num_token_max_ = from._impl_.num_token_max_;
+  }
+  if (from._internal_num_token_per_sec() != 0) {
+    _this->_impl_.num_token_per_sec_ = from._impl_.num_token_per_sec_;
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -961,8 +1280,8 @@ void UpdateConfigRequest::InternalSwap(UpdateConfigRequest* PROTOBUF_RESTRICT ot
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _impl_.path_.InternalSwap(&other->_impl_.path_);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.https_)
-      + sizeof(UpdateConfigRequest::_impl_.https_)
+      PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.num_token_per_sec_)
+      + sizeof(UpdateConfigRequest::_impl_.num_token_per_sec_)
       - PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.http_compression_)>(
           reinterpret_cast<char*>(&_impl_.http_compression_),
           reinterpret_cast<char*>(&other->_impl_.http_compression_));
@@ -1001,9 +1320,9 @@ inline void UpdateConfigResponse::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, http_compression_),
            0,
-           offsetof(Impl_, https_) -
+           offsetof(Impl_, num_token_per_sec_) -
                offsetof(Impl_, http_compression_) +
-               sizeof(Impl_::https_));
+               sizeof(Impl_::num_token_per_sec_));
 }
 UpdateConfigResponse::~UpdateConfigResponse() {
   // @@protoc_insertion_point(destructor:api.v1.UpdateConfigResponse)
@@ -1044,15 +1363,15 @@ const ::google::protobuf::MessageLite::ClassData* UpdateConfigResponse::GetClass
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 0, 2> UpdateConfigResponse::_table_ = {
+const ::_pbi::TcParseTable<3, 5, 0, 0, 2> UpdateConfigResponse::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    5, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    5,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -1062,12 +1381,24 @@ const ::_pbi::TcParseTable<1, 2, 0, 0, 2> UpdateConfigResponse::_table_ = {
     ::_pbi::TcParser::GetTable<::api::v1::UpdateConfigResponse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // bool https = 2 [json_name = "https"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigResponse, _impl_.https_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.https_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // bool http_compression = 1 [json_name = "httpCompression"];
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigResponse, _impl_.http_compression_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.http_compression_)}},
+    // bool https = 2 [json_name = "https"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigResponse, _impl_.https_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.https_)}},
+    // bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigResponse, _impl_.enable_rate_limitor_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.enable_rate_limitor_)}},
+    // uint32 num_token_max = 4 [json_name = "numTokenMax"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UpdateConfigResponse, _impl_.num_token_max_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.num_token_max_)}},
+    // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UpdateConfigResponse, _impl_.num_token_per_sec_), 63>(),
+     {40, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.num_token_per_sec_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -1077,6 +1408,15 @@ const ::_pbi::TcParseTable<1, 2, 0, 0, 2> UpdateConfigResponse::_table_ = {
     // bool https = 2 [json_name = "https"];
     {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.https_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.enable_rate_limitor_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // uint32 num_token_max = 4 [json_name = "numTokenMax"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.num_token_max_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.num_token_per_sec_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
   }},
   // no aux_entries
   {{
@@ -1091,8 +1431,8 @@ PROTOBUF_NOINLINE void UpdateConfigResponse::Clear() {
   (void) cached_has_bits;
 
   ::memset(&_impl_.http_compression_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.https_) -
-      reinterpret_cast<char*>(&_impl_.http_compression_)) + sizeof(_impl_.https_));
+      reinterpret_cast<char*>(&_impl_.num_token_per_sec_) -
+      reinterpret_cast<char*>(&_impl_.http_compression_)) + sizeof(_impl_.num_token_per_sec_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -1123,6 +1463,27 @@ PROTOBUF_NOINLINE void UpdateConfigResponse::Clear() {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteBoolToArray(
                 2, this_._internal_https(), target);
+          }
+
+          // bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+          if (this_._internal_enable_rate_limitor() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                3, this_._internal_enable_rate_limitor(), target);
+          }
+
+          // uint32 num_token_max = 4 [json_name = "numTokenMax"];
+          if (this_._internal_num_token_max() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                4, this_._internal_num_token_max(), target);
+          }
+
+          // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+          if (this_._internal_num_token_per_sec() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                5, this_._internal_num_token_per_sec(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -1158,6 +1519,20 @@ PROTOBUF_NOINLINE void UpdateConfigResponse::Clear() {
             if (this_._internal_https() != 0) {
               total_size += 2;
             }
+            // bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+            if (this_._internal_enable_rate_limitor() != 0) {
+              total_size += 2;
+            }
+            // uint32 num_token_max = 4 [json_name = "numTokenMax"];
+            if (this_._internal_num_token_max() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_num_token_max());
+            }
+            // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+            if (this_._internal_num_token_per_sec() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_num_token_per_sec());
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -1177,6 +1552,15 @@ void UpdateConfigResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, co
   if (from._internal_https() != 0) {
     _this->_impl_.https_ = from._impl_.https_;
   }
+  if (from._internal_enable_rate_limitor() != 0) {
+    _this->_impl_.enable_rate_limitor_ = from._impl_.enable_rate_limitor_;
+  }
+  if (from._internal_num_token_max() != 0) {
+    _this->_impl_.num_token_max_ = from._impl_.num_token_max_;
+  }
+  if (from._internal_num_token_per_sec() != 0) {
+    _this->_impl_.num_token_per_sec_ = from._impl_.num_token_per_sec_;
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1192,8 +1576,8 @@ void UpdateConfigResponse::InternalSwap(UpdateConfigResponse* PROTOBUF_RESTRICT 
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.https_)
-      + sizeof(UpdateConfigResponse::_impl_.https_)
+      PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.num_token_per_sec_)
+      + sizeof(UpdateConfigResponse::_impl_.num_token_per_sec_)
       - PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.http_compression_)>(
           reinterpret_cast<char*>(&_impl_.http_compression_),
           reinterpret_cast<char*>(&other->_impl_.http_compression_));
@@ -1866,6 +2250,732 @@ const ::_pbi::TcParseTable<0, 0, 0, 0, 2> UpdateIpBlackListResponse::_table_ = {
 
 ::google::protobuf::Metadata UpdateIpBlackListResponse::GetMetadata() const {
   return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class ConfigRouterRequest::_Internal {
+ public:
+};
+
+ConfigRouterRequest::ConfigRouterRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:api.v1.ConfigRouterRequest)
+}
+inline PROTOBUF_NDEBUG_INLINE ConfigRouterRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::api::v1::ConfigRouterRequest& from_msg)
+      : routers_{visibility, arena, from.routers_},
+        _cached_size_{0} {}
+
+ConfigRouterRequest::ConfigRouterRequest(
+    ::google::protobuf::Arena* arena,
+    const ConfigRouterRequest& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  ConfigRouterRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:api.v1.ConfigRouterRequest)
+}
+inline PROTOBUF_NDEBUG_INLINE ConfigRouterRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : routers_{visibility, arena},
+        _cached_size_{0} {}
+
+inline void ConfigRouterRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+ConfigRouterRequest::~ConfigRouterRequest() {
+  // @@protoc_insertion_point(destructor:api.v1.ConfigRouterRequest)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void ConfigRouterRequest::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::MessageLite::ClassDataFull
+    ConfigRouterRequest::_class_data_ = {
+        ::google::protobuf::Message::ClassData{
+            &_ConfigRouterRequest_default_instance_._instance,
+            &_table_.header,
+            nullptr,  // OnDemandRegisterArenaDtor
+            nullptr,  // IsInitialized
+            &ConfigRouterRequest::MergeImpl,
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+            ::google::protobuf::Message::GetDeleteImpl<ConfigRouterRequest>(),
+            ::google::protobuf::Message::GetNewImpl<ConfigRouterRequest>(),
+            ::google::protobuf::Message::GetClearImpl<ConfigRouterRequest>(), &ConfigRouterRequest::ByteSizeLong,
+                &ConfigRouterRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+            PROTOBUF_FIELD_OFFSET(ConfigRouterRequest, _impl_._cached_size_),
+            false,
+        },
+        &ConfigRouterRequest::kDescriptorMethods,
+        &descriptor_table_config_5fservice_2eproto,
+        nullptr,  // tracker
+};
+const ::google::protobuf::MessageLite::ClassData* ConfigRouterRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> ConfigRouterRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::api::v1::ConfigRouterRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // repeated .api.v1.RouterConfig routers = 1 [json_name = "routers"];
+    {::_pbi::TcParser::FastMtR1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(ConfigRouterRequest, _impl_.routers_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // repeated .api.v1.RouterConfig routers = 1 [json_name = "routers"];
+    {PROTOBUF_FIELD_OFFSET(ConfigRouterRequest, _impl_.routers_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::api::v1::RouterConfig>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void ConfigRouterRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:api.v1.ConfigRouterRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.routers_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* ConfigRouterRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const ConfigRouterRequest& this_ = static_cast<const ConfigRouterRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* ConfigRouterRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const ConfigRouterRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:api.v1.ConfigRouterRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // repeated .api.v1.RouterConfig routers = 1 [json_name = "routers"];
+          for (unsigned i = 0, n = static_cast<unsigned>(
+                                   this_._internal_routers_size());
+               i < n; i++) {
+            const auto& repfield = this_._internal_routers().Get(i);
+            target =
+                ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                    1, repfield, repfield.GetCachedSize(),
+                    target, stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:api.v1.ConfigRouterRequest)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t ConfigRouterRequest::ByteSizeLong(const MessageLite& base) {
+          const ConfigRouterRequest& this_ = static_cast<const ConfigRouterRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t ConfigRouterRequest::ByteSizeLong() const {
+          const ConfigRouterRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:api.v1.ConfigRouterRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // repeated .api.v1.RouterConfig routers = 1 [json_name = "routers"];
+             {
+              total_size += 1UL * this_._internal_routers_size();
+              for (const auto& msg : this_._internal_routers()) {
+                total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+              }
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void ConfigRouterRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<ConfigRouterRequest*>(&to_msg);
+  auto& from = static_cast<const ConfigRouterRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.ConfigRouterRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_internal_mutable_routers()->MergeFrom(
+      from._internal_routers());
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ConfigRouterRequest::CopyFrom(const ConfigRouterRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:api.v1.ConfigRouterRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void ConfigRouterRequest::InternalSwap(ConfigRouterRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.routers_.InternalSwap(&other->_impl_.routers_);
+}
+
+::google::protobuf::Metadata ConfigRouterRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class RouterConfig::_Internal {
+ public:
+};
+
+RouterConfig::RouterConfig(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:api.v1.RouterConfig)
+}
+inline PROTOBUF_NDEBUG_INLINE RouterConfig::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::api::v1::RouterConfig& from_msg)
+      : method_(arena, from.method_),
+        source_(arena, from.source_),
+        destination_(arena, from.destination_),
+        _cached_size_{0} {}
+
+RouterConfig::RouterConfig(
+    ::google::protobuf::Arena* arena,
+    const RouterConfig& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  RouterConfig* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:api.v1.RouterConfig)
+}
+inline PROTOBUF_NDEBUG_INLINE RouterConfig::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : method_(arena),
+        source_(arena),
+        destination_(arena),
+        _cached_size_{0} {}
+
+inline void RouterConfig::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+RouterConfig::~RouterConfig() {
+  // @@protoc_insertion_point(destructor:api.v1.RouterConfig)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void RouterConfig::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.method_.Destroy();
+  _impl_.source_.Destroy();
+  _impl_.destination_.Destroy();
+  _impl_.~Impl_();
+}
+
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::MessageLite::ClassDataFull
+    RouterConfig::_class_data_ = {
+        ::google::protobuf::Message::ClassData{
+            &_RouterConfig_default_instance_._instance,
+            &_table_.header,
+            nullptr,  // OnDemandRegisterArenaDtor
+            nullptr,  // IsInitialized
+            &RouterConfig::MergeImpl,
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+            ::google::protobuf::Message::GetDeleteImpl<RouterConfig>(),
+            ::google::protobuf::Message::GetNewImpl<RouterConfig>(),
+            ::google::protobuf::Message::GetClearImpl<RouterConfig>(), &RouterConfig::ByteSizeLong,
+                &RouterConfig::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+            PROTOBUF_FIELD_OFFSET(RouterConfig, _impl_._cached_size_),
+            false,
+        },
+        &RouterConfig::kDescriptorMethods,
+        &descriptor_table_config_5fservice_2eproto,
+        nullptr,  // tracker
+};
+const ::google::protobuf::MessageLite::ClassData* RouterConfig::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 51, 2> RouterConfig::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::api::v1::RouterConfig>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // string method = 1 [json_name = "method"];
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(RouterConfig, _impl_.method_)}},
+    // string source = 2 [json_name = "source"];
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(RouterConfig, _impl_.source_)}},
+    // string destination = 3 [json_name = "destination"];
+    {::_pbi::TcParser::FastUS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(RouterConfig, _impl_.destination_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string method = 1 [json_name = "method"];
+    {PROTOBUF_FIELD_OFFSET(RouterConfig, _impl_.method_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string source = 2 [json_name = "source"];
+    {PROTOBUF_FIELD_OFFSET(RouterConfig, _impl_.source_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string destination = 3 [json_name = "destination"];
+    {PROTOBUF_FIELD_OFFSET(RouterConfig, _impl_.destination_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\23\6\6\13\0\0\0\0"
+    "api.v1.RouterConfig"
+    "method"
+    "source"
+    "destination"
+  }},
+};
+
+PROTOBUF_NOINLINE void RouterConfig::Clear() {
+// @@protoc_insertion_point(message_clear_start:api.v1.RouterConfig)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.method_.ClearToEmpty();
+  _impl_.source_.ClearToEmpty();
+  _impl_.destination_.ClearToEmpty();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* RouterConfig::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const RouterConfig& this_ = static_cast<const RouterConfig&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* RouterConfig::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const RouterConfig& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:api.v1.RouterConfig)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string method = 1 [json_name = "method"];
+          if (!this_._internal_method().empty()) {
+            const std::string& _s = this_._internal_method();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.RouterConfig.method");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          // string source = 2 [json_name = "source"];
+          if (!this_._internal_source().empty()) {
+            const std::string& _s = this_._internal_source();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.RouterConfig.source");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          // string destination = 3 [json_name = "destination"];
+          if (!this_._internal_destination().empty()) {
+            const std::string& _s = this_._internal_destination();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.RouterConfig.destination");
+            target = stream->WriteStringMaybeAliased(3, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:api.v1.RouterConfig)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t RouterConfig::ByteSizeLong(const MessageLite& base) {
+          const RouterConfig& this_ = static_cast<const RouterConfig&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t RouterConfig::ByteSizeLong() const {
+          const RouterConfig& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:api.v1.RouterConfig)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string method = 1 [json_name = "method"];
+            if (!this_._internal_method().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_method());
+            }
+            // string source = 2 [json_name = "source"];
+            if (!this_._internal_source().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_source());
+            }
+            // string destination = 3 [json_name = "destination"];
+            if (!this_._internal_destination().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_destination());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void RouterConfig::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<RouterConfig*>(&to_msg);
+  auto& from = static_cast<const RouterConfig&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.RouterConfig)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_method().empty()) {
+    _this->_internal_set_method(from._internal_method());
+  }
+  if (!from._internal_source().empty()) {
+    _this->_internal_set_source(from._internal_source());
+  }
+  if (!from._internal_destination().empty()) {
+    _this->_internal_set_destination(from._internal_destination());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RouterConfig::CopyFrom(const RouterConfig& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:api.v1.RouterConfig)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void RouterConfig::InternalSwap(RouterConfig* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.method_, &other->_impl_.method_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.source_, &other->_impl_.source_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.destination_, &other->_impl_.destination_, arena);
+}
+
+::google::protobuf::Metadata RouterConfig::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class ConfigRouterResponse::_Internal {
+ public:
+};
+
+ConfigRouterResponse::ConfigRouterResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:api.v1.ConfigRouterResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE ConfigRouterResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::api::v1::ConfigRouterResponse& from_msg)
+      : message_(arena, from.message_),
+        _cached_size_{0} {}
+
+ConfigRouterResponse::ConfigRouterResponse(
+    ::google::protobuf::Arena* arena,
+    const ConfigRouterResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  ConfigRouterResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:api.v1.ConfigRouterResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE ConfigRouterResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : message_(arena),
+        _cached_size_{0} {}
+
+inline void ConfigRouterResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+ConfigRouterResponse::~ConfigRouterResponse() {
+  // @@protoc_insertion_point(destructor:api.v1.ConfigRouterResponse)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void ConfigRouterResponse::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.message_.Destroy();
+  _impl_.~Impl_();
+}
+
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::MessageLite::ClassDataFull
+    ConfigRouterResponse::_class_data_ = {
+        ::google::protobuf::Message::ClassData{
+            &_ConfigRouterResponse_default_instance_._instance,
+            &_table_.header,
+            nullptr,  // OnDemandRegisterArenaDtor
+            nullptr,  // IsInitialized
+            &ConfigRouterResponse::MergeImpl,
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+            ::google::protobuf::Message::GetDeleteImpl<ConfigRouterResponse>(),
+            ::google::protobuf::Message::GetNewImpl<ConfigRouterResponse>(),
+            ::google::protobuf::Message::GetClearImpl<ConfigRouterResponse>(), &ConfigRouterResponse::ByteSizeLong,
+                &ConfigRouterResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+            PROTOBUF_FIELD_OFFSET(ConfigRouterResponse, _impl_._cached_size_),
+            false,
+        },
+        &ConfigRouterResponse::kDescriptorMethods,
+        &descriptor_table_config_5fservice_2eproto,
+        nullptr,  // tracker
+};
+const ::google::protobuf::MessageLite::ClassData* ConfigRouterResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 43, 2> ConfigRouterResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::api::v1::ConfigRouterResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // string message = 1 [json_name = "message"];
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(ConfigRouterResponse, _impl_.message_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string message = 1 [json_name = "message"];
+    {PROTOBUF_FIELD_OFFSET(ConfigRouterResponse, _impl_.message_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\33\7\0\0\0\0\0\0"
+    "api.v1.ConfigRouterResponse"
+    "message"
+  }},
+};
+
+PROTOBUF_NOINLINE void ConfigRouterResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:api.v1.ConfigRouterResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.message_.ClearToEmpty();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* ConfigRouterResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const ConfigRouterResponse& this_ = static_cast<const ConfigRouterResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* ConfigRouterResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const ConfigRouterResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:api.v1.ConfigRouterResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string message = 1 [json_name = "message"];
+          if (!this_._internal_message().empty()) {
+            const std::string& _s = this_._internal_message();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.ConfigRouterResponse.message");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:api.v1.ConfigRouterResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t ConfigRouterResponse::ByteSizeLong(const MessageLite& base) {
+          const ConfigRouterResponse& this_ = static_cast<const ConfigRouterResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t ConfigRouterResponse::ByteSizeLong() const {
+          const ConfigRouterResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:api.v1.ConfigRouterResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // string message = 1 [json_name = "message"];
+            if (!this_._internal_message().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_message());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void ConfigRouterResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<ConfigRouterResponse*>(&to_msg);
+  auto& from = static_cast<const ConfigRouterResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.ConfigRouterResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_message().empty()) {
+    _this->_internal_set_message(from._internal_message());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ConfigRouterResponse::CopyFrom(const ConfigRouterResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:api.v1.ConfigRouterResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void ConfigRouterResponse::InternalSwap(ConfigRouterResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.message_, &other->_impl_.message_, arena);
+}
+
+::google::protobuf::Metadata ConfigRouterResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace v1

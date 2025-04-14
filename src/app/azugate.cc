@@ -3,7 +3,7 @@
 #include "config.h"
 #include "dispatcher.h"
 #include "filter.h"
-#include "protocols.h"
+
 #include "rate_limiter.h"
 #include <boost/asio.hpp>
 #include <boost/asio/connect.hpp>
@@ -25,7 +25,7 @@
 
 #include <cstddef>
 #include <cstdlib>
-#include <exception>
+
 #include <fmt/base.h>
 #include <fmt/format.h>
 #include <functional>
@@ -88,9 +88,8 @@ public:
     ConnectionInfo src_conn_info;
     src_conn_info.address = source_endpoint.address().to_string();
     // TODO: async log.
-    SPDLOG_DEBUG("connection from {}", src_conn_info.address);
+    SPDLOG_INFO("connection from {}", src_conn_info.address);
     if (!azugate::Filter(sock_ptr, src_conn_info)) {
-      SPDLOG_WARN("failed to pass filter");
       safeCloseSocket(sock_ptr);
       accept();
       return;
@@ -159,17 +158,6 @@ int main() {
   // token secret.
   g_authorization_token_secret = utils::GenerateSecret();
 
-  // setup ssl connection.
-  ssl::context ssl_context(ssl::context::sslv23_server);
-  try {
-    // TODO: file format.
-    ssl_context.use_certificate_chain_file(std::string(g_ssl_crt));
-    ssl_context.use_private_key_file(std::string(g_ssl_key), ssl::context::pem);
-  } catch (const std::exception &e) {
-    SPDLOG_ERROR("failed to setup ssl context: {}", e.what());
-    return 1;
-  }
-
   // setup grpc server.
   std::thread grpc_server_thread([&]() {
     grpc::ServerBuilder server_builder;
@@ -190,10 +178,10 @@ int main() {
   SPDLOG_INFO("azugate is listening on port {}", g_azugate_port);
 
   // TODO: for testing purpose.
-  azugate::AddRouterMapping(
-      ConnectionInfo{.type = ProtocolTypeTcp, .address = "127.0.0.1"},
-      ConnectionInfo{
-          .type = ProtocolTypeTcp, .address = "127.0.0.1", .port = 6080});
+  // azugate::AddRouterMapping(
+  //     ConnectionInfo{.type = ProtocolTypeTcp, .address = "127.0.0.1"},
+  //     ConnectionInfo{
+  //         .type = ProtocolTypeTcp, .address = "127.0.0.1", .port = 6080});
 
   // setup rate limiter.
 

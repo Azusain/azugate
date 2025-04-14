@@ -10,6 +10,7 @@
 #include <cstddef>
 #include <spdlog/spdlog.h>
 
+#include "config.h"
 #include "rate_limiter.h"
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/steady_timer.hpp>
@@ -23,8 +24,10 @@ TokenBucketRateLimiter::TokenBucketRateLimiter(
     const boost::shared_ptr<boost::asio::io_context> io_context_ptr)
     : io_context_ptr_(io_context_ptr),
       timer_(*io_context_ptr,
-             boost::asio::chrono::seconds(kDftTokenGenIntervalSec)),
-      n_token_(kMaxTokenNum) {};
+             boost::asio::chrono::seconds(kDftTokenGenIntervalSec)) {
+  auto [num_token_max, _] = GetRateLimitorConfig();
+  n_token_ = num_token_max;
+};
 
 // TODO: memory order.
 bool TokenBucketRateLimiter::GetToken() {
@@ -37,9 +40,12 @@ bool TokenBucketRateLimiter::GetToken() {
 }
 
 void TokenBucketRateLimiter::performTask() {
-  size_t new_token_num = n_token_.load() + kTokenGenNum;
-  if (new_token_num > kMaxTokenNum) {
-    new_token_num = kMaxTokenNum;
+  // TODO: low performance.
+  auto [num_token_max, num_token_per_sec] = GetRateLimitorConfig();
+
+  size_t new_token_num = n_token_.load() + num_token_per_sec;
+  if (new_token_num > num_token_max) {
+    new_token_num = num_token_max;
   }
   n_token_.store(new_token_num);
   // TODO: rm this line.

@@ -1,4 +1,4 @@
-#include "config.h"
+#include "../../include/config.h"
 #include "protocols.h"
 #include <cstddef>
 #include <cstdint>
@@ -31,10 +31,9 @@ uint16_t g_azugate_admin_port = 50051;
 std::string g_path_config_file;
 std::unordered_set<std::string> g_ip_blacklist;
 bool g_enable_http_compression = false;
-bool g_enable_https = true;
+bool g_enable_https = false;
 bool g_management_system_authentication = false;
 bool g_http_external_authorization = false;
-bool g_enable_rate_limiter = false;
 std::string g_external_oauth_server_domain = "localhost";
 std::string g_external_oauth_server_path = "/";
 std::string g_azugate_domain = "localhost";
@@ -53,7 +52,11 @@ std::string g_authorization_token_secret;
 // TODO: configured in config.yaml.
 std::string g_azugate_oauth_client_id;
 std::string g_azugate_oauth_client_secret;
-// mics
+// rate limitor
+bool g_enable_rate_limiter = false;
+size_t g_num_token_per_sec = 100;
+size_t g_num_token_max = 1000;
+// io
 size_t g_num_threads = 1;
 
 std::string GetConfigPath() {
@@ -94,6 +97,25 @@ void SetHttpCompression(bool http_compression) {
 void SetHttps(bool https) { g_enable_https = https; }
 
 bool GetHttps() { return g_enable_https; }
+
+void SetEnableRateLimitor(bool enable) { g_enable_rate_limiter = enable; };
+bool GetEnableRateLimitor() { return g_enable_rate_limiter; };
+
+void ConfigRateLimitor(size_t num_token_max, size_t num_token_per_sec) {
+  std::lock_guard<std::mutex> lock(g_config_mutex);
+  if (num_token_max > 0) {
+    g_num_token_max = num_token_max;
+  }
+  if (num_token_per_sec > 0) {
+    g_num_token_per_sec = num_token_per_sec;
+  }
+}
+
+// return g_num_token_max and g_num_token_per_sec.
+std::pair<size_t, size_t> GetRateLimitorConfig() {
+  std::lock_guard<std::mutex> lock(g_config_mutex);
+  return std::pair<size_t, size_t>(g_num_token_max, g_num_token_per_sec);
+}
 
 void AddRouterMapping(ConnectionInfo &&source, ConnectionInfo &&target) {
   std::lock_guard<std::mutex> lock(g_config_mutex);

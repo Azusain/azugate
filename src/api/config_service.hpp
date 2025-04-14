@@ -19,10 +19,15 @@ public:
   ConfigServiceImpl() = default;
   virtual ~ConfigServiceImpl() override {};
 
-  virtual grpc::Status GetConfig(grpc::ServerContext *ctx,
-                                 const api::v1::GetConfigRequest *req,
-                                 api::v1::GetConfigResponse *resp) override {
-    resp->set_http_compression(azugate::GetHttpCompression());
+  virtual grpc::Status
+  GetConfig(grpc::ServerContext *ctx, const api::v1::GetConfigRequest *request,
+            api::v1::GetConfigResponse *response) override {
+    response->set_http_compression(azugate::GetHttpCompression());
+    response->set_https(azugate::GetHttps());
+    response->set_enable_rate_limitor(azugate::GetEnableRateLimitor());
+    auto [num_token_max, num_token_per_sec] = azugate::GetRateLimitorConfig();
+    response->set_num_token_max(num_token_max);
+    response->set_num_token_per_sec(num_token_per_sec);
     return grpc::Status::OK;
   }
 
@@ -47,9 +52,22 @@ public:
       if (!path.compare("https")) {
         azugate::SetHttps(request->https());
       }
+      if (!path.compare("enable_rate_limitor")) {
+        azugate::SetEnableRateLimitor(request->enable_rate_limitor());
+      }
+      if (!path.compare("num_token_per_sec")) {
+        azugate::ConfigRateLimitor(0, request->num_token_per_sec());
+      }
+      if (!path.compare("num_token_max")) {
+        azugate::ConfigRateLimitor(request->num_token_max(), 0);
+      }
     }
     response->set_http_compression(azugate::GetHttpCompression());
     response->set_https(azugate::GetHttps());
+    response->set_enable_rate_limitor(azugate::GetEnableRateLimitor());
+    auto [num_token_max, num_token_per_sec] = azugate::GetRateLimitorConfig();
+    response->set_num_token_max(num_token_max);
+    response->set_num_token_per_sec(num_token_per_sec);
     return grpc::Status::OK;
   }
 
@@ -83,6 +101,14 @@ public:
     }
     return grpc::Status::OK;
   };
+
+  virtual grpc::Status
+  ConfigRouter(::grpc::ServerContext *context,
+               const ::api::v1::ConfigRouterRequest *request,
+               ::api::v1::ConfigRouterResponse *response) override {
+    response->set_message("success");
+    return grpc::Status::OK;
+  }
 };
 
 #endif

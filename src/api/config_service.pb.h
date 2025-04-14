@@ -54,6 +54,12 @@ extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_config_5fservice_2eproto;
 namespace api {
 namespace v1 {
+class ConfigRouterRequest;
+struct ConfigRouterRequestDefaultTypeInternal;
+extern ConfigRouterRequestDefaultTypeInternal _ConfigRouterRequest_default_instance_;
+class ConfigRouterResponse;
+struct ConfigRouterResponseDefaultTypeInternal;
+extern ConfigRouterResponseDefaultTypeInternal _ConfigRouterResponse_default_instance_;
 class GetConfigRequest;
 struct GetConfigRequestDefaultTypeInternal;
 extern GetConfigRequestDefaultTypeInternal _GetConfigRequest_default_instance_;
@@ -66,6 +72,9 @@ extern GetIpBlackListRequestDefaultTypeInternal _GetIpBlackListRequest_default_i
 class GetIpBlackListResponse;
 struct GetIpBlackListResponseDefaultTypeInternal;
 extern GetIpBlackListResponseDefaultTypeInternal _GetIpBlackListResponse_default_instance_;
+class RouterConfig;
+struct RouterConfigDefaultTypeInternal;
+extern RouterConfigDefaultTypeInternal _RouterConfig_default_instance_;
 class UpdateConfigRequest;
 struct UpdateConfigRequestDefaultTypeInternal;
 extern UpdateConfigRequestDefaultTypeInternal _UpdateConfigRequest_default_instance_;
@@ -645,6 +654,9 @@ class UpdateConfigResponse final : public ::google::protobuf::Message
   enum : int {
     kHttpCompressionFieldNumber = 1,
     kHttpsFieldNumber = 2,
+    kEnableRateLimitorFieldNumber = 3,
+    kNumTokenMaxFieldNumber = 4,
+    kNumTokenPerSecFieldNumber = 5,
   };
   // bool http_compression = 1 [json_name = "httpCompression"];
   void clear_http_compression() ;
@@ -666,12 +678,42 @@ class UpdateConfigResponse final : public ::google::protobuf::Message
   void _internal_set_https(bool value);
 
   public:
+  // bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+  void clear_enable_rate_limitor() ;
+  bool enable_rate_limitor() const;
+  void set_enable_rate_limitor(bool value);
+
+  private:
+  bool _internal_enable_rate_limitor() const;
+  void _internal_set_enable_rate_limitor(bool value);
+
+  public:
+  // uint32 num_token_max = 4 [json_name = "numTokenMax"];
+  void clear_num_token_max() ;
+  ::uint32_t num_token_max() const;
+  void set_num_token_max(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_num_token_max() const;
+  void _internal_set_num_token_max(::uint32_t value);
+
+  public:
+  // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+  void clear_num_token_per_sec() ;
+  ::uint32_t num_token_per_sec() const;
+  void set_num_token_per_sec(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_num_token_per_sec() const;
+  void _internal_set_num_token_per_sec(::uint32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:api.v1.UpdateConfigResponse)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 0,
+      3, 5, 0,
       0, 2>
       _table_;
 
@@ -694,6 +736,9 @@ class UpdateConfigResponse final : public ::google::protobuf::Message
                           const UpdateConfigResponse& from_msg);
     bool http_compression_;
     bool https_;
+    bool enable_rate_limitor_;
+    ::uint32_t num_token_max_;
+    ::uint32_t num_token_per_sec_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -846,6 +891,9 @@ class UpdateConfigRequest final : public ::google::protobuf::Message
     kPathFieldNumber = 1,
     kHttpCompressionFieldNumber = 2,
     kHttpsFieldNumber = 3,
+    kEnableRateLimitorFieldNumber = 4,
+    kNumTokenMaxFieldNumber = 5,
+    kNumTokenPerSecFieldNumber = 6,
   };
   // repeated string path = 1 [json_name = "path"];
   int path_size() const;
@@ -889,12 +937,42 @@ class UpdateConfigRequest final : public ::google::protobuf::Message
   void _internal_set_https(bool value);
 
   public:
+  // bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
+  void clear_enable_rate_limitor() ;
+  bool enable_rate_limitor() const;
+  void set_enable_rate_limitor(bool value);
+
+  private:
+  bool _internal_enable_rate_limitor() const;
+  void _internal_set_enable_rate_limitor(bool value);
+
+  public:
+  // uint32 num_token_max = 5 [json_name = "numTokenMax"];
+  void clear_num_token_max() ;
+  ::uint32_t num_token_max() const;
+  void set_num_token_max(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_num_token_max() const;
+  void _internal_set_num_token_max(::uint32_t value);
+
+  public:
+  // uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
+  void clear_num_token_per_sec() ;
+  ::uint32_t num_token_per_sec() const;
+  void set_num_token_per_sec(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_num_token_per_sec() const;
+  void _internal_set_num_token_per_sec(::uint32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:api.v1.UpdateConfigRequest)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 0,
+      3, 6, 0,
       39, 2>
       _table_;
 
@@ -918,6 +996,239 @@ class UpdateConfigRequest final : public ::google::protobuf::Message
     ::google::protobuf::RepeatedPtrField<std::string> path_;
     bool http_compression_;
     bool https_;
+    bool enable_rate_limitor_;
+    ::uint32_t num_token_max_;
+    ::uint32_t num_token_per_sec_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_config_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RouterConfig final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:api.v1.RouterConfig) */ {
+ public:
+  inline RouterConfig() : RouterConfig(nullptr) {}
+  ~RouterConfig() PROTOBUF_FINAL;
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RouterConfig(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RouterConfig(const RouterConfig& from) : RouterConfig(nullptr, from) {}
+  inline RouterConfig(RouterConfig&& from) noexcept
+      : RouterConfig(nullptr, std::move(from)) {}
+  inline RouterConfig& operator=(const RouterConfig& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RouterConfig& operator=(RouterConfig&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+#ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+#endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RouterConfig& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RouterConfig* internal_default_instance() {
+    return reinterpret_cast<const RouterConfig*>(
+        &_RouterConfig_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 9;
+  friend void swap(RouterConfig& a, RouterConfig& b) { a.Swap(&b); }
+  inline void Swap(RouterConfig* other) {
+    if (other == this) return;
+#ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr && GetArena() == other->GetArena()) {
+#else   // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+#endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RouterConfig* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RouterConfig* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<RouterConfig>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RouterConfig& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RouterConfig& from) { RouterConfig::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(RouterConfig* other);
+ private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() { return "api.v1.RouterConfig"; }
+
+ protected:
+  explicit RouterConfig(::google::protobuf::Arena* arena);
+  RouterConfig(::google::protobuf::Arena* arena, const RouterConfig& from);
+  RouterConfig(::google::protobuf::Arena* arena, RouterConfig&& from) noexcept
+      : RouterConfig(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static const ::google::protobuf::Message::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMethodFieldNumber = 1,
+    kSourceFieldNumber = 2,
+    kDestinationFieldNumber = 3,
+  };
+  // string method = 1 [json_name = "method"];
+  void clear_method() ;
+  const std::string& method() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_method(Arg_&& arg, Args_... args);
+  std::string* mutable_method();
+  PROTOBUF_NODISCARD std::string* release_method();
+  void set_allocated_method(std::string* value);
+
+  private:
+  const std::string& _internal_method() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_method(
+      const std::string& value);
+  std::string* _internal_mutable_method();
+
+  public:
+  // string source = 2 [json_name = "source"];
+  void clear_source() ;
+  const std::string& source() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_source(Arg_&& arg, Args_... args);
+  std::string* mutable_source();
+  PROTOBUF_NODISCARD std::string* release_source();
+  void set_allocated_source(std::string* value);
+
+  private:
+  const std::string& _internal_source() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_source(
+      const std::string& value);
+  std::string* _internal_mutable_source();
+
+  public:
+  // string destination = 3 [json_name = "destination"];
+  void clear_destination() ;
+  const std::string& destination() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_destination(Arg_&& arg, Args_... args);
+  std::string* mutable_destination();
+  PROTOBUF_NODISCARD std::string* release_destination();
+  void set_allocated_destination(std::string* value);
+
+  private:
+  const std::string& _internal_destination() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_destination(
+      const std::string& value);
+  std::string* _internal_mutable_destination();
+
+  public:
+  // @@protoc_insertion_point(class_scope:api.v1.RouterConfig)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 3, 0,
+      51, 2>
+      _table_;
+
+  static constexpr const void* _raw_default_instance_ =
+      &_RouterConfig_default_instance_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RouterConfig& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr method_;
+    ::google::protobuf::internal::ArenaStringPtr source_;
+    ::google::protobuf::internal::ArenaStringPtr destination_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -1411,6 +1722,10 @@ class GetConfigResponse final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kHttpCompressionFieldNumber = 1,
+    kHttpsFieldNumber = 2,
+    kEnableRateLimitorFieldNumber = 3,
+    kNumTokenMaxFieldNumber = 4,
+    kNumTokenPerSecFieldNumber = 5,
   };
   // bool http_compression = 1 [json_name = "httpCompression"];
   void clear_http_compression() ;
@@ -1422,12 +1737,52 @@ class GetConfigResponse final : public ::google::protobuf::Message
   void _internal_set_http_compression(bool value);
 
   public:
+  // bool https = 2 [json_name = "https"];
+  void clear_https() ;
+  bool https() const;
+  void set_https(bool value);
+
+  private:
+  bool _internal_https() const;
+  void _internal_set_https(bool value);
+
+  public:
+  // bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+  void clear_enable_rate_limitor() ;
+  bool enable_rate_limitor() const;
+  void set_enable_rate_limitor(bool value);
+
+  private:
+  bool _internal_enable_rate_limitor() const;
+  void _internal_set_enable_rate_limitor(bool value);
+
+  public:
+  // uint32 num_token_max = 4 [json_name = "numTokenMax"];
+  void clear_num_token_max() ;
+  ::uint32_t num_token_max() const;
+  void set_num_token_max(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_num_token_max() const;
+  void _internal_set_num_token_max(::uint32_t value);
+
+  public:
+  // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+  void clear_num_token_per_sec() ;
+  ::uint32_t num_token_per_sec() const;
+  void set_num_token_per_sec(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_num_token_per_sec() const;
+  void _internal_set_num_token_per_sec(::uint32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:api.v1.GetConfigResponse)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
+      3, 5, 0,
       0, 2>
       _table_;
 
@@ -1449,6 +1804,10 @@ class GetConfigResponse final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const GetConfigResponse& from_msg);
     bool http_compression_;
+    bool https_;
+    bool enable_rate_limitor_;
+    ::uint32_t num_token_max_;
+    ::uint32_t num_token_per_sec_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -1598,6 +1957,395 @@ class GetConfigRequest final : public ::google::protobuf::internal::ZeroFieldsBa
   };
   friend struct ::TableStruct_config_5fservice_2eproto;
 };
+// -------------------------------------------------------------------
+
+class ConfigRouterResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:api.v1.ConfigRouterResponse) */ {
+ public:
+  inline ConfigRouterResponse() : ConfigRouterResponse(nullptr) {}
+  ~ConfigRouterResponse() PROTOBUF_FINAL;
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ConfigRouterResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline ConfigRouterResponse(const ConfigRouterResponse& from) : ConfigRouterResponse(nullptr, from) {}
+  inline ConfigRouterResponse(ConfigRouterResponse&& from) noexcept
+      : ConfigRouterResponse(nullptr, std::move(from)) {}
+  inline ConfigRouterResponse& operator=(const ConfigRouterResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ConfigRouterResponse& operator=(ConfigRouterResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+#ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+#endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ConfigRouterResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ConfigRouterResponse* internal_default_instance() {
+    return reinterpret_cast<const ConfigRouterResponse*>(
+        &_ConfigRouterResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 10;
+  friend void swap(ConfigRouterResponse& a, ConfigRouterResponse& b) { a.Swap(&b); }
+  inline void Swap(ConfigRouterResponse* other) {
+    if (other == this) return;
+#ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr && GetArena() == other->GetArena()) {
+#else   // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+#endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ConfigRouterResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ConfigRouterResponse* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<ConfigRouterResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ConfigRouterResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ConfigRouterResponse& from) { ConfigRouterResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(ConfigRouterResponse* other);
+ private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() { return "api.v1.ConfigRouterResponse"; }
+
+ protected:
+  explicit ConfigRouterResponse(::google::protobuf::Arena* arena);
+  ConfigRouterResponse(::google::protobuf::Arena* arena, const ConfigRouterResponse& from);
+  ConfigRouterResponse(::google::protobuf::Arena* arena, ConfigRouterResponse&& from) noexcept
+      : ConfigRouterResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static const ::google::protobuf::Message::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMessageFieldNumber = 1,
+  };
+  // string message = 1 [json_name = "message"];
+  void clear_message() ;
+  const std::string& message() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_message(Arg_&& arg, Args_... args);
+  std::string* mutable_message();
+  PROTOBUF_NODISCARD std::string* release_message();
+  void set_allocated_message(std::string* value);
+
+  private:
+  const std::string& _internal_message() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_message(
+      const std::string& value);
+  std::string* _internal_mutable_message();
+
+  public:
+  // @@protoc_insertion_point(class_scope:api.v1.ConfigRouterResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      43, 2>
+      _table_;
+
+  static constexpr const void* _raw_default_instance_ =
+      &_ConfigRouterResponse_default_instance_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ConfigRouterResponse& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr message_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_config_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ConfigRouterRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:api.v1.ConfigRouterRequest) */ {
+ public:
+  inline ConfigRouterRequest() : ConfigRouterRequest(nullptr) {}
+  ~ConfigRouterRequest() PROTOBUF_FINAL;
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ConfigRouterRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline ConfigRouterRequest(const ConfigRouterRequest& from) : ConfigRouterRequest(nullptr, from) {}
+  inline ConfigRouterRequest(ConfigRouterRequest&& from) noexcept
+      : ConfigRouterRequest(nullptr, std::move(from)) {}
+  inline ConfigRouterRequest& operator=(const ConfigRouterRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ConfigRouterRequest& operator=(ConfigRouterRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+#ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+#endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ConfigRouterRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ConfigRouterRequest* internal_default_instance() {
+    return reinterpret_cast<const ConfigRouterRequest*>(
+        &_ConfigRouterRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 8;
+  friend void swap(ConfigRouterRequest& a, ConfigRouterRequest& b) { a.Swap(&b); }
+  inline void Swap(ConfigRouterRequest* other) {
+    if (other == this) return;
+#ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr && GetArena() == other->GetArena()) {
+#else   // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+#endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ConfigRouterRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ConfigRouterRequest* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<ConfigRouterRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ConfigRouterRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ConfigRouterRequest& from) { ConfigRouterRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(ConfigRouterRequest* other);
+ private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() { return "api.v1.ConfigRouterRequest"; }
+
+ protected:
+  explicit ConfigRouterRequest(::google::protobuf::Arena* arena);
+  ConfigRouterRequest(::google::protobuf::Arena* arena, const ConfigRouterRequest& from);
+  ConfigRouterRequest(::google::protobuf::Arena* arena, ConfigRouterRequest&& from) noexcept
+      : ConfigRouterRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static const ::google::protobuf::Message::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRoutersFieldNumber = 1,
+  };
+  // repeated .api.v1.RouterConfig routers = 1 [json_name = "routers"];
+  int routers_size() const;
+  private:
+  int _internal_routers_size() const;
+
+  public:
+  void clear_routers() ;
+  ::api::v1::RouterConfig* mutable_routers(int index);
+  ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>* mutable_routers();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>& _internal_routers() const;
+  ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>* _internal_mutable_routers();
+  public:
+  const ::api::v1::RouterConfig& routers(int index) const;
+  ::api::v1::RouterConfig* add_routers();
+  const ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>& routers() const;
+  // @@protoc_insertion_point(class_scope:api.v1.ConfigRouterRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  static constexpr const void* _raw_default_instance_ =
+      &_ConfigRouterRequest_default_instance_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ConfigRouterRequest& from_msg);
+    ::google::protobuf::RepeatedPtrField< ::api::v1::RouterConfig > routers_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_config_5fservice_2eproto;
+};
 
 // ===================================================================
 
@@ -1639,6 +2387,94 @@ inline bool GetConfigResponse::_internal_http_compression() const {
 inline void GetConfigResponse::_internal_set_http_compression(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.http_compression_ = value;
+}
+
+// bool https = 2 [json_name = "https"];
+inline void GetConfigResponse::clear_https() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.https_ = false;
+}
+inline bool GetConfigResponse::https() const {
+  // @@protoc_insertion_point(field_get:api.v1.GetConfigResponse.https)
+  return _internal_https();
+}
+inline void GetConfigResponse::set_https(bool value) {
+  _internal_set_https(value);
+  // @@protoc_insertion_point(field_set:api.v1.GetConfigResponse.https)
+}
+inline bool GetConfigResponse::_internal_https() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.https_;
+}
+inline void GetConfigResponse::_internal_set_https(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.https_ = value;
+}
+
+// bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+inline void GetConfigResponse::clear_enable_rate_limitor() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_rate_limitor_ = false;
+}
+inline bool GetConfigResponse::enable_rate_limitor() const {
+  // @@protoc_insertion_point(field_get:api.v1.GetConfigResponse.enable_rate_limitor)
+  return _internal_enable_rate_limitor();
+}
+inline void GetConfigResponse::set_enable_rate_limitor(bool value) {
+  _internal_set_enable_rate_limitor(value);
+  // @@protoc_insertion_point(field_set:api.v1.GetConfigResponse.enable_rate_limitor)
+}
+inline bool GetConfigResponse::_internal_enable_rate_limitor() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_rate_limitor_;
+}
+inline void GetConfigResponse::_internal_set_enable_rate_limitor(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_rate_limitor_ = value;
+}
+
+// uint32 num_token_max = 4 [json_name = "numTokenMax"];
+inline void GetConfigResponse::clear_num_token_max() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_max_ = 0u;
+}
+inline ::uint32_t GetConfigResponse::num_token_max() const {
+  // @@protoc_insertion_point(field_get:api.v1.GetConfigResponse.num_token_max)
+  return _internal_num_token_max();
+}
+inline void GetConfigResponse::set_num_token_max(::uint32_t value) {
+  _internal_set_num_token_max(value);
+  // @@protoc_insertion_point(field_set:api.v1.GetConfigResponse.num_token_max)
+}
+inline ::uint32_t GetConfigResponse::_internal_num_token_max() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.num_token_max_;
+}
+inline void GetConfigResponse::_internal_set_num_token_max(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_max_ = value;
+}
+
+// uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+inline void GetConfigResponse::clear_num_token_per_sec() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_per_sec_ = 0u;
+}
+inline ::uint32_t GetConfigResponse::num_token_per_sec() const {
+  // @@protoc_insertion_point(field_get:api.v1.GetConfigResponse.num_token_per_sec)
+  return _internal_num_token_per_sec();
+}
+inline void GetConfigResponse::set_num_token_per_sec(::uint32_t value) {
+  _internal_set_num_token_per_sec(value);
+  // @@protoc_insertion_point(field_set:api.v1.GetConfigResponse.num_token_per_sec)
+}
+inline ::uint32_t GetConfigResponse::_internal_num_token_per_sec() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.num_token_per_sec_;
+}
+inline void GetConfigResponse::_internal_set_num_token_per_sec(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_per_sec_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -1753,6 +2589,72 @@ inline void UpdateConfigRequest::_internal_set_https(bool value) {
   _impl_.https_ = value;
 }
 
+// bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
+inline void UpdateConfigRequest::clear_enable_rate_limitor() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_rate_limitor_ = false;
+}
+inline bool UpdateConfigRequest::enable_rate_limitor() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigRequest.enable_rate_limitor)
+  return _internal_enable_rate_limitor();
+}
+inline void UpdateConfigRequest::set_enable_rate_limitor(bool value) {
+  _internal_set_enable_rate_limitor(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigRequest.enable_rate_limitor)
+}
+inline bool UpdateConfigRequest::_internal_enable_rate_limitor() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_rate_limitor_;
+}
+inline void UpdateConfigRequest::_internal_set_enable_rate_limitor(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_rate_limitor_ = value;
+}
+
+// uint32 num_token_max = 5 [json_name = "numTokenMax"];
+inline void UpdateConfigRequest::clear_num_token_max() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_max_ = 0u;
+}
+inline ::uint32_t UpdateConfigRequest::num_token_max() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigRequest.num_token_max)
+  return _internal_num_token_max();
+}
+inline void UpdateConfigRequest::set_num_token_max(::uint32_t value) {
+  _internal_set_num_token_max(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigRequest.num_token_max)
+}
+inline ::uint32_t UpdateConfigRequest::_internal_num_token_max() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.num_token_max_;
+}
+inline void UpdateConfigRequest::_internal_set_num_token_max(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_max_ = value;
+}
+
+// uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
+inline void UpdateConfigRequest::clear_num_token_per_sec() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_per_sec_ = 0u;
+}
+inline ::uint32_t UpdateConfigRequest::num_token_per_sec() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigRequest.num_token_per_sec)
+  return _internal_num_token_per_sec();
+}
+inline void UpdateConfigRequest::set_num_token_per_sec(::uint32_t value) {
+  _internal_set_num_token_per_sec(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigRequest.num_token_per_sec)
+}
+inline ::uint32_t UpdateConfigRequest::_internal_num_token_per_sec() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.num_token_per_sec_;
+}
+inline void UpdateConfigRequest::_internal_set_num_token_per_sec(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_per_sec_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // UpdateConfigResponse
@@ -1799,6 +2701,72 @@ inline bool UpdateConfigResponse::_internal_https() const {
 inline void UpdateConfigResponse::_internal_set_https(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.https_ = value;
+}
+
+// bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
+inline void UpdateConfigResponse::clear_enable_rate_limitor() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_rate_limitor_ = false;
+}
+inline bool UpdateConfigResponse::enable_rate_limitor() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigResponse.enable_rate_limitor)
+  return _internal_enable_rate_limitor();
+}
+inline void UpdateConfigResponse::set_enable_rate_limitor(bool value) {
+  _internal_set_enable_rate_limitor(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigResponse.enable_rate_limitor)
+}
+inline bool UpdateConfigResponse::_internal_enable_rate_limitor() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_rate_limitor_;
+}
+inline void UpdateConfigResponse::_internal_set_enable_rate_limitor(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_rate_limitor_ = value;
+}
+
+// uint32 num_token_max = 4 [json_name = "numTokenMax"];
+inline void UpdateConfigResponse::clear_num_token_max() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_max_ = 0u;
+}
+inline ::uint32_t UpdateConfigResponse::num_token_max() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigResponse.num_token_max)
+  return _internal_num_token_max();
+}
+inline void UpdateConfigResponse::set_num_token_max(::uint32_t value) {
+  _internal_set_num_token_max(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigResponse.num_token_max)
+}
+inline ::uint32_t UpdateConfigResponse::_internal_num_token_max() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.num_token_max_;
+}
+inline void UpdateConfigResponse::_internal_set_num_token_max(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_max_ = value;
+}
+
+// uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
+inline void UpdateConfigResponse::clear_num_token_per_sec() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_per_sec_ = 0u;
+}
+inline ::uint32_t UpdateConfigResponse::num_token_per_sec() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigResponse.num_token_per_sec)
+  return _internal_num_token_per_sec();
+}
+inline void UpdateConfigResponse::set_num_token_per_sec(::uint32_t value) {
+  _internal_set_num_token_per_sec(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigResponse.num_token_per_sec)
+}
+inline ::uint32_t UpdateConfigResponse::_internal_num_token_per_sec() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.num_token_per_sec_;
+}
+inline void UpdateConfigResponse::_internal_set_num_token_per_sec(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.num_token_per_sec_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -1966,6 +2934,267 @@ UpdateIpBlackListRequest::_internal_mutable_ip_list() {
 // -------------------------------------------------------------------
 
 // UpdateIpBlackListResponse
+
+// -------------------------------------------------------------------
+
+// ConfigRouterRequest
+
+// repeated .api.v1.RouterConfig routers = 1 [json_name = "routers"];
+inline int ConfigRouterRequest::_internal_routers_size() const {
+  return _internal_routers().size();
+}
+inline int ConfigRouterRequest::routers_size() const {
+  return _internal_routers_size();
+}
+inline void ConfigRouterRequest::clear_routers() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.routers_.Clear();
+}
+inline ::api::v1::RouterConfig* ConfigRouterRequest::mutable_routers(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:api.v1.ConfigRouterRequest.routers)
+  return _internal_mutable_routers()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>* ConfigRouterRequest::mutable_routers()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:api.v1.ConfigRouterRequest.routers)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_routers();
+}
+inline const ::api::v1::RouterConfig& ConfigRouterRequest::routers(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.ConfigRouterRequest.routers)
+  return _internal_routers().Get(index);
+}
+inline ::api::v1::RouterConfig* ConfigRouterRequest::add_routers() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::api::v1::RouterConfig* _add = _internal_mutable_routers()->Add();
+  // @@protoc_insertion_point(field_add:api.v1.ConfigRouterRequest.routers)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>& ConfigRouterRequest::routers() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:api.v1.ConfigRouterRequest.routers)
+  return _internal_routers();
+}
+inline const ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>&
+ConfigRouterRequest::_internal_routers() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.routers_;
+}
+inline ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>*
+ConfigRouterRequest::_internal_mutable_routers() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.routers_;
+}
+
+// -------------------------------------------------------------------
+
+// RouterConfig
+
+// string method = 1 [json_name = "method"];
+inline void RouterConfig::clear_method() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.method_.ClearToEmpty();
+}
+inline const std::string& RouterConfig::method() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.RouterConfig.method)
+  return _internal_method();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void RouterConfig::set_method(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.method_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.v1.RouterConfig.method)
+}
+inline std::string* RouterConfig::mutable_method() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_method();
+  // @@protoc_insertion_point(field_mutable:api.v1.RouterConfig.method)
+  return _s;
+}
+inline const std::string& RouterConfig::_internal_method() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.method_.Get();
+}
+inline void RouterConfig::_internal_set_method(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.method_.Set(value, GetArena());
+}
+inline std::string* RouterConfig::_internal_mutable_method() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.method_.Mutable( GetArena());
+}
+inline std::string* RouterConfig::release_method() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:api.v1.RouterConfig.method)
+  return _impl_.method_.Release();
+}
+inline void RouterConfig::set_allocated_method(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.method_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.method_.IsDefault()) {
+          _impl_.method_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:api.v1.RouterConfig.method)
+}
+
+// string source = 2 [json_name = "source"];
+inline void RouterConfig::clear_source() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_.ClearToEmpty();
+}
+inline const std::string& RouterConfig::source() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.RouterConfig.source)
+  return _internal_source();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void RouterConfig::set_source(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.v1.RouterConfig.source)
+}
+inline std::string* RouterConfig::mutable_source() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_source();
+  // @@protoc_insertion_point(field_mutable:api.v1.RouterConfig.source)
+  return _s;
+}
+inline const std::string& RouterConfig::_internal_source() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_.Get();
+}
+inline void RouterConfig::_internal_set_source(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_.Set(value, GetArena());
+}
+inline std::string* RouterConfig::_internal_mutable_source() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.source_.Mutable( GetArena());
+}
+inline std::string* RouterConfig::release_source() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:api.v1.RouterConfig.source)
+  return _impl_.source_.Release();
+}
+inline void RouterConfig::set_allocated_source(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.source_.IsDefault()) {
+          _impl_.source_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:api.v1.RouterConfig.source)
+}
+
+// string destination = 3 [json_name = "destination"];
+inline void RouterConfig::clear_destination() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.destination_.ClearToEmpty();
+}
+inline const std::string& RouterConfig::destination() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.RouterConfig.destination)
+  return _internal_destination();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void RouterConfig::set_destination(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.destination_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.v1.RouterConfig.destination)
+}
+inline std::string* RouterConfig::mutable_destination() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_destination();
+  // @@protoc_insertion_point(field_mutable:api.v1.RouterConfig.destination)
+  return _s;
+}
+inline const std::string& RouterConfig::_internal_destination() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.destination_.Get();
+}
+inline void RouterConfig::_internal_set_destination(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.destination_.Set(value, GetArena());
+}
+inline std::string* RouterConfig::_internal_mutable_destination() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.destination_.Mutable( GetArena());
+}
+inline std::string* RouterConfig::release_destination() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:api.v1.RouterConfig.destination)
+  return _impl_.destination_.Release();
+}
+inline void RouterConfig::set_allocated_destination(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.destination_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.destination_.IsDefault()) {
+          _impl_.destination_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:api.v1.RouterConfig.destination)
+}
+
+// -------------------------------------------------------------------
+
+// ConfigRouterResponse
+
+// string message = 1 [json_name = "message"];
+inline void ConfigRouterResponse::clear_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.ClearToEmpty();
+}
+inline const std::string& ConfigRouterResponse::message() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.ConfigRouterResponse.message)
+  return _internal_message();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void ConfigRouterResponse::set_message(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.v1.ConfigRouterResponse.message)
+}
+inline std::string* ConfigRouterResponse::mutable_message() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_message();
+  // @@protoc_insertion_point(field_mutable:api.v1.ConfigRouterResponse.message)
+  return _s;
+}
+inline const std::string& ConfigRouterResponse::_internal_message() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.message_.Get();
+}
+inline void ConfigRouterResponse::_internal_set_message(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.Set(value, GetArena());
+}
+inline std::string* ConfigRouterResponse::_internal_mutable_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.message_.Mutable( GetArena());
+}
+inline std::string* ConfigRouterResponse::release_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:api.v1.ConfigRouterResponse.message)
+  return _impl_.message_.Release();
+}
+inline void ConfigRouterResponse::set_allocated_message(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.message_.IsDefault()) {
+          _impl_.message_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:api.v1.ConfigRouterResponse.message)
+}
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
