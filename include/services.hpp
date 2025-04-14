@@ -409,28 +409,11 @@ public:
       async_accpet_cb_();
       return;
     }
-
-    // if constexpr (std::is_same_v<T, boost::asio::ssl::stream<
-    //                                     boost::asio::ip::tcp::socket>>) {
-    //   boost::system::error_code ec;
-    //   std::size_t bytes_read = sock_ptr_->read_some(
-    //       boost::asio::buffer(request_.header_buf + total_parsed_,
-    //                           azugate::kMaxHttpHeaderSize - total_parsed_),
-    //       ec);
-    //   if (ec) {
-    //     SPDLOG_WARN("SSL read error: {}", ec.message());
-    //     async_accpet_cb_();
-    //     return;
-    //   }
-    //   HttpProxyHandler<T>::onRead(ec, bytes_read);
-    // } else {
-    // 非 SSL 流使用异步的 async_read_some
     sock_ptr_->async_read_some(
         boost::asio::buffer(request_.header_buf + total_parsed_,
                             azugate::kMaxHttpHeaderSize - total_parsed_),
         std::bind(&HttpProxyHandler<T>::onRead, this->shared_from_this(),
                   std::placeholders::_1, std::placeholders::_2));
-    // }
   }
 
   inline void extractMetadata() {
