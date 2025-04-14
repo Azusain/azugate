@@ -68,6 +68,8 @@ public:
     auto [num_token_max, num_token_per_sec] = azugate::GetRateLimitorConfig();
     response->set_num_token_max(num_token_max);
     response->set_num_token_per_sec(num_token_per_sec);
+    // TODO: remove this.
+    response->set_enable_external_auth(true);
     return grpc::Status::OK;
   }
 

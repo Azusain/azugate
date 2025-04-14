@@ -23,6 +23,7 @@
 #include <boost/system/detail/error_code.hpp>
 #include <boost/thread.hpp>
 #include <boost/thread/detail/thread.hpp>
+#include <chrono>
 #include <cstddef>
 #include <cstdlib>
 

@@ -59,6 +59,7 @@ message UpdateConfigResponse {
   bool enable_rate_limitor = 3;
   uint32 num_token_max = 4;
   uint32 num_token_per_sec = 5;
+  bool enable_external_auth = 6;
 }
 
 message GetIpBlackListRequest {}

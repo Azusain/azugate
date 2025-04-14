@@ -1073,6 +1073,7 @@ class UpdateConfigResponse final : public ::google::protobuf::Message
     kHttpCompressionFieldNumber = 1,
     kHttpsFieldNumber = 2,
     kEnableRateLimitorFieldNumber = 3,
+    kEnableExternalAuthFieldNumber = 6,
     kNumTokenMaxFieldNumber = 4,
     kNumTokenPerSecFieldNumber = 5,
   };
@@ -1106,6 +1107,16 @@ class UpdateConfigResponse final : public ::google::protobuf::Message
   void _internal_set_enable_rate_limitor(bool value);
 
   public:
+  // bool enable_external_auth = 6 [json_name = "enableExternalAuth"];
+  void clear_enable_external_auth() ;
+  bool enable_external_auth() const;
+  void set_enable_external_auth(bool value);
+
+  private:
+  bool _internal_enable_external_auth() const;
+  void _internal_set_enable_external_auth(bool value);
+
+  public:
   // uint32 num_token_max = 4 [json_name = "numTokenMax"];
   void clear_num_token_max() ;
   ::uint32_t num_token_max() const;
@@ -1131,7 +1142,7 @@ class UpdateConfigResponse final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 5, 0,
+      3, 6, 0,
       0, 2>
       _table_;
 
@@ -1155,6 +1166,7 @@ class UpdateConfigResponse final : public ::google::protobuf::Message
     bool http_compression_;
     bool https_;
     bool enable_rate_limitor_;
+    bool enable_external_auth_;
     ::uint32_t num_token_max_;
     ::uint32_t num_token_per_sec_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
@@ -3185,6 +3197,28 @@ inline ::uint32_t UpdateConfigResponse::_internal_num_token_per_sec() const {
 inline void UpdateConfigResponse::_internal_set_num_token_per_sec(::uint32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.num_token_per_sec_ = value;
+}
+
+// bool enable_external_auth = 6 [json_name = "enableExternalAuth"];
+inline void UpdateConfigResponse::clear_enable_external_auth() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_external_auth_ = false;
+}
+inline bool UpdateConfigResponse::enable_external_auth() const {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateConfigResponse.enable_external_auth)
+  return _internal_enable_external_auth();
+}
+inline void UpdateConfigResponse::set_enable_external_auth(bool value) {
+  _internal_set_enable_external_auth(value);
+  // @@protoc_insertion_point(field_set:api.v1.UpdateConfigResponse.enable_external_auth)
+}
+inline bool UpdateConfigResponse::_internal_enable_external_auth() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_external_auth_;
+}
+inline void UpdateConfigResponse::_internal_set_enable_external_auth(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_external_auth_ = value;
 }
 
 // -------------------------------------------------------------------

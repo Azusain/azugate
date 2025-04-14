@@ -130,6 +130,7 @@ inline constexpr UpdateConfigResponse::Impl_::Impl_(
       : http_compression_{false},
         https_{false},
         enable_rate_limitor_{false},
+        enable_external_auth_{false},
         num_token_max_{0u},
         num_token_per_sec_{0u},
         _cached_size_{0} {}
@@ -414,6 +415,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.enable_rate_limitor_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.num_token_max_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.num_token_per_sec_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.enable_external_auth_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::api::v1::GetIpBlackListRequest, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -505,15 +507,15 @@ static const ::_pbi::MigrationSchema
         {8, -1, -1, sizeof(::api::v1::GetConfigResponse)},
         {21, -1, -1, sizeof(::api::v1::UpdateConfigRequest)},
         {35, -1, -1, sizeof(::api::v1::UpdateConfigResponse)},
-        {48, -1, -1, sizeof(::api::v1::GetIpBlackListRequest)},
-        {56, -1, -1, sizeof(::api::v1::GetIpBlackListResponse)},
-        {65, -1, -1, sizeof(::api::v1::UpdateIpBlackListRequest)},
-        {75, -1, -1, sizeof(::api::v1::UpdateIpBlackListResponse)},
-        {83, -1, -1, sizeof(::api::v1::ConfigRouterRequest)},
-        {92, -1, -1, sizeof(::api::v1::RouterConfig)},
-        {103, -1, -1, sizeof(::api::v1::ConfigRouterResponse)},
-        {112, -1, -1, sizeof(::api::v1::UpdateHealthzListRequest)},
-        {122, -1, -1, sizeof(::api::v1::UpdateHealthzListResponse)},
+        {49, -1, -1, sizeof(::api::v1::GetIpBlackListRequest)},
+        {57, -1, -1, sizeof(::api::v1::GetIpBlackListResponse)},
+        {66, -1, -1, sizeof(::api::v1::UpdateIpBlackListRequest)},
+        {76, -1, -1, sizeof(::api::v1::UpdateIpBlackListResponse)},
+        {84, -1, -1, sizeof(::api::v1::ConfigRouterRequest)},
+        {93, -1, -1, sizeof(::api::v1::RouterConfig)},
+        {104, -1, -1, sizeof(::api::v1::ConfigRouterResponse)},
+        {113, -1, -1, sizeof(::api::v1::UpdateHealthzListRequest)},
+        {123, -1, -1, sizeof(::api::v1::UpdateHealthzListResponse)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::api::v1::_GetConfigRequest_default_instance_._instance,
@@ -545,46 +547,48 @@ const char descriptor_table_protodef_config_5fservice_2eproto[] ABSL_ATTRIBUTE_S
     "tps\022.\n\023enable_rate_limitor\030\004 \001(\010R\021enable"
     "RateLimitor\022\"\n\rnum_token_max\030\005 \001(\rR\013numT"
     "okenMax\022)\n\021num_token_per_sec\030\006 \001(\rR\016numT"
-    "okenPerSec\"\326\001\n\024UpdateConfigResponse\022)\n\020h"
+    "okenPerSec\"\210\002\n\024UpdateConfigResponse\022)\n\020h"
     "ttp_compression\030\001 \001(\010R\017httpCompression\022\024"
     "\n\005https\030\002 \001(\010R\005https\022.\n\023enable_rate_limi"
     "tor\030\003 \001(\010R\021enableRateLimitor\022\"\n\rnum_toke"
     "n_max\030\004 \001(\rR\013numTokenMax\022)\n\021num_token_pe"
-    "r_sec\030\005 \001(\rR\016numTokenPerSec\"\027\n\025GetIpBlac"
-    "kListRequest\"1\n\026GetIpBlackListResponse\022\027"
-    "\n\007ip_list\030\001 \003(\tR\006ipList\"\320\001\n\030UpdateIpBlac"
-    "kListRequest\022C\n\006action\030\001 \001(\0162+.api.v1.Up"
-    "dateIpBlackListRequest.ActionTypeR\006actio"
-    "n\022\027\n\007ip_list\030\002 \003(\tR\006ipList\"V\n\nActionType"
-    "\022\033\n\027ACTION_TYPE_UNSPECIFIED\020\000\022\023\n\017ACTION_"
-    "TYPE_ADD\020\001\022\026\n\022ACTION_TYPE_REMOVE\020\002\"\033\n\031Up"
-    "dateIpBlackListResponse\"E\n\023ConfigRouterR"
-    "equest\022.\n\007routers\030\001 \003(\0132\024.api.v1.RouterC"
-    "onfigR\007routers\"`\n\014RouterConfig\022\026\n\006method"
-    "\030\001 \001(\tR\006method\022\026\n\006source\030\002 \001(\tR\006source\022 "
-    "\n\013destination\030\003 \001(\tR\013destination\"0\n\024Conf"
-    "igRouterResponse\022\030\n\007message\030\001 \001(\tR\007messa"
-    "ge\"H\n\030UpdateHealthzListRequest\022\026\n\006action"
-    "\030\001 \001(\tR\006action\022\024\n\005addrs\030\002 \003(\tR\005addrs\"5\n\031"
-    "UpdateHealthzListResponse\022\030\n\007message\030\001 \001"
-    "(\tR\007message2\326\004\n\rConfigService\022Q\n\tGetConf"
-    "ig\022\030.api.v1.GetConfigRequest\032\031.api.v1.Ge"
-    "tConfigResponse\"\017\202\323\344\223\002\t\022\007/config\022d\n\014Upda"
-    "teConfig\022\033.api.v1.UpdateConfigRequest\032\034."
-    "api.v1.UpdateConfigResponse\"\031\202\323\344\223\002\023\"\016/co"
-    "nfig:update:\001*\022g\n\016GetIpBlackList\022\035.api.v"
-    "1.GetIpBlackListRequest\032\036.api.v1.GetIpBl"
-    "ackListResponse\"\026\202\323\344\223\002\020\022\016/config/iplist\022"
-    "z\n\021UpdateIpBlackList\022 .api.v1.UpdateIpBl"
-    "ackListRequest\032!.api.v1.UpdateIpBlackLis"
-    "tResponse\" \202\323\344\223\002\032\"\025/config/iplist:update"
-    ":\001*\022K\n\014ConfigRouter\022\033.api.v1.ConfigRoute"
-    "rRequest\032\034.api.v1.ConfigRouterResponse\"\000"
-    "\022Z\n\021UpdateHealthzList\022 .api.v1.UpdateHea"
-    "lthzListRequest\032!.api.v1.UpdateHealthzLi"
-    "stResponse\"\000B_\n\ncom.api.v1B\022ConfigServic"
-    "eProtoP\001Z\004/api\242\002\003AXX\252\002\006Api.V1\312\002\006Api\\V1\342\002"
-    "\022Api\\V1\\GPBMetadata\352\002\007Api::V1b\006proto3"
+    "r_sec\030\005 \001(\rR\016numTokenPerSec\0220\n\024enable_ex"
+    "ternal_auth\030\006 \001(\010R\022enableExternalAuth\"\027\n"
+    "\025GetIpBlackListRequest\"1\n\026GetIpBlackList"
+    "Response\022\027\n\007ip_list\030\001 \003(\tR\006ipList\"\320\001\n\030Up"
+    "dateIpBlackListRequest\022C\n\006action\030\001 \001(\0162+"
+    ".api.v1.UpdateIpBlackListRequest.ActionT"
+    "ypeR\006action\022\027\n\007ip_list\030\002 \003(\tR\006ipList\"V\n\n"
+    "ActionType\022\033\n\027ACTION_TYPE_UNSPECIFIED\020\000\022"
+    "\023\n\017ACTION_TYPE_ADD\020\001\022\026\n\022ACTION_TYPE_REMO"
+    "VE\020\002\"\033\n\031UpdateIpBlackListResponse\"E\n\023Con"
+    "figRouterRequest\022.\n\007routers\030\001 \003(\0132\024.api."
+    "v1.RouterConfigR\007routers\"`\n\014RouterConfig"
+    "\022\026\n\006method\030\001 \001(\tR\006method\022\026\n\006source\030\002 \001(\t"
+    "R\006source\022 \n\013destination\030\003 \001(\tR\013destinati"
+    "on\"0\n\024ConfigRouterResponse\022\030\n\007message\030\001 "
+    "\001(\tR\007message\"H\n\030UpdateHealthzListRequest"
+    "\022\026\n\006action\030\001 \001(\tR\006action\022\024\n\005addrs\030\002 \003(\tR"
+    "\005addrs\"5\n\031UpdateHealthzListResponse\022\030\n\007m"
+    "essage\030\001 \001(\tR\007message2\326\004\n\rConfigService\022"
+    "Q\n\tGetConfig\022\030.api.v1.GetConfigRequest\032\031"
+    ".api.v1.GetConfigResponse\"\017\202\323\344\223\002\t\022\007/conf"
+    "ig\022d\n\014UpdateConfig\022\033.api.v1.UpdateConfig"
+    "Request\032\034.api.v1.UpdateConfigResponse\"\031\202"
+    "\323\344\223\002\023\"\016/config:update:\001*\022g\n\016GetIpBlackLi"
+    "st\022\035.api.v1.GetIpBlackListRequest\032\036.api."
+    "v1.GetIpBlackListResponse\"\026\202\323\344\223\002\020\022\016/conf"
+    "ig/iplist\022z\n\021UpdateIpBlackList\022 .api.v1."
+    "UpdateIpBlackListRequest\032!.api.v1.Update"
+    "IpBlackListResponse\" \202\323\344\223\002\032\"\025/config/ipl"
+    "ist:update:\001*\022K\n\014ConfigRouter\022\033.api.v1.C"
+    "onfigRouterRequest\032\034.api.v1.ConfigRouter"
+    "Response\"\000\022Z\n\021UpdateHealthzList\022 .api.v1"
+    ".UpdateHealthzListRequest\032!.api.v1.Updat"
+    "eHealthzListResponse\"\000B_\n\ncom.api.v1B\022Co"
+    "nfigServiceProtoP\001Z\004/api\242\002\003AXX\252\002\006Api.V1\312"
+    "\002\006Api\\V1\342\002\022Api\\V1\\GPBMetadata\352\002\007Api::V1b"
+    "\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_config_5fservice_2eproto_deps[1] =
     {
@@ -594,7 +598,7 @@ static ::absl::once_flag descriptor_table_config_5fservice_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_config_5fservice_2eproto = {
     false,
     false,
-    2117,
+    2167,
     descriptor_table_protodef_config_5fservice_2eproto,
     "config_service.proto",
     &descriptor_table_config_5fservice_2eproto_once,
@@ -1446,15 +1450,15 @@ const ::google::protobuf::MessageLite::ClassData* UpdateConfigResponse::GetClass
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 0, 2> UpdateConfigResponse::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 0, 0, 2> UpdateConfigResponse::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
+    6,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -1480,7 +1484,9 @@ const ::_pbi::TcParseTable<3, 5, 0, 0, 2> UpdateConfigResponse::_table_ = {
     // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UpdateConfigResponse, _impl_.num_token_per_sec_), 63>(),
      {40, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.num_token_per_sec_)}},
-    {::_pbi::TcParser::MiniParse, {}},
+    // bool enable_external_auth = 6 [json_name = "enableExternalAuth"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigResponse, _impl_.enable_external_auth_), 63>(),
+     {48, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.enable_external_auth_)}},
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
@@ -1500,6 +1506,9 @@ const ::_pbi::TcParseTable<3, 5, 0, 0, 2> UpdateConfigResponse::_table_ = {
     // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
     {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.num_token_per_sec_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // bool enable_external_auth = 6 [json_name = "enableExternalAuth"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.enable_external_auth_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
   }},
   // no aux_entries
   {{
@@ -1569,6 +1578,13 @@ PROTOBUF_NOINLINE void UpdateConfigResponse::Clear() {
                 5, this_._internal_num_token_per_sec(), target);
           }
 
+          // bool enable_external_auth = 6 [json_name = "enableExternalAuth"];
+          if (this_._internal_enable_external_auth() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                6, this_._internal_enable_external_auth(), target);
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -1606,6 +1622,10 @@ PROTOBUF_NOINLINE void UpdateConfigResponse::Clear() {
             if (this_._internal_enable_rate_limitor() != 0) {
               total_size += 2;
             }
+            // bool enable_external_auth = 6 [json_name = "enableExternalAuth"];
+            if (this_._internal_enable_external_auth() != 0) {
+              total_size += 2;
+            }
             // uint32 num_token_max = 4 [json_name = "numTokenMax"];
             if (this_._internal_num_token_max() != 0) {
               total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
@@ -1637,6 +1657,9 @@ void UpdateConfigResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, co
   }
   if (from._internal_enable_rate_limitor() != 0) {
     _this->_impl_.enable_rate_limitor_ = from._impl_.enable_rate_limitor_;
+  }
+  if (from._internal_enable_external_auth() != 0) {
+    _this->_impl_.enable_external_auth_ = from._impl_.enable_external_auth_;
   }
   if (from._internal_num_token_max() != 0) {
     _this->_impl_.num_token_max_ = from._impl_.num_token_max_;
