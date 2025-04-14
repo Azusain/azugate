@@ -29,6 +29,8 @@ service ConfigService {
   }
 
   rpc ConfigRouter(ConfigRouterRequest) returns (ConfigRouterResponse) {}
+
+  rpc UpdateHealthzList(UpdateHealthzListRequest) returns (UpdateHealthzListResponse) {}
 }
 
 message GetConfigRequest {}
@@ -77,20 +79,31 @@ message UpdateIpBlackListRequest {
 
 message UpdateIpBlackListResponse {}
 
-message ConfigRouterRequest{
+message ConfigRouterRequest {
   repeated RouterConfig routers = 1;
 }
 
 message RouterConfig {
   // "GET", "POST"
-  string method = 1;       
+  string method = 1;
   // "/api/v1/user"
-  string source = 2;        
+  string source = 2;
   // "/v1/user-service"
-  string destination = 3;    
+  string destination = 3;
 }
 
-message ConfigRouterResponse{
+message ConfigRouterResponse {
   // TODO: only for demo...
+  string message = 1;
+}
+
+// TODO: action type.
+message UpdateHealthzListRequest {
+  string action = 1;
+  repeated string addrs = 2;
+  // TODO: only for demo...
+}
+
+message UpdateHealthzListResponse {
   string message = 1;
 }

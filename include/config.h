@@ -92,6 +92,9 @@ void ConfigRateLimitor(size_t num_token_max, size_t num_token_per_sec);
 // return g_num_token_max and g_num_token_per_sec.
 std::pair<size_t, size_t> GetRateLimitorConfig();
 
+void AddHealthzList(std::string &&addr);
+const std::vector<std::string> &GetHealthzList();
+
 // router.
 struct ConnectionInfo {
   ProtocolType type;

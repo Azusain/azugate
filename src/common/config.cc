@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
+#include <vector>
 
 namespace std {
 template <> struct hash<azugate::ConnectionInfo> {
@@ -58,6 +59,8 @@ size_t g_num_token_per_sec = 100;
 size_t g_num_token_max = 1000;
 // io
 size_t g_num_threads = 1;
+// healthz.
+std::vector<std::string> g_healthz_list;
 
 std::string GetConfigPath() {
   std::lock_guard<std::mutex> lock(g_config_mutex);
@@ -110,11 +113,20 @@ void ConfigRateLimitor(size_t num_token_max, size_t num_token_per_sec) {
     g_num_token_per_sec = num_token_per_sec;
   }
 }
-
 // return g_num_token_max and g_num_token_per_sec.
 std::pair<size_t, size_t> GetRateLimitorConfig() {
   std::lock_guard<std::mutex> lock(g_config_mutex);
   return std::pair<size_t, size_t>(g_num_token_max, g_num_token_per_sec);
+}
+
+void AddHealthzList(std::string &&addr) {
+  std::lock_guard<std::mutex> lock(g_config_mutex);
+  g_healthz_list.emplace_back(addr);
+}
+
+const std::vector<std::string> &GetHealthzList() {
+  std::lock_guard<std::mutex> lock(g_config_mutex);
+  return g_healthz_list;
 }
 
 void AddRouterMapping(ConnectionInfo &&source, ConnectionInfo &&target) {
@@ -123,7 +135,7 @@ void AddRouterMapping(ConnectionInfo &&source, ConnectionInfo &&target) {
       std::pair<ConnectionInfo, ConnectionInfo>{source, target});
 }
 
-// TODO: implement support for wildcards.
+// TODO: implement support for wildcards('*').
 std::optional<ConnectionInfo> GetRouterMapping(const ConnectionInfo &source) {
   std::lock_guard<std::mutex> lock(g_config_mutex);
   auto it = g_router_map.find(source);

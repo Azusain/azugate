@@ -70,6 +70,61 @@ struct UpdateIpBlackListRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateIpBlackListRequestDefaultTypeInternal _UpdateIpBlackListRequest_default_instance_;
 
+inline constexpr UpdateHealthzListResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : message_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR UpdateHealthzListResponse::UpdateHealthzListResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct UpdateHealthzListResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UpdateHealthzListResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~UpdateHealthzListResponseDefaultTypeInternal() {}
+  union {
+    UpdateHealthzListResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateHealthzListResponseDefaultTypeInternal _UpdateHealthzListResponse_default_instance_;
+
+inline constexpr UpdateHealthzListRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : addrs_{},
+        action_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR UpdateHealthzListRequest::UpdateHealthzListRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct UpdateHealthzListRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UpdateHealthzListRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~UpdateHealthzListRequestDefaultTypeInternal() {}
+  union {
+    UpdateHealthzListRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateHealthzListRequestDefaultTypeInternal _UpdateHealthzListRequest_default_instance_;
+
 inline constexpr UpdateConfigResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : http_compression_{false},
@@ -423,6 +478,25 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::api::v1::ConfigRouterResponse, _impl_.message_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateHealthzListRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateHealthzListRequest, _impl_.action_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateHealthzListRequest, _impl_.addrs_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateHealthzListResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateHealthzListResponse, _impl_.message_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -438,6 +512,8 @@ static const ::_pbi::MigrationSchema
         {83, -1, -1, sizeof(::api::v1::ConfigRouterRequest)},
         {92, -1, -1, sizeof(::api::v1::RouterConfig)},
         {103, -1, -1, sizeof(::api::v1::ConfigRouterResponse)},
+        {112, -1, -1, sizeof(::api::v1::UpdateHealthzListRequest)},
+        {122, -1, -1, sizeof(::api::v1::UpdateHealthzListResponse)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::api::v1::_GetConfigRequest_default_instance_._instance,
@@ -451,6 +527,8 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::api::v1::_ConfigRouterRequest_default_instance_._instance,
     &::api::v1::_RouterConfig_default_instance_._instance,
     &::api::v1::_ConfigRouterResponse_default_instance_._instance,
+    &::api::v1::_UpdateHealthzListRequest_default_instance_._instance,
+    &::api::v1::_UpdateHealthzListResponse_default_instance_._instance,
 };
 const char descriptor_table_protodef_config_5fservice_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
@@ -486,22 +564,27 @@ const char descriptor_table_protodef_config_5fservice_2eproto[] ABSL_ATTRIBUTE_S
     "\030\001 \001(\tR\006method\022\026\n\006source\030\002 \001(\tR\006source\022 "
     "\n\013destination\030\003 \001(\tR\013destination\"0\n\024Conf"
     "igRouterResponse\022\030\n\007message\030\001 \001(\tR\007messa"
-    "ge2\372\003\n\rConfigService\022Q\n\tGetConfig\022\030.api."
-    "v1.GetConfigRequest\032\031.api.v1.GetConfigRe"
-    "sponse\"\017\202\323\344\223\002\t\022\007/config\022d\n\014UpdateConfig\022"
-    "\033.api.v1.UpdateConfigRequest\032\034.api.v1.Up"
-    "dateConfigResponse\"\031\202\323\344\223\002\023\"\016/config:upda"
-    "te:\001*\022g\n\016GetIpBlackList\022\035.api.v1.GetIpBl"
-    "ackListRequest\032\036.api.v1.GetIpBlackListRe"
-    "sponse\"\026\202\323\344\223\002\020\022\016/config/iplist\022z\n\021Update"
-    "IpBlackList\022 .api.v1.UpdateIpBlackListRe"
-    "quest\032!.api.v1.UpdateIpBlackListResponse"
-    "\" \202\323\344\223\002\032\"\025/config/iplist:update:\001*\022K\n\014Co"
-    "nfigRouter\022\033.api.v1.ConfigRouterRequest\032"
-    "\034.api.v1.ConfigRouterResponse\"\000B_\n\ncom.a"
-    "pi.v1B\022ConfigServiceProtoP\001Z\004/api\242\002\003AXX\252"
-    "\002\006Api.V1\312\002\006Api\\V1\342\002\022Api\\V1\\GPBMetadata\352\002"
-    "\007Api::V1b\006proto3"
+    "ge\"H\n\030UpdateHealthzListRequest\022\026\n\006action"
+    "\030\001 \001(\tR\006action\022\024\n\005addrs\030\002 \003(\tR\005addrs\"5\n\031"
+    "UpdateHealthzListResponse\022\030\n\007message\030\001 \001"
+    "(\tR\007message2\326\004\n\rConfigService\022Q\n\tGetConf"
+    "ig\022\030.api.v1.GetConfigRequest\032\031.api.v1.Ge"
+    "tConfigResponse\"\017\202\323\344\223\002\t\022\007/config\022d\n\014Upda"
+    "teConfig\022\033.api.v1.UpdateConfigRequest\032\034."
+    "api.v1.UpdateConfigResponse\"\031\202\323\344\223\002\023\"\016/co"
+    "nfig:update:\001*\022g\n\016GetIpBlackList\022\035.api.v"
+    "1.GetIpBlackListRequest\032\036.api.v1.GetIpBl"
+    "ackListResponse\"\026\202\323\344\223\002\020\022\016/config/iplist\022"
+    "z\n\021UpdateIpBlackList\022 .api.v1.UpdateIpBl"
+    "ackListRequest\032!.api.v1.UpdateIpBlackLis"
+    "tResponse\" \202\323\344\223\002\032\"\025/config/iplist:update"
+    ":\001*\022K\n\014ConfigRouter\022\033.api.v1.ConfigRoute"
+    "rRequest\032\034.api.v1.ConfigRouterResponse\"\000"
+    "\022Z\n\021UpdateHealthzList\022 .api.v1.UpdateHea"
+    "lthzListRequest\032!.api.v1.UpdateHealthzLi"
+    "stResponse\"\000B_\n\ncom.api.v1B\022ConfigServic"
+    "eProtoP\001Z\004/api\242\002\003AXX\252\002\006Api.V1\312\002\006Api\\V1\342\002"
+    "\022Api\\V1\\GPBMetadata\352\002\007Api::V1b\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_config_5fservice_2eproto_deps[1] =
     {
@@ -511,13 +594,13 @@ static ::absl::once_flag descriptor_table_config_5fservice_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_config_5fservice_2eproto = {
     false,
     false,
-    1896,
+    2117,
     descriptor_table_protodef_config_5fservice_2eproto,
     "config_service.proto",
     &descriptor_table_config_5fservice_2eproto_once,
     descriptor_table_config_5fservice_2eproto_deps,
     1,
-    11,
+    13,
     schemas,
     file_default_instances,
     TableStruct_config_5fservice_2eproto::offsets,
@@ -2975,6 +3058,484 @@ void ConfigRouterResponse::InternalSwap(ConfigRouterResponse* PROTOBUF_RESTRICT 
 }
 
 ::google::protobuf::Metadata ConfigRouterResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class UpdateHealthzListRequest::_Internal {
+ public:
+};
+
+UpdateHealthzListRequest::UpdateHealthzListRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:api.v1.UpdateHealthzListRequest)
+}
+inline PROTOBUF_NDEBUG_INLINE UpdateHealthzListRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::api::v1::UpdateHealthzListRequest& from_msg)
+      : addrs_{visibility, arena, from.addrs_},
+        action_(arena, from.action_),
+        _cached_size_{0} {}
+
+UpdateHealthzListRequest::UpdateHealthzListRequest(
+    ::google::protobuf::Arena* arena,
+    const UpdateHealthzListRequest& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  UpdateHealthzListRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:api.v1.UpdateHealthzListRequest)
+}
+inline PROTOBUF_NDEBUG_INLINE UpdateHealthzListRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : addrs_{visibility, arena},
+        action_(arena),
+        _cached_size_{0} {}
+
+inline void UpdateHealthzListRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+UpdateHealthzListRequest::~UpdateHealthzListRequest() {
+  // @@protoc_insertion_point(destructor:api.v1.UpdateHealthzListRequest)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void UpdateHealthzListRequest::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.action_.Destroy();
+  _impl_.~Impl_();
+}
+
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::MessageLite::ClassDataFull
+    UpdateHealthzListRequest::_class_data_ = {
+        ::google::protobuf::Message::ClassData{
+            &_UpdateHealthzListRequest_default_instance_._instance,
+            &_table_.header,
+            nullptr,  // OnDemandRegisterArenaDtor
+            nullptr,  // IsInitialized
+            &UpdateHealthzListRequest::MergeImpl,
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+            ::google::protobuf::Message::GetDeleteImpl<UpdateHealthzListRequest>(),
+            ::google::protobuf::Message::GetNewImpl<UpdateHealthzListRequest>(),
+            ::google::protobuf::Message::GetClearImpl<UpdateHealthzListRequest>(), &UpdateHealthzListRequest::ByteSizeLong,
+                &UpdateHealthzListRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+            PROTOBUF_FIELD_OFFSET(UpdateHealthzListRequest, _impl_._cached_size_),
+            false,
+        },
+        &UpdateHealthzListRequest::kDescriptorMethods,
+        &descriptor_table_config_5fservice_2eproto,
+        nullptr,  // tracker
+};
+const ::google::protobuf::MessageLite::ClassData* UpdateHealthzListRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 51, 2> UpdateHealthzListRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::api::v1::UpdateHealthzListRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // repeated string addrs = 2 [json_name = "addrs"];
+    {::_pbi::TcParser::FastUR1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateHealthzListRequest, _impl_.addrs_)}},
+    // string action = 1 [json_name = "action"];
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateHealthzListRequest, _impl_.action_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string action = 1 [json_name = "action"];
+    {PROTOBUF_FIELD_OFFSET(UpdateHealthzListRequest, _impl_.action_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // repeated string addrs = 2 [json_name = "addrs"];
+    {PROTOBUF_FIELD_OFFSET(UpdateHealthzListRequest, _impl_.addrs_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
+  }},
+  // no aux_entries
+  {{
+    "\37\6\5\0\0\0\0\0"
+    "api.v1.UpdateHealthzListRequest"
+    "action"
+    "addrs"
+  }},
+};
+
+PROTOBUF_NOINLINE void UpdateHealthzListRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:api.v1.UpdateHealthzListRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.addrs_.Clear();
+  _impl_.action_.ClearToEmpty();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* UpdateHealthzListRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const UpdateHealthzListRequest& this_ = static_cast<const UpdateHealthzListRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* UpdateHealthzListRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const UpdateHealthzListRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:api.v1.UpdateHealthzListRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string action = 1 [json_name = "action"];
+          if (!this_._internal_action().empty()) {
+            const std::string& _s = this_._internal_action();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.UpdateHealthzListRequest.action");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          // repeated string addrs = 2 [json_name = "addrs"];
+          for (int i = 0, n = this_._internal_addrs_size(); i < n; ++i) {
+            const auto& s = this_._internal_addrs().Get(i);
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.UpdateHealthzListRequest.addrs");
+            target = stream->WriteString(2, s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:api.v1.UpdateHealthzListRequest)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t UpdateHealthzListRequest::ByteSizeLong(const MessageLite& base) {
+          const UpdateHealthzListRequest& this_ = static_cast<const UpdateHealthzListRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t UpdateHealthzListRequest::ByteSizeLong() const {
+          const UpdateHealthzListRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:api.v1.UpdateHealthzListRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // repeated string addrs = 2 [json_name = "addrs"];
+             {
+              total_size +=
+                  1 * ::google::protobuf::internal::FromIntSize(this_._internal_addrs().size());
+              for (int i = 0, n = this_._internal_addrs().size(); i < n; ++i) {
+                total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+                    this_._internal_addrs().Get(i));
+              }
+            }
+          }
+           {
+            // string action = 1 [json_name = "action"];
+            if (!this_._internal_action().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_action());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void UpdateHealthzListRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<UpdateHealthzListRequest*>(&to_msg);
+  auto& from = static_cast<const UpdateHealthzListRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.UpdateHealthzListRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_internal_mutable_addrs()->MergeFrom(from._internal_addrs());
+  if (!from._internal_action().empty()) {
+    _this->_internal_set_action(from._internal_action());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void UpdateHealthzListRequest::CopyFrom(const UpdateHealthzListRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:api.v1.UpdateHealthzListRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void UpdateHealthzListRequest::InternalSwap(UpdateHealthzListRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.addrs_.InternalSwap(&other->_impl_.addrs_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.action_, &other->_impl_.action_, arena);
+}
+
+::google::protobuf::Metadata UpdateHealthzListRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class UpdateHealthzListResponse::_Internal {
+ public:
+};
+
+UpdateHealthzListResponse::UpdateHealthzListResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:api.v1.UpdateHealthzListResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE UpdateHealthzListResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::api::v1::UpdateHealthzListResponse& from_msg)
+      : message_(arena, from.message_),
+        _cached_size_{0} {}
+
+UpdateHealthzListResponse::UpdateHealthzListResponse(
+    ::google::protobuf::Arena* arena,
+    const UpdateHealthzListResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  UpdateHealthzListResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:api.v1.UpdateHealthzListResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE UpdateHealthzListResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : message_(arena),
+        _cached_size_{0} {}
+
+inline void UpdateHealthzListResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+UpdateHealthzListResponse::~UpdateHealthzListResponse() {
+  // @@protoc_insertion_point(destructor:api.v1.UpdateHealthzListResponse)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void UpdateHealthzListResponse::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.message_.Destroy();
+  _impl_.~Impl_();
+}
+
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::MessageLite::ClassDataFull
+    UpdateHealthzListResponse::_class_data_ = {
+        ::google::protobuf::Message::ClassData{
+            &_UpdateHealthzListResponse_default_instance_._instance,
+            &_table_.header,
+            nullptr,  // OnDemandRegisterArenaDtor
+            nullptr,  // IsInitialized
+            &UpdateHealthzListResponse::MergeImpl,
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+            ::google::protobuf::Message::GetDeleteImpl<UpdateHealthzListResponse>(),
+            ::google::protobuf::Message::GetNewImpl<UpdateHealthzListResponse>(),
+            ::google::protobuf::Message::GetClearImpl<UpdateHealthzListResponse>(), &UpdateHealthzListResponse::ByteSizeLong,
+                &UpdateHealthzListResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+            PROTOBUF_FIELD_OFFSET(UpdateHealthzListResponse, _impl_._cached_size_),
+            false,
+        },
+        &UpdateHealthzListResponse::kDescriptorMethods,
+        &descriptor_table_config_5fservice_2eproto,
+        nullptr,  // tracker
+};
+const ::google::protobuf::MessageLite::ClassData* UpdateHealthzListResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 48, 2> UpdateHealthzListResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::api::v1::UpdateHealthzListResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // string message = 1 [json_name = "message"];
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateHealthzListResponse, _impl_.message_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string message = 1 [json_name = "message"];
+    {PROTOBUF_FIELD_OFFSET(UpdateHealthzListResponse, _impl_.message_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\40\7\0\0\0\0\0\0"
+    "api.v1.UpdateHealthzListResponse"
+    "message"
+  }},
+};
+
+PROTOBUF_NOINLINE void UpdateHealthzListResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:api.v1.UpdateHealthzListResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.message_.ClearToEmpty();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* UpdateHealthzListResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const UpdateHealthzListResponse& this_ = static_cast<const UpdateHealthzListResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* UpdateHealthzListResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const UpdateHealthzListResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:api.v1.UpdateHealthzListResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string message = 1 [json_name = "message"];
+          if (!this_._internal_message().empty()) {
+            const std::string& _s = this_._internal_message();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.UpdateHealthzListResponse.message");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:api.v1.UpdateHealthzListResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t UpdateHealthzListResponse::ByteSizeLong(const MessageLite& base) {
+          const UpdateHealthzListResponse& this_ = static_cast<const UpdateHealthzListResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t UpdateHealthzListResponse::ByteSizeLong() const {
+          const UpdateHealthzListResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:api.v1.UpdateHealthzListResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // string message = 1 [json_name = "message"];
+            if (!this_._internal_message().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_message());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void UpdateHealthzListResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<UpdateHealthzListResponse*>(&to_msg);
+  auto& from = static_cast<const UpdateHealthzListResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.UpdateHealthzListResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_message().empty()) {
+    _this->_internal_set_message(from._internal_message());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void UpdateHealthzListResponse::CopyFrom(const UpdateHealthzListResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:api.v1.UpdateHealthzListResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void UpdateHealthzListResponse::InternalSwap(UpdateHealthzListResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.message_, &other->_impl_.message_, arena);
+}
+
+::google::protobuf::Metadata UpdateHealthzListResponse::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)

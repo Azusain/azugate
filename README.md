@@ -47,6 +47,14 @@ You will need a compiler that supports c++20, along with CMake and vcpkg, to bui
   https://www.keycloak.org/getting-started/getting-started-docker
 ```
 
+#### buf
+
+```shell
+  buf lint
+  buf format -w
+  buf generate
+```
+
 ### Perf
 
 ```shell

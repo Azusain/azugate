@@ -109,6 +109,18 @@ public:
     response->set_message("success");
     return grpc::Status::OK;
   }
+
+  grpc::Status
+  UpdateHealthzList(::grpc::ServerContext *context,
+                    const ::api::v1::UpdateHealthzListRequest *request,
+                    ::api::v1::UpdateHealthzListResponse *response) override {
+    for (std::string addr : request->addrs()) {
+      // TODO: using std::unordered_set for unique addr.
+      azugate::AddHealthzList(std::move(addr));
+    }
+    response->set_message("success");
+    return grpc::Status::OK;
+  }
 };
 
 #endif

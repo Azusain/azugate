@@ -81,6 +81,12 @@ extern UpdateConfigRequestDefaultTypeInternal _UpdateConfigRequest_default_insta
 class UpdateConfigResponse;
 struct UpdateConfigResponseDefaultTypeInternal;
 extern UpdateConfigResponseDefaultTypeInternal _UpdateConfigResponse_default_instance_;
+class UpdateHealthzListRequest;
+struct UpdateHealthzListRequestDefaultTypeInternal;
+extern UpdateHealthzListRequestDefaultTypeInternal _UpdateHealthzListRequest_default_instance_;
+class UpdateHealthzListResponse;
+struct UpdateHealthzListResponseDefaultTypeInternal;
+extern UpdateHealthzListResponseDefaultTypeInternal _UpdateHealthzListResponse_default_instance_;
 class UpdateIpBlackListRequest;
 struct UpdateIpBlackListRequestDefaultTypeInternal;
 extern UpdateIpBlackListRequestDefaultTypeInternal _UpdateIpBlackListRequest_default_instance_;
@@ -503,6 +509,418 @@ class UpdateIpBlackListRequest final : public ::google::protobuf::Message
                           const UpdateIpBlackListRequest& from_msg);
     ::google::protobuf::RepeatedPtrField<std::string> ip_list_;
     int action_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_config_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
+class UpdateHealthzListResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:api.v1.UpdateHealthzListResponse) */ {
+ public:
+  inline UpdateHealthzListResponse() : UpdateHealthzListResponse(nullptr) {}
+  ~UpdateHealthzListResponse() PROTOBUF_FINAL;
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR UpdateHealthzListResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline UpdateHealthzListResponse(const UpdateHealthzListResponse& from) : UpdateHealthzListResponse(nullptr, from) {}
+  inline UpdateHealthzListResponse(UpdateHealthzListResponse&& from) noexcept
+      : UpdateHealthzListResponse(nullptr, std::move(from)) {}
+  inline UpdateHealthzListResponse& operator=(const UpdateHealthzListResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UpdateHealthzListResponse& operator=(UpdateHealthzListResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+#ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+#endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UpdateHealthzListResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UpdateHealthzListResponse* internal_default_instance() {
+    return reinterpret_cast<const UpdateHealthzListResponse*>(
+        &_UpdateHealthzListResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 12;
+  friend void swap(UpdateHealthzListResponse& a, UpdateHealthzListResponse& b) { a.Swap(&b); }
+  inline void Swap(UpdateHealthzListResponse* other) {
+    if (other == this) return;
+#ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr && GetArena() == other->GetArena()) {
+#else   // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+#endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UpdateHealthzListResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  UpdateHealthzListResponse* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<UpdateHealthzListResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const UpdateHealthzListResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const UpdateHealthzListResponse& from) { UpdateHealthzListResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(UpdateHealthzListResponse* other);
+ private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() { return "api.v1.UpdateHealthzListResponse"; }
+
+ protected:
+  explicit UpdateHealthzListResponse(::google::protobuf::Arena* arena);
+  UpdateHealthzListResponse(::google::protobuf::Arena* arena, const UpdateHealthzListResponse& from);
+  UpdateHealthzListResponse(::google::protobuf::Arena* arena, UpdateHealthzListResponse&& from) noexcept
+      : UpdateHealthzListResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static const ::google::protobuf::Message::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMessageFieldNumber = 1,
+  };
+  // string message = 1 [json_name = "message"];
+  void clear_message() ;
+  const std::string& message() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_message(Arg_&& arg, Args_... args);
+  std::string* mutable_message();
+  PROTOBUF_NODISCARD std::string* release_message();
+  void set_allocated_message(std::string* value);
+
+  private:
+  const std::string& _internal_message() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_message(
+      const std::string& value);
+  std::string* _internal_mutable_message();
+
+  public:
+  // @@protoc_insertion_point(class_scope:api.v1.UpdateHealthzListResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      48, 2>
+      _table_;
+
+  static constexpr const void* _raw_default_instance_ =
+      &_UpdateHealthzListResponse_default_instance_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const UpdateHealthzListResponse& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr message_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_config_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
+class UpdateHealthzListRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:api.v1.UpdateHealthzListRequest) */ {
+ public:
+  inline UpdateHealthzListRequest() : UpdateHealthzListRequest(nullptr) {}
+  ~UpdateHealthzListRequest() PROTOBUF_FINAL;
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR UpdateHealthzListRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline UpdateHealthzListRequest(const UpdateHealthzListRequest& from) : UpdateHealthzListRequest(nullptr, from) {}
+  inline UpdateHealthzListRequest(UpdateHealthzListRequest&& from) noexcept
+      : UpdateHealthzListRequest(nullptr, std::move(from)) {}
+  inline UpdateHealthzListRequest& operator=(const UpdateHealthzListRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UpdateHealthzListRequest& operator=(UpdateHealthzListRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+#ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+#endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UpdateHealthzListRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UpdateHealthzListRequest* internal_default_instance() {
+    return reinterpret_cast<const UpdateHealthzListRequest*>(
+        &_UpdateHealthzListRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 11;
+  friend void swap(UpdateHealthzListRequest& a, UpdateHealthzListRequest& b) { a.Swap(&b); }
+  inline void Swap(UpdateHealthzListRequest* other) {
+    if (other == this) return;
+#ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr && GetArena() == other->GetArena()) {
+#else   // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+#endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UpdateHealthzListRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  UpdateHealthzListRequest* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<UpdateHealthzListRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const UpdateHealthzListRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const UpdateHealthzListRequest& from) { UpdateHealthzListRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(UpdateHealthzListRequest* other);
+ private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() { return "api.v1.UpdateHealthzListRequest"; }
+
+ protected:
+  explicit UpdateHealthzListRequest(::google::protobuf::Arena* arena);
+  UpdateHealthzListRequest(::google::protobuf::Arena* arena, const UpdateHealthzListRequest& from);
+  UpdateHealthzListRequest(::google::protobuf::Arena* arena, UpdateHealthzListRequest&& from) noexcept
+      : UpdateHealthzListRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static const ::google::protobuf::Message::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kAddrsFieldNumber = 2,
+    kActionFieldNumber = 1,
+  };
+  // repeated string addrs = 2 [json_name = "addrs"];
+  int addrs_size() const;
+  private:
+  int _internal_addrs_size() const;
+
+  public:
+  void clear_addrs() ;
+  const std::string& addrs(int index) const;
+  std::string* mutable_addrs(int index);
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_addrs(int index, Arg_&& value, Args_... args);
+  std::string* add_addrs();
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void add_addrs(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<std::string>& addrs() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* mutable_addrs();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<std::string>& _internal_addrs() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_addrs();
+
+  public:
+  // string action = 1 [json_name = "action"];
+  void clear_action() ;
+  const std::string& action() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_action(Arg_&& arg, Args_... args);
+  std::string* mutable_action();
+  PROTOBUF_NODISCARD std::string* release_action();
+  void set_allocated_action(std::string* value);
+
+  private:
+  const std::string& _internal_action() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_action(
+      const std::string& value);
+  std::string* _internal_mutable_action();
+
+  public:
+  // @@protoc_insertion_point(class_scope:api.v1.UpdateHealthzListRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      51, 2>
+      _table_;
+
+  static constexpr const void* _raw_default_instance_ =
+      &_UpdateHealthzListRequest_default_instance_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const UpdateHealthzListRequest& from_msg);
+    ::google::protobuf::RepeatedPtrField<std::string> addrs_;
+    ::google::protobuf::internal::ArenaStringPtr action_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3194,6 +3612,178 @@ inline void ConfigRouterResponse::set_allocated_message(std::string* value) {
         }
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:api.v1.ConfigRouterResponse.message)
+}
+
+// -------------------------------------------------------------------
+
+// UpdateHealthzListRequest
+
+// string action = 1 [json_name = "action"];
+inline void UpdateHealthzListRequest::clear_action() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.action_.ClearToEmpty();
+}
+inline const std::string& UpdateHealthzListRequest::action() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateHealthzListRequest.action)
+  return _internal_action();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void UpdateHealthzListRequest::set_action(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.action_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.v1.UpdateHealthzListRequest.action)
+}
+inline std::string* UpdateHealthzListRequest::mutable_action() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_action();
+  // @@protoc_insertion_point(field_mutable:api.v1.UpdateHealthzListRequest.action)
+  return _s;
+}
+inline const std::string& UpdateHealthzListRequest::_internal_action() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.action_.Get();
+}
+inline void UpdateHealthzListRequest::_internal_set_action(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.action_.Set(value, GetArena());
+}
+inline std::string* UpdateHealthzListRequest::_internal_mutable_action() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.action_.Mutable( GetArena());
+}
+inline std::string* UpdateHealthzListRequest::release_action() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:api.v1.UpdateHealthzListRequest.action)
+  return _impl_.action_.Release();
+}
+inline void UpdateHealthzListRequest::set_allocated_action(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.action_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.action_.IsDefault()) {
+          _impl_.action_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:api.v1.UpdateHealthzListRequest.action)
+}
+
+// repeated string addrs = 2 [json_name = "addrs"];
+inline int UpdateHealthzListRequest::_internal_addrs_size() const {
+  return _internal_addrs().size();
+}
+inline int UpdateHealthzListRequest::addrs_size() const {
+  return _internal_addrs_size();
+}
+inline void UpdateHealthzListRequest::clear_addrs() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.addrs_.Clear();
+}
+inline std::string* UpdateHealthzListRequest::add_addrs() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  std::string* _s = _internal_mutable_addrs()->Add();
+  // @@protoc_insertion_point(field_add_mutable:api.v1.UpdateHealthzListRequest.addrs)
+  return _s;
+}
+inline const std::string& UpdateHealthzListRequest::addrs(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateHealthzListRequest.addrs)
+  return _internal_addrs().Get(index);
+}
+inline std::string* UpdateHealthzListRequest::mutable_addrs(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:api.v1.UpdateHealthzListRequest.addrs)
+  return _internal_mutable_addrs()->Mutable(index);
+}
+template <typename Arg_, typename... Args_>
+inline void UpdateHealthzListRequest::set_addrs(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(
+      *_internal_mutable_addrs()->Mutable(index),
+      std::forward<Arg_>(value), args... );
+  // @@protoc_insertion_point(field_set:api.v1.UpdateHealthzListRequest.addrs)
+}
+template <typename Arg_, typename... Args_>
+inline void UpdateHealthzListRequest::add_addrs(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_addrs(),
+                               std::forward<Arg_>(value),
+                               args... );
+  // @@protoc_insertion_point(field_add:api.v1.UpdateHealthzListRequest.addrs)
+}
+inline const ::google::protobuf::RepeatedPtrField<std::string>&
+UpdateHealthzListRequest::addrs() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:api.v1.UpdateHealthzListRequest.addrs)
+  return _internal_addrs();
+}
+inline ::google::protobuf::RepeatedPtrField<std::string>*
+UpdateHealthzListRequest::mutable_addrs() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:api.v1.UpdateHealthzListRequest.addrs)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_addrs();
+}
+inline const ::google::protobuf::RepeatedPtrField<std::string>&
+UpdateHealthzListRequest::_internal_addrs() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.addrs_;
+}
+inline ::google::protobuf::RepeatedPtrField<std::string>*
+UpdateHealthzListRequest::_internal_mutable_addrs() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.addrs_;
+}
+
+// -------------------------------------------------------------------
+
+// UpdateHealthzListResponse
+
+// string message = 1 [json_name = "message"];
+inline void UpdateHealthzListResponse::clear_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.ClearToEmpty();
+}
+inline const std::string& UpdateHealthzListResponse::message() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.UpdateHealthzListResponse.message)
+  return _internal_message();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void UpdateHealthzListResponse::set_message(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.v1.UpdateHealthzListResponse.message)
+}
+inline std::string* UpdateHealthzListResponse::mutable_message() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_message();
+  // @@protoc_insertion_point(field_mutable:api.v1.UpdateHealthzListResponse.message)
+  return _s;
+}
+inline const std::string& UpdateHealthzListResponse::_internal_message() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.message_.Get();
+}
+inline void UpdateHealthzListResponse::_internal_set_message(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.Set(value, GetArena());
+}
+inline std::string* UpdateHealthzListResponse::_internal_mutable_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.message_.Mutable( GetArena());
+}
+inline std::string* UpdateHealthzListResponse::release_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:api.v1.UpdateHealthzListResponse.message)
+  return _impl_.message_.Release();
+}
+inline void UpdateHealthzListResponse::set_allocated_message(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.message_.IsDefault()) {
+          _impl_.message_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:api.v1.UpdateHealthzListResponse.message)
 }
 
 #ifdef __GNUC__

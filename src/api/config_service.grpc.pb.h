@@ -71,6 +71,13 @@ class ConfigService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::ConfigRouterResponse>> PrepareAsyncConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::ConfigRouterResponse>>(PrepareAsyncConfigRouterRaw(context, request, cq));
     }
+    virtual ::grpc::Status UpdateHealthzList(::grpc::ClientContext* context, const ::api::v1::UpdateHealthzListRequest& request, ::api::v1::UpdateHealthzListResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateHealthzListResponse>> AsyncUpdateHealthzList(::grpc::ClientContext* context, const ::api::v1::UpdateHealthzListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateHealthzListResponse>>(AsyncUpdateHealthzListRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateHealthzListResponse>> PrepareAsyncUpdateHealthzList(::grpc::ClientContext* context, const ::api::v1::UpdateHealthzListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateHealthzListResponse>>(PrepareAsyncUpdateHealthzListRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -84,6 +91,8 @@ class ConfigService final {
       virtual void UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest* request, ::api::v1::UpdateIpBlackListResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void ConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest* request, ::api::v1::ConfigRouterResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void ConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest* request, ::api::v1::ConfigRouterResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void UpdateHealthzList(::grpc::ClientContext* context, const ::api::v1::UpdateHealthzListRequest* request, ::api::v1::UpdateHealthzListResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void UpdateHealthzList(::grpc::ClientContext* context, const ::api::v1::UpdateHealthzListRequest* request, ::api::v1::UpdateHealthzListResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -99,6 +108,8 @@ class ConfigService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateIpBlackListResponse>* PrepareAsyncUpdateIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::ConfigRouterResponse>* AsyncConfigRouterRaw(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::ConfigRouterResponse>* PrepareAsyncConfigRouterRaw(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateHealthzListResponse>* AsyncUpdateHealthzListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateHealthzListRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::api::v1::UpdateHealthzListResponse>* PrepareAsyncUpdateHealthzListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateHealthzListRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -138,6 +149,13 @@ class ConfigService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::ConfigRouterResponse>> PrepareAsyncConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::ConfigRouterResponse>>(PrepareAsyncConfigRouterRaw(context, request, cq));
     }
+    ::grpc::Status UpdateHealthzList(::grpc::ClientContext* context, const ::api::v1::UpdateHealthzListRequest& request, ::api::v1::UpdateHealthzListResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateHealthzListResponse>> AsyncUpdateHealthzList(::grpc::ClientContext* context, const ::api::v1::UpdateHealthzListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateHealthzListResponse>>(AsyncUpdateHealthzListRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateHealthzListResponse>> PrepareAsyncUpdateHealthzList(::grpc::ClientContext* context, const ::api::v1::UpdateHealthzListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateHealthzListResponse>>(PrepareAsyncUpdateHealthzListRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -151,6 +169,8 @@ class ConfigService final {
       void UpdateIpBlackList(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest* request, ::api::v1::UpdateIpBlackListResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void ConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest* request, ::api::v1::ConfigRouterResponse* response, std::function<void(::grpc::Status)>) override;
       void ConfigRouter(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest* request, ::api::v1::ConfigRouterResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void UpdateHealthzList(::grpc::ClientContext* context, const ::api::v1::UpdateHealthzListRequest* request, ::api::v1::UpdateHealthzListResponse* response, std::function<void(::grpc::Status)>) override;
+      void UpdateHealthzList(::grpc::ClientContext* context, const ::api::v1::UpdateHealthzListRequest* request, ::api::v1::UpdateHealthzListResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -172,11 +192,14 @@ class ConfigService final {
     ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateIpBlackListResponse>* PrepareAsyncUpdateIpBlackListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateIpBlackListRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::api::v1::ConfigRouterResponse>* AsyncConfigRouterRaw(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::api::v1::ConfigRouterResponse>* PrepareAsyncConfigRouterRaw(::grpc::ClientContext* context, const ::api::v1::ConfigRouterRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateHealthzListResponse>* AsyncUpdateHealthzListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateHealthzListRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::api::v1::UpdateHealthzListResponse>* PrepareAsyncUpdateHealthzListRaw(::grpc::ClientContext* context, const ::api::v1::UpdateHealthzListRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_GetConfig_;
     const ::grpc::internal::RpcMethod rpcmethod_UpdateConfig_;
     const ::grpc::internal::RpcMethod rpcmethod_GetIpBlackList_;
     const ::grpc::internal::RpcMethod rpcmethod_UpdateIpBlackList_;
     const ::grpc::internal::RpcMethod rpcmethod_ConfigRouter_;
+    const ::grpc::internal::RpcMethod rpcmethod_UpdateHealthzList_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -189,6 +212,7 @@ class ConfigService final {
     virtual ::grpc::Status GetIpBlackList(::grpc::ServerContext* context, const ::api::v1::GetIpBlackListRequest* request, ::api::v1::GetIpBlackListResponse* response);
     virtual ::grpc::Status UpdateIpBlackList(::grpc::ServerContext* context, const ::api::v1::UpdateIpBlackListRequest* request, ::api::v1::UpdateIpBlackListResponse* response);
     virtual ::grpc::Status ConfigRouter(::grpc::ServerContext* context, const ::api::v1::ConfigRouterRequest* request, ::api::v1::ConfigRouterResponse* response);
+    virtual ::grpc::Status UpdateHealthzList(::grpc::ServerContext* context, const ::api::v1::UpdateHealthzListRequest* request, ::api::v1::UpdateHealthzListResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_GetConfig : public BaseClass {
@@ -290,7 +314,27 @@ class ConfigService final {
       ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetConfig<WithAsyncMethod_UpdateConfig<WithAsyncMethod_GetIpBlackList<WithAsyncMethod_UpdateIpBlackList<WithAsyncMethod_ConfigRouter<Service > > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_UpdateHealthzList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_UpdateHealthzList() {
+      ::grpc::Service::MarkMethodAsync(5);
+    }
+    ~WithAsyncMethod_UpdateHealthzList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status UpdateHealthzList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateHealthzListRequest* /*request*/, ::api::v1::UpdateHealthzListResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestUpdateHealthzList(::grpc::ServerContext* context, ::api::v1::UpdateHealthzListRequest* request, ::grpc::ServerAsyncResponseWriter< ::api::v1::UpdateHealthzListResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_GetConfig<WithAsyncMethod_UpdateConfig<WithAsyncMethod_GetIpBlackList<WithAsyncMethod_UpdateIpBlackList<WithAsyncMethod_ConfigRouter<WithAsyncMethod_UpdateHealthzList<Service > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_GetConfig : public BaseClass {
    private:
@@ -426,7 +470,34 @@ class ConfigService final {
     virtual ::grpc::ServerUnaryReactor* ConfigRouter(
       ::grpc::CallbackServerContext* /*context*/, const ::api::v1::ConfigRouterRequest* /*request*/, ::api::v1::ConfigRouterResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_GetConfig<WithCallbackMethod_UpdateConfig<WithCallbackMethod_GetIpBlackList<WithCallbackMethod_UpdateIpBlackList<WithCallbackMethod_ConfigRouter<Service > > > > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_UpdateHealthzList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_UpdateHealthzList() {
+      ::grpc::Service::MarkMethodCallback(5,
+          new ::grpc::internal::CallbackUnaryHandler< ::api::v1::UpdateHealthzListRequest, ::api::v1::UpdateHealthzListResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::api::v1::UpdateHealthzListRequest* request, ::api::v1::UpdateHealthzListResponse* response) { return this->UpdateHealthzList(context, request, response); }));}
+    void SetMessageAllocatorFor_UpdateHealthzList(
+        ::grpc::MessageAllocator< ::api::v1::UpdateHealthzListRequest, ::api::v1::UpdateHealthzListResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(5);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::api::v1::UpdateHealthzListRequest, ::api::v1::UpdateHealthzListResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_UpdateHealthzList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status UpdateHealthzList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateHealthzListRequest* /*request*/, ::api::v1::UpdateHealthzListResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* UpdateHealthzList(
+      ::grpc::CallbackServerContext* /*context*/, const ::api::v1::UpdateHealthzListRequest* /*request*/, ::api::v1::UpdateHealthzListResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_GetConfig<WithCallbackMethod_UpdateConfig<WithCallbackMethod_GetIpBlackList<WithCallbackMethod_UpdateIpBlackList<WithCallbackMethod_ConfigRouter<WithCallbackMethod_UpdateHealthzList<Service > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_GetConfig : public BaseClass {
@@ -509,6 +580,23 @@ class ConfigService final {
     }
     // disable synchronous version of this method
     ::grpc::Status ConfigRouter(::grpc::ServerContext* /*context*/, const ::api::v1::ConfigRouterRequest* /*request*/, ::api::v1::ConfigRouterResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_UpdateHealthzList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_UpdateHealthzList() {
+      ::grpc::Service::MarkMethodGeneric(5);
+    }
+    ~WithGenericMethod_UpdateHealthzList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status UpdateHealthzList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateHealthzListRequest* /*request*/, ::api::v1::UpdateHealthzListResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -611,6 +699,26 @@ class ConfigService final {
     }
     void RequestConfigRouter(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_UpdateHealthzList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_UpdateHealthzList() {
+      ::grpc::Service::MarkMethodRaw(5);
+    }
+    ~WithRawMethod_UpdateHealthzList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status UpdateHealthzList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateHealthzListRequest* /*request*/, ::api::v1::UpdateHealthzListResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestUpdateHealthzList(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -721,6 +829,28 @@ class ConfigService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* ConfigRouter(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_UpdateHealthzList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_UpdateHealthzList() {
+      ::grpc::Service::MarkMethodRawCallback(5,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->UpdateHealthzList(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_UpdateHealthzList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status UpdateHealthzList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateHealthzListRequest* /*request*/, ::api::v1::UpdateHealthzListResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* UpdateHealthzList(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -858,9 +988,36 @@ class ConfigService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedConfigRouter(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::api::v1::ConfigRouterRequest,::api::v1::ConfigRouterResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetConfig<WithStreamedUnaryMethod_UpdateConfig<WithStreamedUnaryMethod_GetIpBlackList<WithStreamedUnaryMethod_UpdateIpBlackList<WithStreamedUnaryMethod_ConfigRouter<Service > > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_UpdateHealthzList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_UpdateHealthzList() {
+      ::grpc::Service::MarkMethodStreamed(5,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::api::v1::UpdateHealthzListRequest, ::api::v1::UpdateHealthzListResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::api::v1::UpdateHealthzListRequest, ::api::v1::UpdateHealthzListResponse>* streamer) {
+                       return this->StreamedUpdateHealthzList(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_UpdateHealthzList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status UpdateHealthzList(::grpc::ServerContext* /*context*/, const ::api::v1::UpdateHealthzListRequest* /*request*/, ::api::v1::UpdateHealthzListResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedUpdateHealthzList(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::api::v1::UpdateHealthzListRequest,::api::v1::UpdateHealthzListResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_GetConfig<WithStreamedUnaryMethod_UpdateConfig<WithStreamedUnaryMethod_GetIpBlackList<WithStreamedUnaryMethod_UpdateIpBlackList<WithStreamedUnaryMethod_ConfigRouter<WithStreamedUnaryMethod_UpdateHealthzList<Service > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetConfig<WithStreamedUnaryMethod_UpdateConfig<WithStreamedUnaryMethod_GetIpBlackList<WithStreamedUnaryMethod_UpdateIpBlackList<WithStreamedUnaryMethod_ConfigRouter<Service > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_GetConfig<WithStreamedUnaryMethod_UpdateConfig<WithStreamedUnaryMethod_GetIpBlackList<WithStreamedUnaryMethod_UpdateIpBlackList<WithStreamedUnaryMethod_ConfigRouter<WithStreamedUnaryMethod_UpdateHealthzList<Service > > > > > > StreamedService;
 };
 
 }  // namespace v1

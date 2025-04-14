@@ -70,6 +70,7 @@ target_compile_definitions(azugate PRIVATE
 
 target_link_libraries(azugate
 common
+Boost::system
 )
 
 

@@ -15,6 +15,7 @@
 #include <boost/asio/ssl/stream.hpp>
 #include <boost/asio/ssl/stream_base.hpp>
 #include <boost/asio/ssl/verify_mode.hpp>
+#include <boost/beast.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/smart_ptr/make_shared_object.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
@@ -22,7 +23,6 @@
 #include <boost/system/detail/error_code.hpp>
 #include <boost/thread.hpp>
 #include <boost/thread/detail/thread.hpp>
-
 #include <cstddef>
 #include <cstdlib>
 
@@ -123,6 +123,51 @@ void ignoreSigpipe() {
   sigaction(SIGPIPE, &sa, nullptr);
 }
 
+// TODO: exception is inefficient.
+bool healthz(const std::string &addr) {
+  namespace beast = boost::beast;
+  namespace http = beast::http;
+  namespace net = boost::asio;
+  using tcp = net::ip::tcp;
+  try {
+    auto pos = addr.find(':');
+    if (pos == std::string::npos) {
+      SPDLOG_WARN("Invalid address format: {}", addr);
+      return false;
+    }
+    std::string host = addr.substr(0, pos);
+    std::string port = addr.substr(pos + 1);
+    net::io_context ioc;
+    tcp::resolver resolver(ioc);
+    beast::tcp_stream stream(ioc);
+    auto const results = resolver.resolve(host, port);
+    stream.connect(results);
+    http::request<http::string_body> req{http::verb::get, "/healthz", 11};
+    req.set(http::field::host, host);
+    req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+    http::write(stream, req);
+    beast::flat_buffer buffer;
+    http::response<http::string_body> res;
+    http::read(stream, buffer, res);
+    if (res.result() != http::status::ok) {
+      SPDLOG_WARN("Health check failed for {}: status {}", addr,
+                  res.result_int());
+      return false;
+    }
+    beast::error_code ec;
+    auto _ = stream.socket().shutdown(tcp::socket::shutdown_both, ec);
+    if (ec && ec != beast::errc::not_connected) {
+      SPDLOG_WARN(ec.message());
+      return false;
+    }
+  } catch (const std::exception &e) {
+    // TODO: log something.
+    // SPDLOG_WARN(e.what())
+    return false;
+  }
+  return true;
+}
+
 int main() {
   using namespace boost::asio;
   using namespace azugate;
@@ -170,6 +215,20 @@ int main() {
     std::unique_ptr<grpc::Server> server(server_builder.BuildAndStart());
     SPDLOG_INFO("gRPC server is listening on port {}", g_azugate_admin_port);
     server->Wait();
+  });
+
+  std::thread healthz_thread([&]() {
+    int healthz_gap_sec = 3;
+    SPDLOG_INFO("Health check will be performed every {} seconds",
+                healthz_gap_sec);
+    for (;;) {
+      for (auto &addr : azugate::GetHealthzList()) {
+        if (!healthz(addr)) {
+          SPDLOG_WARN("Health check error for {}", addr);
+        }
+      }
+      std::this_thread::sleep_for(std::chrono::seconds(healthz_gap_sec));
+    }
   });
 
   // setup a basic OTPL server.
