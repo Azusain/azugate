@@ -65,7 +65,6 @@ extern std::string g_azugate_oauth_client_id;
 extern std::string g_azugate_oauth_client_secret;
 // rate limitor.
 extern bool g_enable_rate_limiter;
-// TODO: make it configuable.
 extern size_t g_num_token_per_sec;
 extern size_t g_num_token_max;
 

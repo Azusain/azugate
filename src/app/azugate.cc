@@ -266,14 +266,11 @@ int main() {
 // TODO:
 // let's proxy websockets then.
 // design fault tolerances.
-// stat prefix in envoy?
 // best practices, you can check:
 // https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes.
 // async logging system.
 // websockets.
 // unit test for utilities (HTTP parser).
 // persistent storage.
-// file mapping optimization.
 // memmory pool optimaization.
 // fuzzy matching in router.
-// gzip only works on file proxy.

@@ -106,6 +106,7 @@ public:
   ConfigRouter(::grpc::ServerContext *context,
                const ::api::v1::ConfigRouterRequest *request,
                ::api::v1::ConfigRouterResponse *response) override {
+    // TODO: impl this.
     response->set_message("success");
     return grpc::Status::OK;
   }
