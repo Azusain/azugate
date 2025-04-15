@@ -2,13 +2,16 @@
 
 ### Features
 
-- http file proxy
+- http local file proxy
 - https
-- http gzip compression and chunked transfer
 - tcp proxy
+- websocket
+- http gzip compression and chunked transfer
 - rate limiting
-- management via gRPC API or JSON API
-- web UI
+- OAuth
+- management via gRPC API
+- Linux sendfile()
+- High-performance Asynchronous I/O
 
 ### Build & Run
 
@@ -28,6 +31,7 @@ You will need a compiler that supports c++20, along with CMake and vcpkg, to bui
 ```
 
 ### Dev Tools
+
 #### wrk
 
 ```shell
@@ -42,25 +46,23 @@ You will need a compiler that supports c++20, along with CMake and vcpkg, to bui
   wrk -t1 -c20 -d10s http://localhost:5080
 ```
 
-#### keycloak
-```shell
-  https://www.keycloak.org/getting-started/getting-started-docker
-```
-
 #### buf
 
 ```shell
+ # under proto/
   buf lint
   buf format -w
   buf generate
 ```
 
 ### Perf
+
 ```shell
  # CPU: 12th Gen Intel(R) Core(TM) i5-12600K
  # Cores: 2
- #Command: 
+ # Command: 
  wrk -c400 -t4 -d5s http://172.17.0.2:8080/login/login.html
 ```
 
 <img src="perf.png" alt="QPS Comparison" width="600">
+
