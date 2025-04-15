@@ -18,7 +18,7 @@
 You will need a compiler that supports c++20, along with CMake and vcpkg, to build this project. The project builds successfully on both M2 Mac and x86-64 Linux.
  
 ```shell
-  # 1. Build with Cmake and vcpkg.
+  # 1. Build with CMake and vcpkg.
   mkdir build && cd build
   cmake ..
   cmake --build .
@@ -35,8 +35,6 @@ You will need a compiler that supports c++20, along with CMake and vcpkg, to bui
 #### wrk
 
 ```shell
-  # it should be noted that wrk reuses TCP connections.
-  # azugate hasn't supported HTTP keep-alive.
   wrk -t1 -c20 -d10s http://localhost:5080
 ```
 
