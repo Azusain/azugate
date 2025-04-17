@@ -8,7 +8,7 @@
 - websocket
 - http gzip compression and chunked transfer
 - rate limiting
-- OAuth
+- OAuth integration with Auth0.com
 - management via gRPC API
 - Linux sendfile()
 - High-performance Asynchronous I/O

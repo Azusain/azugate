@@ -9,12 +9,20 @@
 #include <boost/asio.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/registered_buffer.hpp>
+#include <boost/asio/ssl/context.hpp>
+#include <boost/asio/ssl/stream.hpp>
+#include <boost/asio/ssl/stream_base.hpp>
+#include <boost/beast/core/flat_buffer.hpp>
+#include <boost/beast/core/stream_traits.hpp>
+#include <boost/beast/core/tcp_stream.hpp>
 #include <boost/beast/http.hpp>
 #include <boost/beast/http/field.hpp>
 #include <boost/beast/http/file_body.hpp>
 #include <boost/beast/http/message.hpp>
 #include <boost/beast/http/status.hpp>
 #include <boost/beast/http/string_body.hpp>
+#include <boost/beast/http/verb.hpp>
 #include <boost/beast/http/write.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/system/detail/error_code.hpp>
@@ -30,7 +38,6 @@
 #include <optional>
 #include <spdlog/spdlog.h>
 #include <string>
-#include <utility>
 #include <vector>
 
 #if defined(__linux__)
@@ -184,8 +191,8 @@ inline std::string
 extractAzugateAccessTokenFromCookie(const std::string_view &cookie_header) {
   size_t token_pos = cookie_header.find("azugate_access_token=");
   if (token_pos != std::string_view::npos) {
-    // move past 'token='
-    token_pos += 6;
+    // move past 'azugate_access_token='
+    token_pos += 21;
     size_t token_end = cookie_header.find(';', token_pos);
     if (token_end == std::string_view::npos) {
       token_end = cookie_header.length();
@@ -202,6 +209,7 @@ extractTokenFromAuthorization(const std::string_view &auth_header) {
   if (token_pos != std::string_view::npos) {
     // move past 'Bearer' and a space.
     token_pos += 7;
+    SPDLOG_WARN(auth_header.substr(token_pos));
     return std::string(auth_header.substr(token_pos));
   }
   return "";
@@ -213,104 +221,89 @@ extractTokenFromAuthorization(const std::string_view &auth_header) {
 template <typename T>
 inline bool externalAuthorization(network::PicoHttpRequest &request,
                                   boost::shared_ptr<T> sock_ptr,
-                                  std::string &&token) {
+                                  const std::string &token) {
   using namespace boost::beast;
 
-  // if (code != "") {
-  //   network::HttpClient<T> code_http_client;
-  //   code_http_client.Connect(io_context_ptr, g_external_oauth_server_domain,
-  //                            std::string(kDftHttpPort));
-  //   // token exchange with the oauth server.
-  //   std::string body;
-  //   body.reserve(kDftStringReservedBytes);
-  //   body.append("grant_type=")
-  //       .append(azugate::utils::UrlEncode("authorization_code"))
-  //       .append("&code=")
-  //       .append(azugate::utils::UrlEncode(code))
-  //       .append("&redirect_uri=");
-  //   if (GetHttps()) {
-  //     body.append(ProtocolTypeHttps);
-  //   } else {
-  //     body.append(ProtocolTypeHttp);
-  //   }
-  //   body.append(azugate::utils::UrlEncode("://"))
-  //       .append(g_azugate_domain)
-  //       .append(":")
-  //       .append(std::to_string(g_azugate_port))
-  //       .append("&client_id=")
-  //       .append(azugate::utils::UrlEncode(g_azugate_oauth_client_id))
-  //       .append("&client_secret=")
-  //       .append(azugate::utils::UrlEncode(g_azugate_oauth_client_secret));
-  //   CRequest::HttpRequest req(std::string(CRequest::kHttpPost),
-  //                             g_external_oauth_server_path);
-  //   req.SetContentLength(body.length());
-  //   req.SetKeepAlive(false);
-  //   if (!http_client.SendHttpHeader(req, ec)) {
-  //     SPDLOG_WARN("failed to send token exchange http request");
-  //     return false;
-  //   }
-  //   network::PicoHttpResponse resp;
-  //   if (!http_client.ParseHttpResponse(resp, ec)) {
-  //     SPDLOG_WARN("failed to parse http response");
-  //     return false;
-  //   }
-  //   // extract token from body.
-  //   size_t content_length = 0;
-  //   for (size_t i = 0; i < resp.num_headers; ++i) {
-  //     auto &header = request.headers[i];
-  //     std::string_view header_name(header.name, header.name_len);
-  //     if (header_name == CRequest::kHeaderAuthorization) {
-  //       // TODO: watch out for the spaces.
-  //       content_length = std::stoi(std::string(header.value,
-  //       header.value_len));
-  //     }
-  //   }
-  //   std::string response_buffer;
-  //   response_buffer.reserve(content_length);
-  //   if (http_client.ReadHttpBody(response_buffer, ec)) {
-  //     SPDLOG_WARN("error occurs while fetching token from body");
-  //     return false;
-  //   }
-
-  //   try {
-  //     auto json = nlohmann::json::parse(response_buffer);
-  //     if (json["access_token"] == "") {
-  //       SPDLOG_WARN("access token not found in http response");
-  //       return false;
-  //     };
-  //   } catch (...) {
-  //     SPDLOG_WARN("failed to parse json from body");
-  //     return false;
-  //   }
-
-  //   // generate azugate access token.
-  //   std::string azugate_access_token =
-  //       utils::GenerateToken("{}", g_authorization_token_secret);
-  //   if (azugate_access_token == "") {
-  //     SPDLOG_ERROR("failed to generate token");
-  //     return false;
-  //   }
-
-  //   CRequest::HttpResponse token_resp(CRequest::kHttpOk);
-  //   token_resp.SetKeepAlive(false);
-  //   token_resp.SetCookie("azugate_access_token", azugate_access_token);
-  //   if (!http_client.SendHttpHeader(token_resp, ec)) {
-  //     SPDLOG_WARN("failed to send back access token to client");
-  //     return false;
-  //   }
-  //   return true;
-  // }
-  // verify token.
-  // extract authorization code from url parameters.
-  // exract authorization code from url parameters.
+  // get authorization code.
   auto code = network::ExtractParamFromUrl(
       std::string(request.path, request.len_path), "code");
   if (code != "") {
-    SPDLOG_INFO("authorization code: {}", code);
-    return true;
+    using namespace boost::asio;
+    boost::system::error_code ec;
+    ssl::context ctx(ssl::context::sslv23_client);
+    // TODO: integrate the io_context with the server's.
+    io_context ioc;
+    ip::tcp::resolver resolver(ioc);
+    ssl::stream<boost::beast::tcp_stream> stream(ioc, ctx);
+    auto results = resolver.resolve(g_external_auth_domain, "443", ec);
+    if (ec) {
+      SPDLOG_WARN("failed to resolve host: {}", ec.message());
+      return false;
+    }
+    boost::beast::get_lowest_layer(stream).connect(results, ec);
+    if (ec) {
+      SPDLOG_WARN("failed to connect to host: {}", ec.message());
+      return false;
+    }
+    auto _ = stream.handshake(ssl::stream_base::client, ec);
+    if (ec) {
+      SPDLOG_WARN("failed to do handshake: {}", ec.message());
+      return false;
+    }
+    // TODO: standard oauth workflow.
+    // send code to Auth0 server.
+    http::request<http::string_body> req{http::verb::post, "/oauth/token", 11};
+    req.set(http::field::content_type, "application/x-www-form-urlencoded");
+    req.set(http::field::host, g_external_auth_domain);
+    req.set(http::field::user_agent, "azugate/1.0");
+    boost::urls::url u;
+    auto params = u.params();
+    params.set("grant_type", "authorization_code");
+    params.set("client_id", g_external_auth_client_id);
+    params.set("client_secret", g_external_auth_client_secret);
+    params.set("code", code);
+    // TODO: callback url.
+    params.set("redirect_uri", "http://localhost:8089/callback");
+    req.body() = u.encoded_query();
+    req.prepare_payload();
+    http::write(stream, req, ec);
+    if (ec) {
+      SPDLOG_WARN("failed to send http request: {}", ec.message());
+      return false;
+    }
+    // read response from Auth0.
+    boost::beast::flat_buffer buffer;
+    http::response<http::string_body> auth0_resp;
+    http::read(stream, buffer, auth0_resp);
+    auto json = nlohmann::json::parse(auth0_resp.body());
+    if (!json.contains("access_token")) {
+      SPDLOG_WARN("failed to get access token from ID provider");
+      return false;
+    }
+    auto token = json["access_token"].get<std::string>();
+    // generate azugate access_token and send it back to client.
+    auto payload = "{}";
+    std::string azugate_access_token =
+        utils::GenerateToken(payload, g_authorization_token_secret);
+    if (azugate_access_token == "") {
+      SPDLOG_ERROR("failed to generate token");
+      return false;
+    }
+    http::response<http::string_body> client_resp{http::status::found, 11};
+    client_resp.set(
+        http::field::set_cookie,
+        fmt::format("azugate_access_token={}", azugate_access_token));
+    client_resp.set(http::field::location, "/welcome.html");
+    // TODO: redirect web page.
+    client_resp.body() = "<h1>Login Successfully</h1>";
+    client_resp.prepare_payload();
+    http::write(*sock_ptr, client_resp, ec);
+    if (ec) {
+      SPDLOG_ERROR("failed to write response to client");
+    }
+    return false;
   }
-
-  // auth0 login currently.
+  // verify token or get authorization code from client.
   if (token.length() == 0 ||
       !utils::VerifyToken(token, g_authorization_token_secret)) {
     boost::urls::url u(
@@ -320,6 +313,7 @@ inline bool externalAuthorization(network::PicoHttpRequest &request,
     params.set("client_id", g_external_auth_client_id);
     params.set("redirect_uri", "http://localhost:8089/callback");
     params.set("scope", "openid");
+    // TODO: deal with state.
     params.set("state", "1111");
     // redirect to oauth login page.
     http::response<http::string_body> resp{http::status::found, 11};
@@ -367,11 +361,12 @@ inline bool extractMetaFromHeaders(utils::CompressionType &compression_type,
       token = extractAzugateAccessTokenFromCookie(header_value);
       continue;
     }
-    if (header_name == CRequest::kHeaderAuthorization) {
-      std::string_view header_value(header.value, header.value_len);
-      token = extractTokenFromAuthorization(header_value);
-      continue;
-    }
+    // TODO: fix it when needed.
+    // if (header_name == CRequest::kHeaderAuthorization) {
+    //   std::string_view header_value(header.value, header.value_len);
+    //   token = extractTokenFromAuthorization(header_value);
+    //   continue;
+    // }
   }
   if (!GetHttpCompression()) {
     compression_type =
@@ -455,11 +450,13 @@ public:
     if (!extractMetaFromHeaders(compression_type_, request_, token_)) {
       SPDLOG_WARN("failed to extract meta from headers");
       async_accpet_cb_();
+      return;
     }
     // TODO: external authoriation and router.
     if (g_http_external_authorization &&
-        !externalAuthorization(request_, sock_ptr_, "")) {
+        !externalAuthorization(request_, sock_ptr_, token_)) {
       async_accpet_cb_();
+      return;
     }
     handleLocalFileRequest();
   }
@@ -628,11 +625,12 @@ public:
     // get local file path from request url.
     std::shared_ptr<char[]> full_local_file_path =
         assembleFullLocalFilePath(kPathResourceFolder, request_);
-    // auto full_local_file_path_str = full_local_file_path.get();
-    auto full_local_file_path_str = "../resources/welcome.html";
-    if (!std::filesystem::exists(full_local_file_path_str)) {
-      SPDLOG_ERROR("file not exists: {}", full_local_file_path_str);
+    auto full_local_file_path_str = full_local_file_path.get();
+    if (!std::filesystem::exists(full_local_file_path_str) ||
+        !std::filesystem::is_regular_file(full_local_file_path_str)) {
+      SPDLOG_WARN("file not exists: {}", full_local_file_path_str);
       async_accpet_cb_();
+      return;
     }
 
     auto local_file_size = std::filesystem::file_size(full_local_file_path_str);
@@ -641,8 +639,7 @@ public:
     CRequest::HttpResponse resp(CRequest::kHttpOk);
     auto ext =
         utils::FindFileExtension(std::string(request_.path, request_.len_path));
-    // resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
-    resp.SetContentType(CRequest::kContentTypeTextHtml);
+    resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
     resp.SetKeepAlive(false);
     if (compression_type_.code != utils::kCompressionTypeCodeNone) {
       resp.SetContentEncoding(compression_type_.str);
@@ -654,6 +651,7 @@ public:
     if (!http_client.SendHttpHeader(resp)) {
       SPDLOG_ERROR("failed to send http response");
       async_accpet_cb_();
+      return;
     }
 
     // setup and send body.

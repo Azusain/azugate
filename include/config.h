@@ -55,11 +55,7 @@ extern std::string g_target_host;
 extern std::mutex g_config_mutex;
 // set it to true when integrating with external authentication provider.
 extern bool g_management_system_authentication;
-// external oauth authorization.
-// TODO: update these fields into configuration files.
-extern std::string g_external_oauth_server_domain;
-extern std::string g_external_oauth_server_path;
-extern std::string g_azugate_domain;
+
 // http(s) external oauth authorization.
 extern bool g_http_external_authorization;
 // used for generating and verifying tokens.
