@@ -119,9 +119,11 @@ private:
 } // namespace azugate
 
 void ignoreSigpipe() {
-  struct sigaction sa{};
+#if defined(__linux__)
+  struct sigaction sa {};
   sa.sa_handler = SIG_IGN;
   sigaction(SIGPIPE, &sa, nullptr);
+#endif
 }
 
 // TODO: exception is inefficient.
@@ -189,13 +191,14 @@ int main() {
     // parse and load configuration.
     SPDLOG_INFO("loading config from {}", path_config_file);
     auto config = YAML::LoadFile(path_config_file);
-    g_azugate_port = config[kYamlFieldPort].as<uint16_t>();
-    g_azugate_admin_port = config[kYamlFieldAdminPort].as<uint16_t>();
-    g_ssl_crt = config[kYamlFieldCrt].as<std::string>();
-    g_ssl_key = config[kYamlFieldKey].as<std::string>();
-    g_proxy_mode = config[kYamlFieldProxyMode].as<bool>();
+    g_azugate_port = config[std::string(kYamlFieldPort)].as<uint16_t>();
+    g_azugate_admin_port =
+        config[std::string(kYamlFieldAdminPort)].as<uint16_t>();
+    g_ssl_crt = config[std::string(kYamlFieldCrt)].as<std::string>();
+    g_ssl_key = config[std::string(kYamlFieldKey)].as<std::string>();
+    g_proxy_mode = config[std::string(kYamlFieldProxyMode)].as<bool>();
     g_management_system_authentication =
-        config[kYamlFieldManagementSysAuth].as<bool>();
+        config[std::string(kYamlFieldManagementSysAuth)].as<bool>();
   } catch (...) {
     SPDLOG_ERROR("unexpected errors happen when parsing yaml file");
     return 1;

@@ -101,7 +101,7 @@ inline bool handleNoCompression(const boost::shared_ptr<T> sock_ptr,
     return true;
 #endif
   }
-  // TODO: dead code in linux.
+  // TODO: dead code on linux.
   std::ifstream local_file_stream(full_local_file_path_str, std::ios::binary);
   if (!local_file_stream.is_open()) {
     SPDLOG_ERROR("failed to open file: {}", full_local_file_path_str);

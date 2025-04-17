@@ -8,7 +8,6 @@
 #include <spdlog/spdlog.h>
 #include <string>
 
-#include <aio.h>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
