@@ -4,6 +4,6 @@ crt: "../resources/localhost.crt"
 key: "../resources/localhost.key"
 proxy_mode: false
 authentication: false
-auth_domain: "dev-uvdrnevt7hgjpz02.us.auth0.com"
-auth_client_id: "wbd8OgwviVyAY8RKVASbjeEMnQpFhIT6"
+auth_domain: "dev-uep626a5ecgmzopx.us.auth0.com"
+auth_client_id: "wKWP9oGUySyMYDuISRTZ5EeGeB8SOl6F"
 auth_client_secret: ""

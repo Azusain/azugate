@@ -189,32 +189,32 @@ int main() {
   }
 
   // setup grpc server.
-  // std::thread grpc_server_thread([&]() {
-  //   grpc::ServerBuilder server_builder;
-  //   server_builder.AddListeningPort(
-  //       fmt::format("0.0.0.0:{}", g_azugate_admin_port),
-  //       grpc::InsecureServerCredentials());
-  //   ConfigServiceImpl config_service;
-  //   grpc::reflection::InitProtoReflectionServerBuilderPlugin();
-  //   server_builder.RegisterService(&config_service);
-  //   std::unique_ptr<grpc::Server> server(server_builder.BuildAndStart());
-  //   SPDLOG_INFO("gRPC server is listening on port {}", g_azugate_admin_port);
-  //   server->Wait();
-  // });
+  std::thread grpc_server_thread([&]() {
+    grpc::ServerBuilder server_builder;
+    server_builder.AddListeningPort(
+        fmt::format("0.0.0.0:{}", g_azugate_admin_port),
+        grpc::InsecureServerCredentials());
+    ConfigServiceImpl config_service;
+    grpc::reflection::InitProtoReflectionServerBuilderPlugin();
+    server_builder.RegisterService(&config_service);
+    std::unique_ptr<grpc::Server> server(server_builder.BuildAndStart());
+    SPDLOG_INFO("gRPC server is listening on port {}", g_azugate_admin_port);
+    server->Wait();
+  });
 
-  // std::thread healthz_thread([&]() {
-  //   int healthz_gap_sec = 3;
-  //   SPDLOG_INFO("Health check will be performed every {} seconds",
-  //               healthz_gap_sec);
-  //   for (;;) {
-  //     for (auto &addr : azugate::GetHealthzList()) {
-  //       if (!healthz(addr)) {
-  //         SPDLOG_WARN("Health check error for {}", addr);
-  //       }
-  //     }
-  //     std::this_thread::sleep_for(std::chrono::seconds(healthz_gap_sec));
-  //   }
-  // });
+  std::thread healthz_thread([&]() {
+    int healthz_gap_sec = 3;
+    SPDLOG_INFO("Health check will be performed every {} seconds",
+                healthz_gap_sec);
+    for (;;) {
+      for (auto &addr : azugate::GetHealthzList()) {
+        if (!healthz(addr)) {
+          SPDLOG_WARN("Health check error for {}", addr);
+        }
+      }
+      std::this_thread::sleep_for(std::chrono::seconds(healthz_gap_sec));
+    }
+  });
 
   // setup a basic OTPL server.
   auto io_context_ptr = boost::make_shared<boost::asio::io_context>();

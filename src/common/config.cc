@@ -61,7 +61,7 @@ size_t g_num_threads = 4;
 // healthz.
 std::vector<std::string> g_healthz_list;
 // external auth
-bool g_http_external_authorization = false;
+bool g_http_external_authorization = true;
 std::string g_external_auth_domain;
 std::string g_external_auth_client_id;
 std::string g_external_auth_client_secret;
