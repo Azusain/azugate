@@ -57,11 +57,11 @@ bool g_enable_rate_limiter = false;
 size_t g_num_token_per_sec = 100;
 size_t g_num_token_max = 1000;
 // io
-size_t g_num_threads = 1;
+size_t g_num_threads = 4;
 // healthz.
 std::vector<std::string> g_healthz_list;
 // external auth
-bool g_http_external_authorization = true;
+bool g_http_external_authorization = false;
 std::string g_external_auth_domain;
 std::string g_external_auth_client_id;
 std::string g_external_auth_client_secret;
