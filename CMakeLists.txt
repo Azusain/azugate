@@ -12,7 +12,7 @@ set(CMAKE_BUILD_TYPE Debug)
 
 find_package(spdlog REQUIRED)
 find_package(fmt REQUIRED)
-find_package(Boost COMPONENTS asio thread system CONFIG)
+find_package(Boost COMPONENTS asio thread system url CONFIG)
 find_package(yaml-cpp CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(gRPC CONFIG REQUIRED)
@@ -47,6 +47,7 @@ spdlog::spdlog
 ZLIB::ZLIB
 Boost::asio
 Boost::thread
+Boost::url
 yaml-cpp::yaml-cpp
 gRPC::grpc++
 gRPC::grpc++_reflection

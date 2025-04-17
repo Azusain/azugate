@@ -1,4 +1,5 @@
 #include "../../include/config.h"
+#include "auth.h"
 #include "protocols.h"
 #include <cstddef>
 #include <cstdint>
@@ -8,10 +9,13 @@
 #include <spdlog/spdlog.h>
 #include <string>
 
+#include <string_view>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include <yaml-cpp/node/parse.h>
+#include <yaml-cpp/yaml.h>
 
 namespace std {
 template <> struct hash<azugate::ConnectionInfo> {
@@ -33,7 +37,6 @@ std::unordered_set<std::string> g_ip_blacklist;
 bool g_enable_http_compression = false;
 bool g_enable_https = false;
 bool g_management_system_authentication = false;
-bool g_http_external_authorization = false;
 std::string g_external_oauth_server_domain = "localhost";
 std::string g_external_oauth_server_path = "/";
 std::string g_azugate_domain = "localhost";
@@ -60,6 +63,11 @@ size_t g_num_token_max = 1000;
 size_t g_num_threads = 1;
 // healthz.
 std::vector<std::string> g_healthz_list;
+// external auth
+bool g_http_external_authorization = true;
+std::string g_external_auth_domain;
+std::string g_external_auth_client_id;
+std::string g_external_auth_client_secret;
 
 std::string GetConfigPath() {
   std::lock_guard<std::mutex> lock(g_config_mutex);
@@ -152,5 +160,34 @@ bool azugate::ConnectionInfo::operator==(const ConnectionInfo &other) const {
   auto http_eq = type == ProtocolTypeHttp && http_url == other.http_url;
   return tcp_eq | http_eq;
 }
+
+bool LoadServerConfig() {
+  try {
+    auto path_config_file = GetConfigPath();
+    // parse and load configuration.
+    SPDLOG_INFO("loading config from {}", path_config_file);
+    auto config = YAML::LoadFile(path_config_file);
+    g_azugate_port = config[kYamlFieldPort].as<uint16_t>();
+    g_azugate_admin_port = config[kYamlFieldAdminPort].as<uint16_t>();
+    g_ssl_crt = config[kYamlFieldCrt].as<std::string>();
+    g_ssl_key = config[kYamlFieldKey].as<std::string>();
+    g_proxy_mode = config[kYamlFieldProxyMode].as<bool>();
+    g_management_system_authentication =
+        config[kYamlFieldManagementSysAuth].as<bool>();
+    // external auth.
+    g_external_auth_domain =
+        config[kYamlFieldExternalAuthDomain].as<std::string>();
+    g_external_auth_client_id =
+        config[kYamlFieldExternalAuthClientID].as<std::string>();
+    g_external_auth_client_secret =
+        config[kYamlFieldExternalAuthClientSecret].as<std::string>();
+  } catch (...) {
+    SPDLOG_ERROR("unexpected errors happen when parsing yaml file");
+    return false;
+  }
+  // token secret.
+  g_authorization_token_secret = utils::GenerateSecret();
+  return true;
+};
 
 } // namespace azugate

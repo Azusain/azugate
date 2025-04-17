@@ -1,9 +1,9 @@
 {
   "dependencies": [
     "boost-asio",
+    "boost-beast",
     "boost-system",
     "boost-thread",
-    "boost-beast",
     "fmt",
     "grpc",
     "jwt-cpp",
@@ -11,6 +11,7 @@
     "openssl",
     "spdlog",
     "yaml-cpp",
-    "zlib"
+    "zlib",
+    "boost-url"
   ]
 }

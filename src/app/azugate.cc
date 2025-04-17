@@ -1,5 +1,4 @@
 #include "../api//config_service.hpp"
-#include "auth.h"
 #include "config.h"
 #include "dispatcher.h"
 #include "filter.h"
@@ -44,8 +43,6 @@
 #include <thread>
 #include <utility>
 #include <vector>
-#include <yaml-cpp/node/parse.h>
-#include <yaml-cpp/yaml.h>
 
 namespace azugate {
 
@@ -120,7 +117,7 @@ private:
 
 void ignoreSigpipe() {
 #if defined(__linux__)
-  struct sigaction sa {};
+  struct sigaction sa{};
   sa.sa_handler = SIG_IGN;
   sigaction(SIGPIPE, &sa, nullptr);
 #endif
@@ -186,26 +183,9 @@ int main() {
   azugate::SetConfigPath(fmt::format("{}/{}", azugate::kPathResourceFolder,
                                      azugate::kDftConfigFile));
 
-  try {
-    auto path_config_file = azugate::GetConfigPath();
-    // parse and load configuration.
-    SPDLOG_INFO("loading config from {}", path_config_file);
-    auto config = YAML::LoadFile(path_config_file);
-    g_azugate_port = config[std::string(kYamlFieldPort)].as<uint16_t>();
-    g_azugate_admin_port =
-        config[std::string(kYamlFieldAdminPort)].as<uint16_t>();
-    g_ssl_crt = config[std::string(kYamlFieldCrt)].as<std::string>();
-    g_ssl_key = config[std::string(kYamlFieldKey)].as<std::string>();
-    g_proxy_mode = config[std::string(kYamlFieldProxyMode)].as<bool>();
-    g_management_system_authentication =
-        config[std::string(kYamlFieldManagementSysAuth)].as<bool>();
-  } catch (...) {
-    SPDLOG_ERROR("unexpected errors happen when parsing yaml file");
-    return 1;
+  if (!LoadServerConfig()) {
+    return -1;
   }
-
-  // token secret.
-  g_authorization_token_secret = utils::GenerateSecret();
 
   // setup grpc server.
   std::thread grpc_server_thread([&]() {

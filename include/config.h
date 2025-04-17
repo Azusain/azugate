@@ -31,6 +31,10 @@ constexpr std::string_view kYamlFieldProxyMode = "proxy_mode";
 constexpr std::string_view kYamlFieldProxyTargetPort = "target_port";
 constexpr std::string_view kYamlFieldProxyTargetHost = "target_host";
 constexpr std::string_view kYamlFieldManagementSysAuth = "authentication";
+constexpr std::string_view kYamlFieldExternalAuthDomain = "auth_domain";
+constexpr std::string_view kYamlFieldExternalAuthClientID = "auth_client_id";
+constexpr std::string_view kYamlFieldExternalAuthClientSecret =
+    "auth_client_secret";
 // mics.
 constexpr std::string_view kDftHttpPort = "80";
 constexpr std::string_view kDftHttpsPort = "443";
@@ -56,7 +60,7 @@ extern bool g_management_system_authentication;
 extern std::string g_external_oauth_server_domain;
 extern std::string g_external_oauth_server_path;
 extern std::string g_azugate_domain;
-// http(s) external oauth authorization..
+// http(s) external oauth authorization.
 extern bool g_http_external_authorization;
 // used for generating and verifying tokens.
 extern std::string g_authorization_token_secret;
@@ -70,6 +74,11 @@ extern size_t g_num_token_max;
 
 // io
 extern size_t g_num_threads;
+
+// TODO: auth (temp).
+extern std::string g_external_auth_domain;
+extern std::string g_external_auth_client_id;
+extern std::string g_external_auth_client_secret;
 
 std::string GetConfigPath();
 void SetConfigPath(std::string &&path);
@@ -108,6 +117,8 @@ struct ConnectionInfo {
 void AddRouterMapping(ConnectionInfo &&source, ConnectionInfo &&target);
 
 std::optional<ConnectionInfo> GetRouterMapping(const ConnectionInfo &source);
+
+bool LoadServerConfig();
 
 } // namespace azugate
 
