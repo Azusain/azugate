@@ -110,9 +110,9 @@ struct ConnectionInfo {
   bool operator==(const ConnectionInfo &other) const;
 };
 
-void AddRouterMapping(ConnectionInfo &&source, ConnectionInfo &&target);
+void AddRoute(ConnectionInfo &&source, ConnectionInfo &&target);
 
-std::optional<ConnectionInfo> GetRouterMapping(const ConnectionInfo &source);
+std::optional<ConnectionInfo> GetTargetRoute(const ConnectionInfo &source);
 
 bool LoadServerConfig();
 

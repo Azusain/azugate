@@ -19,7 +19,6 @@
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/system/detail/error_code.hpp>
 #include <cstddef>
-#include <functional>
 #include <spdlog/spdlog.h>
 #include <string>
 #include <utility>

@@ -45,7 +45,42 @@ uint16_t g_target_port;
 std::string g_target_host;
 std::mutex g_config_mutex;
 // router.
-std::unordered_map<ConnectionInfo, ConnectionInfo> g_router_map;
+struct RouterEntry {
+  // used for round robin.
+  size_t next_index;
+  std::vector<ConnectionInfo> targets;
+
+  void AddTarget(const ConnectionInfo &conn) {
+    if (std::find(targets.begin(), targets.end(), conn) == targets.end()) {
+      targets.push_back(conn);
+    }
+  }
+
+  void RemoveTarget(const ConnectionInfo &conn) {
+    auto it = std::remove(targets.begin(), targets.end(), conn);
+    if (it != targets.end()) {
+      targets.erase(it, targets.end());
+      if (next_index >= targets.size() && !targets.empty()) {
+        next_index %= targets.size();
+      }
+    }
+  }
+
+  std::optional<ConnectionInfo> GetNextTarget() {
+    if (targets.empty()) {
+      return std::nullopt;
+    }
+    ConnectionInfo &result = targets[next_index];
+    next_index = (next_index + 1) % targets.size();
+    return result;
+  }
+
+  bool Contains(const ConnectionInfo &conn) const {
+    return std::find(targets.begin(), targets.end(), conn) != targets.end();
+  }
+};
+
+std::unordered_map<ConnectionInfo, RouterEntry> g_router_table;
 // token.
 std::string g_authorization_token_secret;
 // oauth.
@@ -61,7 +96,7 @@ size_t g_num_threads = 4;
 // healthz.
 std::vector<std::string> g_healthz_list;
 // external auth
-bool g_http_external_authorization = true;
+bool g_http_external_authorization = false;
 std::string g_external_auth_domain;
 std::string g_external_auth_client_id;
 std::string g_external_auth_client_secret;
@@ -133,29 +168,43 @@ const std::vector<std::string> &GetHealthzList() {
   return g_healthz_list;
 }
 
-void AddRouterMapping(ConnectionInfo &&source, ConnectionInfo &&target) {
-  std::lock_guard<std::mutex> lock(g_config_mutex);
-  g_router_map.emplace(
-      std::pair<ConnectionInfo, ConnectionInfo>{source, target});
+void AddRoute(ConnectionInfo &&source, ConnectionInfo &&target) {
+  auto it = g_router_table.find(source);
+  if (it != g_router_table.end()) {
+    it->second.AddTarget(std::move(target));
+    return;
+  }
+  RouterEntry router_entry{};
+  router_entry.AddTarget(target);
+  g_router_table.emplace(std::move(source), std::move(router_entry));
 }
 
-// TODO: implement support for wildcards('*').
-std::optional<ConnectionInfo> GetRouterMapping(const ConnectionInfo &source) {
+std::optional<ConnectionInfo> GetTargetRoute(const ConnectionInfo &source) {
   std::lock_guard<std::mutex> lock(g_config_mutex);
-  auto it = g_router_map.find(source);
-  if (it != g_router_map.end()) {
-    return it->second;
+  auto it = g_router_table.find(source);
+  if (it != g_router_table.end() && !it->second.targets.empty()) {
+    return it->second.GetNextTarget();
   }
   return std::nullopt;
 }
 
+// perfect match and prefix match.
 bool azugate::ConnectionInfo::operator==(const ConnectionInfo &other) const {
   if (type != other.type) {
     return false;
   }
-  auto tcp_eq = type == ProtocolTypeTcp && address == other.address;
-  auto http_eq = type == ProtocolTypeHttp && http_url == other.http_url;
-  return tcp_eq | http_eq;
+  if (type == ProtocolTypeTcp) {
+    return address == other.address;
+  }
+  if (type == ProtocolTypeHttp) {
+    if (http_url == other.http_url) {
+      return true;
+    }
+    // TODO: only C++20 supports this.
+    return http_url.starts_with(other.http_url) ||
+           other.http_url.starts_with(http_url);
+  }
+  return false;
 }
 
 bool LoadServerConfig() {

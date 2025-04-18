@@ -4,6 +4,7 @@
     "boost-beast",
     "boost-system",
     "boost-thread",
+    "boost-url",
     "fmt",
     "grpc",
     "jwt-cpp",
@@ -12,6 +13,6 @@
     "spdlog",
     "yaml-cpp",
     "zlib",
-    "boost-url"
+    "gtest"
   ]
 }

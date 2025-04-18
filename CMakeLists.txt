@@ -4,11 +4,11 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Debug)
 # used for distribution.
-set(CMAKE_BUILD_TYPE Release)
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -flto -DNDEBUG -s")
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
+# set(CMAKE_BUILD_TYPE Release)
+# set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -flto -DNDEBUG -s")
+# set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
 
 find_package(spdlog REQUIRED)
 find_package(fmt REQUIRED)
@@ -20,6 +20,8 @@ find_package(Protobuf CONFIG REQUIRED)
 find_package(jwt-cpp REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
+find_package(GTest CONFIG REQUIRED)
+enable_testing()
 
 set(COMMON_INCLUDES_DIR "include")
 set(THIRD_PARTY_INCLUDES_DIR "third_party")
@@ -92,4 +94,12 @@ target_link_libraries(azugate_
 ${OPENSSL_LIBRARIES}
 common
 Boost::system
+)
+
+# Router Test.
+add_executable(router_test
+"src/app/router_test.cc"
+)
+target_link_libraries(router_test PRIVATE
+GTest::gtest
 )
