@@ -19,6 +19,7 @@
 
 namespace std {
 template <> struct hash<azugate::ConnectionInfo> {
+  // TODO: redesign hash func.
   size_t operator()(const azugate::ConnectionInfo &conn) const {
     size_t h1 = hash<azugate::ProtocolType>()(conn.type);
     // TODO: hash func for TCP routing.

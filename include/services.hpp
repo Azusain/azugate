@@ -29,6 +29,7 @@
 #include <boost/system/detail/error_code.hpp>
 #include <boost/url.hpp>
 #include <boost/url/url.hpp>
+#include <charconv>
 #include <cstddef>
 #include <filesystem>
 #include <fmt/format.h>
@@ -39,6 +40,7 @@
 #include <optional>
 #include <spdlog/spdlog.h>
 #include <string>
+#include <system_error>
 #include <vector>
 
 #if defined(__linux__)
@@ -329,7 +331,8 @@ inline bool externalAuthorization(network::PicoHttpRequest &request,
 
 inline bool extractMetaFromHeaders(utils::CompressionType &compression_type,
                                    network::PicoHttpRequest &request,
-                                   std::string &token) {
+                                   std::string &token,
+                                   size_t &request_content_length) {
   if (request.num_headers <= 0 || request.num_headers > kMaxHeadersNum) {
     SPDLOG_WARN("No headers found in the request.");
     return false;
@@ -338,12 +341,12 @@ inline bool extractMetaFromHeaders(utils::CompressionType &compression_type,
   for (size_t i = 0; i < request.num_headers; ++i) {
     auto &header = request.headers[i];
     if (header.name == nullptr || header.value == nullptr) {
-      SPDLOG_WARN("Header name or value is null at index {}", i);
+      SPDLOG_WARN("header name or value is null at index {}", i);
       return false;
     }
     if (header.name_len <= 0 || header.value_len <= 0) {
       SPDLOG_WARN(
-          "Invalid header length at index {}: name_len={}, value_len={}", i,
+          "invalid header length at index {}: name_len={}, value_len={}", i,
           header.name_len, header.value_len);
       return false;
     }
@@ -357,6 +360,16 @@ inline bool extractMetaFromHeaders(utils::CompressionType &compression_type,
       std::string_view header_value(header.value, header.value_len);
       token = extractAzugateAccessTokenFromCookie(header_value);
       continue;
+    }
+    if (header_name == CRequest::kHeaderContentLength) {
+      std::string len_str(header.value, header.value_len);
+      auto [_, err] =
+          std::from_chars(header.value, header.value + header.value_len,
+                          request_content_length);
+      if (err == std::errc()) {
+        SPDLOG_ERROR("failed to convert std::string to int}");
+        return false;
+      }
     }
     // TODO: fix it when needed.
     // if (header_name == CRequest::kHeaderAuthorization) {
@@ -384,7 +397,8 @@ public:
                    std::function<void()> async_accpet_cb)
       : io_context_ptr_(io_context_ptr), sock_ptr_(sock_ptr),
         async_accpet_cb_(async_accpet_cb), total_parsed_(0),
-        source_connection_info_(source_connection_info) {}
+        source_connection_info_(source_connection_info),
+        request_content_length_(0) {}
 
   // TODO: release connections properly.
   ~HttpProxyHandler() { Close(); }
@@ -443,7 +457,8 @@ public:
   }
 
   inline void extractMetadata() {
-    if (!extractMetaFromHeaders(compression_type_, request_, token_)) {
+    if (!extractMetaFromHeaders(compression_type_, request_, token_,
+                                request_content_length_)) {
       SPDLOG_WARN("failed to extract meta from headers");
       async_accpet_cb_();
       return;
@@ -455,6 +470,24 @@ public:
       return;
     }
     route();
+  }
+
+  // convert string constants to boost::beast::http::verb.
+  std::optional<boost::beast::http::verb>
+  stringToVerb(const std::string &methodStr) {
+    using namespace boost::beast;
+    static const std::unordered_map<std::string, http::verb> methodMap = {
+        {"GET", http::verb::get},     {"POST", http::verb::post},
+        {"PUT", http::verb::put},     {"DELETE", http::verb::delete_},
+        {"HEAD", http::verb::head},   {"OPTIONS", http::verb::options},
+        {"PATCH", http::verb::patch}, {"CONNECT", http::verb::connect},
+        {"TRACE", http::verb::trace}};
+
+    auto it = methodMap.find(methodStr);
+    if (it != methodMap.end()) {
+      return it->second;
+    }
+    return std::nullopt;
   }
 
   inline void route() {
@@ -478,122 +511,113 @@ public:
     if (!target_conn_info_opt->remote) {
       target_url_ = target_conn_info_opt->http_url;
       handleLocalFileRequest();
+      async_accpet_cb_();
+      return;
+    }
+    auto target_address = target_conn_info_opt->address;
+    auto target_port = target_conn_info_opt->port;
+    if (target_address == "") {
+      SPDLOG_ERROR("invalid target address");
+      async_accpet_cb_();
+      return;
+    }
+    handleProxyRequest(std::move(target_address), std::move(target_port));
+  }
+
+  void handleProxyRequest(std::string &&target_host, uint16_t &&target_port) {
+    namespace beast = boost::beast;
+    namespace http = beast::http;
+    namespace net = boost::asio;
+    using tcp = net::ip::tcp;
+    boost::system::error_code ec;
+    // proxy request to target.
+    tcp::resolver resolver(*io_context_ptr_);
+    auto results =
+        resolver.resolve(target_host, std::to_string(target_port), ec);
+    if (ec) {
+      SPDLOG_ERROR("resolver failed: {}", ec.message());
+      async_accpet_cb_();
+      return;
+    }
+    beast::tcp_stream stream(*io_context_ptr_);
+    stream.connect(results, ec);
+    if (ec) {
+      SPDLOG_ERROR("connect failed: {}", ec.message());
+      async_accpet_cb_();
+      return;
+    }
+
+    std::string method_string(request_.method, request_.method_len);
+    auto http_verb = stringToVerb(method_string);
+    if (!http_verb) {
+      SPDLOG_ERROR("unknown HTTP method: {}", method_string);
+      async_accpet_cb_();
+      return;
+    }
+
+    http::request<http::empty_body> req{*http_verb, target_url_, 11};
+
+    for (size_t i = 0; i < request_.num_headers; ++i) {
+      auto &header = request_.headers[i];
+      req.set(std::string(header.name, header.name_len),
+              std::string(header.value, header.value_len));
+    }
+    http::serializer<true, http::empty_body> sr(req);
+    http::write_header(stream, sr, ec);
+    if (ec) {
+      SPDLOG_ERROR("write header failed: {}", ec.message());
+      return;
+    }
+
+    std::vector<char> buffer(kDefaultBufSize);
+    // TODO: async write.
+    SPDLOG_WARN("content-length: {}", request_content_length_);
+    for (size_t n_read = 0; n_read < request_content_length_;) {
+      SPDLOG_WARN("write data to target");
+      size_t n = sock_ptr_->read_some(boost::asio::buffer(buffer), ec);
+      n_read += n;
+      if (ec == boost::asio::error::eof) {
+        break;
+      } else if (ec) {
+        SPDLOG_ERROR("error reading body from client: {}", ec.message());
+        async_accpet_cb_();
+        return;
+      }
+      boost::asio::write(stream, boost::asio::buffer(buffer, n), ec);
+      if (ec) {
+        SPDLOG_ERROR("error writing body to target: {}", ec.message());
+        async_accpet_cb_();
+        return;
+      }
+    }
+
+    // get response from target and send it back to client.
+    beast::flat_buffer response_buffer;
+    http::response<http::string_body> res;
+    http::read(stream, response_buffer, res, ec);
+    if (ec) {
+      SPDLOG_ERROR("http read failed: {}", ec.message());
+      async_accpet_cb_();
+      return;
+    }
+    std::stringstream ss;
+    ss << res;
+    std::string response_str = ss.str();
+    SPDLOG_WARN("write {} to client", response_str);
+    boost::asio::write(*sock_ptr_, boost::asio::buffer(response_str), ec);
+    if (ec) {
+      SPDLOG_ERROR("write back to client failed: {}", ec.message());
+      async_accpet_cb_();
+      return;
+    }
+
+    // close connection.
+    auto _ = stream.socket().shutdown(tcp::socket::shutdown_both, ec);
+    if (ec && ec != net::error::eof) {
+      SPDLOG_WARN("shutdown failed: {}", ec.message());
     }
     async_accpet_cb_();
   }
-  // void handleProxyRequest() {
-  //   std::string target_host = "bytebase.example.com";
-  //   std::string target_port = "80";
-
-  //   auto resolver =
-  //       std::make_shared<boost::asio::ip::tcp::resolver>(*io_context_ptr_);
-  //   resolver->async_resolve(
-  //       target_host, target_port,
-  //       boost::asio::bind_executor(
-  //           strand_, [this, self = this->shared_from_this(), resolver](
-  //                        boost::system::error_code ec,
-  //                        boost::asio::ip::tcp::resolver::results_type
-  //                        results) {
-  //             if (ec) {
-  //               SPDLOG_WARN("resolve failed: {}", ec.message());
-  //               async_accpet_cb_();
-  //               return;
-  //             }
-
-  //
-  //             auto remote_socket =
-  //                 std::make_shared<boost::beast::tcp_stream>(*io_context_ptr_);
-  //             remote_socket->expires_after(std::chrono::seconds(30));
-  //             remote_socket->async_connect(
-  //                 results,
-  //                 boost::asio::bind_executor(
-  //                     strand_, [this, self, remote_socket](
-  //                                  boost::system::error_code ec, const auto
-  //                                  &) {
-  //                       if (ec) {
-  //                         SPDLOG_WARN("connect failed: {}", ec.message());
-  //                         async_accpet_cb_();
-  //                         return;
-  //                       }
-
-  //
-  //                       bool is_websocket = false;
-  //                       for (int i = 0; i < request_.num_headers; ++i) {
-  //                         auto &hdr = request_.headers[i];
-  //                         std::string name(hdr.name, hdr.name_len);
-  //                         std::string value(hdr.value, hdr.value_len);
-  //                         if (boost::iequals(name, "Upgrade") &&
-  //                             boost::iequals(value, "websocket")) {
-  //                           is_websocket = true;
-  //                           break;
-  //                         }
-  //                       }
-
-  //                       if (is_websocket) {
-  //                         handleWebSocketProxy(remote_socket);
-  //                       } else {
-  //                         handleHttpProxy(remote_socket);
-  //                       }
-  //                     }));
-  //           }));
-  // }
-
-  // void
-  // handleHttpProxy(std::shared_ptr<boost::beast::tcp_stream> remote_socket) {
-  //
-  //   boost::beast::http::request<boost::beast::http::string_body> req;
-  //   req.method(boost::beast::http::string_to_verb(
-  //       std::string(request_.method, request_.method_len)));
-  //   req.target(std::string(request_.path, request_.len_path));
-  //   req.version(11);
-  //   for (int i = 0; i < request_.num_headers; ++i) {
-  //     auto &hdr = request_.headers[i];
-  //     req.set(std::string(hdr.name, hdr.name_len),
-  //             std::string(hdr.value, hdr.value_len));
-  //   }
-
-  //
-  //   auto write_stream =
-  //       std::make_shared<boost::beast::tcp_stream>(std::move(*remote_socket));
-  //   boost::beast::http::async_write(
-  //       *write_stream, req,
-  //       boost::asio::bind_executor(strand_, [this, self = shared_from_this(),
-  //                                            write_stream](
-  //                                               boost::system::error_code ec,
-  //                                               std::size_t) {
-  //         if (ec) {
-  //           SPDLOG_WARN("http async_write failed: {}", ec.message());
-  //           async_accpet_cb_();
-  //           return;
-  //         }
-
-  //
-  //         auto buffer = std::make_shared<boost::beast::flat_buffer>();
-  //         auto res = std::make_shared<
-  //             boost::beast::http::response<boost::beast::http::string_body>>();
-  //         boost::beast::http::async_read(
-  //             *write_stream, *buffer, *res,
-  //             boost::asio::bind_executor(
-  //                 strand_,
-  //                 [this, self, res](boost::system::error_code ec,
-  //                 std::size_t) {
-  //                   if (ec) {
-  //                     SPDLOG_WARN("http async_read failed: {}",
-  //                     ec.message()); async_accpet_cb_(); return;
-  //                   }
-
-  //
-  //                   boost::asio::async_write(
-  //                       *sock_ptr_, boost::asio::buffer(res->to_string()),
-  //                       boost::asio::bind_executor(
-  //                           strand_, std::bind(&HttpProxyHandler::onWrite,
-  //                           self,
-  //                                              std::placeholders::_1,
-  //                                              std::placeholders::_2)));
-  //                 }));
-  //       }));
-  // }
-
   // void handleWebSocketProxy(std::shared_ptr<boost::beast::tcp_stream>
   // remote_socket) {
   //   auto ws_client =
@@ -709,6 +733,7 @@ private:
   utils::CompressionType compression_type_;
   std::string token_;
   std::string target_url_;
+  size_t request_content_length_;
   ConnectionInfo source_connection_info_;
 };
 

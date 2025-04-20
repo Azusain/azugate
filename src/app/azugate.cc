@@ -191,7 +191,12 @@ int main() {
   // TODO: default router.
   AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/*"},
            ConnectionInfo{
-               .type = ProtocolTypeHttp, .http_url = "/*", .remote = false});
+               .type = ProtocolTypeHttp,
+               .address = "www.baidu.com",
+               .port = 80,
+               .http_url = "/",
+               .remote = true,
+           });
 
   // setup grpc server.
   std::thread grpc_server_thread([&]() {
@@ -223,8 +228,8 @@ int main() {
 
   auto io_context_ptr = boost::make_shared<boost::asio::io_context>();
   Server s(io_context_ptr, g_azugate_port);
-  s.Start();
   SPDLOG_INFO("azugate is listening on port {}", g_azugate_port);
+  s.Start();
   SPDLOG_INFO("server is running with {} thread(s)", g_num_threads);
 
   // invoke asynchronous tasks.

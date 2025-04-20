@@ -19,7 +19,7 @@ using namespace boost::asio;
 namespace azugate {
 
 inline boost::shared_ptr<ssl::stream<ip::tcp::socket>>
-sslHandshake(boost::shared_ptr<boost::asio::ip::tcp::socket> sock_ptr) {
+SslHandshake(boost::shared_ptr<boost::asio::ip::tcp::socket> sock_ptr) {
   boost::system::error_code ec;
   // setup ssl connection.
   ssl::context ssl_context(ssl::context::sslv23_server);
@@ -72,7 +72,7 @@ void Dispatch(boost::shared_ptr<boost::asio::io_context> io_context_ptr,
 
   // HTTP & HTTPS.
   if (azugate::GetHttps()) {
-    auto ssl_sock_ptr = sslHandshake(sock_ptr);
+    auto ssl_sock_ptr = SslHandshake(sock_ptr);
     if (!ssl_sock_ptr) {
       SPDLOG_WARN("failed to do ssl handshake");
       callback();
