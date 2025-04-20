@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <chrono>
 #include <iostream>
 #include <memory>
@@ -6,10 +5,6 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-
-// ==============================
-// Trie 实现（最长前缀匹配）
-// ==============================
 
 struct TrieNode {
   std::unordered_map<char, TrieNode *> children;
@@ -52,10 +47,6 @@ private:
   std::unique_ptr<TrieNode> root;
 };
 
-// ==============================
-// 工具函数
-// ==============================
-
 std::string random_path(int len) {
   static const char charset[] = "abcdefghijklmnopqrstuvwxyz/";
   static std::default_random_engine engine(std::random_device{}());
@@ -70,10 +61,6 @@ std::string random_path(int len) {
   return path;
 }
 
-// ==============================
-// 性能测试
-// ==============================
-
 void performance_test(int m, int n) {
   Trie trie;
   std::vector<std::string> rules;
@@ -84,7 +71,6 @@ void performance_test(int m, int n) {
     trie.insert(rule);
   }
 
-  // 暴力字符串前缀查找（用 vector + std::find_if）
   auto prefix_match = [&rules](const std::string &path) -> std::string {
     std::string matched;
     for (const auto &rule : rules) {
@@ -96,14 +82,12 @@ void performance_test(int m, int n) {
     return matched;
   };
 
-  // 构造测试路径（部分与规则前缀相同）
   std::vector<std::string> test_paths;
   for (int i = 0; i < 100000; ++i) {
     std::string base = rules[i % rules.size()];
     test_paths.push_back(base + "/extra" + std::to_string(i)); // 模拟真实路径
   }
 
-  // Trie 匹配测试
   auto start = std::chrono::high_resolution_clock::now();
   int trie_match = 0;
   for (const auto &path : test_paths) {
@@ -132,10 +116,6 @@ void performance_test(int m, int n) {
             << " ms, 命中: " << brute_match << std::endl;
 }
 
-// ==============================
-// 主函数
-// ==============================
-
 int main() {
   int m = 100000; // 路由规则数量
   int n = 15;     // 平均字符串长度
@@ -148,4 +128,3 @@ int main() {
 // 3 34.5 -> 1000 条
 // 3 2003 -> 10000 条
 // 27 20038 -> 100000 条
-//

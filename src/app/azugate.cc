@@ -3,6 +3,7 @@
 #include "dispatcher.h"
 #include "filter.h"
 
+#include "protocols.h"
 #include "rate_limiter.h"
 #include <boost/asio.hpp>
 #include <boost/asio/connect.hpp>
@@ -86,7 +87,7 @@ public:
     }
     ConnectionInfo src_conn_info;
     src_conn_info.address = source_endpoint.address().to_string();
-    // TODO: async log, this is really slow...slow...slow...
+    // TODO: support async log, this is really slow...slow...slow...
     SPDLOG_INFO("connection from {}", src_conn_info.address);
     if (!azugate::Filter(sock_ptr, src_conn_info)) {
       safeCloseSocket(sock_ptr);
@@ -187,6 +188,10 @@ int main() {
   if (!LoadServerConfig()) {
     return -1;
   }
+  // TODO: default router.
+  AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/*"},
+           ConnectionInfo{
+               .type = ProtocolTypeHttp, .http_url = "/*", .remote = false});
 
   // setup grpc server.
   std::thread grpc_server_thread([&]() {
@@ -216,27 +221,14 @@ int main() {
     }
   });
 
-  // setup a basic OTPL server.
   auto io_context_ptr = boost::make_shared<boost::asio::io_context>();
-
-  SPDLOG_INFO("azugate is listening on port {}", g_azugate_port);
-
-  // TODO: for testing purpose.
-  // azugate::AddRouterMapping(
-  //     ConnectionInfo{.type = ProtocolTypeTcp, .address = "127.0.0.1"},
-  //     ConnectionInfo{
-  //         .type = ProtocolTypeTcp, .address = "127.0.0.1", .port = 6080});
-
-  // setup rate limiter.
-
   Server s(io_context_ptr, g_azugate_port);
   s.Start();
-
+  SPDLOG_INFO("azugate is listening on port {}", g_azugate_port);
   SPDLOG_INFO("server is running with {} thread(s)", g_num_threads);
 
-  std::vector<std::thread> worker_threads;
-
   // invoke asynchronous tasks.
+  std::vector<std::thread> worker_threads;
   for (size_t i = 0; i < g_num_threads; ++i) {
     worker_threads.emplace_back([io_context_ptr]() { io_context_ptr->run(); });
   }

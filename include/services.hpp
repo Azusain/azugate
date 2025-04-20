@@ -6,6 +6,7 @@
 #include "config.h"
 #include "crequest.h"
 #include "network_wrapper.hpp"
+#include "protocols.h"
 #include <boost/asio.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/ip/tcp.hpp>
@@ -49,15 +50,15 @@ using namespace azugate;
 // TODO: file path should be configured by router.
 inline std::shared_ptr<char[]>
 assembleFullLocalFilePath(const std::string_view &path_base_folder,
-                          const network::PicoHttpRequest &request) {
+                          const std::string &target_url) {
+  auto len_path = target_url.length();
   const size_t len_base_folder = path_base_folder.length();
-  size_t len_full_path = len_base_folder + request.len_path + 1;
+  size_t len_full_path = len_base_folder + len_path + 1;
   std::shared_ptr<char[]> full_path(new char[len_full_path]);
   const char *base_folder = path_base_folder.data();
   std::memcpy(full_path.get(), base_folder, len_base_folder);
-  std::memcpy(full_path.get() + len_base_folder, request.path,
-              request.len_path);
-  std::memcpy(full_path.get() + len_base_folder + request.len_path, "\0", 1);
+  std::memcpy(full_path.get() + len_base_folder, target_url.data(), len_path);
+  std::memcpy(full_path.get() + len_base_folder + len_path, "\0", 1);
   return full_path;
 }
 
@@ -128,27 +129,23 @@ inline bool handleNoCompression(const boost::shared_ptr<T> sock_ptr,
     SPDLOG_ERROR("failed to open file: {}", full_local_file_path_str);
     return false;
   }
-  // TODO: extremely inefficient.
-  for (;;) {
+  while (!local_file_stream.eof()) {
     local_file_stream.read(request.header_buf, sizeof(request.header_buf));
-    auto n_read = local_file_stream.gcount();
+    std::streamsize n_read = local_file_stream.gcount();
     if (n_read > 0) {
-      sock_ptr->write_some(
-          boost::asio::const_buffer(request.header_buf, n_read), ec);
+      boost::system::error_code ec;
+      boost::asio::write(*sock_ptr,
+                         boost::asio::buffer(request.header_buf, n_read), ec);
       if (ec) {
         SPDLOG_ERROR("failed to write data to socket: {}", ec.message());
         return false;
       }
-    }
-    if (local_file_stream.eof()) {
-      break;
-    }
-    if (n_read == 0) {
-      SPDLOG_ERROR("errors occur while reading from local file stream");
+    } else if (local_file_stream.bad()) {
+      SPDLOG_ERROR("error occurred while reading file: {}",
+                   full_local_file_path_str);
       return false;
     }
   }
-
   return true;
 }
 
@@ -386,9 +383,8 @@ public:
                    azugate::ConnectionInfo source_connection_info,
                    std::function<void()> async_accpet_cb)
       : io_context_ptr_(io_context_ptr), sock_ptr_(sock_ptr),
-        source_connection_info_(source_connection_info),
         async_accpet_cb_(async_accpet_cb), total_parsed_(0),
-        strand_(boost::asio::make_strand(*io_context_ptr)) {}
+        source_connection_info_(source_connection_info) {}
 
   // TODO: release connections properly.
   ~HttpProxyHandler() { Close(); }
@@ -458,9 +454,33 @@ public:
       async_accpet_cb_();
       return;
     }
-    handleLocalFileRequest();
+    route();
   }
 
+  inline void route() {
+    using namespace boost::beast;
+    boost::system::error_code ec;
+    source_connection_info_.http_url =
+        std::string(request_.path, request_.len_path);
+    source_connection_info_.type = ProtocolTypeHttp;
+    auto target_conn_info_opt = GetTargetRoute(source_connection_info_);
+    if (!target_conn_info_opt) {
+      SPDLOG_WARN("no path found for {}", source_connection_info_.http_url);
+      http::response<http::string_body> err_not_found_resp{
+          http::status::not_found, 11};
+      http::write(*sock_ptr_, err_not_found_resp, ec);
+      if (ec) {
+        SPDLOG_WARN("failed to write http response");
+      }
+      async_accpet_cb_();
+      return;
+    }
+    if (!target_conn_info_opt->remote) {
+      target_url_ = target_conn_info_opt->http_url;
+      handleLocalFileRequest();
+    }
+    async_accpet_cb_();
+  }
   // void handleProxyRequest() {
   //   std::string target_host = "bytebase.example.com";
   //   std::string target_port = "80";
@@ -624,7 +644,7 @@ public:
   void handleLocalFileRequest() {
     // get local file path from request url.
     std::shared_ptr<char[]> full_local_file_path =
-        assembleFullLocalFilePath(kPathResourceFolder, request_);
+        assembleFullLocalFilePath(kPathResourceFolder, target_url_);
     auto full_local_file_path_str = full_local_file_path.get();
     if (!std::filesystem::exists(full_local_file_path_str) ||
         !std::filesystem::is_regular_file(full_local_file_path_str)) {
@@ -637,8 +657,7 @@ public:
 
     // setup and send response headers.
     CRequest::HttpResponse resp(CRequest::kHttpOk);
-    auto ext =
-        utils::FindFileExtension(std::string(request_.path, request_.len_path));
+    auto ext = utils::FindFileExtension(target_url_);
     resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
     resp.SetKeepAlive(false);
     if (compression_type_.code != utils::kCompressionTypeCodeNone) {
@@ -664,15 +683,6 @@ public:
     async_accpet_cb_();
   }
 
-  // used in onWrite().
-  void onWrite(boost::system::error_code ec, size_t bytes_transferred) {
-    if (ec) {
-      SPDLOG_WARN("failed to write response");
-    }
-
-    async_accpet_cb_();
-  }
-
   void Close() {
     if (sock_ptr_ && sock_ptr_->lowest_layer().is_open()) {
       boost::system::error_code ec;
@@ -692,14 +702,14 @@ private:
   // io and parser.
   boost::shared_ptr<boost::asio::io_context> io_context_ptr_;
   boost::shared_ptr<T> sock_ptr_;
-  azugate::ConnectionInfo source_connection_info_;
   std::function<void()> async_accpet_cb_;
   azugate::network::PicoHttpRequest request_;
-  boost::asio::strand<boost::asio::any_io_executor> strand_;
   size_t total_parsed_;
   // services.
   utils::CompressionType compression_type_;
   std::string token_;
+  std::string target_url_;
+  ConnectionInfo source_connection_info_;
 };
 
 void TcpProxyHandler(

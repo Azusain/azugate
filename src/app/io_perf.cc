@@ -21,13 +21,11 @@ const char *http_response = "HTTP/1.1 200 OK\r\n"
                             "\r\n"
                             "OK";
 
-// 返回 100ms～500ms 的随机延时
 void simulate_delay() {
   int delay_ms = 100 + rand() % 400;
   std::this_thread::sleep_for(std::chrono::milliseconds(delay_ms));
 }
 
-// 单连接一线程模型
 class SingleThreadModel {
 public:
   SingleThreadModel(int port) : port(port) { srand(time(nullptr)); }
@@ -58,7 +56,6 @@ private:
   int port;
 };
 
-// kqueue 多路复用模型
 class KqueueModel {
 public:
   KqueueModel(int port) : port(port) { srand(time(nullptr)); }
@@ -101,7 +98,6 @@ private:
   int port;
 };
 
-// Boost Asio 模型
 class AsioReactorModel {
 public:
   AsioReactorModel(int port) : port(port), io_context(), acceptor(io_context) {
@@ -145,7 +141,6 @@ private:
   boost::asio::ip::tcp::acceptor acceptor;
 };
 
-// 启动主函数：只启用一个架构
 int main() {
   int port = 8080;
 

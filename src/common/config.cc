@@ -21,10 +21,10 @@ namespace std {
 template <> struct hash<azugate::ConnectionInfo> {
   size_t operator()(const azugate::ConnectionInfo &conn) const {
     size_t h1 = hash<azugate::ProtocolType>()(conn.type);
-    size_t h2 = hash<string_view>()(conn.address);
-    size_t h3 = hash<uint16_t>()(conn.port);
-    size_t h4 = hash<string_view>()(conn.http_url);
-    return h1 ^ (h2 << 1) ^ (h3 << 2) ^ (h4 << 3);
+    // TODO: hash func for TCP routing.
+    // size_t h2 = hash<std::string>()(conn.address);
+    // size_t h3 = hash<uint16_t>()(conn.port);
+    return h1 /*^ (h2 << 1) ^ (h3 << 2)*/;
   }
 };
 } // namespace std
@@ -50,7 +50,7 @@ struct RouterEntry {
   size_t next_index;
   std::vector<ConnectionInfo> targets;
 
-  void AddTarget(const ConnectionInfo &conn) {
+  void AddTarget(const ConnectionInfo &&conn) {
     if (std::find(targets.begin(), targets.end(), conn) == targets.end()) {
       targets.push_back(conn);
     }
@@ -175,7 +175,7 @@ void AddRoute(ConnectionInfo &&source, ConnectionInfo &&target) {
     return;
   }
   RouterEntry router_entry{};
-  router_entry.AddTarget(target);
+  router_entry.AddTarget(std::move(target));
   g_router_table.emplace(std::move(source), std::move(router_entry));
 }
 
@@ -183,12 +183,32 @@ std::optional<ConnectionInfo> GetTargetRoute(const ConnectionInfo &source) {
   std::lock_guard<std::mutex> lock(g_config_mutex);
   auto it = g_router_table.find(source);
   if (it != g_router_table.end() && !it->second.targets.empty()) {
-    return it->second.GetNextTarget();
+    auto target = it->second.GetNextTarget();
+    if (target.has_value()) {
+      auto &target_url = target->http_url;
+      if (target_url.size() >= 2 &&
+          target_url.compare(target_url.size() - 2, 2, "/*") == 0) {
+        std::string target_prefix = target_url.substr(0, target_url.size() - 2);
+        std::string suffix = source.http_url;
+        if (suffix.find(target_prefix) == 0) {
+          suffix = suffix.substr(target_prefix.size());
+        }
+        if (!target_prefix.empty() && target_prefix.back() != '/' &&
+            (suffix.empty() || suffix.front() != '/')) {
+          target_prefix += '/';
+        }
+        target->http_url = target_prefix + suffix;
+      }
+    }
+    return target;
   }
   return std::nullopt;
 }
 
+size_t GetRouterTableSize() { return g_router_table.size(); }
+
 // perfect match and prefix match.
+// TODO: support priority by using seperate std::unordered_map.
 bool azugate::ConnectionInfo::operator==(const ConnectionInfo &other) const {
   if (type != other.type) {
     return false;
@@ -197,12 +217,13 @@ bool azugate::ConnectionInfo::operator==(const ConnectionInfo &other) const {
     return address == other.address;
   }
   if (type == ProtocolTypeHttp) {
+    // perfect match.
     if (http_url == other.http_url) {
       return true;
     }
-    // TODO: only C++20 supports this.
-    return http_url.starts_with(other.http_url) ||
-           other.http_url.starts_with(http_url);
+    if (http_url.find('*') != std::string::npos) {
+      return other.http_url.starts_with(http_url.substr(0, http_url.find('*')));
+    }
   }
   return false;
 }

@@ -96,10 +96,11 @@ common
 Boost::system
 )
 
-# Router Test.
-add_executable(router_test
-"src/app/router_test.cc"
-)
-target_link_libraries(router_test PRIVATE
-GTest::gtest
-)
+#  GTest template.
+# add_executable(template_test
+# "src/app/template_test.cc"
+# )
+# target_link_libraries(template PRIVATE
+# common
+# GTest::gtest
+# )

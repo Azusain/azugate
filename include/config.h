@@ -103,16 +103,19 @@ const std::vector<std::string> &GetHealthzList();
 struct ConnectionInfo {
   ProtocolType type;
   // currently IPv4.
-  std::string_view address;
-  uint16_t port;
-  std::string_view http_url;
-
+  std::string address;
+  uint16_t port = 0;
+  std::string http_url;
+  // access local file or remote endpoint.
+  bool remote;
   bool operator==(const ConnectionInfo &other) const;
 };
 
 void AddRoute(ConnectionInfo &&source, ConnectionInfo &&target);
 
 std::optional<ConnectionInfo> GetTargetRoute(const ConnectionInfo &source);
+
+size_t GetRouterTableSize();
 
 bool LoadServerConfig();
 

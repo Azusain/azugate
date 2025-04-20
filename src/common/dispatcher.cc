@@ -70,7 +70,7 @@ void Dispatch(boost::shared_ptr<boost::asio::io_context> io_context_ptr,
   //                   GetRouterMapping(source_connection_info));
   // }
 
-  // HTTPS.
+  // HTTP & HTTPS.
   if (azugate::GetHttps()) {
     auto ssl_sock_ptr = sslHandshake(sock_ptr);
     if (!ssl_sock_ptr) {
@@ -83,10 +83,8 @@ void Dispatch(boost::shared_ptr<boost::asio::io_context> io_context_ptr,
             io_context_ptr, ssl_sock_ptr, source_connection_info, callback);
     https_handler->Start();
     callback();
-    // WARN: remember to return after every callback.
     return;
   }
-  // HTTP.
   auto http_handler = std::make_shared<HttpProxyHandler<ip::tcp::socket>>(
       io_context_ptr, sock_ptr, source_connection_info, callback);
   http_handler->Start();

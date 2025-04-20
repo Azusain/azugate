@@ -13,7 +13,6 @@
 #define PORT 8080
 #define FILENAME "welcome.html"
 
-// 切换使用 sendfile（true）或 read+write（false）
 constexpr bool use_sendfile = true;
 
 void ignoreSigpipe() {
