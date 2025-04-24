@@ -36,7 +36,7 @@ uint16_t g_azugate_admin_port = 50051;
 std::string g_path_config_file;
 std::unordered_set<std::string> g_ip_blacklist;
 bool g_enable_http_compression = false;
-bool g_enable_https = false;
+bool g_enable_https = true;
 bool g_management_system_authentication = false;
 // TODO: mTLS.
 std::string g_ssl_crt;

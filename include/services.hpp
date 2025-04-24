@@ -8,6 +8,7 @@
 #include "network_wrapper.hpp"
 #include "protocols.h"
 #include <boost/asio.hpp>
+#include <boost/asio/error.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/registered_buffer.hpp>
@@ -18,6 +19,8 @@
 #include <boost/beast/core/stream_traits.hpp>
 #include <boost/beast/core/tcp_stream.hpp>
 #include <boost/beast/http.hpp>
+#include <boost/beast/http/dynamic_body.hpp>
+#include <boost/beast/http/error.hpp>
 #include <boost/beast/http/field.hpp>
 #include <boost/beast/http/file_body.hpp>
 #include <boost/beast/http/message.hpp>
@@ -25,6 +28,7 @@
 #include <boost/beast/http/string_body.hpp>
 #include <boost/beast/http/verb.hpp>
 #include <boost/beast/http/write.hpp>
+#include <boost/smart_ptr/make_shared_object.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/system/detail/error_code.hpp>
 #include <boost/url.hpp>
@@ -508,8 +512,8 @@ public:
       async_accpet_cb_();
       return;
     }
+    target_url_ = target_conn_info_opt->http_url;
     if (!target_conn_info_opt->remote) {
-      target_url_ = target_conn_info_opt->http_url;
       handleLocalFileRequest();
       async_accpet_cb_();
       return;
@@ -527,9 +531,14 @@ public:
   void handleProxyRequest(std::string &&target_host, uint16_t &&target_port) {
     namespace beast = boost::beast;
     namespace http = beast::http;
+    namespace ssl = boost::asio::ssl;
+    namespace beast = boost::beast;
     namespace net = boost::asio;
     using tcp = net::ip::tcp;
     boost::system::error_code ec;
+    constexpr bool is_ssl =
+        std::is_same_v<T,
+                       boost::asio::ssl::stream<boost::asio::ip::tcp::socket>>;
     // proxy request to target.
     tcp::resolver resolver(*io_context_ptr_);
     auto results =
@@ -539,12 +548,33 @@ public:
       async_accpet_cb_();
       return;
     }
-    beast::tcp_stream stream(*io_context_ptr_);
-    stream.connect(results, ec);
-    if (ec) {
-      SPDLOG_ERROR("connect failed: {}", ec.message());
-      async_accpet_cb_();
-      return;
+    boost::shared_ptr<T> stream;
+
+    if constexpr (is_ssl) {
+      // SPDLOG_WARN("using ssl connection");
+      auto ssl_ctx =
+          boost::make_shared<ssl::context>(ssl::context::sslv23_client);
+      stream = boost::make_shared<T>(*io_context_ptr_, *ssl_ctx);
+      net::connect(beast::get_lowest_layer(*stream), results, ec);
+      if (ec) {
+        SPDLOG_ERROR("SSL connect failed: {}", ec.message());
+        async_accpet_cb_();
+        return;
+      }
+      stream->handshake(ssl::stream_base::client, ec);
+      if (ec) {
+        SPDLOG_ERROR("SSL handshake failed: {}", ec.message());
+        async_accpet_cb_();
+        return;
+      }
+    } else {
+      stream = boost::make_shared<T>(*io_context_ptr_);
+      boost::asio::connect(*stream, results, ec);
+      if (ec) {
+        SPDLOG_ERROR("TCP connect failed: {}", ec.message());
+        async_accpet_cb_();
+        return;
+      }
     }
 
     std::string method_string(request_.method, request_.method_len);
@@ -554,24 +584,49 @@ public:
       async_accpet_cb_();
       return;
     }
-
+    // SPDLOG_WARN("target_url: {}", target_url_);
     http::request<http::empty_body> req{*http_verb, target_url_, 11};
 
+    // TODO: logic for rewriting header.
     for (size_t i = 0; i < request_.num_headers; ++i) {
       auto &header = request_.headers[i];
-      req.set(std::string(header.name, header.name_len),
-              std::string(header.value, header.value_len));
+      auto header_name = std::string(header.name, header.name_len);
+      // TODO: shity codes.
+      if (header_name == "Connection" || header_name == "connection") {
+        continue;
+      }
+      if (header_name == "Host" || header_name == "host") {
+        continue;
+      }
+      if (header_name == "Referer" || header_name == "referer") {
+        continue;
+      }
+      if (header_name == "Accept-Encoding" ||
+          header_name == "accept-encoding") {
+        continue;
+      }
+      if (header_name.find("Sec-") != std::string::npos ||
+          header_name.find("sec-") != std::string::npos) {
+        continue;
+      }
+      if (header_name == "Accept" || header_name == "accept") {
+        continue;
+      }
+      req.set(header_name, std::string(header.value, header.value_len));
     }
+    req.set(http::field::connection, "close");
+    req.set(http::field::host, target_host);
     http::serializer<true, http::empty_body> sr(req);
-    http::write_header(stream, sr, ec);
+    http::write_header(*stream, sr, ec);
     if (ec) {
       SPDLOG_ERROR("write header failed: {}", ec.message());
+      async_accpet_cb_();
       return;
     }
 
     std::vector<char> buffer(kDefaultBufSize);
     // TODO: async write.
-    SPDLOG_WARN("content-length: {}", request_content_length_);
+    // SPDLOG_WARN("content-length: {}", request_content_length_);
     for (size_t n_read = 0; n_read < request_content_length_;) {
       SPDLOG_WARN("write data to target");
       size_t n = sock_ptr_->read_some(boost::asio::buffer(buffer), ec);
@@ -583,7 +638,7 @@ public:
         async_accpet_cb_();
         return;
       }
-      boost::asio::write(stream, boost::asio::buffer(buffer, n), ec);
+      boost::asio::write(*stream, boost::asio::buffer(buffer, n), ec);
       if (ec) {
         SPDLOG_ERROR("error writing body to target: {}", ec.message());
         async_accpet_cb_();
@@ -593,17 +648,19 @@ public:
 
     // get response from target and send it back to client.
     beast::flat_buffer response_buffer;
-    http::response<http::string_body> res;
-    http::read(stream, response_buffer, res, ec);
-    if (ec) {
+    http::response<http::dynamic_body> res;
+    http::read(*stream, response_buffer, res, ec);
+    if (ec && ec != boost::beast::http::error::end_of_stream) {
       SPDLOG_ERROR("http read failed: {}", ec.message());
       async_accpet_cb_();
       return;
     }
+
     std::stringstream ss;
     ss << res;
     std::string response_str = ss.str();
-    SPDLOG_WARN("write {} to client", response_str);
+    // SPDLOG_WARN("write {} to client", response_str);
+
     boost::asio::write(*sock_ptr_, boost::asio::buffer(response_str), ec);
     if (ec) {
       SPDLOG_ERROR("write back to client failed: {}", ec.message());
@@ -612,8 +669,10 @@ public:
     }
 
     // close connection.
-    auto _ = stream.socket().shutdown(tcp::socket::shutdown_both, ec);
-    if (ec && ec != net::error::eof) {
+    // TODO: gracefully shutdown.
+    stream->lowest_layer().shutdown(tcp::socket::shutdown_both, ec);
+    if (ec && ec != net::error::eof &&
+        ec.message() != "Socket is not connected") {
       SPDLOG_WARN("shutdown failed: {}", ec.message());
     }
     async_accpet_cb_();
@@ -712,7 +771,8 @@ public:
       boost::system::error_code ec;
       sock_ptr_->lowest_layer().shutdown(
           boost::asio::socket_base::shutdown_both, ec);
-      if (ec) {
+      // TODO: gracefullt shutdown.
+      if (ec && ec.message() != "Socket is not connected") {
         SPDLOG_WARN("failed to do shutdown: {}", ec.message());
       }
       sock_ptr_->lowest_layer().close(ec);

@@ -193,7 +193,7 @@ int main() {
            ConnectionInfo{
                .type = ProtocolTypeHttp,
                .address = "www.baidu.com",
-               .port = 80,
+               .port = 443,
                .http_url = "/",
                .remote = true,
            });

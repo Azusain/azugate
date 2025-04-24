@@ -12,7 +12,7 @@ func main() {
 
 	fs := http.FileServer(http.Dir(staticFolder))
 	http.Handle("/", fs)
-	port := ":8080"
+	port := ":8081"
 	log.Printf("Serving %s on HTTP port %s\n", staticFolder, port)
 	if err := http.ListenAndServe(port, nil); err != nil {
 		log.Fatal(err)
