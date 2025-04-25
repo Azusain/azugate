@@ -513,6 +513,7 @@ public:
       return;
     }
     target_url_ = target_conn_info_opt->http_url;
+
     if (!target_conn_info_opt->remote) {
       handleLocalFileRequest();
       async_accpet_cb_();
@@ -525,6 +526,7 @@ public:
       async_accpet_cb_();
       return;
     }
+    SPDLOG_DEBUG("route to {}:{}{}", target_address, target_port, target_url_);
     handleProxyRequest(std::move(target_address), std::move(target_port));
   }
 

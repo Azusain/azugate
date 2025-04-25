@@ -69,13 +69,10 @@ target_compile_definitions(azugate PRIVATE
   FMT_CONSTEXPR=constexpr
   SPDLOG_FMT_EXTERNAL
 )
-
-
 target_link_libraries(azugate
 common
 Boost::system
 )
-
 
 # I/O Perf (uses kqueue thus cannot run on Linux).
 # add_executable(io_perf
@@ -85,16 +82,6 @@ Boost::system
 # ${OPENSSL_LIBRARIES}
 # common
 # )
-
-# Perf.
-add_executable(azugate_
-"src/app/azugate_.cc"
-)
-target_link_libraries(azugate_
-${OPENSSL_LIBRARIES}
-common
-Boost::system
-)
 
 #  GTest template.
 # add_executable(template_test

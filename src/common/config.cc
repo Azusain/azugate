@@ -1,6 +1,7 @@
 #include "../../include/config.h"
 #include "auth.h"
 #include "protocols.h"
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <functional>
@@ -36,7 +37,7 @@ uint16_t g_azugate_admin_port = 50051;
 std::string g_path_config_file;
 std::unordered_set<std::string> g_ip_blacklist;
 bool g_enable_http_compression = false;
-bool g_enable_https = true;
+bool g_enable_https = false;
 bool g_management_system_authentication = false;
 // TODO: mTLS.
 std::string g_ssl_crt;
@@ -52,9 +53,16 @@ struct RouterEntry {
   std::vector<ConnectionInfo> targets;
 
   void AddTarget(const ConnectionInfo &&conn) {
-    if (std::find(targets.begin(), targets.end(), conn) == targets.end()) {
-      targets.push_back(conn);
+    auto pred = [&](const ConnectionInfo &c) {
+      return conn.address == c.address && conn.http_url == c.http_url &&
+             conn.port == c.port && conn.type == c.type &&
+             conn.remote == c.remote;
+    };
+    auto it = std::find_if(targets.begin(), targets.end(), pred);
+    if (it == targets.end()) {
+      targets.emplace_back(conn);
     }
+    return;
   }
 
   void RemoveTarget(const ConnectionInfo &conn) {
@@ -185,21 +193,22 @@ std::optional<ConnectionInfo> GetTargetRoute(const ConnectionInfo &source) {
   auto it = g_router_table.find(source);
   if (it != g_router_table.end() && !it->second.targets.empty()) {
     auto target = it->second.GetNextTarget();
-    if (target.has_value()) {
-      auto &target_url = target->http_url;
-      if (target_url.size() >= 2 &&
-          target_url.compare(target_url.size() - 2, 2, "/*") == 0) {
-        std::string target_prefix = target_url.substr(0, target_url.size() - 2);
-        std::string suffix = source.http_url;
-        if (suffix.find(target_prefix) == 0) {
-          suffix = suffix.substr(target_prefix.size());
-        }
-        if (!target_prefix.empty() && target_prefix.back() != '/' &&
-            (suffix.empty() || suffix.front() != '/')) {
-          target_prefix += '/';
-        }
-        target->http_url = target_prefix + suffix;
+    if (!target.has_value()) {
+      return std::nullopt;
+    }
+    auto &target_url = target->http_url;
+    if (target_url.size() >= 2 &&
+        target_url.compare(target_url.size() - 2, 2, "/*") == 0) {
+      std::string target_prefix = target_url.substr(0, target_url.size() - 2);
+      std::string suffix = source.http_url;
+      if (suffix.find(target_prefix) == 0) {
+        suffix = suffix.substr(target_prefix.size());
       }
+      if (!target_prefix.empty() && target_prefix.back() != '/' &&
+          (suffix.empty() || suffix.front() != '/')) {
+        target_prefix += '/';
+      }
+      target->http_url = target_prefix + suffix;
     }
     return target;
   }

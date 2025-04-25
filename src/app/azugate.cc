@@ -38,10 +38,10 @@
 #include <grpcpp/server_builder.h>
 #include <memory>
 #include <spdlog/common.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
 #include <string>
 #include <sys/types.h>
-
 #include <thread>
 #include <utility>
 #include <vector>
@@ -192,9 +192,17 @@ int main() {
   AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/*"},
            ConnectionInfo{
                .type = ProtocolTypeHttp,
-               .address = "www.baidu.com",
-               .port = 443,
-               .http_url = "/",
+               .address = "localhost",
+               .port = 8081,
+               .http_url = "/*",
+               .remote = true,
+           });
+  AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/*"},
+           ConnectionInfo{
+               .type = ProtocolTypeHttp,
+               .address = "localhost",
+               .port = 8082,
+               .http_url = "/*",
                .remote = true,
            });
 
