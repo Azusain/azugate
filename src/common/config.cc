@@ -46,6 +46,28 @@ bool g_proxy_mode = false;
 uint16_t g_target_port;
 std::string g_target_host;
 std::mutex g_config_mutex;
+
+// logger.
+// TODO: async logging system.
+void InitLogger() {
+  // setup logger.
+  // ref: https://github.com/gabime/spdlog/wiki/3.-Custom-formatting.
+  // for production, use this logger:
+  // spdlog::set_pattern("[%^%l%$] %t | %D %H:%M:%S | %v");
+  // with source file and line when debug:
+  spdlog::set_pattern("[%^%l%$] %t | %D %H:%M:%S | %s:%# | %v");
+  spdlog::set_level(spdlog::level::debug);
+}
+
+void IgnoreSignalPipe() {
+#if defined(__linux__)
+  // ignore SIGPIPE.
+  struct sigaction sa{};
+  sa.sa_handler = SIG_IGN;
+  sigaction(SIGPIPE, &sa, nullptr);
+#endif
+}
+
 // router.
 struct RouterEntry {
   // used for round robin.
@@ -115,7 +137,7 @@ std::string GetConfigPath() {
   return g_path_config_file;
 };
 
-void SetConfigPath(std::string &&path) {
+void SetConfigFilePath(const std::string &path) {
   std::lock_guard<std::mutex> lock(g_config_mutex);
   g_path_config_file = path;
 }
@@ -238,11 +260,9 @@ bool azugate::ConnectionInfo::operator==(const ConnectionInfo &other) const {
   return false;
 }
 
-bool LoadServerConfig() {
+bool LoadServerConfig(const std::string &path_config_file) {
   try {
-    auto path_config_file = GetConfigPath();
     // parse and load configuration.
-    SPDLOG_INFO("loading config from {}", path_config_file);
     auto config = YAML::LoadFile(path_config_file);
     g_azugate_port = config[kYamlFieldPort].as<uint16_t>();
     g_azugate_admin_port = config[kYamlFieldAdminPort].as<uint16_t>();
@@ -259,7 +279,6 @@ bool LoadServerConfig() {
     g_external_auth_client_secret =
         config[kYamlFieldExternalAuthClientSecret].as<std::string>();
   } catch (...) {
-    SPDLOG_ERROR("unexpected errors happen when parsing yaml file");
     return false;
   }
   // token secret.

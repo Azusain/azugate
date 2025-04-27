@@ -14,8 +14,10 @@
 #include <boost/asio/read.hpp>
 #include <boost/asio/ssl/context.hpp>
 #include <boost/asio/ssl/stream.hpp>
+#include <boost/beast/core/tcp_stream.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/smart_ptr/make_shared_object.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/system/detail/error_code.hpp>
 #include <cstddef>
@@ -25,6 +27,33 @@
 
 namespace azugate {
 namespace network {
+
+template <typename T>
+boost::shared_ptr<T>
+ResolveAndConnect(boost::shared_ptr<boost::asio::io_context> io_context_ptr,
+                  const std::string &host, const std::string &port) {
+  auto stream = boost::make_shared<T>(*io_context_ptr);
+  boost::asio::ip::tcp::resolver resolver(*io_context_ptr);
+  boost::system::error_code ec;
+
+  auto const endpoint_iterator = resolver.resolve(host, port, ec);
+  if (ec) {
+    SPDLOG_DEBUG("failed to resolve host: {}", ec.message());
+    return nullptr;
+  }
+
+  if constexpr (std::is_same_v<T, boost::beast::tcp_stream>) {
+    stream->connect(endpoint_iterator, ec);
+  } else {
+    boost::asio::connect(*stream, endpoint_iterator, ec);
+  }
+
+  if (ec) {
+    SPDLOG_DEBUG("failed to connect to target: {}", ec.message());
+    return nullptr;
+  }
+  return stream;
+}
 
 struct PicoHttpRequest {
   char header_buf[kMaxHttpHeaderSize];
@@ -109,69 +138,6 @@ public:
     }
     return true;
   };
-
-  inline bool ParseHttpResponse(PicoHttpResponse &response,
-                                boost::system::error_code &ec) const {
-    using namespace boost::asio;
-    size_t total_parsed = 0;
-    for (;;) {
-      if (total_parsed >= kMaxHttpHeaderSize) {
-        SPDLOG_WARN("HTTP header size exceeded the limit");
-        return false;
-      }
-      size_t bytes_read =
-          sock_ptr_->read_some(buffer(response.header_buf + total_parsed,
-                                      kMaxHttpHeaderSize - total_parsed),
-                               ec);
-      if (ec) {
-        if (ec == boost::asio::error::eof) {
-          SPDLOG_DEBUG("connection closed by peer");
-          break;
-        }
-        SPDLOG_WARN("failed to read HTTP response: {}", ec.message());
-        return false;
-      }
-
-      total_parsed += bytes_read;
-      response.num_headers = std::size(response.headers);
-
-      int pret = phr_parse_response(response.header_buf, total_parsed,
-                                    &response.minor_version, &response.status,
-                                    &response.message, &response.len_message,
-                                    response.headers, &response.num_headers, 0);
-      if (pret > 0) {
-        break;
-      } else if (pret == -2) {
-        continue;
-      } else {
-        SPDLOG_WARN("failed to parse HTTP response");
-        return false;
-      }
-    }
-    return true;
-  }
-
-  inline bool ReadHttpBody(std::string &body_buffer,
-                           boost::system::error_code &ec) const {
-    using namespace boost::asio;
-    size_t total_read = 0;
-    // read until eof.
-    for (;;) {
-      size_t n_read =
-          sock_ptr_->read_some(buffer(body_buffer.data() + total_read,
-                                      body_buffer.capacity() - total_read),
-                               ec);
-      if (ec) {
-        if (ec == error::eof) {
-          return true;
-        }
-        SPDLOG_WARN("failed to read body");
-        return false;
-      }
-      total_read += n_read;
-    }
-    return true;
-  }
 
 private:
   boost::shared_ptr<T> sock_ptr_;

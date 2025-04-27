@@ -241,7 +241,7 @@ inline bool externalAuthorization(network::PicoHttpRequest &request,
     io_context ioc;
     ip::tcp::resolver resolver(ioc);
     ssl::stream<boost::beast::tcp_stream> stream(ioc, ctx);
-    auto results = resolver.resolve(g_external_auth_domain, "443", ec);
+    auto results = resolver.resolve(g_external_auth_domain, kDftHttpsPort, ec);
     if (ec) {
       SPDLOG_WARN("failed to resolve host: {}", ec.message());
       return false;
@@ -257,7 +257,7 @@ inline bool externalAuthorization(network::PicoHttpRequest &request,
       return false;
     }
     // TODO: standard oauth workflow.
-    // send code to Auth0 server.
+    // Send code to Auth0 server.
     http::request<http::string_body> req{http::verb::post, "/oauth/token", 11};
     req.set(http::field::content_type, "application/x-www-form-urlencoded");
     req.set(http::field::host, g_external_auth_domain);

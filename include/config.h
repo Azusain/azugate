@@ -1,5 +1,6 @@
 #ifndef __CONFIG_H
 #define __CONFIG_H
+#define AZUGATE_VERSION_STRING "azugate/1.0"
 
 #include "protocols.h"
 #include <cstddef>
@@ -39,6 +40,7 @@ constexpr std::string_view kYamlFieldExternalAuthClientSecret =
 constexpr std::string_view kDftHttpPort = "80";
 constexpr std::string_view kDftHttpsPort = "443";
 constexpr size_t kDftStringReservedBytes = 256;
+constexpr size_t kDftHealthCheckGapSecond = 3;
 // runtime shared variables.
 extern uint16_t g_azugate_port;
 extern uint16_t g_azugate_admin_port;
@@ -76,8 +78,12 @@ extern std::string g_external_auth_domain;
 extern std::string g_external_auth_client_id;
 extern std::string g_external_auth_client_secret;
 
+void InitLogger();
+
+void IgnoreSignalPipe();
+
 std::string GetConfigPath();
-void SetConfigPath(std::string &&path);
+void SetConfigFilePath(const std::string &path);
 
 bool GetHttpCompression();
 void SetHttpCompression(bool http_compression);
@@ -117,7 +123,7 @@ std::optional<ConnectionInfo> GetTargetRoute(const ConnectionInfo &source);
 
 size_t GetRouterTableSize();
 
-bool LoadServerConfig();
+bool LoadServerConfig(const std::string &path_config_file);
 
 } // namespace azugate
 
