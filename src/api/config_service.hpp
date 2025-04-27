@@ -4,7 +4,7 @@
 #include "../../include/config.h"
 #include "config_service.grpc.pb.h"
 #include "config_service.pb.h"
-#include "string_validator.h"
+#include "string_op.h"
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/server_context.h>
 #include <grpcpp/support/status.h>

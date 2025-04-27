@@ -10,7 +10,7 @@ constexpr std::string_view ProtocolTypeHttps = "https";
 constexpr std::string_view ProtocolTypeTcp = "tcp";
 constexpr std::string_view ProtocolTypeUdp = "udp";
 constexpr std::string_view ProtocolTypeGrpc = "grpc";
-constexpr std::string_view ProtocolTypeWebSockets = "websockets";
+constexpr std::string_view ProtocolTypeWebSocket = "websocket";
 constexpr std::string_view ProtocolTypeUnknown = "";
 
 using ProtocolType = std::string_view;

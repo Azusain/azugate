@@ -7,7 +7,9 @@
 #include "crequest.h"
 #include "network_wrapper.hpp"
 #include "protocols.h"
+#include "string_op.h"
 #include <boost/asio.hpp>
+#include <boost/asio/buffers_iterator.hpp>
 #include <boost/asio/error.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/ip/tcp.hpp>
@@ -28,11 +30,14 @@
 #include <boost/beast/http/string_body.hpp>
 #include <boost/beast/http/verb.hpp>
 #include <boost/beast/http/write.hpp>
+#include <boost/beast/websocket.hpp>
+#include <boost/beast/websocket/stream.hpp>
 #include <boost/smart_ptr/make_shared_object.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/system/detail/error_code.hpp>
 #include <boost/url.hpp>
 #include <boost/url/url.hpp>
+#include <cctype>
 #include <charconv>
 #include <cstddef>
 #include <filesystem>
@@ -46,7 +51,6 @@
 #include <string>
 #include <system_error>
 #include <vector>
-
 #if defined(__linux__)
 #include <sys/sendfile.h>
 #endif
@@ -355,17 +359,17 @@ inline bool extractMetaFromHeaders(utils::CompressionType &compression_type,
       return false;
     }
     std::string_view header_name(header.name, header.name_len);
-    if (header_name == CRequest::kHeaderAcceptEncoding) {
+    if (header_name == CRequest::kHeaderFieldAcceptEncoding) {
       compression_type = utils::GetCompressionType(
           std::string_view(header.value, header.value_len));
       continue;
     }
-    if (header_name == CRequest::kHeaderCookie) {
+    if (header_name == CRequest::kHeaderFieldCookie) {
       std::string_view header_value(header.value, header.value_len);
       token = extractAzugateAccessTokenFromCookie(header_value);
       continue;
     }
-    if (header_name == CRequest::kHeaderContentLength) {
+    if (header_name == CRequest::kHeaderFieldContentLength) {
       std::string len_str(header.value, header.value_len);
       auto [_, err] =
           std::from_chars(header.value, header.value + header.value_len,
@@ -402,7 +406,7 @@ public:
       : io_context_ptr_(io_context_ptr), sock_ptr_(sock_ptr),
         async_accpet_cb_(async_accpet_cb), total_parsed_(0),
         source_connection_info_(source_connection_info),
-        request_content_length_(0) {}
+        request_content_length_(0), data_buffer_() {}
 
   // TODO: release connections properly.
   ~HttpProxyHandler() { Close(); }
@@ -521,16 +525,26 @@ public:
     }
     auto target_address = target_conn_info_opt->address;
     auto target_port = target_conn_info_opt->port;
+    auto target_protocol = target_conn_info_opt->type;
     if (target_address == "") {
       SPDLOG_ERROR("invalid target address");
       async_accpet_cb_();
       return;
     }
     SPDLOG_DEBUG("route to {}:{}{}", target_address, target_port, target_url_);
-    handleProxyRequest(std::move(target_address), std::move(target_port));
+
+    if (target_protocol == ProtocolTypeWebSocket) {
+      handleWebSocketRequest();
+      return;
+    } else if (target_protocol == ProtocolTypeHttp) {
+      handleHttpRequest(std::move(target_address), std::move(target_port));
+      return;
+    }
+    SPDLOG_WARN("unknown protocol: {}", target_protocol);
+    async_accpet_cb_();
   }
 
-  void handleProxyRequest(std::string &&target_host, uint16_t &&target_port) {
+  void handleHttpRequest(std::string &&target_host, uint16_t &&target_port) {
     namespace beast = boost::beast;
     namespace http = beast::http;
     namespace ssl = boost::asio::ssl;
@@ -588,35 +602,26 @@ public:
     }
     // SPDLOG_WARN("target_url: {}", target_url_);
     http::request<http::empty_body> req{*http_verb, target_url_, 11};
-
-    // TODO: logic for rewriting header.
+    // rewirte headers field.
     for (size_t i = 0; i < request_.num_headers; ++i) {
       auto &header = request_.headers[i];
       auto header_name = std::string(header.name, header.name_len);
-      // TODO: shity codes.
-      if (header_name == "Connection" || header_name == "connection") {
+      auto lower_header_name = utils::toLower(header_name);
+      if (lower_header_name ==
+          utils::toLower(CRequest::kHeaderFieldConnection)) {
         continue;
       }
-      if (header_name == "Host" || header_name == "host") {
-        continue;
-      }
-      if (header_name == "Referer" || header_name == "referer") {
-        continue;
-      }
-      if (header_name == "Accept-Encoding" ||
-          header_name == "accept-encoding") {
-        continue;
-      }
-      if (header_name.find("Sec-") != std::string::npos ||
-          header_name.find("sec-") != std::string::npos) {
-        continue;
-      }
-      if (header_name == "Accept" || header_name == "accept") {
+      if (lower_header_name == utils::toLower(CRequest::kHeaderFieldHost) ||
+          lower_header_name == utils::toLower(CRequest::kHeaderFieldReferer) ||
+          lower_header_name ==
+              utils::toLower(CRequest::kHeaderFieldAcceptEncoding) ||
+          lower_header_name == utils::toLower(CRequest::kHeaderFieldAccept) ||
+          lower_header_name.find("sec-") != std::string::npos) {
         continue;
       }
       req.set(header_name, std::string(header.value, header.value_len));
     }
-    req.set(http::field::connection, "close");
+    req.set(http::field::connection, CRequest::kConnectionClose);
     req.set(http::field::host, target_host);
     http::serializer<true, http::empty_body> sr(req);
     http::write_header(*stream, sr, ec);
@@ -679,52 +684,69 @@ public:
     }
     async_accpet_cb_();
   }
-  // void handleWebSocketProxy(std::shared_ptr<boost::beast::tcp_stream>
-  // remote_socket) {
-  //   auto ws_client =
-  //   std::make_shared<boost::beast::websocket::stream<boost::beast::tcp_stream>>(std::move(*remote_socket));
-  //   std::string host = "bytebase.example.com";
 
-  //   std::string target_path(request_.path, request_.len_path);
+  void handleWebSocketRequest() {
+    if constexpr (std::is_same_v<T, boost::asio::ssl::stream<
+                                        boost::asio::ip::tcp::socket>>) {
+      SPDLOG_WARN("handleWebSocketRequest: SSL websocket not implemented.");
+      async_accpet_cb_();
+      return;
+    } else {
+      namespace websocket = boost::beast::websocket;
+      namespace beast = boost::beast;
+      beast::flat_buffer header_buffer;
+      boost::system::error_code ec;
+      header_buffer.commit(
+          boost::asio::buffer_copy(header_buffer.prepare(total_parsed_),
+                                   boost::asio::buffer(request_.header_buf)));
+      //  TODO: support wss.
+      auto ws_stream =
+          boost::make_shared<websocket::stream<boost::asio::ip::tcp::socket>>(
+              std::move(*sock_ptr_));
+      ws_stream->accept(header_buffer.data(), ec);
+      if (ec) {
+        SPDLOG_WARN("failed to do WebSocket handshake: {}", ec.message());
+        async_accpet_cb_();
+        return;
+      }
+      handleWebSocketPayload(ws_stream);
+    }
+  }
 
-  //   ws_client->async_handshake(host, target_path,
-  //     boost::asio::bind_executor(strand_,
-  //       [this, self = shared_from_this(),
-  //       ws_client](boost::system::error_code ec) {
-  //     if (ec) {
-  //       SPDLOG_WARN("websocket handshake failed: {}", ec.message());
-  //       async_accpet_cb_();
-  //       return;
-  //     }
+  void onWebSocketRead(
+      boost::shared_ptr<
+          boost::beast::websocket::stream<boost::asio::ip::tcp::socket>>
+          ws_stream,
+      boost::system::error_code ec, size_t bytes_read) {
+    if (ec) {
+      SPDLOG_WARN("failed to read WebSocket data: {}", ec.message());
+      async_accpet_cb_();
+      return;
+    }
+    auto buffer_begin = boost::asio::buffers_begin(data_buffer_.data());
+    auto buffer_end = boost::asio::buffers_end(data_buffer_.data());
+    SPDLOG_WARN("Get Message: {}", std::string(buffer_begin, buffer_end));
+    data_buffer_.consume(bytes_read);
+    // send reponse.
+    ws_stream->write(boost::asio::buffer("HelloWorld"), ec);
+    if (ec) {
+      SPDLOG_ERROR("failed to write WebSocket message: {}", ec.message());
+      async_accpet_cb_();
+      return;
+    }
+    handleWebSocketPayload(ws_stream);
+  }
 
-  //     auto do_proxy = [this, ws_client, self]() {
-  //       auto client_ws =
-  //       std::make_shared<boost::beast::websocket::stream<boost::beast::tcp_stream>>(std::move(*sock_ptr_));
-
-  //       auto client_buf = std::make_shared<boost::beast::flat_buffer>();
-  //       client_ws->async_read(*client_buf,
-  //         [client_buf, ws_client](boost::system::error_code ec, std::size_t
-  //         bytes) {
-  //           if (!ec) {
-  //             ws_client->text(true);
-  //             ws_client->async_write(client_buf->data(), [](auto, auto) {});
-  //           }
-  //         });
-
-  //       auto server_buf = std::make_shared<boost::beast::flat_buffer>();
-  //       ws_client->async_read(*server_buf,
-  //         [server_buf, client_ws](boost::system::error_code ec, std::size_t
-  //         bytes) {
-  //           if (!ec) {
-  //             client_ws->text(true);
-  //             client_ws->async_write(server_buf->data(), [](auto, auto) {});
-  //           }
-  //         });
-  //     };
-
-  //     do_proxy();
-  //   }));
-  // }
+  void handleWebSocketPayload(
+      boost::shared_ptr<
+          boost::beast::websocket::stream<boost::asio::ip::tcp::socket>>
+          ws_stream) {
+    ws_stream->async_read(
+        data_buffer_, std::bind(&HttpProxyHandler<T>::onWebSocketRead,
+                                this->shared_from_this(), ws_stream,
+                                std::placeholders::_1, std::placeholders::_2));
+    return;
+  }
 
   void handleLocalFileRequest() {
     // get local file path from request url.
@@ -791,6 +813,7 @@ private:
   std::function<void()> async_accpet_cb_;
   azugate::network::PicoHttpRequest request_;
   size_t total_parsed_;
+  boost::beast::flat_buffer data_buffer_;
   // services.
   utils::CompressionType compression_type_;
   std::string token_;

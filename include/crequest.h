@@ -62,12 +62,17 @@ constexpr std::string_view kHttpTrace = "TRACE";
 constexpr std::string_view kHttpPatch = "PATCH";
 constexpr std::string_view kHttpConnect = "CONNECT";
 // http header fields.
-constexpr std::string_view kHeaderAcceptEncoding = "Accept-Encoding";
-constexpr std::string_view kHeaderContentEncoding = "Content-Encoding";
-constexpr std::string_view kHeaderTransferEncoding = "Transfer-Encoding";
-constexpr std::string_view kHeaderCookie = "Cookie";
-constexpr std::string_view kHeaderAuthorization = "Authorization";
-constexpr std::string_view kHeaderContentLength = "Content-Length";
+constexpr std::string_view kHeaderFieldAcceptEncoding = "Accept-Encoding";
+constexpr std::string_view kHeaderFieldContentEncoding = "Content-Encoding";
+constexpr std::string_view kHeaderFieldTransferEncoding = "Transfer-Encoding";
+constexpr std::string_view kHeaderFieldCookie = "Cookie";
+constexpr std::string_view kHeaderFieldAuthorization = "Authorization";
+constexpr std::string_view kHeaderFieldContentLength = "Content-Length";
+constexpr std::string_view kHeaderFieldConnection = "Connection";
+constexpr std::string_view kHeaderFieldHost = "Host";
+constexpr std::string_view kHeaderFieldReferer = "Referer";
+constexpr std::string_view kHeaderFieldAccept = "Accept";
+
 // http connection.
 constexpr std::string_view kConnectionClose = "Close";
 constexpr std::string_view kConnectionKeepAlive = "keep-alive";

@@ -188,18 +188,27 @@ int main() {
   if (!LoadServerConfig()) {
     return -1;
   }
-  // TODO: default router.
+  // TODO: test HTTP.
+  // AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/*"},
+  //          ConnectionInfo{
+  //              .type = ProtocolTypeHttp,
+  //              .address = "localhost",
+  //              .port = 8081,
+  //              .http_url = "/*",
+  //              .remote = true,
+  //          });
+  // AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/*"},
+  //          ConnectionInfo{
+  //              .type = ProtocolTypeHttp,
+  //              .address = "localhost",
+  //              .port = 8082,
+  //              .http_url = "/*",
+  //              .remote = true,
+  //          });
+  // TODO: test websocket.
   AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/*"},
            ConnectionInfo{
-               .type = ProtocolTypeHttp,
-               .address = "localhost",
-               .port = 8081,
-               .http_url = "/*",
-               .remote = true,
-           });
-  AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/*"},
-           ConnectionInfo{
-               .type = ProtocolTypeHttp,
+               .type = ProtocolTypeWebSocket,
                .address = "localhost",
                .port = 8082,
                .http_url = "/*",

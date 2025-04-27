@@ -202,7 +202,7 @@ void HttpMessage::SetAllowMethods(std::vector<std::string> methods) {
 
 // compression.
 void HttpMessage::SetAcceptEncoding(std::vector<std::string> encoding_types) {
-  std::string encodings{std::format("{}: ", kHeaderAcceptEncoding)};
+  std::string encodings{std::format("{}: ", kHeaderFieldAcceptEncoding)};
   for (size_t i = 0; i < encoding_types.size(); ++i) {
     encodings.append(encoding_types[i]);
     if (i != (encoding_types.size() - 1)) {
@@ -213,11 +213,12 @@ void HttpMessage::SetAcceptEncoding(std::vector<std::string> encoding_types) {
 
 void HttpMessage::SetContentEncoding(const std::string_view &encoding_type) {
   headers_.emplace_back(
-      std::format("{}: {}", kHeaderContentEncoding, encoding_type));
+      std::format("{}: {}", kHeaderFieldContentEncoding, encoding_type));
 }
 
 void HttpMessage::SetTransferEncoding(const std::string_view &value) {
-  headers_.emplace_back(std::format("{}: {}", kHeaderTransferEncoding, value));
+  headers_.emplace_back(
+      std::format("{}: {}", kHeaderFieldTransferEncoding, value));
 };
 
 std::string HttpMessage::StringifyHeaders() {
