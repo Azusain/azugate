@@ -3,7 +3,6 @@
 #include "dispatcher.h"
 #include "filter.h"
 
-#include "protocols.h"
 #include "rate_limiter.h"
 #include <boost/asio.hpp>
 #include <boost/asio/connect.hpp>
@@ -117,14 +116,6 @@ private:
 
 } // namespace azugate
 
-void ignoreSigpipe() {
-#if defined(__linux__)
-  struct sigaction sa{};
-  sa.sa_handler = SIG_IGN;
-  sigaction(SIGPIPE, &sa, nullptr);
-#endif
-}
-
 // TODO: exception is inefficient.
 bool healthz(const std::string &addr) {
   namespace beast = boost::beast;
@@ -173,9 +164,16 @@ bool healthz(const std::string &addr) {
 int main() {
   using namespace boost::asio;
   using namespace azugate;
-  // ignore SIGPIPE.
-  ignoreSigpipe();
 
+#if defined(__linux__)
+  // ignore SIGPIPE.
+  struct sigaction sa{};
+  sa.sa_handler = SIG_IGN;
+  sigaction(SIGPIPE, &sa, nullptr);
+#endif
+
+  // TODO: async logging system.
+  // setup logger.
   // ref: https://github.com/gabime/spdlog/wiki/3.-Custom-formatting.
   // for production, use this logger:
   // spdlog::set_pattern("[%^%l%$] %t | %D %H:%M:%S | %v");
@@ -185,39 +183,15 @@ int main() {
   azugate::SetConfigPath(fmt::format("{}/{}", azugate::kPathResourceFolder,
                                      azugate::kDftConfigFile));
 
+  // load configurations from 'config.yaml'.
   if (!LoadServerConfig()) {
     return -1;
   }
-  // TODO: test HTTP.
-  // AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/*"},
-  //          ConnectionInfo{
-  //              .type = ProtocolTypeHttp,
-  //              .address = "localhost",
-  //              .port = 8081,
-  //              .http_url = "/*",
-  //              .remote = true,
-  //          });
-  // AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/*"},
-  //          ConnectionInfo{
-  //              .type = ProtocolTypeHttp,
-  //              .address = "localhost",
-  //              .port = 8082,
-  //              .http_url = "/*",
-  //              .remote = true,
-  //          });
-  // TODO: test websocket.
-  AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/*"},
-           ConnectionInfo{
-               .type = ProtocolTypeWebSocket,
-               .address = "localhost",
-               .port = 8082,
-               .http_url = "/*",
-               .remote = true,
-           });
 
   // setup grpc server.
   std::thread grpc_server_thread([&]() {
     grpc::ServerBuilder server_builder;
+    // TODO: The server should listen only on the local address by default.
     server_builder.AddListeningPort(
         fmt::format("0.0.0.0:{}", g_azugate_admin_port),
         grpc::InsecureServerCredentials());
@@ -249,7 +223,7 @@ int main() {
   s.Start();
   SPDLOG_INFO("server is running with {} thread(s)", g_num_threads);
 
-  // invoke asynchronous tasks.
+  // run the server with multiple worker threads.
   std::vector<std::thread> worker_threads;
   for (size_t i = 0; i < g_num_threads; ++i) {
     worker_threads.emplace_back([io_context_ptr]() { io_context_ptr->run(); });
@@ -263,13 +237,5 @@ int main() {
 }
 
 // TODO:
-// let's proxy websockets then.
-// design fault tolerances.
-// best practices, you can check:
-// https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes.
-// async logging system.
-// websockets.
-// unit test for utilities (HTTP parser).
-// persistent storage.
+// ref: https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes.
 // memmory pool optimaization.
-// fuzzy matching in router.

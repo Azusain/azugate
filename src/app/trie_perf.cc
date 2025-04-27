@@ -1,3 +1,15 @@
+// +---------------+------------------------+------------------+
+// | trie time(ms) | brutal force time (ms) | num of the rules |
+// +---------------+------------------------+------------------+
+// | 3             | 6                      | 100              |
+// +---------------+------------------------+------------------+
+// | 3             | 34.5                   | 1000             |
+// +---------------+------------------------+------------------+
+// | 3             | 2003                   | 10000            |
+// +---------------+------------------------+------------------+
+// | 27            | 20038                  | 100000           |
+// +---------------+------------------------+------------------+
+
 #include <chrono>
 #include <iostream>
 #include <memory>
@@ -25,7 +37,6 @@ public:
     node->isEnd = true;
   }
 
-  // 返回最长匹配前缀
   std::string longestPrefixMatch(const std::string &path) {
     TrieNode *node = root.get();
     std::string matched;
@@ -95,11 +106,11 @@ void performance_test(int m, int n) {
       ++trie_match;
   }
   auto end = std::chrono::high_resolution_clock::now();
-  std::cout << "Trie 前缀匹配耗时: "
+  std::cout << "trie: "
             << std::chrono::duration_cast<std::chrono::milliseconds>(end -
                                                                      start)
                    .count()
-            << " ms, 命中: " << trie_match << std::endl;
+            << " ms, hit: " << trie_match << std::endl;
 
   // 暴力字符串前缀匹配测试
   start = std::chrono::high_resolution_clock::now();
@@ -109,7 +120,7 @@ void performance_test(int m, int n) {
       ++brute_match;
   }
   end = std::chrono::high_resolution_clock::now();
-  std::cout << "暴力字符串前缀匹配耗时: "
+  std::cout << "brutal force: "
             << std::chrono::duration_cast<std::chrono::milliseconds>(end -
                                                                      start)
                    .count()
@@ -117,14 +128,10 @@ void performance_test(int m, int n) {
 }
 
 int main() {
-  int m = 100000; // 路由规则数量
-  int n = 15;     // 平均字符串长度
-
+  // num of the rules.
+  int m = 100000;
+  // average length of the string.
+  int n = 15;
   performance_test(m, n);
   return 0;
 }
-
-// 3 6 -> 100 条
-// 3 34.5 -> 1000 条
-// 3 2003 -> 10000 条
-// 27 20038 -> 100000 条

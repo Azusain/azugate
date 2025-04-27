@@ -224,7 +224,6 @@ extractTokenFromAuthorization(const std::string_view &auth_header) {
 
 // ref:
 // https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/oauth2_filter.
-//
 template <typename T>
 inline bool externalAuthorization(network::PicoHttpRequest &request,
                                   boost::shared_ptr<T> sock_ptr,
@@ -325,7 +324,7 @@ inline bool externalAuthorization(network::PicoHttpRequest &request,
     // redirect to oauth login page.
     http::response<http::string_body> resp{http::status::found, 11};
     resp.set(http::field::location, u.buffer());
-    resp.set(http::field::connection, "close");
+    resp.set(http::field::connection, CRequest::kConnectionClose);
     resp.prepare_payload();
     boost::system::error_code ec;
     http::write(*sock_ptr, resp, ec);
@@ -406,7 +405,7 @@ public:
       : io_context_ptr_(io_context_ptr), sock_ptr_(sock_ptr),
         async_accpet_cb_(async_accpet_cb), total_parsed_(0),
         source_connection_info_(source_connection_info),
-        request_content_length_(0), data_buffer_() {}
+        request_content_length_(0) {}
 
   // TODO: release connections properly.
   ~HttpProxyHandler() { Close(); }
@@ -534,7 +533,7 @@ public:
     SPDLOG_DEBUG("route to {}:{}{}", target_address, target_port, target_url_);
 
     if (target_protocol == ProtocolTypeWebSocket) {
-      handleWebSocketRequest();
+      handleWebSocketRequest(std::move(target_address), std::move(target_port));
       return;
     } else if (target_protocol == ProtocolTypeHttp) {
       handleHttpRequest(std::move(target_address), std::move(target_port));
@@ -685,67 +684,117 @@ public:
     async_accpet_cb_();
   }
 
-  void handleWebSocketRequest() {
+  void handleWebSocketRequest(std::string &&target_host,
+                              uint16_t &&target_port) {
     if constexpr (std::is_same_v<T, boost::asio::ssl::stream<
                                         boost::asio::ip::tcp::socket>>) {
-      SPDLOG_WARN("handleWebSocketRequest: SSL websocket not implemented.");
+      SPDLOG_ERROR("ssl websocket not implemented");
       async_accpet_cb_();
       return;
     } else {
-      namespace websocket = boost::beast::websocket;
       namespace beast = boost::beast;
+      namespace websocket = beast::websocket;
+      namespace net = boost::asio;
+      using tcp = net::ip::tcp;
       beast::flat_buffer header_buffer;
       boost::system::error_code ec;
       header_buffer.commit(
           boost::asio::buffer_copy(header_buffer.prepare(total_parsed_),
                                    boost::asio::buffer(request_.header_buf)));
       //  TODO: support wss.
-      auto ws_stream =
+      auto src_ws_stream =
           boost::make_shared<websocket::stream<boost::asio::ip::tcp::socket>>(
               std::move(*sock_ptr_));
-      ws_stream->accept(header_buffer.data(), ec);
+      src_ws_stream->accept(header_buffer.data(), ec);
       if (ec) {
         SPDLOG_WARN("failed to do WebSocket handshake: {}", ec.message());
         async_accpet_cb_();
         return;
       }
-      handleWebSocketPayload(ws_stream);
+
+      // connect to target.
+      tcp::resolver resolver(*io_context_ptr_);
+      auto results =
+          resolver.resolve(target_host, std::to_string(target_port), ec);
+      if (ec) {
+        SPDLOG_WARN("failed to resolve host: {}", ec.message());
+        async_accpet_cb_();
+        return;
+      }
+      tcp::socket target_socket(*io_context_ptr_);
+      net::connect(target_socket, results.begin(), results.end(), ec);
+      if (ec) {
+        SPDLOG_WARN("failed to connect to target: {}", ec.message());
+        async_accpet_cb_();
+        return;
+      }
+      auto target_ws_stream =
+          boost::make_shared<websocket::stream<boost::asio::ip::tcp::socket>>(
+              std::move(target_socket));
+      target_ws_stream->handshake(target_host, target_url_, ec);
+      if (ec) {
+        SPDLOG_WARN("failed to do websocket handshake: {}", ec.message());
+        async_accpet_cb_();
+        return;
+      }
+
+      // handle bi-direction connection.
+      auto source_data_buffer = boost::make_shared<boost::beast::flat_buffer>();
+      auto target_data_buffer = boost::make_shared<boost::beast::flat_buffer>();
+      readWebSocketPayloadFromSource(src_ws_stream, target_ws_stream,
+                                     source_data_buffer);
+      readWebSocketPayloadFromSource(target_ws_stream, src_ws_stream,
+                                     target_data_buffer);
     }
+  }
+
+  void readWebSocketPayloadFromSource(
+      boost::shared_ptr<
+          boost::beast::websocket::stream<boost::asio::ip::tcp::socket>>
+          src_ws_stream,
+      boost::shared_ptr<
+          boost::beast::websocket::stream<boost::asio::ip::tcp::socket>>
+          target_ws_stream,
+      boost::shared_ptr<boost::beast::flat_buffer> data_buffer) {
+    src_ws_stream->async_read(
+        *data_buffer,
+        std::bind(&HttpProxyHandler<T>::onWebSocketRead,
+                  this->shared_from_this(), src_ws_stream, target_ws_stream,
+                  data_buffer, std::placeholders::_1, std::placeholders::_2));
+    return;
   }
 
   void onWebSocketRead(
       boost::shared_ptr<
           boost::beast::websocket::stream<boost::asio::ip::tcp::socket>>
-          ws_stream,
+          src_ws_stream,
+      boost::shared_ptr<
+          boost::beast::websocket::stream<boost::asio::ip::tcp::socket>>
+          target_ws_stream,
+      boost::shared_ptr<boost::beast::flat_buffer> data_buffer,
       boost::system::error_code ec, size_t bytes_read) {
     if (ec) {
       SPDLOG_WARN("failed to read WebSocket data: {}", ec.message());
       async_accpet_cb_();
       return;
     }
-    auto buffer_begin = boost::asio::buffers_begin(data_buffer_.data());
-    auto buffer_end = boost::asio::buffers_end(data_buffer_.data());
-    SPDLOG_WARN("Get Message: {}", std::string(buffer_begin, buffer_end));
-    data_buffer_.consume(bytes_read);
-    // send reponse.
-    ws_stream->write(boost::asio::buffer("HelloWorld"), ec);
+
+    // TODO: only for debugging.
+    // auto buffer_begin = boost::asio::buffers_begin(data_buffer->data());
+    // auto buffer_end = boost::asio::buffers_end(data_buffer->data());
+    // SPDLOG_WARN("Get Message: {}", std::string(buffer_begin, buffer_end));
+
+    // send response.
+    target_ws_stream->write(data_buffer->data(), ec);
     if (ec) {
-      SPDLOG_ERROR("failed to write WebSocket message: {}", ec.message());
+      SPDLOG_ERROR("failed to write WebSocket message to target: {}",
+                   ec.message());
       async_accpet_cb_();
       return;
     }
-    handleWebSocketPayload(ws_stream);
-  }
-
-  void handleWebSocketPayload(
-      boost::shared_ptr<
-          boost::beast::websocket::stream<boost::asio::ip::tcp::socket>>
-          ws_stream) {
-    ws_stream->async_read(
-        data_buffer_, std::bind(&HttpProxyHandler<T>::onWebSocketRead,
-                                this->shared_from_this(), ws_stream,
-                                std::placeholders::_1, std::placeholders::_2));
-    return;
+    data_buffer->consume(bytes_read);
+    readWebSocketPayloadFromSource(src_ws_stream, target_ws_stream,
+                                   data_buffer);
   }
 
   void handleLocalFileRequest() {
@@ -781,7 +830,6 @@ public:
     }
 
     // setup and send body.
-    // WARN: reuse buffer address.
     memset(request_.header_buf, '\0', sizeof(request_.header_buf));
     if (!compressAndWriteBody(sock_ptr_, full_local_file_path_str,
                               local_file_size, compression_type_, request_)) {
@@ -795,7 +843,7 @@ public:
       boost::system::error_code ec;
       sock_ptr_->lowest_layer().shutdown(
           boost::asio::socket_base::shutdown_both, ec);
-      // TODO: gracefullt shutdown.
+      // TODO: correct 'sock not connected' message?
       if (ec && ec.message() != "Socket is not connected") {
         SPDLOG_WARN("failed to do shutdown: {}", ec.message());
       }
@@ -813,7 +861,7 @@ private:
   std::function<void()> async_accpet_cb_;
   azugate::network::PicoHttpRequest request_;
   size_t total_parsed_;
-  boost::beast::flat_buffer data_buffer_;
+  boost::beast::flat_buffer target_data_buffer_;
   // services.
   utils::CompressionType compression_type_;
   std::string token_;
