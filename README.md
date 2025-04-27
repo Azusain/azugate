@@ -2,16 +2,14 @@
 
 ### Features
 
-- http local file proxy
-- https
-- tcp proxy
-- websocket
-- http gzip compression and chunked transfer
-- rate limiting
-- OAuth integration with Auth0.com
-- management via gRPC API
-- Linux sendfile()
-- High-performance Asynchronous I/O
+- HTTP(S) proxy support (local files and remote resources)
+- WebSocket support
+- HTTP Gzip compression and chunked transfer encoding
+- Rate limiting
+- OAuth integration via Auth0
+- Management through gRPC API
+- Linux sendfile() optimization
+- High-performance asynchronous I/O
 
 ### Build & Run
 
@@ -20,7 +18,7 @@ You will need a compiler that supports c++20, along with CMake and vcpkg, to bui
 ```shell
   # 1. Build with CMake and vcpkg.
   mkdir build && cd build
-  cmake ..
+  cmake --preset=default ..
   cmake --build .
   
   # 2. Modify the provided template: resources/config.yaml
