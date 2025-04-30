@@ -62,16 +62,18 @@ constexpr std::string_view kHttpTrace = "TRACE";
 constexpr std::string_view kHttpPatch = "PATCH";
 constexpr std::string_view kHttpConnect = "CONNECT";
 // http header fields.
-constexpr std::string_view kHeaderFieldAcceptEncoding = "Accept-Encoding";
-constexpr std::string_view kHeaderFieldContentEncoding = "Content-Encoding";
-constexpr std::string_view kHeaderFieldTransferEncoding = "Transfer-Encoding";
-constexpr std::string_view kHeaderFieldCookie = "Cookie";
-constexpr std::string_view kHeaderFieldAuthorization = "Authorization";
-constexpr std::string_view kHeaderFieldContentLength = "Content-Length";
-constexpr std::string_view kHeaderFieldConnection = "Connection";
-constexpr std::string_view kHeaderFieldHost = "Host";
-constexpr std::string_view kHeaderFieldReferer = "Referer";
-constexpr std::string_view kHeaderFieldAccept = "Accept";
+// lower case !!!
+constexpr std::string_view kHeaderFieldAcceptEncoding = "accept-encoding";
+constexpr std::string_view kHeaderFieldContentEncoding = "content-encoding";
+constexpr std::string_view kHeaderFieldTransferEncoding = "transfer-encoding";
+constexpr std::string_view kHeaderFieldCookie = "cookie";
+constexpr std::string_view kHeaderFieldAuthorization = "authorization";
+constexpr std::string_view kHeaderFieldContentLength = "content-length";
+constexpr std::string_view kHeaderFieldConnection = "connection";
+constexpr std::string_view kHeaderFieldHost = "host";
+constexpr std::string_view kHeaderFieldReferer = "referer";
+constexpr std::string_view kHeaderFieldAccept = "accept";
+constexpr std::string_view kHeaderFieldXGrpcWeb = "x-grpc-web";
 
 // http connection.
 constexpr std::string_view kConnectionClose = "Close";

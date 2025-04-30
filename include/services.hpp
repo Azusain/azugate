@@ -32,6 +32,7 @@
 #include <boost/beast/http/write.hpp>
 #include <boost/beast/websocket.hpp>
 #include <boost/beast/websocket/stream.hpp>
+#include <boost/smart_ptr/make_shared_array.hpp>
 #include <boost/smart_ptr/make_shared_object.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/system/detail/error_code.hpp>
@@ -50,6 +51,7 @@
 #include <spdlog/spdlog.h>
 #include <string>
 #include <system_error>
+#include <utility>
 #include <vector>
 #if defined(__linux__)
 #include <sys/sendfile.h>
@@ -339,7 +341,8 @@ inline bool externalAuthorization(network::PicoHttpRequest &request,
 inline bool extractMetaFromHeaders(utils::CompressionType &compression_type,
                                    network::PicoHttpRequest &request,
                                    std::string &token,
-                                   size_t &request_content_length) {
+                                   size_t &request_content_length,
+                                   bool &isGrpcWeb) {
   if (request.num_headers <= 0 || request.num_headers > kMaxHeadersNum) {
     SPDLOG_WARN("No headers found in the request.");
     return false;
@@ -347,6 +350,7 @@ inline bool extractMetaFromHeaders(utils::CompressionType &compression_type,
 
   for (size_t i = 0; i < request.num_headers; ++i) {
     auto &header = request.headers[i];
+    // validate the header struct.
     if (header.name == nullptr || header.value == nullptr) {
       SPDLOG_WARN("header name or value is null at index {}", i);
       return false;
@@ -357,26 +361,31 @@ inline bool extractMetaFromHeaders(utils::CompressionType &compression_type,
           header.name_len, header.value_len);
       return false;
     }
+    auto header_value = std::string(header.value, header.value_len);
+    // header switch.
     std::string_view header_name(header.name, header.name_len);
+    header_name = utils::toLower(header_name);
     if (header_name == CRequest::kHeaderFieldAcceptEncoding) {
-      compression_type = utils::GetCompressionType(
-          std::string_view(header.value, header.value_len));
+      compression_type = utils::GetCompressionType(header_value);
       continue;
     }
     if (header_name == CRequest::kHeaderFieldCookie) {
-      std::string_view header_value(header.value, header.value_len);
       token = extractAzugateAccessTokenFromCookie(header_value);
       continue;
     }
     if (header_name == CRequest::kHeaderFieldContentLength) {
-      std::string len_str(header.value, header.value_len);
       auto [_, err] =
           std::from_chars(header.value, header.value + header.value_len,
                           request_content_length);
-      if (err == std::errc()) {
-        SPDLOG_ERROR("failed to convert std::string to int}");
+      if (err != std::errc()) {
+        SPDLOG_ERROR("failed to convert std::string '{}' to int", header_value);
         return false;
       }
+      continue;
+    }
+    if (header_name == CRequest::kHeaderFieldXGrpcWeb && header_value == "1") {
+      isGrpcWeb = true;
+      continue;
     }
     // TODO: fix it when needed.
     // if (header_name == CRequest::kHeaderAuthorization) {
@@ -405,7 +414,7 @@ public:
       : io_context_ptr_(io_context_ptr), sock_ptr_(sock_ptr),
         async_accpet_cb_(async_accpet_cb), total_parsed_(0),
         source_connection_info_(source_connection_info),
-        request_content_length_(0) {}
+        request_content_length_(0), isGrpcWeb_(false) {}
 
   // TODO: release connections properly.
   ~HttpProxyHandler() { Close(); }
@@ -435,9 +444,10 @@ public:
           request_.path == nullptr || request_.len_path == 0 ||
           request_.num_headers < 0 ||
           request_.num_headers > azugate::kMaxHeadersNum);
-
     if (pret > 0 && valid_request) {
       // successful parse.
+      extra_body_len_ = total_parsed_ - pret;
+      total_parsed_ = pret;
       extractMetadata();
     } else if (pret == -2) {
       // need more data.'
@@ -447,6 +457,7 @@ public:
     } else {
       SPDLOG_WARN("failed to parse HTTP request");
       async_accpet_cb_();
+      return;
     }
   }
 
@@ -465,7 +476,7 @@ public:
 
   inline void extractMetadata() {
     if (!extractMetaFromHeaders(compression_type_, request_, token_,
-                                request_content_length_)) {
+                                request_content_length_, isGrpcWeb_)) {
       SPDLOG_WARN("failed to extract meta from headers");
       async_accpet_cb_();
       return;
@@ -543,6 +554,49 @@ public:
     async_accpet_cb_();
   }
 
+  // grpc-web protocol data frame:
+  // +---------------+----------------------------------+------+
+  // | compressed(1) | data length (4 bytes big-endian) | data |
+  // +---------------+----------------------------------+------+
+  inline void
+  handleGrpcWebRequest(boost::shared_ptr<std::vector<char>> buffer_ptr,
+                       std::string &response_str) {
+    SPDLOG_WARN("grpc-web request: {}", target_url_);
+    auto &buffer = *buffer_ptr;
+    const size_t kGrpcFrameLength = 5;
+    auto left_frame_bytes = kGrpcFrameLength - extra_body_len_;
+    boost::system::error_code ec;
+    if (left_frame_bytes) {
+      size_t n_read = boost::asio::read(
+          *sock_ptr_, boost::asio::buffer(buffer),
+          boost::asio::transfer_exactly(left_frame_bytes), ec);
+      if (ec) {
+        SPDLOG_ERROR("failed to read grpc-web body: {}", ec.message());
+        async_accpet_cb_();
+        return;
+      }
+      if (n_read + left_frame_bytes < kGrpcFrameLength) {
+        SPDLOG_WARN("invalid gRPC-Web frame");
+        async_accpet_cb_();
+        return;
+      }
+    }
+    uint8_t compressed = buffer[0];
+    uint32_t msg_len = (uint8_t(buffer[1]) << 24) | (uint8_t(buffer[2]) << 16) |
+                       (uint8_t(buffer[3]) << 8) | (uint8_t(buffer[4]));
+
+    if (kGrpcFrameLength + msg_len > buffer.size()) {
+      SPDLOG_ERROR("message length({}) exceeds buffer({})", msg_len,
+                   buffer.size());
+      async_accpet_cb_();
+      return;
+    }
+
+    response_str.assign(buffer.begin() + kGrpcFrameLength,
+                        buffer.begin() + kGrpcFrameLength + msg_len);
+    SPDLOG_INFO("received gRPC-Web message, length: {}", msg_len);
+  }
+
   void handleHttpRequest(std::string &&target_host, uint16_t &&target_port) {
     namespace beast = boost::beast;
     namespace http = beast::http;
@@ -606,15 +660,13 @@ public:
       auto &header = request_.headers[i];
       auto header_name = std::string(header.name, header.name_len);
       auto lower_header_name = utils::toLower(header_name);
-      if (lower_header_name ==
-          utils::toLower(CRequest::kHeaderFieldConnection)) {
+      if (lower_header_name == CRequest::kHeaderFieldConnection) {
         continue;
       }
-      if (lower_header_name == utils::toLower(CRequest::kHeaderFieldHost) ||
-          lower_header_name == utils::toLower(CRequest::kHeaderFieldReferer) ||
-          lower_header_name ==
-              utils::toLower(CRequest::kHeaderFieldAcceptEncoding) ||
-          lower_header_name == utils::toLower(CRequest::kHeaderFieldAccept) ||
+      if (lower_header_name == CRequest::kHeaderFieldHost ||
+          lower_header_name == CRequest::kHeaderFieldReferer ||
+          lower_header_name == CRequest::kHeaderFieldAcceptEncoding ||
+          lower_header_name == CRequest::kHeaderFieldAccept ||
           lower_header_name.find("sec-") != std::string::npos) {
         continue;
       }
@@ -630,12 +682,28 @@ public:
       return;
     }
 
-    std::vector<char> buffer(kDefaultBufSize);
+    auto src_read_buffer = boost::make_shared<std::vector<char>>();
+    src_read_buffer->resize(kDefaultBufSize);
     // TODO: async write.
     // SPDLOG_WARN("content-length: {}", request_content_length_);
-    for (size_t n_read = 0; n_read < request_content_length_;) {
+
+    if (extra_body_len_ > 0) {
+      std::memcpy(src_read_buffer->data(), request_.header_buf + total_parsed_,
+                  extra_body_len_);
+      // TODO: refactor these pieces of shit.
+      boost::asio::write(
+          *stream, boost::asio::buffer(*src_read_buffer, extra_body_len_), ec);
+      if (ec) {
+        SPDLOG_ERROR("error writing body to target: {}", ec.message());
+        async_accpet_cb_();
+        return;
+      }
+    }
+    auto left_body_length = request_content_length_ - extra_body_len_;
+    for (size_t n_read = 0; n_read < left_body_length;) {
       SPDLOG_WARN("write data to target");
-      size_t n = sock_ptr_->read_some(boost::asio::buffer(buffer), ec);
+      size_t n =
+          sock_ptr_->read_some(boost::asio::buffer(*src_read_buffer), ec);
       n_read += n;
       if (ec == boost::asio::error::eof) {
         break;
@@ -644,7 +712,7 @@ public:
         async_accpet_cb_();
         return;
       }
-      boost::asio::write(*stream, boost::asio::buffer(buffer, n), ec);
+      boost::asio::write(*stream, boost::asio::buffer(*src_read_buffer, n), ec);
       if (ec) {
         SPDLOG_ERROR("error writing body to target: {}", ec.message());
         async_accpet_cb_();
@@ -652,21 +720,29 @@ public:
       }
     }
 
-    // get response from target and send it back to client.
-    beast::flat_buffer response_buffer;
-    http::response<http::dynamic_body> res;
-    http::read(*stream, response_buffer, res, ec);
-    if (ec && ec != boost::beast::http::error::end_of_stream) {
-      SPDLOG_ERROR("http read failed: {}", ec.message());
-      async_accpet_cb_();
+    // TODO: inefficient.
+    std::string response_str;
+    if (isGrpcWeb_) {
+      handleGrpcWebRequest(src_read_buffer, response_str);
       return;
+    } else {
+      // get response from target and send it back to client.
+      beast::flat_buffer response_buffer;
+      http::response<http::dynamic_body> res;
+      http::read(*stream, response_buffer, res, ec);
+      if (ec && ec != boost::beast::http::error::end_of_stream) {
+        SPDLOG_ERROR("http read failed: {}", ec.message());
+        async_accpet_cb_();
+        return;
+      }
+      std::stringstream ss;
+      ss << res;
+      response_str = ss.str();
     }
 
-    std::stringstream ss;
-    ss << res;
-    std::string response_str = ss.str();
-    // SPDLOG_WARN("write {} to client", response_str);
+    // connect to target.
 
+    // send back the reponse from the target.
     boost::asio::write(*sock_ptr_, boost::asio::buffer(response_str), ec);
     if (ec) {
       SPDLOG_ERROR("write back to client failed: {}", ec.message());
@@ -676,11 +752,11 @@ public:
 
     // close connection.
     // TODO: gracefully shutdown.
-    stream->lowest_layer().shutdown(tcp::socket::shutdown_both, ec);
-    if (ec && ec != net::error::eof &&
-        ec.message() != "Socket is not connected") {
-      SPDLOG_WARN("shutdown failed: {}", ec.message());
-    }
+    // stream->lowest_layer().shutdown(tcp::socket::shutdown_both, ec);
+    // if (ec && ec != net::error::eof &&
+    //     ec.message() != "Socket is not connected") {
+    //   SPDLOG_WARN("shutdown failed: {}", ec.message());
+    // }
     async_accpet_cb_();
   }
 
@@ -861,13 +937,19 @@ private:
   std::function<void()> async_accpet_cb_;
   azugate::network::PicoHttpRequest request_;
   size_t total_parsed_;
-  boost::beast::flat_buffer target_data_buffer_;
+  // parseRequest() might consume part of the body during header parsing.
+  // We call this the "extra body":
+  // +-------------+----------------+
+  // | extra body  | remaining body |
+  // +-------------+----------------+
+  size_t extra_body_len_;
   // services.
   utils::CompressionType compression_type_;
   std::string token_;
   std::string target_url_;
   size_t request_content_length_;
   ConnectionInfo source_connection_info_;
+  bool isGrpcWeb_;
 };
 
 void TcpProxyHandler(

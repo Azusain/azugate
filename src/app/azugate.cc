@@ -11,6 +11,15 @@ int main() {
 
   InitLogger();
 
+  AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/*"},
+           ConnectionInfo{
+               .type = ProtocolTypeHttp,
+               .address = "localhost",
+               .port = 8081,
+               .http_url = "/*",
+               .remote = true,
+           });
+
   // Load the configurations from the local file.
   auto path_config_file = fmt::format("{}/{}", azugate::kPathResourceFolder,
                                       azugate::kDftConfigFile);

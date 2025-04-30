@@ -49,6 +49,7 @@ public:
     }
     for (auto &t : worker_threads) {
       t.join();
+      SPDLOG_ERROR("worker thread exits");
     }
   }
 
