@@ -538,9 +538,9 @@ public:
       async_accpet_cb_();
       return;
     }
-    SPDLOG_INFO("route to [{}]{}:{}{}", target_protocol, target_address,
-                target_port, target_url_);
-
+    // TODO: only for testing purpose.
+    SPDLOG_INFO("[{}] {}:{}{}", target_protocol, target_address, target_port,
+                target_url_);
     if (target_protocol == ProtocolTypeWebSocket) {
       handleWebSocketRequest(std::move(target_address), std::move(target_port));
       return;

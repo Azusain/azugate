@@ -20,6 +20,14 @@ int main() {
                .http_url = "/*",
                .remote = true,
            });
+  // AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/*"},
+  //          ConnectionInfo{
+  //              .type = ProtocolTypeHttp,
+  //              .address = "localhost",
+  //              .port = 8082,
+  //              .http_url = "/*",
+  //              .remote = true,
+  //          });
   AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/lsp"},
            ConnectionInfo{
                .type = ProtocolTypeWebSocket,
