@@ -71,7 +71,7 @@ public:
     ConnectionInfo src_conn_info;
     src_conn_info.address = source_endpoint.address().to_string();
     // TODO: support async log, this is really slow...slow...slow...
-    SPDLOG_INFO("connection from {}", src_conn_info.address);
+    SPDLOG_DEBUG("connection from {}", src_conn_info.address);
     if (!azugate::Filter(sock_ptr, src_conn_info)) {
       safeCloseSocket(sock_ptr);
       accept();

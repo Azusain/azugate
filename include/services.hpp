@@ -26,6 +26,7 @@
 #include <boost/beast/http/field.hpp>
 #include <boost/beast/http/file_body.hpp>
 #include <boost/beast/http/message.hpp>
+#include <boost/beast/http/parser.hpp>
 #include <boost/beast/http/status.hpp>
 #include <boost/beast/http/string_body.hpp>
 #include <boost/beast/http/verb.hpp>
@@ -263,7 +264,7 @@ inline bool externalAuthorization(network::PicoHttpRequest &request,
     http::request<http::string_body> req{http::verb::post, "/oauth/token", 11};
     req.set(http::field::content_type, "application/x-www-form-urlencoded");
     req.set(http::field::host, g_external_auth_domain);
-    req.set(http::field::user_agent, "azugate/1.0");
+    req.set(http::field::user_agent, AZUGATE_VERSION_STRING);
     boost::urls::url u;
     auto params = u.params();
     params.set("grant_type", "authorization_code");
@@ -341,8 +342,7 @@ inline bool externalAuthorization(network::PicoHttpRequest &request,
 inline bool extractMetaFromHeaders(utils::CompressionType &compression_type,
                                    network::PicoHttpRequest &request,
                                    std::string &token,
-                                   size_t &request_content_length,
-                                   bool &isGrpcWeb) {
+                                   size_t &request_content_length) {
   if (request.num_headers <= 0 || request.num_headers > kMaxHeadersNum) {
     SPDLOG_WARN("No headers found in the request.");
     return false;
@@ -383,10 +383,6 @@ inline bool extractMetaFromHeaders(utils::CompressionType &compression_type,
       }
       continue;
     }
-    if (header_name == CRequest::kHeaderFieldXGrpcWeb && header_value == "1") {
-      isGrpcWeb = true;
-      continue;
-    }
     // TODO: fix it when needed.
     // if (header_name == CRequest::kHeaderAuthorization) {
     //   std::string_view header_value(header.value, header.value_len);
@@ -414,7 +410,7 @@ public:
       : io_context_ptr_(io_context_ptr), sock_ptr_(sock_ptr),
         async_accpet_cb_(async_accpet_cb), total_parsed_(0),
         source_connection_info_(source_connection_info),
-        request_content_length_(0), isGrpcWeb_(false) {}
+        request_content_length_(0) {}
 
   // TODO: release connections properly.
   ~HttpProxyHandler() { Close(); }
@@ -476,7 +472,7 @@ public:
 
   inline void extractMetadata() {
     if (!extractMetaFromHeaders(compression_type_, request_, token_,
-                                request_content_length_, isGrpcWeb_)) {
+                                request_content_length_)) {
       SPDLOG_WARN("failed to extract meta from headers");
       async_accpet_cb_();
       return;
@@ -653,7 +649,6 @@ public:
       async_accpet_cb_();
       return;
     }
-    // SPDLOG_WARN("target_url: {}", target_url_);
     http::request<http::empty_body> req{*http_verb, target_url_, 11};
     // rewirte headers field.
     for (size_t i = 0; i < request_.num_headers; ++i) {
@@ -720,29 +715,22 @@ public:
       }
     }
 
-    // TODO: inefficient.
     std::string response_str;
-    if (isGrpcWeb_) {
-      handleGrpcWebRequest(src_read_buffer, response_str);
+    beast::flat_buffer response_buffer;
+    http::response_parser<http::dynamic_body> parser;
+    parser.body_limit(kMaxBodyBufferSize);
+    http::read(*stream, response_buffer, parser, ec);
+    if (ec && ec != boost::beast::http::error::end_of_stream) {
+      SPDLOG_ERROR("http read failed: {}", ec.message());
+      async_accpet_cb_();
       return;
-    } else {
-      // get response from target and send it back to client.
-      beast::flat_buffer response_buffer;
-      http::response<http::dynamic_body> res;
-      http::read(*stream, response_buffer, res, ec);
-      if (ec && ec != boost::beast::http::error::end_of_stream) {
-        SPDLOG_ERROR("http read failed: {}", ec.message());
-        async_accpet_cb_();
-        return;
-      }
-      std::stringstream ss;
-      ss << res;
-      response_str = ss.str();
     }
+    auto res = parser.get();
+    std::stringstream ss;
+    ss << res;
+    response_str = ss.str();
 
-    // connect to target.
-
-    // send back the reponse from the target.
+    // send back the reponse (header & body) from the target.
     boost::asio::write(*sock_ptr_, boost::asio::buffer(response_str), ec);
     if (ec) {
       SPDLOG_ERROR("write back to client failed: {}", ec.message());
@@ -949,7 +937,6 @@ private:
   std::string target_url_;
   size_t request_content_length_;
   ConnectionInfo source_connection_info_;
-  bool isGrpcWeb_;
 };
 
 void TcpProxyHandler(

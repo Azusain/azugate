@@ -41,6 +41,9 @@ constexpr std::string_view kDftHttpPort = "80";
 constexpr std::string_view kDftHttpsPort = "443";
 constexpr size_t kDftStringReservedBytes = 256;
 constexpr size_t kDftHealthCheckGapSecond = 3;
+
+// TODO: 100 MB.
+constexpr size_t kMaxBodyBufferSize = 1024 * 1024 * 100;
 // runtime shared variables.
 extern uint16_t g_azugate_port;
 extern uint16_t g_azugate_admin_port;
