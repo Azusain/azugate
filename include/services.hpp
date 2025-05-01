@@ -509,6 +509,7 @@ public:
     boost::system::error_code ec;
     source_connection_info_.http_url =
         std::string(request_.path, request_.len_path);
+    // TODO: differ by "Connection upgrade".
     source_connection_info_.type = ProtocolTypeHttp;
     auto target_conn_info_opt = GetTargetRoute(source_connection_info_);
     if (!target_conn_info_opt) {
@@ -537,7 +538,8 @@ public:
       async_accpet_cb_();
       return;
     }
-    SPDLOG_DEBUG("route to {}:{}{}", target_address, target_port, target_url_);
+    SPDLOG_INFO("route to [{}]{}:{}{}", target_protocol, target_address,
+                target_port, target_url_);
 
     if (target_protocol == ProtocolTypeWebSocket) {
       handleWebSocketRequest(std::move(target_address), std::move(target_port));

@@ -1,4 +1,5 @@
 #include "config.h"
+#include "protocols.h"
 #include "server.hpp"
 #include "worker.hpp"
 
@@ -17,6 +18,14 @@ int main() {
                .address = "localhost",
                .port = 8081,
                .http_url = "/*",
+               .remote = true,
+           });
+  AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/lsp"},
+           ConnectionInfo{
+               .type = ProtocolTypeWebSocket,
+               .address = "localhost",
+               .port = 8081,
+               .http_url = "/lsp",
                .remote = true,
            });
 
