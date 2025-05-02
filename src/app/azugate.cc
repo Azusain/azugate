@@ -1,4 +1,4 @@
-// Lines of code: 3066 (2539 excluding comments and blank lines).
+// Lines of code: 3247 (2570 excluding comments and blank lines).
 #include "config.h"
 #include "server.hpp"
 #include "worker.hpp"

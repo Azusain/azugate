@@ -202,6 +202,8 @@ private:
 
 class HttpRequest : public HttpMessage {
 public:
+  HttpRequest();
+
   HttpRequest(const std::string &method, const std::string &url);
 
   std::string StringifyFirstLine() override;
