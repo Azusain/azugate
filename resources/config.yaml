@@ -4,7 +4,7 @@ admin_port: 50051
 crt: "../resources/localhost.crt"
 key: "../resources/localhost.key"
 # external OAuth Provider.
-external_http_authentication: true
+external_http_authentication: false
 auth_domain: "dev-uep626a5ecgmzopx.us.auth0.com"
 auth_client_id: "wKWP9oGUySyMYDuISRTZ5EeGeB8SOl6F"
 auth_client_secret: ""

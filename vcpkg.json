@@ -7,12 +7,13 @@
     "boost-url",
     "fmt",
     "grpc",
+    "gtest",
     "jwt-cpp",
     "nlohmann-json",
     "openssl",
     "spdlog",
     "yaml-cpp",
     "zlib",
-    "gtest"
+    "cxxopts"
   ]
 }

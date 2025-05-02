@@ -4,11 +4,12 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_BUILD_TYPE Debug)
+# set(CMAKE_BUILD_TYPE Debug)
 # used for distribution.
-# set(CMAKE_BUILD_TYPE Release)
-# set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -flto -DNDEBUG -s")
-# set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
+set(CMAKE_BUILD_TYPE Release)
+# opts only available on Linux.
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -flto -DNDEBUG -s")
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
 
 find_package(spdlog REQUIRED)
 find_package(fmt REQUIRED)
@@ -21,6 +22,7 @@ find_package(jwt-cpp REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(GTest CONFIG REQUIRED)
+find_package(cxxopts CONFIG REQUIRED)
 enable_testing()
 
 set(COMMON_INCLUDES_DIR "include")
@@ -55,6 +57,7 @@ gRPC::grpc++
 gRPC::grpc++_reflection
 protobuf::libprotobuf
 nlohmann_json::nlohmann_json
+cxxopts::cxxopts
 ${OPENSSL_LIBRARIES}
 ${jwt-cpp_LIBRARIES}
 )

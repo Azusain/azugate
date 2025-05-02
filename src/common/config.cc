@@ -265,7 +265,7 @@ std::optional<ConnectionInfo> GetTargetRoute(const ConnectionInfo &source) {
     }
     return target;
   }
-  SPDLOG_ERROR("nothing found for prefix match");
+  SPDLOG_WARN("no path found for: {}", source.http_url);
   return std::nullopt;
 }
 

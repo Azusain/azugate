@@ -1,19 +1,34 @@
 #include "config.h"
 #include "server.hpp"
 #include "worker.hpp"
+#include <cxxopts.hpp>
+#include <spdlog/spdlog.h>
+#include <string>
 
 // TODO:
 // ref: https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes.
 // memmory pool optimaization.
-int main() {
+int main(int argc, char *argv[]) {
   using namespace azugate;
+  // parser cmd line.
+  cxxopts::Options opts("azugate", "An unsafe and inefficient gateway");
+  opts.add_options()("c,config", "Configuration YAML file path",
+                     cxxopts::value<std::string>());
+  auto parsed_opts = opts.parse(argc, argv);
+
   IgnoreSignalPipe();
 
   InitLogger();
 
   // Load the configurations from the local file.
-  auto path_config_file = fmt::format("{}/{}", azugate::kPathResourceFolder,
-                                      azugate::kDftConfigFile);
+  std::string path_config_file;
+  if (parsed_opts.count("config")) {
+    path_config_file = parsed_opts["config"].as<std::string>();
+  } else {
+    SPDLOG_INFO("use default configuration file");
+    path_config_file = fmt::format("{}/{}", azugate::kPathResourceFolder,
+                                   azugate::kDftConfigFile);
+  }
   SPDLOG_INFO("loading configuration from {}", path_config_file);
   if (!LoadServerConfig(path_config_file)) {
     SPDLOG_ERROR("unexpected errors happen when parsing yaml file");
