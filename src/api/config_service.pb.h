@@ -72,9 +72,9 @@ extern GetIpBlackListRequestDefaultTypeInternal _GetIpBlackListRequest_default_i
 class GetIpBlackListResponse;
 struct GetIpBlackListResponseDefaultTypeInternal;
 extern GetIpBlackListResponseDefaultTypeInternal _GetIpBlackListResponse_default_instance_;
-class RouterConfig;
-struct RouterConfigDefaultTypeInternal;
-extern RouterConfigDefaultTypeInternal _RouterConfig_default_instance_;
+class RouterRule;
+struct RouterRuleDefaultTypeInternal;
+extern RouterRuleDefaultTypeInternal _RouterRule_default_instance_;
 class UpdateConfigRequest;
 struct UpdateConfigRequestDefaultTypeInternal;
 extern UpdateConfigRequestDefaultTypeInternal _UpdateConfigRequest_default_instance_;
@@ -135,6 +135,41 @@ inline const std::string& UpdateIpBlackListRequest_ActionType_Name(UpdateIpBlack
 inline bool UpdateIpBlackListRequest_ActionType_Parse(absl::string_view name, UpdateIpBlackListRequest_ActionType* value) {
   return ::google::protobuf::internal::ParseNamedEnum<UpdateIpBlackListRequest_ActionType>(
       UpdateIpBlackListRequest_ActionType_descriptor(), name, value);
+}
+enum RouterRule_ProtocolType : int {
+  RouterRule_ProtocolType_PROTOCOL_TYPE_UNSPECIFIED = 0,
+  RouterRule_ProtocolType_PROTOCOL_TYPE_TCP = 1,
+  RouterRule_ProtocolType_PROTOCOL_TYPE_HTTP = 2,
+  RouterRule_ProtocolType_PROTOCOL_TYPE_WEBSOCKET = 3,
+  RouterRule_ProtocolType_RouterRule_ProtocolType_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  RouterRule_ProtocolType_RouterRule_ProtocolType_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool RouterRule_ProtocolType_IsValid(int value);
+extern const uint32_t RouterRule_ProtocolType_internal_data_[];
+constexpr RouterRule_ProtocolType RouterRule_ProtocolType_ProtocolType_MIN = static_cast<RouterRule_ProtocolType>(0);
+constexpr RouterRule_ProtocolType RouterRule_ProtocolType_ProtocolType_MAX = static_cast<RouterRule_ProtocolType>(3);
+constexpr int RouterRule_ProtocolType_ProtocolType_ARRAYSIZE = 3 + 1;
+const ::google::protobuf::EnumDescriptor*
+RouterRule_ProtocolType_descriptor();
+template <typename T>
+const std::string& RouterRule_ProtocolType_Name(T value) {
+  static_assert(std::is_same<T, RouterRule_ProtocolType>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to ProtocolType_Name().");
+  return RouterRule_ProtocolType_Name(static_cast<RouterRule_ProtocolType>(value));
+}
+template <>
+inline const std::string& RouterRule_ProtocolType_Name(RouterRule_ProtocolType value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<RouterRule_ProtocolType_descriptor,
+                                                 0, 3>(
+      static_cast<int>(value));
+}
+inline bool RouterRule_ProtocolType_Parse(absl::string_view name, RouterRule_ProtocolType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<RouterRule_ProtocolType>(
+      RouterRule_ProtocolType_descriptor(), name, value);
 }
 
 // ===================================================================
@@ -1437,23 +1472,23 @@ class UpdateConfigRequest final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
-class RouterConfig final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:api.v1.RouterConfig) */ {
+class RouterRule final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:api.v1.RouterRule) */ {
  public:
-  inline RouterConfig() : RouterConfig(nullptr) {}
-  ~RouterConfig() PROTOBUF_FINAL;
+  inline RouterRule() : RouterRule(nullptr) {}
+  ~RouterRule() PROTOBUF_FINAL;
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR RouterConfig(
+  explicit PROTOBUF_CONSTEXPR RouterRule(
       ::google::protobuf::internal::ConstantInitialized);
 
-  inline RouterConfig(const RouterConfig& from) : RouterConfig(nullptr, from) {}
-  inline RouterConfig(RouterConfig&& from) noexcept
-      : RouterConfig(nullptr, std::move(from)) {}
-  inline RouterConfig& operator=(const RouterConfig& from) {
+  inline RouterRule(const RouterRule& from) : RouterRule(nullptr, from) {}
+  inline RouterRule(RouterRule&& from) noexcept
+      : RouterRule(nullptr, std::move(from)) {}
+  inline RouterRule& operator=(const RouterRule& from) {
     CopyFrom(from);
     return *this;
   }
-  inline RouterConfig& operator=(RouterConfig&& from) noexcept {
+  inline RouterRule& operator=(RouterRule&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
 #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -1485,16 +1520,16 @@ class RouterConfig final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const RouterConfig& default_instance() {
+  static const RouterRule& default_instance() {
     return *internal_default_instance();
   }
-  static inline const RouterConfig* internal_default_instance() {
-    return reinterpret_cast<const RouterConfig*>(
-        &_RouterConfig_default_instance_);
+  static inline const RouterRule* internal_default_instance() {
+    return reinterpret_cast<const RouterRule*>(
+        &_RouterRule_default_instance_);
   }
   static constexpr int kIndexInFileMessages = 9;
-  friend void swap(RouterConfig& a, RouterConfig& b) { a.Swap(&b); }
-  inline void Swap(RouterConfig* other) {
+  friend void swap(RouterRule& a, RouterRule& b) { a.Swap(&b); }
+  inline void Swap(RouterRule* other) {
     if (other == this) return;
 #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr && GetArena() == other->GetArena()) {
@@ -1506,7 +1541,7 @@ class RouterConfig final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(RouterConfig* other) {
+  void UnsafeArenaSwap(RouterRule* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -1514,13 +1549,13 @@ class RouterConfig final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  RouterConfig* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
-    return ::google::protobuf::Message::DefaultConstruct<RouterConfig>(arena);
+  RouterRule* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<RouterRule>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const RouterConfig& from);
+  void CopyFrom(const RouterRule& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const RouterConfig& from) { RouterConfig::MergeImpl(*this, from); }
+  void MergeFrom(const RouterRule& from) { RouterRule::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(
@@ -1557,16 +1592,16 @@ class RouterConfig final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(RouterConfig* other);
+  void InternalSwap(RouterRule* other);
  private:
   friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() { return "api.v1.RouterConfig"; }
+  static ::absl::string_view FullMessageName() { return "api.v1.RouterRule"; }
 
  protected:
-  explicit RouterConfig(::google::protobuf::Arena* arena);
-  RouterConfig(::google::protobuf::Arena* arena, const RouterConfig& from);
-  RouterConfig(::google::protobuf::Arena* arena, RouterConfig&& from) noexcept
-      : RouterConfig(arena) {
+  explicit RouterRule(::google::protobuf::Arena* arena);
+  RouterRule(::google::protobuf::Arena* arena, const RouterRule& from);
+  RouterRule(::google::protobuf::Arena* arena, RouterRule&& from) noexcept
+      : RouterRule(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
@@ -1575,72 +1610,126 @@ class RouterConfig final : public ::google::protobuf::Message
  public:
   ::google::protobuf::Metadata GetMetadata() const;
   // nested types ----------------------------------------------------
+  using ProtocolType = RouterRule_ProtocolType;
+  static constexpr ProtocolType PROTOCOL_TYPE_UNSPECIFIED = RouterRule_ProtocolType_PROTOCOL_TYPE_UNSPECIFIED;
+  static constexpr ProtocolType PROTOCOL_TYPE_TCP = RouterRule_ProtocolType_PROTOCOL_TYPE_TCP;
+  static constexpr ProtocolType PROTOCOL_TYPE_HTTP = RouterRule_ProtocolType_PROTOCOL_TYPE_HTTP;
+  static constexpr ProtocolType PROTOCOL_TYPE_WEBSOCKET = RouterRule_ProtocolType_PROTOCOL_TYPE_WEBSOCKET;
+  static inline bool ProtocolType_IsValid(int value) {
+    return RouterRule_ProtocolType_IsValid(value);
+  }
+  static constexpr ProtocolType ProtocolType_MIN = RouterRule_ProtocolType_ProtocolType_MIN;
+  static constexpr ProtocolType ProtocolType_MAX = RouterRule_ProtocolType_ProtocolType_MAX;
+  static constexpr int ProtocolType_ARRAYSIZE = RouterRule_ProtocolType_ProtocolType_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor* ProtocolType_descriptor() {
+    return RouterRule_ProtocolType_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& ProtocolType_Name(T value) {
+    return RouterRule_ProtocolType_Name(value);
+  }
+  static inline bool ProtocolType_Parse(absl::string_view name, ProtocolType* value) {
+    return RouterRule_ProtocolType_Parse(name, value);
+  }
 
   // accessors -------------------------------------------------------
   enum : int {
-    kMethodFieldNumber = 1,
-    kSourceFieldNumber = 2,
-    kDestinationFieldNumber = 3,
+    kMatchPathFieldNumber = 2,
+    kDestHostFieldNumber = 4,
+    kDestPathFieldNumber = 5,
+    kProtocolFieldNumber = 1,
+    kDestPortFieldNumber = 3,
+    kRemoteFieldNumber = 6,
   };
-  // string method = 1 [json_name = "method"];
-  void clear_method() ;
-  const std::string& method() const;
+  // string match_path = 2 [json_name = "matchPath"];
+  void clear_match_path() ;
+  const std::string& match_path() const;
   template <typename Arg_ = const std::string&, typename... Args_>
-  void set_method(Arg_&& arg, Args_... args);
-  std::string* mutable_method();
-  PROTOBUF_NODISCARD std::string* release_method();
-  void set_allocated_method(std::string* value);
+  void set_match_path(Arg_&& arg, Args_... args);
+  std::string* mutable_match_path();
+  PROTOBUF_NODISCARD std::string* release_match_path();
+  void set_allocated_match_path(std::string* value);
 
   private:
-  const std::string& _internal_method() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_method(
+  const std::string& _internal_match_path() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_match_path(
       const std::string& value);
-  std::string* _internal_mutable_method();
+  std::string* _internal_mutable_match_path();
 
   public:
-  // string source = 2 [json_name = "source"];
-  void clear_source() ;
-  const std::string& source() const;
+  // string dest_host = 4 [json_name = "destHost"];
+  void clear_dest_host() ;
+  const std::string& dest_host() const;
   template <typename Arg_ = const std::string&, typename... Args_>
-  void set_source(Arg_&& arg, Args_... args);
-  std::string* mutable_source();
-  PROTOBUF_NODISCARD std::string* release_source();
-  void set_allocated_source(std::string* value);
+  void set_dest_host(Arg_&& arg, Args_... args);
+  std::string* mutable_dest_host();
+  PROTOBUF_NODISCARD std::string* release_dest_host();
+  void set_allocated_dest_host(std::string* value);
 
   private:
-  const std::string& _internal_source() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_source(
+  const std::string& _internal_dest_host() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_dest_host(
       const std::string& value);
-  std::string* _internal_mutable_source();
+  std::string* _internal_mutable_dest_host();
 
   public:
-  // string destination = 3 [json_name = "destination"];
-  void clear_destination() ;
-  const std::string& destination() const;
+  // string dest_path = 5 [json_name = "destPath"];
+  void clear_dest_path() ;
+  const std::string& dest_path() const;
   template <typename Arg_ = const std::string&, typename... Args_>
-  void set_destination(Arg_&& arg, Args_... args);
-  std::string* mutable_destination();
-  PROTOBUF_NODISCARD std::string* release_destination();
-  void set_allocated_destination(std::string* value);
+  void set_dest_path(Arg_&& arg, Args_... args);
+  std::string* mutable_dest_path();
+  PROTOBUF_NODISCARD std::string* release_dest_path();
+  void set_allocated_dest_path(std::string* value);
 
   private:
-  const std::string& _internal_destination() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_destination(
+  const std::string& _internal_dest_path() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_dest_path(
       const std::string& value);
-  std::string* _internal_mutable_destination();
+  std::string* _internal_mutable_dest_path();
 
   public:
-  // @@protoc_insertion_point(class_scope:api.v1.RouterConfig)
+  // .api.v1.RouterRule.ProtocolType protocol = 1 [json_name = "protocol"];
+  void clear_protocol() ;
+  ::api::v1::RouterRule_ProtocolType protocol() const;
+  void set_protocol(::api::v1::RouterRule_ProtocolType value);
+
+  private:
+  ::api::v1::RouterRule_ProtocolType _internal_protocol() const;
+  void _internal_set_protocol(::api::v1::RouterRule_ProtocolType value);
+
+  public:
+  // uint32 dest_port = 3 [json_name = "destPort"];
+  void clear_dest_port() ;
+  ::uint32_t dest_port() const;
+  void set_dest_port(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_dest_port() const;
+  void _internal_set_dest_port(::uint32_t value);
+
+  public:
+  // bool remote = 6 [json_name = "remote"];
+  void clear_remote() ;
+  bool remote() const;
+  void set_remote(bool value);
+
+  private:
+  bool _internal_remote() const;
+  void _internal_set_remote(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:api.v1.RouterRule)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 0,
-      51, 2>
+      3, 6, 0,
+      54, 2>
       _table_;
 
   static constexpr const void* _raw_default_instance_ =
-      &_RouterConfig_default_instance_;
+      &_RouterRule_default_instance_;
 
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
@@ -1655,10 +1744,13 @@ class RouterConfig final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena);
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
-                          const RouterConfig& from_msg);
-    ::google::protobuf::internal::ArenaStringPtr method_;
-    ::google::protobuf::internal::ArenaStringPtr source_;
-    ::google::protobuf::internal::ArenaStringPtr destination_;
+                          const RouterRule& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr match_path_;
+    ::google::protobuf::internal::ArenaStringPtr dest_host_;
+    ::google::protobuf::internal::ArenaStringPtr dest_path_;
+    int protocol_;
+    ::uint32_t dest_port_;
+    bool remote_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -2724,25 +2816,25 @@ class ConfigRouterRequest final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kRoutersFieldNumber = 1,
+    kRulesFieldNumber = 1,
   };
-  // repeated .api.v1.RouterConfig routers = 1 [json_name = "routers"];
-  int routers_size() const;
+  // repeated .api.v1.RouterRule rules = 1 [json_name = "rules"];
+  int rules_size() const;
   private:
-  int _internal_routers_size() const;
+  int _internal_rules_size() const;
 
   public:
-  void clear_routers() ;
-  ::api::v1::RouterConfig* mutable_routers(int index);
-  ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>* mutable_routers();
+  void clear_rules() ;
+  ::api::v1::RouterRule* mutable_rules(int index);
+  ::google::protobuf::RepeatedPtrField<::api::v1::RouterRule>* mutable_rules();
 
   private:
-  const ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>& _internal_routers() const;
-  ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>* _internal_mutable_routers();
+  const ::google::protobuf::RepeatedPtrField<::api::v1::RouterRule>& _internal_rules() const;
+  ::google::protobuf::RepeatedPtrField<::api::v1::RouterRule>* _internal_mutable_rules();
   public:
-  const ::api::v1::RouterConfig& routers(int index) const;
-  ::api::v1::RouterConfig* add_routers();
-  const ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>& routers() const;
+  const ::api::v1::RouterRule& rules(int index) const;
+  ::api::v1::RouterRule* add_rules();
+  const ::google::protobuf::RepeatedPtrField<::api::v1::RouterRule>& rules() const;
   // @@protoc_insertion_point(class_scope:api.v1.ConfigRouterRequest)
  private:
   class _Internal;
@@ -2769,7 +2861,7 @@ class ConfigRouterRequest final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const ConfigRouterRequest& from_msg);
-    ::google::protobuf::RepeatedPtrField< ::api::v1::RouterConfig > routers_;
+    ::google::protobuf::RepeatedPtrField< ::api::v1::RouterRule > rules_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3391,207 +3483,273 @@ UpdateIpBlackListRequest::_internal_mutable_ip_list() {
 
 // ConfigRouterRequest
 
-// repeated .api.v1.RouterConfig routers = 1 [json_name = "routers"];
-inline int ConfigRouterRequest::_internal_routers_size() const {
-  return _internal_routers().size();
+// repeated .api.v1.RouterRule rules = 1 [json_name = "rules"];
+inline int ConfigRouterRequest::_internal_rules_size() const {
+  return _internal_rules().size();
 }
-inline int ConfigRouterRequest::routers_size() const {
-  return _internal_routers_size();
+inline int ConfigRouterRequest::rules_size() const {
+  return _internal_rules_size();
 }
-inline void ConfigRouterRequest::clear_routers() {
+inline void ConfigRouterRequest::clear_rules() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.routers_.Clear();
+  _impl_.rules_.Clear();
 }
-inline ::api::v1::RouterConfig* ConfigRouterRequest::mutable_routers(int index)
+inline ::api::v1::RouterRule* ConfigRouterRequest::mutable_rules(int index)
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:api.v1.ConfigRouterRequest.routers)
-  return _internal_mutable_routers()->Mutable(index);
+  // @@protoc_insertion_point(field_mutable:api.v1.ConfigRouterRequest.rules)
+  return _internal_mutable_rules()->Mutable(index);
 }
-inline ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>* ConfigRouterRequest::mutable_routers()
+inline ::google::protobuf::RepeatedPtrField<::api::v1::RouterRule>* ConfigRouterRequest::mutable_rules()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:api.v1.ConfigRouterRequest.routers)
+  // @@protoc_insertion_point(field_mutable_list:api.v1.ConfigRouterRequest.rules)
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_routers();
+  return _internal_mutable_rules();
 }
-inline const ::api::v1::RouterConfig& ConfigRouterRequest::routers(int index) const
+inline const ::api::v1::RouterRule& ConfigRouterRequest::rules(int index) const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:api.v1.ConfigRouterRequest.routers)
-  return _internal_routers().Get(index);
+  // @@protoc_insertion_point(field_get:api.v1.ConfigRouterRequest.rules)
+  return _internal_rules().Get(index);
 }
-inline ::api::v1::RouterConfig* ConfigRouterRequest::add_routers() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::api::v1::RouterRule* ConfigRouterRequest::add_rules() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::api::v1::RouterConfig* _add = _internal_mutable_routers()->Add();
-  // @@protoc_insertion_point(field_add:api.v1.ConfigRouterRequest.routers)
+  ::api::v1::RouterRule* _add = _internal_mutable_rules()->Add();
+  // @@protoc_insertion_point(field_add:api.v1.ConfigRouterRequest.rules)
   return _add;
 }
-inline const ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>& ConfigRouterRequest::routers() const
+inline const ::google::protobuf::RepeatedPtrField<::api::v1::RouterRule>& ConfigRouterRequest::rules() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:api.v1.ConfigRouterRequest.routers)
-  return _internal_routers();
+  // @@protoc_insertion_point(field_list:api.v1.ConfigRouterRequest.rules)
+  return _internal_rules();
 }
-inline const ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>&
-ConfigRouterRequest::_internal_routers() const {
+inline const ::google::protobuf::RepeatedPtrField<::api::v1::RouterRule>&
+ConfigRouterRequest::_internal_rules() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.routers_;
+  return _impl_.rules_;
 }
-inline ::google::protobuf::RepeatedPtrField<::api::v1::RouterConfig>*
-ConfigRouterRequest::_internal_mutable_routers() {
+inline ::google::protobuf::RepeatedPtrField<::api::v1::RouterRule>*
+ConfigRouterRequest::_internal_mutable_rules() {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.routers_;
+  return &_impl_.rules_;
 }
 
 // -------------------------------------------------------------------
 
-// RouterConfig
+// RouterRule
 
-// string method = 1 [json_name = "method"];
-inline void RouterConfig::clear_method() {
+// .api.v1.RouterRule.ProtocolType protocol = 1 [json_name = "protocol"];
+inline void RouterRule::clear_protocol() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.method_.ClearToEmpty();
+  _impl_.protocol_ = 0;
 }
-inline const std::string& RouterConfig::method() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:api.v1.RouterConfig.method)
-  return _internal_method();
+inline ::api::v1::RouterRule_ProtocolType RouterRule::protocol() const {
+  // @@protoc_insertion_point(field_get:api.v1.RouterRule.protocol)
+  return _internal_protocol();
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void RouterConfig::set_method(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.method_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:api.v1.RouterConfig.method)
+inline void RouterRule::set_protocol(::api::v1::RouterRule_ProtocolType value) {
+  _internal_set_protocol(value);
+  // @@protoc_insertion_point(field_set:api.v1.RouterRule.protocol)
 }
-inline std::string* RouterConfig::mutable_method() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_method();
-  // @@protoc_insertion_point(field_mutable:api.v1.RouterConfig.method)
-  return _s;
-}
-inline const std::string& RouterConfig::_internal_method() const {
+inline ::api::v1::RouterRule_ProtocolType RouterRule::_internal_protocol() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.method_.Get();
+  return static_cast<::api::v1::RouterRule_ProtocolType>(_impl_.protocol_);
 }
-inline void RouterConfig::_internal_set_method(const std::string& value) {
+inline void RouterRule::_internal_set_protocol(::api::v1::RouterRule_ProtocolType value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.method_.Set(value, GetArena());
-}
-inline std::string* RouterConfig::_internal_mutable_method() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.method_.Mutable( GetArena());
-}
-inline std::string* RouterConfig::release_method() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:api.v1.RouterConfig.method)
-  return _impl_.method_.Release();
-}
-inline void RouterConfig::set_allocated_method(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.method_.SetAllocated(value, GetArena());
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.method_.IsDefault()) {
-          _impl_.method_.Set("", GetArena());
-        }
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:api.v1.RouterConfig.method)
+  _impl_.protocol_ = value;
 }
 
-// string source = 2 [json_name = "source"];
-inline void RouterConfig::clear_source() {
+// string match_path = 2 [json_name = "matchPath"];
+inline void RouterRule::clear_match_path() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.source_.ClearToEmpty();
+  _impl_.match_path_.ClearToEmpty();
 }
-inline const std::string& RouterConfig::source() const
+inline const std::string& RouterRule::match_path() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:api.v1.RouterConfig.source)
-  return _internal_source();
+  // @@protoc_insertion_point(field_get:api.v1.RouterRule.match_path)
+  return _internal_match_path();
 }
 template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void RouterConfig::set_source(Arg_&& arg,
+inline PROTOBUF_ALWAYS_INLINE void RouterRule::set_match_path(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.source_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:api.v1.RouterConfig.source)
+  _impl_.match_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.v1.RouterRule.match_path)
 }
-inline std::string* RouterConfig::mutable_source() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_source();
-  // @@protoc_insertion_point(field_mutable:api.v1.RouterConfig.source)
+inline std::string* RouterRule::mutable_match_path() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_match_path();
+  // @@protoc_insertion_point(field_mutable:api.v1.RouterRule.match_path)
   return _s;
 }
-inline const std::string& RouterConfig::_internal_source() const {
+inline const std::string& RouterRule::_internal_match_path() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.source_.Get();
+  return _impl_.match_path_.Get();
 }
-inline void RouterConfig::_internal_set_source(const std::string& value) {
+inline void RouterRule::_internal_set_match_path(const std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.source_.Set(value, GetArena());
+  _impl_.match_path_.Set(value, GetArena());
 }
-inline std::string* RouterConfig::_internal_mutable_source() {
+inline std::string* RouterRule::_internal_mutable_match_path() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.source_.Mutable( GetArena());
+  return _impl_.match_path_.Mutable( GetArena());
 }
-inline std::string* RouterConfig::release_source() {
+inline std::string* RouterRule::release_match_path() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:api.v1.RouterConfig.source)
-  return _impl_.source_.Release();
+  // @@protoc_insertion_point(field_release:api.v1.RouterRule.match_path)
+  return _impl_.match_path_.Release();
 }
-inline void RouterConfig::set_allocated_source(std::string* value) {
+inline void RouterRule::set_allocated_match_path(std::string* value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.source_.SetAllocated(value, GetArena());
+  _impl_.match_path_.SetAllocated(value, GetArena());
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.source_.IsDefault()) {
-          _impl_.source_.Set("", GetArena());
+        if (_impl_.match_path_.IsDefault()) {
+          _impl_.match_path_.Set("", GetArena());
         }
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:api.v1.RouterConfig.source)
+  // @@protoc_insertion_point(field_set_allocated:api.v1.RouterRule.match_path)
 }
 
-// string destination = 3 [json_name = "destination"];
-inline void RouterConfig::clear_destination() {
+// uint32 dest_port = 3 [json_name = "destPort"];
+inline void RouterRule::clear_dest_port() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.destination_.ClearToEmpty();
+  _impl_.dest_port_ = 0u;
 }
-inline const std::string& RouterConfig::destination() const
+inline ::uint32_t RouterRule::dest_port() const {
+  // @@protoc_insertion_point(field_get:api.v1.RouterRule.dest_port)
+  return _internal_dest_port();
+}
+inline void RouterRule::set_dest_port(::uint32_t value) {
+  _internal_set_dest_port(value);
+  // @@protoc_insertion_point(field_set:api.v1.RouterRule.dest_port)
+}
+inline ::uint32_t RouterRule::_internal_dest_port() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.dest_port_;
+}
+inline void RouterRule::_internal_set_dest_port(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.dest_port_ = value;
+}
+
+// string dest_host = 4 [json_name = "destHost"];
+inline void RouterRule::clear_dest_host() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.dest_host_.ClearToEmpty();
+}
+inline const std::string& RouterRule::dest_host() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:api.v1.RouterConfig.destination)
-  return _internal_destination();
+  // @@protoc_insertion_point(field_get:api.v1.RouterRule.dest_host)
+  return _internal_dest_host();
 }
 template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void RouterConfig::set_destination(Arg_&& arg,
+inline PROTOBUF_ALWAYS_INLINE void RouterRule::set_dest_host(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.destination_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:api.v1.RouterConfig.destination)
+  _impl_.dest_host_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.v1.RouterRule.dest_host)
 }
-inline std::string* RouterConfig::mutable_destination() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_destination();
-  // @@protoc_insertion_point(field_mutable:api.v1.RouterConfig.destination)
+inline std::string* RouterRule::mutable_dest_host() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_dest_host();
+  // @@protoc_insertion_point(field_mutable:api.v1.RouterRule.dest_host)
   return _s;
 }
-inline const std::string& RouterConfig::_internal_destination() const {
+inline const std::string& RouterRule::_internal_dest_host() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.destination_.Get();
+  return _impl_.dest_host_.Get();
 }
-inline void RouterConfig::_internal_set_destination(const std::string& value) {
+inline void RouterRule::_internal_set_dest_host(const std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.destination_.Set(value, GetArena());
+  _impl_.dest_host_.Set(value, GetArena());
 }
-inline std::string* RouterConfig::_internal_mutable_destination() {
+inline std::string* RouterRule::_internal_mutable_dest_host() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.destination_.Mutable( GetArena());
+  return _impl_.dest_host_.Mutable( GetArena());
 }
-inline std::string* RouterConfig::release_destination() {
+inline std::string* RouterRule::release_dest_host() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:api.v1.RouterConfig.destination)
-  return _impl_.destination_.Release();
+  // @@protoc_insertion_point(field_release:api.v1.RouterRule.dest_host)
+  return _impl_.dest_host_.Release();
 }
-inline void RouterConfig::set_allocated_destination(std::string* value) {
+inline void RouterRule::set_allocated_dest_host(std::string* value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.destination_.SetAllocated(value, GetArena());
+  _impl_.dest_host_.SetAllocated(value, GetArena());
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.destination_.IsDefault()) {
-          _impl_.destination_.Set("", GetArena());
+        if (_impl_.dest_host_.IsDefault()) {
+          _impl_.dest_host_.Set("", GetArena());
         }
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:api.v1.RouterConfig.destination)
+  // @@protoc_insertion_point(field_set_allocated:api.v1.RouterRule.dest_host)
+}
+
+// string dest_path = 5 [json_name = "destPath"];
+inline void RouterRule::clear_dest_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.dest_path_.ClearToEmpty();
+}
+inline const std::string& RouterRule::dest_path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.v1.RouterRule.dest_path)
+  return _internal_dest_path();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void RouterRule::set_dest_path(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.dest_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.v1.RouterRule.dest_path)
+}
+inline std::string* RouterRule::mutable_dest_path() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_dest_path();
+  // @@protoc_insertion_point(field_mutable:api.v1.RouterRule.dest_path)
+  return _s;
+}
+inline const std::string& RouterRule::_internal_dest_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.dest_path_.Get();
+}
+inline void RouterRule::_internal_set_dest_path(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.dest_path_.Set(value, GetArena());
+}
+inline std::string* RouterRule::_internal_mutable_dest_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.dest_path_.Mutable( GetArena());
+}
+inline std::string* RouterRule::release_dest_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:api.v1.RouterRule.dest_path)
+  return _impl_.dest_path_.Release();
+}
+inline void RouterRule::set_allocated_dest_path(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.dest_path_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.dest_path_.IsDefault()) {
+          _impl_.dest_path_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:api.v1.RouterRule.dest_path)
+}
+
+// bool remote = 6 [json_name = "remote"];
+inline void RouterRule::clear_remote() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_ = false;
+}
+inline bool RouterRule::remote() const {
+  // @@protoc_insertion_point(field_get:api.v1.RouterRule.remote)
+  return _internal_remote();
+}
+inline void RouterRule::set_remote(bool value) {
+  _internal_set_remote(value);
+  // @@protoc_insertion_point(field_set:api.v1.RouterRule.remote)
+}
+inline bool RouterRule::_internal_remote() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.remote_;
+}
+inline void RouterRule::_internal_set_remote(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -3837,6 +3995,12 @@ struct is_proto_enum<::api::v1::UpdateIpBlackListRequest_ActionType> : std::true
 template <>
 inline const EnumDescriptor* GetEnumDescriptor<::api::v1::UpdateIpBlackListRequest_ActionType>() {
   return ::api::v1::UpdateIpBlackListRequest_ActionType_descriptor();
+}
+template <>
+struct is_proto_enum<::api::v1::RouterRule_ProtocolType> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::api::v1::RouterRule_ProtocolType>() {
+  return ::api::v1::RouterRule_ProtocolType_descriptor();
 }
 
 }  // namespace protobuf

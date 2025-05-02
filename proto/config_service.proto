@@ -81,16 +81,23 @@ message UpdateIpBlackListRequest {
 message UpdateIpBlackListResponse {}
 
 message ConfigRouterRequest {
-  repeated RouterConfig routers = 1;
+  repeated RouterRule rules = 1;
 }
 
-message RouterConfig {
-  // "GET", "POST"
-  string method = 1;
+message RouterRule {
+  enum ProtocolType {
+    PROTOCOL_TYPE_UNSPECIFIED = 0;
+    PROTOCOL_TYPE_TCP = 1;
+    PROTOCOL_TYPE_HTTP = 2;
+    PROTOCOL_TYPE_WEBSOCKET = 3;
+  }
+  ProtocolType protocol = 1;
   // "/api/v1/user"
-  string source = 2;
-  // "/v1/user-service"
-  string destination = 3;
+  string match_path = 2;
+  uint32 dest_port = 3;
+  string dest_host = 4;
+  string dest_path = 5;
+  bool remote = 6;
 }
 
 message ConfigRouterResponse {

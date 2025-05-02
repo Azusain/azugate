@@ -28,14 +28,13 @@ constexpr std::string_view kYamlFieldPort = "port";
 constexpr std::string_view kYamlFieldCrt = "crt";
 constexpr std::string_view kYamlFieldKey = "key";
 constexpr std::string_view kYamlFieldAdminPort = "admin_port";
-constexpr std::string_view kYamlFieldProxyMode = "proxy_mode";
-constexpr std::string_view kYamlFieldProxyTargetPort = "target_port";
-constexpr std::string_view kYamlFieldProxyTargetHost = "target_host";
-constexpr std::string_view kYamlFieldManagementSysAuth = "authentication";
+constexpr std::string_view kYamlFieldExternalHTTPAuthentication =
+    "external_http_authentication";
 constexpr std::string_view kYamlFieldExternalAuthDomain = "auth_domain";
 constexpr std::string_view kYamlFieldExternalAuthClientID = "auth_client_id";
 constexpr std::string_view kYamlFieldExternalAuthClientSecret =
     "auth_client_secret";
+constexpr std::string_view kYamlFieldExternalAuthCallbackUrl = "callback_url";
 // mics.
 constexpr std::string_view kDftHttpPort = "80";
 constexpr std::string_view kDftHttpsPort = "443";
@@ -50,16 +49,10 @@ extern uint16_t g_azugate_admin_port;
 // TODO: mTLS.
 extern std::string g_ssl_crt;
 extern std::string g_ssl_key;
-// TODO: need a better alternaive for these 3 variables..
-extern bool g_proxy_mode;
-extern uint16_t g_target_port;
-extern std::string g_target_host;
 // TODO: currently, this may seem unnecessary, but
 // it will be useful when we add more configuration variables
 // and implement hot-reload functionality in the future.
 extern std::mutex g_config_mutex;
-// set it to true when integrating with external authentication provider.
-extern bool g_management_system_authentication;
 
 // http(s) external oauth authorization.
 extern bool g_http_external_authorization;
@@ -80,6 +73,7 @@ extern size_t g_num_threads;
 extern std::string g_external_auth_domain;
 extern std::string g_external_auth_client_id;
 extern std::string g_external_auth_client_secret;
+extern std::string g_external_auth_callback_url;
 
 void InitLogger();
 

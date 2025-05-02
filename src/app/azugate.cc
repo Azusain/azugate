@@ -1,5 +1,4 @@
 #include "config.h"
-#include "protocols.h"
 #include "server.hpp"
 #include "worker.hpp"
 
@@ -11,31 +10,6 @@ int main() {
   IgnoreSignalPipe();
 
   InitLogger();
-
-  AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/*"},
-           ConnectionInfo{
-               .type = ProtocolTypeHttp,
-               .address = "localhost",
-               .port = 8081,
-               .http_url = "/*",
-               .remote = true,
-           });
-  // AddRoute(ConnectionInfo{.type = ProtocolTypeHttp, .http_url = "/*"},
-  //          ConnectionInfo{
-  //              .type = ProtocolTypeHttp,
-  //              .address = "localhost",
-  //              .port = 8082,
-  //              .http_url = "/*",
-  //              .remote = true,
-  //          });
-  AddRoute(ConnectionInfo{.type = ProtocolTypeWebSocket, .http_url = "/lsp"},
-           ConnectionInfo{
-               .type = ProtocolTypeWebSocket,
-               .address = "localhost",
-               .port = 8081,
-               .http_url = "/lsp",
-               .remote = true,
-           });
 
   // Load the configurations from the local file.
   auto path_config_file = fmt::format("{}/{}", azugate::kPathResourceFolder,

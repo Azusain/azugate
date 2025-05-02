@@ -271,8 +271,7 @@ inline bool externalAuthorization(network::PicoHttpRequest &request,
     params.set("client_id", g_external_auth_client_id);
     params.set("client_secret", g_external_auth_client_secret);
     params.set("code", code);
-    // TODO: callback url.
-    params.set("redirect_uri", "http://localhost:8089/callback");
+    params.set("redirect_uri", g_external_auth_callback_url);
     req.body() = u.encoded_query();
     req.prepare_payload();
     http::write(stream, req, ec);
@@ -320,7 +319,7 @@ inline bool externalAuthorization(network::PicoHttpRequest &request,
     auto params = u.params();
     params.set("response_type", "code");
     params.set("client_id", g_external_auth_client_id);
-    params.set("redirect_uri", "http://localhost:8089/callback");
+    params.set("redirect_uri", g_external_auth_callback_url);
     params.set("scope", "openid");
     // TODO: deal with state.
     params.set("state", "1111");

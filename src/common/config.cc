@@ -39,13 +39,9 @@ std::string g_path_config_file;
 std::unordered_set<std::string> g_ip_blacklist;
 bool g_enable_http_compression = false;
 bool g_enable_https = false;
-bool g_management_system_authentication = false;
 // TODO: mTLS.
 std::string g_ssl_crt;
 std::string g_ssl_key;
-bool g_proxy_mode = false;
-uint16_t g_target_port;
-std::string g_target_host;
 std::mutex g_config_mutex;
 
 // logger.
@@ -134,6 +130,7 @@ bool g_http_external_authorization = false;
 std::string g_external_auth_domain;
 std::string g_external_auth_client_id;
 std::string g_external_auth_client_secret;
+std::string g_external_auth_callback_url;
 
 std::string GetConfigPath() {
   std::lock_guard<std::mutex> lock(g_config_mutex);
@@ -290,20 +287,23 @@ bool LoadServerConfig(const std::string &path_config_file) {
   try {
     // parse and load configuration.
     auto config = YAML::LoadFile(path_config_file);
+    // listening port.
     g_azugate_port = config[kYamlFieldPort].as<uint16_t>();
     g_azugate_admin_port = config[kYamlFieldAdminPort].as<uint16_t>();
+    // SSL certificates.
     g_ssl_crt = config[kYamlFieldCrt].as<std::string>();
     g_ssl_key = config[kYamlFieldKey].as<std::string>();
-    g_proxy_mode = config[kYamlFieldProxyMode].as<bool>();
-    g_management_system_authentication =
-        config[kYamlFieldManagementSysAuth].as<bool>();
     // external auth.
+    g_http_external_authorization =
+        config[kYamlFieldExternalHTTPAuthentication].as<bool>();
     g_external_auth_domain =
         config[kYamlFieldExternalAuthDomain].as<std::string>();
     g_external_auth_client_id =
         config[kYamlFieldExternalAuthClientID].as<std::string>();
     g_external_auth_client_secret =
         config[kYamlFieldExternalAuthClientSecret].as<std::string>();
+    g_external_auth_callback_url =
+        config[kYamlFieldExternalAuthCallbackUrl].as<std::string>();
   } catch (...) {
     return false;
   }

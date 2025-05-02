@@ -185,21 +185,24 @@ struct UpdateConfigRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateConfigRequestDefaultTypeInternal _UpdateConfigRequest_default_instance_;
 
-inline constexpr RouterConfig::Impl_::Impl_(
+inline constexpr RouterRule::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : method_(
+      : match_path_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        source_(
+        dest_host_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        destination_(
+        dest_path_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
+        protocol_{static_cast< ::api::v1::RouterRule_ProtocolType >(0)},
+        dest_port_{0u},
+        remote_{false},
         _cached_size_{0} {}
 
 template <typename>
-PROTOBUF_CONSTEXPR RouterConfig::RouterConfig(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR RouterRule::RouterRule(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
@@ -207,16 +210,16 @@ PROTOBUF_CONSTEXPR RouterConfig::RouterConfig(::_pbi::ConstantInitialized)
 #endif  // PROTOBUF_CUSTOM_VTABLE
       _impl_(::_pbi::ConstantInitialized()) {
 }
-struct RouterConfigDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RouterConfigDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~RouterConfigDefaultTypeInternal() {}
+struct RouterRuleDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RouterRuleDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RouterRuleDefaultTypeInternal() {}
   union {
-    RouterConfig _instance;
+    RouterRule _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RouterConfigDefaultTypeInternal _RouterConfig_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RouterRuleDefaultTypeInternal _RouterRule_default_instance_;
 
 inline constexpr GetIpBlackListResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -337,7 +340,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr ConfigRouterRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : routers_{},
+      : rules_{},
         _cached_size_{0} {}
 
 template <typename>
@@ -361,7 +364,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConfigRouterRequestDefaultTypeInternal _ConfigRouterRequest_default_instance_;
 }  // namespace v1
 }  // namespace api
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_config_5fservice_2eproto[1];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_config_5fservice_2eproto[2];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_config_5fservice_2eproto = nullptr;
 const ::uint32_t
@@ -459,18 +462,21 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::api::v1::ConfigRouterRequest, _impl_.routers_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::ConfigRouterRequest, _impl_.rules_),
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::api::v1::RouterConfig, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::RouterRule, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::api::v1::RouterConfig, _impl_.method_),
-        PROTOBUF_FIELD_OFFSET(::api::v1::RouterConfig, _impl_.source_),
-        PROTOBUF_FIELD_OFFSET(::api::v1::RouterConfig, _impl_.destination_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::RouterRule, _impl_.protocol_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::RouterRule, _impl_.match_path_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::RouterRule, _impl_.dest_port_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::RouterRule, _impl_.dest_host_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::RouterRule, _impl_.dest_path_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::RouterRule, _impl_.remote_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::api::v1::ConfigRouterResponse, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -512,10 +518,10 @@ static const ::_pbi::MigrationSchema
         {66, -1, -1, sizeof(::api::v1::UpdateIpBlackListRequest)},
         {76, -1, -1, sizeof(::api::v1::UpdateIpBlackListResponse)},
         {84, -1, -1, sizeof(::api::v1::ConfigRouterRequest)},
-        {93, -1, -1, sizeof(::api::v1::RouterConfig)},
-        {104, -1, -1, sizeof(::api::v1::ConfigRouterResponse)},
-        {113, -1, -1, sizeof(::api::v1::UpdateHealthzListRequest)},
-        {123, -1, -1, sizeof(::api::v1::UpdateHealthzListResponse)},
+        {93, -1, -1, sizeof(::api::v1::RouterRule)},
+        {107, -1, -1, sizeof(::api::v1::ConfigRouterResponse)},
+        {116, -1, -1, sizeof(::api::v1::UpdateHealthzListRequest)},
+        {126, -1, -1, sizeof(::api::v1::UpdateHealthzListResponse)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::api::v1::_GetConfigRequest_default_instance_._instance,
@@ -527,7 +533,7 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::api::v1::_UpdateIpBlackListRequest_default_instance_._instance,
     &::api::v1::_UpdateIpBlackListResponse_default_instance_._instance,
     &::api::v1::_ConfigRouterRequest_default_instance_._instance,
-    &::api::v1::_RouterConfig_default_instance_._instance,
+    &::api::v1::_RouterRule_default_instance_._instance,
     &::api::v1::_ConfigRouterResponse_default_instance_._instance,
     &::api::v1::_UpdateHealthzListRequest_default_instance_._instance,
     &::api::v1::_UpdateHealthzListResponse_default_instance_._instance,
@@ -561,34 +567,40 @@ const char descriptor_table_protodef_config_5fservice_2eproto[] ABSL_ATTRIBUTE_S
     "ypeR\006action\022\027\n\007ip_list\030\002 \003(\tR\006ipList\"V\n\n"
     "ActionType\022\033\n\027ACTION_TYPE_UNSPECIFIED\020\000\022"
     "\023\n\017ACTION_TYPE_ADD\020\001\022\026\n\022ACTION_TYPE_REMO"
-    "VE\020\002\"\033\n\031UpdateIpBlackListResponse\"E\n\023Con"
-    "figRouterRequest\022.\n\007routers\030\001 \003(\0132\024.api."
-    "v1.RouterConfigR\007routers\"`\n\014RouterConfig"
-    "\022\026\n\006method\030\001 \001(\tR\006method\022\026\n\006source\030\002 \001(\t"
-    "R\006source\022 \n\013destination\030\003 \001(\tR\013destinati"
-    "on\"0\n\024ConfigRouterResponse\022\030\n\007message\030\001 "
-    "\001(\tR\007message\"H\n\030UpdateHealthzListRequest"
-    "\022\026\n\006action\030\001 \001(\tR\006action\022\024\n\005addrs\030\002 \003(\tR"
-    "\005addrs\"5\n\031UpdateHealthzListResponse\022\030\n\007m"
-    "essage\030\001 \001(\tR\007message2\326\004\n\rConfigService\022"
-    "Q\n\tGetConfig\022\030.api.v1.GetConfigRequest\032\031"
-    ".api.v1.GetConfigResponse\"\017\202\323\344\223\002\t\022\007/conf"
-    "ig\022d\n\014UpdateConfig\022\033.api.v1.UpdateConfig"
-    "Request\032\034.api.v1.UpdateConfigResponse\"\031\202"
-    "\323\344\223\002\023\"\016/config:update:\001*\022g\n\016GetIpBlackLi"
-    "st\022\035.api.v1.GetIpBlackListRequest\032\036.api."
-    "v1.GetIpBlackListResponse\"\026\202\323\344\223\002\020\022\016/conf"
-    "ig/iplist\022z\n\021UpdateIpBlackList\022 .api.v1."
-    "UpdateIpBlackListRequest\032!.api.v1.Update"
-    "IpBlackListResponse\" \202\323\344\223\002\032\"\025/config/ipl"
-    "ist:update:\001*\022K\n\014ConfigRouter\022\033.api.v1.C"
-    "onfigRouterRequest\032\034.api.v1.ConfigRouter"
-    "Response\"\000\022Z\n\021UpdateHealthzList\022 .api.v1"
-    ".UpdateHealthzListRequest\032!.api.v1.Updat"
-    "eHealthzListResponse\"\000B_\n\ncom.api.v1B\022Co"
-    "nfigServiceProtoP\001Z\004/api\242\002\003AXX\252\002\006Api.V1\312"
-    "\002\006Api\\V1\342\002\022Api\\V1\\GPBMetadata\352\002\007Api::V1b"
-    "\006proto3"
+    "VE\020\002\"\033\n\031UpdateIpBlackListResponse\"\?\n\023Con"
+    "figRouterRequest\022(\n\005rules\030\001 \003(\0132\022.api.v1"
+    ".RouterRuleR\005rules\"\322\002\n\nRouterRule\022;\n\010pro"
+    "tocol\030\001 \001(\0162\037.api.v1.RouterRule.Protocol"
+    "TypeR\010protocol\022\035\n\nmatch_path\030\002 \001(\tR\tmatc"
+    "hPath\022\033\n\tdest_port\030\003 \001(\rR\010destPort\022\033\n\tde"
+    "st_host\030\004 \001(\tR\010destHost\022\033\n\tdest_path\030\005 \001"
+    "(\tR\010destPath\022\026\n\006remote\030\006 \001(\010R\006remote\"y\n\014"
+    "ProtocolType\022\035\n\031PROTOCOL_TYPE_UNSPECIFIE"
+    "D\020\000\022\025\n\021PROTOCOL_TYPE_TCP\020\001\022\026\n\022PROTOCOL_T"
+    "YPE_HTTP\020\002\022\033\n\027PROTOCOL_TYPE_WEBSOCKET\020\003\""
+    "0\n\024ConfigRouterResponse\022\030\n\007message\030\001 \001(\t"
+    "R\007message\"H\n\030UpdateHealthzListRequest\022\026\n"
+    "\006action\030\001 \001(\tR\006action\022\024\n\005addrs\030\002 \003(\tR\005ad"
+    "drs\"5\n\031UpdateHealthzListResponse\022\030\n\007mess"
+    "age\030\001 \001(\tR\007message2\326\004\n\rConfigService\022Q\n\t"
+    "GetConfig\022\030.api.v1.GetConfigRequest\032\031.ap"
+    "i.v1.GetConfigResponse\"\017\202\323\344\223\002\t\022\007/config\022"
+    "d\n\014UpdateConfig\022\033.api.v1.UpdateConfigReq"
+    "uest\032\034.api.v1.UpdateConfigResponse\"\031\202\323\344\223"
+    "\002\023\"\016/config:update:\001*\022g\n\016GetIpBlackList\022"
+    "\035.api.v1.GetIpBlackListRequest\032\036.api.v1."
+    "GetIpBlackListResponse\"\026\202\323\344\223\002\020\022\016/config/"
+    "iplist\022z\n\021UpdateIpBlackList\022 .api.v1.Upd"
+    "ateIpBlackListRequest\032!.api.v1.UpdateIpB"
+    "lackListResponse\" \202\323\344\223\002\032\"\025/config/iplist"
+    ":update:\001*\022K\n\014ConfigRouter\022\033.api.v1.Conf"
+    "igRouterRequest\032\034.api.v1.ConfigRouterRes"
+    "ponse\"\000\022Z\n\021UpdateHealthzList\022 .api.v1.Up"
+    "dateHealthzListRequest\032!.api.v1.UpdateHe"
+    "althzListResponse\"\000B_\n\ncom.api.v1B\022Confi"
+    "gServiceProtoP\001Z\004/api\242\002\003AXX\252\002\006Api.V1\312\002\006A"
+    "pi\\V1\342\002\022Api\\V1\\GPBMetadata\352\002\007Api::V1b\006pr"
+    "oto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_config_5fservice_2eproto_deps[1] =
     {
@@ -598,7 +610,7 @@ static ::absl::once_flag descriptor_table_config_5fservice_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_config_5fservice_2eproto = {
     false,
     false,
-    2167,
+    2404,
     descriptor_table_protodef_config_5fservice_2eproto,
     "config_service.proto",
     &descriptor_table_config_5fservice_2eproto_once,
@@ -631,6 +643,28 @@ constexpr UpdateIpBlackListRequest_ActionType UpdateIpBlackListRequest::ACTION_T
 constexpr UpdateIpBlackListRequest_ActionType UpdateIpBlackListRequest::ActionType_MIN;
 constexpr UpdateIpBlackListRequest_ActionType UpdateIpBlackListRequest::ActionType_MAX;
 constexpr int UpdateIpBlackListRequest::ActionType_ARRAYSIZE;
+
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+const ::google::protobuf::EnumDescriptor* RouterRule_ProtocolType_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_config_5fservice_2eproto);
+  return file_level_enum_descriptors_config_5fservice_2eproto[1];
+}
+PROTOBUF_CONSTINIT const uint32_t RouterRule_ProtocolType_internal_data_[] = {
+    262144u, 0u, };
+bool RouterRule_ProtocolType_IsValid(int value) {
+  return 0 <= value && value <= 3;
+}
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+
+constexpr RouterRule_ProtocolType RouterRule::PROTOCOL_TYPE_UNSPECIFIED;
+constexpr RouterRule_ProtocolType RouterRule::PROTOCOL_TYPE_TCP;
+constexpr RouterRule_ProtocolType RouterRule::PROTOCOL_TYPE_HTTP;
+constexpr RouterRule_ProtocolType RouterRule::PROTOCOL_TYPE_WEBSOCKET;
+constexpr RouterRule_ProtocolType RouterRule::ProtocolType_MIN;
+constexpr RouterRule_ProtocolType RouterRule::ProtocolType_MAX;
+constexpr int RouterRule::ProtocolType_ARRAYSIZE;
 
 #endif  // (__cplusplus < 201703) &&
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
@@ -2375,7 +2409,7 @@ ConfigRouterRequest::ConfigRouterRequest(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE ConfigRouterRequest::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::api::v1::ConfigRouterRequest& from_msg)
-      : routers_{visibility, arena, from.routers_},
+      : rules_{visibility, arena, from.rules_},
         _cached_size_{0} {}
 
 ConfigRouterRequest::ConfigRouterRequest(
@@ -2397,7 +2431,7 @@ ConfigRouterRequest::ConfigRouterRequest(
 inline PROTOBUF_NDEBUG_INLINE ConfigRouterRequest::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : routers_{visibility, arena},
+      : rules_{visibility, arena},
         _cached_size_{0} {}
 
 inline void ConfigRouterRequest::SharedCtor(::_pb::Arena* arena) {
@@ -2460,17 +2494,17 @@ const ::_pbi::TcParseTable<0, 1, 1, 0, 2> ConfigRouterRequest::_table_ = {
     ::_pbi::TcParser::GetTable<::api::v1::ConfigRouterRequest>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // repeated .api.v1.RouterConfig routers = 1 [json_name = "routers"];
+    // repeated .api.v1.RouterRule rules = 1 [json_name = "rules"];
     {::_pbi::TcParser::FastMtR1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(ConfigRouterRequest, _impl_.routers_)}},
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(ConfigRouterRequest, _impl_.rules_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // repeated .api.v1.RouterConfig routers = 1 [json_name = "routers"];
-    {PROTOBUF_FIELD_OFFSET(ConfigRouterRequest, _impl_.routers_), 0, 0,
+    // repeated .api.v1.RouterRule rules = 1 [json_name = "rules"];
+    {PROTOBUF_FIELD_OFFSET(ConfigRouterRequest, _impl_.rules_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
-    {::_pbi::TcParser::GetTable<::api::v1::RouterConfig>()},
+    {::_pbi::TcParser::GetTable<::api::v1::RouterRule>()},
   }}, {{
   }},
 };
@@ -2482,7 +2516,7 @@ PROTOBUF_NOINLINE void ConfigRouterRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.routers_.Clear();
+  _impl_.rules_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -2501,11 +2535,11 @@ PROTOBUF_NOINLINE void ConfigRouterRequest::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // repeated .api.v1.RouterConfig routers = 1 [json_name = "routers"];
+          // repeated .api.v1.RouterRule rules = 1 [json_name = "rules"];
           for (unsigned i = 0, n = static_cast<unsigned>(
-                                   this_._internal_routers_size());
+                                   this_._internal_rules_size());
                i < n; i++) {
-            const auto& repfield = this_._internal_routers().Get(i);
+            const auto& repfield = this_._internal_rules().Get(i);
             target =
                 ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                     1, repfield, repfield.GetCachedSize(),
@@ -2537,10 +2571,10 @@ PROTOBUF_NOINLINE void ConfigRouterRequest::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated .api.v1.RouterConfig routers = 1 [json_name = "routers"];
+            // repeated .api.v1.RouterRule rules = 1 [json_name = "rules"];
              {
-              total_size += 1UL * this_._internal_routers_size();
-              for (const auto& msg : this_._internal_routers()) {
+              total_size += 1UL * this_._internal_rules_size();
+              for (const auto& msg : this_._internal_rules()) {
                 total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
               }
             }
@@ -2557,8 +2591,8 @@ void ConfigRouterRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, con
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_internal_mutable_routers()->MergeFrom(
-      from._internal_routers());
+  _this->_internal_mutable_rules()->MergeFrom(
+      from._internal_rules());
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -2573,7 +2607,7 @@ void ConfigRouterRequest::CopyFrom(const ConfigRouterRequest& from) {
 void ConfigRouterRequest::InternalSwap(ConfigRouterRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.routers_.InternalSwap(&other->_impl_.routers_);
+  _impl_.rules_.InternalSwap(&other->_impl_.rules_);
 }
 
 ::google::protobuf::Metadata ConfigRouterRequest::GetMetadata() const {
@@ -2581,197 +2615,253 @@ void ConfigRouterRequest::InternalSwap(ConfigRouterRequest* PROTOBUF_RESTRICT ot
 }
 // ===================================================================
 
-class RouterConfig::_Internal {
+class RouterRule::_Internal {
  public:
 };
 
-RouterConfig::RouterConfig(::google::protobuf::Arena* arena)
+RouterRule::RouterRule(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:api.v1.RouterConfig)
+  // @@protoc_insertion_point(arena_constructor:api.v1.RouterRule)
 }
-inline PROTOBUF_NDEBUG_INLINE RouterConfig::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE RouterRule::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::api::v1::RouterConfig& from_msg)
-      : method_(arena, from.method_),
-        source_(arena, from.source_),
-        destination_(arena, from.destination_),
+    const Impl_& from, const ::api::v1::RouterRule& from_msg)
+      : match_path_(arena, from.match_path_),
+        dest_host_(arena, from.dest_host_),
+        dest_path_(arena, from.dest_path_),
         _cached_size_{0} {}
 
-RouterConfig::RouterConfig(
+RouterRule::RouterRule(
     ::google::protobuf::Arena* arena,
-    const RouterConfig& from)
+    const RouterRule& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  RouterConfig* const _this = this;
+  RouterRule* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, protocol_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, protocol_),
+           offsetof(Impl_, remote_) -
+               offsetof(Impl_, protocol_) +
+               sizeof(Impl_::remote_));
 
-  // @@protoc_insertion_point(copy_constructor:api.v1.RouterConfig)
+  // @@protoc_insertion_point(copy_constructor:api.v1.RouterRule)
 }
-inline PROTOBUF_NDEBUG_INLINE RouterConfig::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE RouterRule::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : method_(arena),
-        source_(arena),
-        destination_(arena),
+      : match_path_(arena),
+        dest_host_(arena),
+        dest_path_(arena),
         _cached_size_{0} {}
 
-inline void RouterConfig::SharedCtor(::_pb::Arena* arena) {
+inline void RouterRule::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, protocol_),
+           0,
+           offsetof(Impl_, remote_) -
+               offsetof(Impl_, protocol_) +
+               sizeof(Impl_::remote_));
 }
-RouterConfig::~RouterConfig() {
-  // @@protoc_insertion_point(destructor:api.v1.RouterConfig)
+RouterRule::~RouterRule() {
+  // @@protoc_insertion_point(destructor:api.v1.RouterRule)
   _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-inline void RouterConfig::SharedDtor() {
+inline void RouterRule::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
-  _impl_.method_.Destroy();
-  _impl_.source_.Destroy();
-  _impl_.destination_.Destroy();
+  _impl_.match_path_.Destroy();
+  _impl_.dest_host_.Destroy();
+  _impl_.dest_path_.Destroy();
   _impl_.~Impl_();
 }
 
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
 const ::google::protobuf::MessageLite::ClassDataFull
-    RouterConfig::_class_data_ = {
+    RouterRule::_class_data_ = {
         ::google::protobuf::Message::ClassData{
-            &_RouterConfig_default_instance_._instance,
+            &_RouterRule_default_instance_._instance,
             &_table_.header,
             nullptr,  // OnDemandRegisterArenaDtor
             nullptr,  // IsInitialized
-            &RouterConfig::MergeImpl,
+            &RouterRule::MergeImpl,
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-            ::google::protobuf::Message::GetDeleteImpl<RouterConfig>(),
-            ::google::protobuf::Message::GetNewImpl<RouterConfig>(),
-            ::google::protobuf::Message::GetClearImpl<RouterConfig>(), &RouterConfig::ByteSizeLong,
-                &RouterConfig::_InternalSerialize,
+            ::google::protobuf::Message::GetDeleteImpl<RouterRule>(),
+            ::google::protobuf::Message::GetNewImpl<RouterRule>(),
+            ::google::protobuf::Message::GetClearImpl<RouterRule>(), &RouterRule::ByteSizeLong,
+                &RouterRule::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
-            PROTOBUF_FIELD_OFFSET(RouterConfig, _impl_._cached_size_),
+            PROTOBUF_FIELD_OFFSET(RouterRule, _impl_._cached_size_),
             false,
         },
-        &RouterConfig::kDescriptorMethods,
+        &RouterRule::kDescriptorMethods,
         &descriptor_table_config_5fservice_2eproto,
         nullptr,  // tracker
 };
-const ::google::protobuf::MessageLite::ClassData* RouterConfig::GetClassData() const {
+const ::google::protobuf::MessageLite::ClassData* RouterRule::GetClassData() const {
   ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
   ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 51, 2> RouterConfig::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 0, 54, 2> RouterRule::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
+    6,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::api::v1::RouterConfig>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::api::v1::RouterRule>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string method = 1 [json_name = "method"];
+    // .api.v1.RouterRule.ProtocolType protocol = 1 [json_name = "protocol"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RouterRule, _impl_.protocol_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(RouterRule, _impl_.protocol_)}},
+    // string match_path = 2 [json_name = "matchPath"];
     {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(RouterConfig, _impl_.method_)}},
-    // string source = 2 [json_name = "source"];
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(RouterRule, _impl_.match_path_)}},
+    // uint32 dest_port = 3 [json_name = "destPort"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RouterRule, _impl_.dest_port_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(RouterRule, _impl_.dest_port_)}},
+    // string dest_host = 4 [json_name = "destHost"];
     {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(RouterConfig, _impl_.source_)}},
-    // string destination = 3 [json_name = "destination"];
+     {34, 63, 0, PROTOBUF_FIELD_OFFSET(RouterRule, _impl_.dest_host_)}},
+    // string dest_path = 5 [json_name = "destPath"];
     {::_pbi::TcParser::FastUS1,
-     {26, 63, 0, PROTOBUF_FIELD_OFFSET(RouterConfig, _impl_.destination_)}},
+     {42, 63, 0, PROTOBUF_FIELD_OFFSET(RouterRule, _impl_.dest_path_)}},
+    // bool remote = 6 [json_name = "remote"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(RouterRule, _impl_.remote_), 63>(),
+     {48, 63, 0, PROTOBUF_FIELD_OFFSET(RouterRule, _impl_.remote_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
-    // string method = 1 [json_name = "method"];
-    {PROTOBUF_FIELD_OFFSET(RouterConfig, _impl_.method_), 0, 0,
+    // .api.v1.RouterRule.ProtocolType protocol = 1 [json_name = "protocol"];
+    {PROTOBUF_FIELD_OFFSET(RouterRule, _impl_.protocol_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // string match_path = 2 [json_name = "matchPath"];
+    {PROTOBUF_FIELD_OFFSET(RouterRule, _impl_.match_path_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string source = 2 [json_name = "source"];
-    {PROTOBUF_FIELD_OFFSET(RouterConfig, _impl_.source_), 0, 0,
+    // uint32 dest_port = 3 [json_name = "destPort"];
+    {PROTOBUF_FIELD_OFFSET(RouterRule, _impl_.dest_port_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // string dest_host = 4 [json_name = "destHost"];
+    {PROTOBUF_FIELD_OFFSET(RouterRule, _impl_.dest_host_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string destination = 3 [json_name = "destination"];
-    {PROTOBUF_FIELD_OFFSET(RouterConfig, _impl_.destination_), 0, 0,
+    // string dest_path = 5 [json_name = "destPath"];
+    {PROTOBUF_FIELD_OFFSET(RouterRule, _impl_.dest_path_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // bool remote = 6 [json_name = "remote"];
+    {PROTOBUF_FIELD_OFFSET(RouterRule, _impl_.remote_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
   }},
   // no aux_entries
   {{
-    "\23\6\6\13\0\0\0\0"
-    "api.v1.RouterConfig"
-    "method"
-    "source"
-    "destination"
+    "\21\0\12\0\11\11\0\0"
+    "api.v1.RouterRule"
+    "match_path"
+    "dest_host"
+    "dest_path"
   }},
 };
 
-PROTOBUF_NOINLINE void RouterConfig::Clear() {
-// @@protoc_insertion_point(message_clear_start:api.v1.RouterConfig)
+PROTOBUF_NOINLINE void RouterRule::Clear() {
+// @@protoc_insertion_point(message_clear_start:api.v1.RouterRule)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.method_.ClearToEmpty();
-  _impl_.source_.ClearToEmpty();
-  _impl_.destination_.ClearToEmpty();
+  _impl_.match_path_.ClearToEmpty();
+  _impl_.dest_host_.ClearToEmpty();
+  _impl_.dest_path_.ClearToEmpty();
+  ::memset(&_impl_.protocol_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.remote_) -
+      reinterpret_cast<char*>(&_impl_.protocol_)) + sizeof(_impl_.remote_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* RouterConfig::_InternalSerialize(
+        ::uint8_t* RouterRule::_InternalSerialize(
             const MessageLite& base, ::uint8_t* target,
             ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const RouterConfig& this_ = static_cast<const RouterConfig&>(base);
+          const RouterRule& this_ = static_cast<const RouterRule&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* RouterConfig::_InternalSerialize(
+        ::uint8_t* RouterRule::_InternalSerialize(
             ::uint8_t* target,
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const RouterConfig& this_ = *this;
+          const RouterRule& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:api.v1.RouterConfig)
+          // @@protoc_insertion_point(serialize_to_array_start:api.v1.RouterRule)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string method = 1 [json_name = "method"];
-          if (!this_._internal_method().empty()) {
-            const std::string& _s = this_._internal_method();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.RouterConfig.method");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
+          // .api.v1.RouterRule.ProtocolType protocol = 1 [json_name = "protocol"];
+          if (this_._internal_protocol() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_protocol(), target);
           }
 
-          // string source = 2 [json_name = "source"];
-          if (!this_._internal_source().empty()) {
-            const std::string& _s = this_._internal_source();
+          // string match_path = 2 [json_name = "matchPath"];
+          if (!this_._internal_match_path().empty()) {
+            const std::string& _s = this_._internal_match_path();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.RouterConfig.source");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.RouterRule.match_path");
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
-          // string destination = 3 [json_name = "destination"];
-          if (!this_._internal_destination().empty()) {
-            const std::string& _s = this_._internal_destination();
+          // uint32 dest_port = 3 [json_name = "destPort"];
+          if (this_._internal_dest_port() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                3, this_._internal_dest_port(), target);
+          }
+
+          // string dest_host = 4 [json_name = "destHost"];
+          if (!this_._internal_dest_host().empty()) {
+            const std::string& _s = this_._internal_dest_host();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.RouterConfig.destination");
-            target = stream->WriteStringMaybeAliased(3, _s, target);
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.RouterRule.dest_host");
+            target = stream->WriteStringMaybeAliased(4, _s, target);
+          }
+
+          // string dest_path = 5 [json_name = "destPath"];
+          if (!this_._internal_dest_path().empty()) {
+            const std::string& _s = this_._internal_dest_path();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.RouterRule.dest_path");
+            target = stream->WriteStringMaybeAliased(5, _s, target);
+          }
+
+          // bool remote = 6 [json_name = "remote"];
+          if (this_._internal_remote() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                6, this_._internal_remote(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -2779,18 +2869,18 @@ PROTOBUF_NOINLINE void RouterConfig::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:api.v1.RouterConfig)
+          // @@protoc_insertion_point(serialize_to_array_end:api.v1.RouterRule)
           return target;
         }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t RouterConfig::ByteSizeLong(const MessageLite& base) {
-          const RouterConfig& this_ = static_cast<const RouterConfig&>(base);
+        ::size_t RouterRule::ByteSizeLong(const MessageLite& base) {
+          const RouterRule& this_ = static_cast<const RouterRule&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t RouterConfig::ByteSizeLong() const {
-          const RouterConfig& this_ = *this;
+        ::size_t RouterRule::ByteSizeLong() const {
+          const RouterRule& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:api.v1.RouterConfig)
+          // @@protoc_insertion_point(message_byte_size_start:api.v1.RouterRule)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -2799,65 +2889,94 @@ PROTOBUF_NOINLINE void RouterConfig::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string method = 1 [json_name = "method"];
-            if (!this_._internal_method().empty()) {
+            // string match_path = 2 [json_name = "matchPath"];
+            if (!this_._internal_match_path().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_method());
+                                              this_._internal_match_path());
             }
-            // string source = 2 [json_name = "source"];
-            if (!this_._internal_source().empty()) {
+            // string dest_host = 4 [json_name = "destHost"];
+            if (!this_._internal_dest_host().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_source());
+                                              this_._internal_dest_host());
             }
-            // string destination = 3 [json_name = "destination"];
-            if (!this_._internal_destination().empty()) {
+            // string dest_path = 5 [json_name = "destPath"];
+            if (!this_._internal_dest_path().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_destination());
+                                              this_._internal_dest_path());
+            }
+            // .api.v1.RouterRule.ProtocolType protocol = 1 [json_name = "protocol"];
+            if (this_._internal_protocol() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_protocol());
+            }
+            // uint32 dest_port = 3 [json_name = "destPort"];
+            if (this_._internal_dest_port() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_dest_port());
+            }
+            // bool remote = 6 [json_name = "remote"];
+            if (this_._internal_remote() != 0) {
+              total_size += 2;
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
         }
 
-void RouterConfig::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<RouterConfig*>(&to_msg);
-  auto& from = static_cast<const RouterConfig&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.RouterConfig)
+void RouterRule::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<RouterRule*>(&to_msg);
+  auto& from = static_cast<const RouterRule&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.RouterRule)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_method().empty()) {
-    _this->_internal_set_method(from._internal_method());
+  if (!from._internal_match_path().empty()) {
+    _this->_internal_set_match_path(from._internal_match_path());
   }
-  if (!from._internal_source().empty()) {
-    _this->_internal_set_source(from._internal_source());
+  if (!from._internal_dest_host().empty()) {
+    _this->_internal_set_dest_host(from._internal_dest_host());
   }
-  if (!from._internal_destination().empty()) {
-    _this->_internal_set_destination(from._internal_destination());
+  if (!from._internal_dest_path().empty()) {
+    _this->_internal_set_dest_path(from._internal_dest_path());
+  }
+  if (from._internal_protocol() != 0) {
+    _this->_impl_.protocol_ = from._impl_.protocol_;
+  }
+  if (from._internal_dest_port() != 0) {
+    _this->_impl_.dest_port_ = from._impl_.dest_port_;
+  }
+  if (from._internal_remote() != 0) {
+    _this->_impl_.remote_ = from._impl_.remote_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void RouterConfig::CopyFrom(const RouterConfig& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:api.v1.RouterConfig)
+void RouterRule::CopyFrom(const RouterRule& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:api.v1.RouterRule)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 
-void RouterConfig::InternalSwap(RouterConfig* PROTOBUF_RESTRICT other) {
+void RouterRule::InternalSwap(RouterRule* PROTOBUF_RESTRICT other) {
   using std::swap;
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.method_, &other->_impl_.method_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.source_, &other->_impl_.source_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.destination_, &other->_impl_.destination_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.match_path_, &other->_impl_.match_path_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.dest_host_, &other->_impl_.dest_host_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.dest_path_, &other->_impl_.dest_path_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(RouterRule, _impl_.remote_)
+      + sizeof(RouterRule::_impl_.remote_)
+      - PROTOBUF_FIELD_OFFSET(RouterRule, _impl_.protocol_)>(
+          reinterpret_cast<char*>(&_impl_.protocol_),
+          reinterpret_cast<char*>(&other->_impl_.protocol_));
 }
 
-::google::protobuf::Metadata RouterConfig::GetMetadata() const {
+::google::protobuf::Metadata RouterRule::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

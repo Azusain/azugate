@@ -40,7 +40,7 @@ bool VerifyToken(const std::string &token, const std::string &secret) {
                         .allow_algorithm(jwt::algorithm::hs256{secret})
                         .with_issuer(std::string(kDftTokenIssuer));
     verifier.verify(decoded_token);
-    SPDLOG_INFO("validate token successfully");
+    SPDLOG_DEBUG("validate token successfully");
     return true;
   } catch (const std::exception &e) {
     SPDLOG_WARN("error verifying token: {}", e.what());

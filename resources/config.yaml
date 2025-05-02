@@ -1,9 +1,11 @@
 port: 8080
 admin_port: 50051
+# SSL certificates.
 crt: "../resources/localhost.crt"
 key: "../resources/localhost.key"
-proxy_mode: false
-authentication: false
+# external OAuth Provider.
+external_http_authentication: true
 auth_domain: "dev-uep626a5ecgmzopx.us.auth0.com"
 auth_client_id: "wKWP9oGUySyMYDuISRTZ5EeGeB8SOl6F"
 auth_client_secret: ""
+callback_url: "http://localhost:8080/callback"

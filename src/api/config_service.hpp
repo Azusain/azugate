@@ -4,7 +4,9 @@
 #include "../../include/config.h"
 #include "config_service.grpc.pb.h"
 #include "config_service.pb.h"
+#include "protocols.h"
 #include "string_op.h"
+#include <fmt/format.h>
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/server_context.h>
 #include <grpcpp/support/status.h>
@@ -108,7 +110,32 @@ public:
   ConfigRouter(::grpc::ServerContext *context,
                const ::api::v1::ConfigRouterRequest *request,
                ::api::v1::ConfigRouterResponse *response) override {
-    // TODO: impl this.
+    for (const auto &rule : request->rules()) {
+      azugate::ProtocolType protocol;
+      auto pb_protocol = rule.protocol();
+      if (pb_protocol == api::v1::RouterRule_ProtocolType_PROTOCOL_TYPE_HTTP) {
+        protocol = azugate::ProtocolTypeHttp;
+      } else if (pb_protocol ==
+                 api::v1::RouterRule_ProtocolType_PROTOCOL_TYPE_WEBSOCKET) {
+        protocol = azugate::ProtocolTypeWebSocket;
+      } else {
+        response->set_message("invalid protocol type");
+        return grpc::Status::CANCELLED;
+      }
+      azugate::AddRoute(
+          azugate::ConnectionInfo{
+              .type = protocol,
+              .http_url = rule.match_path(),
+          },
+          azugate::ConnectionInfo{
+              .type = protocol,
+              .address = rule.dest_host(),
+              // TODO: truncation.
+              .port = uint16_t(rule.dest_port()),
+              .http_url = rule.dest_path(),
+              .remote = rule.remote(),
+          });
+    }
     response->set_message("success");
     return grpc::Status::OK;
   }
