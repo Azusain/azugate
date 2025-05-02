@@ -78,6 +78,7 @@ constexpr std::string_view kHeaderFieldXGrpcWeb = "x-grpc-web";
 // http connection.
 constexpr std::string_view kConnectionClose = "Close";
 constexpr std::string_view kConnectionKeepAlive = "keep-alive";
+constexpr std::string_view kConnectionUpgrade = "Upgrade";
 // http content type.
 // ref: https://www.iana.org/assignments/media-types/media-types.xhtml
 constexpr std::string_view kContentTypeAppJson = "application/json";

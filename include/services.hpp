@@ -342,7 +342,8 @@ inline bool externalAuthorization(network::PicoHttpRequest &request,
 inline bool extractMetaFromHeaders(utils::CompressionType &compression_type,
                                    network::PicoHttpRequest &request,
                                    std::string &token,
-                                   size_t &request_content_length) {
+                                   size_t &request_content_length,
+                                   bool &isWebSocket) {
   if (request.num_headers <= 0 || request.num_headers > kMaxHeadersNum) {
     SPDLOG_WARN("No headers found in the request.");
     return false;
@@ -381,6 +382,11 @@ inline bool extractMetaFromHeaders(utils::CompressionType &compression_type,
         SPDLOG_ERROR("failed to convert std::string '{}' to int", header_value);
         return false;
       }
+      continue;
+    }
+    if (header_name == CRequest::kHeaderFieldConnection) {
+      isWebSocket = utils::toLower(header_value) ==
+                    utils::toLower(CRequest::kConnectionUpgrade);
       continue;
     }
     // TODO: fix it when needed.
@@ -472,13 +478,13 @@ public:
 
   inline void extractMetadata() {
     if (!extractMetaFromHeaders(compression_type_, request_, token_,
-                                request_content_length_)) {
+                                request_content_length_, isWebSocket_)) {
       SPDLOG_WARN("failed to extract meta from headers");
       async_accpet_cb_();
       return;
     }
     // TODO: external authoriation and router.
-    if (g_http_external_authorization &&
+    if (g_http_external_authorization && !isWebSocket_ &&
         !externalAuthorization(request_, sock_ptr_, token_)) {
       async_accpet_cb_();
       return;
@@ -510,7 +516,8 @@ public:
     source_connection_info_.http_url =
         std::string(request_.path, request_.len_path);
     // TODO: differ by "Connection upgrade".
-    source_connection_info_.type = ProtocolTypeHttp;
+    source_connection_info_.type =
+        isWebSocket_ ? ProtocolTypeWebSocket : ProtocolTypeHttp;
     auto target_conn_info_opt = GetTargetRoute(source_connection_info_);
     if (!target_conn_info_opt) {
       SPDLOG_WARN("no path found for {}", source_connection_info_.http_url);
@@ -939,6 +946,7 @@ private:
   std::string target_url_;
   size_t request_content_length_;
   ConnectionInfo source_connection_info_;
+  bool isWebSocket_;
 };
 
 void TcpProxyHandler(

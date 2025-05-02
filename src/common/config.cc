@@ -227,8 +227,6 @@ void AddRoute(ConnectionInfo &&source, ConnectionInfo &&target) {
     return;
   }
   // exact match.
-  SPDLOG_WARN("add exact match rule: {} -> {}", source.http_url,
-              target.http_url);
   auto er_it = g_exact_routes.find(source);
   if (er_it != g_exact_routes.end()) {
     er_it->second.AddTarget(std::move(target));
@@ -277,7 +275,6 @@ std::optional<ConnectionInfo> GetTargetRoute(const ConnectionInfo &source) {
 size_t GetRouterTableSize() { return g_exact_routes.size(); }
 
 // perfect match and prefix match.
-// TODO: support priority by using seperate std::unordered_map.
 bool azugate::ConnectionInfo::operator==(const ConnectionInfo &other) const {
   if (type != other.type) {
     return false;
@@ -285,13 +282,8 @@ bool azugate::ConnectionInfo::operator==(const ConnectionInfo &other) const {
   if (type == ProtocolTypeTcp) {
     return address == other.address;
   }
-  if (type == ProtocolTypeHttp) {
-    // perfect match.
-    if (http_url == other.http_url) {
-      return true;
-    }
-  }
-  return false;
+  return (type == ProtocolTypeHttp || type == ProtocolTypeWebSocket) &&
+         http_url == other.http_url;
 }
 
 bool LoadServerConfig(const std::string &path_config_file) {
