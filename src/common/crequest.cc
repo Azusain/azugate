@@ -151,28 +151,28 @@ HttpMessage::~HttpMessage() = default;
 
 // class HttpMessage.
 void HttpMessage::SetCookie(std::string_view key, std::string_view val) {
-  headers_.emplace_back(std::format("Set-Cookie:{}={}", key, val));
+  headers_.emplace_back(fmt::format("Set-Cookie:{}={}", key, val));
 }
 
 void HttpMessage::SetKeepAlive(bool keep_alive) {
-  headers_.emplace_back(std::format(
+  headers_.emplace_back(fmt::format(
       "Connection:{}", keep_alive ? kConnectionKeepAlive : kConnectionClose));
 }
 
 void HttpMessage::SetContentType(std::string_view content_type) {
-  headers_.emplace_back(std::format("Content-Type:{}", content_type));
+  headers_.emplace_back(fmt::format("Content-Type:{}", content_type));
 }
 
 void HttpMessage::SetContentLength(size_t len) {
-  headers_.emplace_back(std::format("Content-Length:{}", len));
+  headers_.emplace_back(fmt::format("Content-Length:{}", len));
 }
 
 void HttpMessage::SetToken(std::string_view token) {
-  headers_.emplace_back(std::format("Token:{}", token));
+  headers_.emplace_back(fmt::format("Token:{}", token));
 }
 
 void HttpMessage::SetAllowOrigin(std::string_view origin) {
-  headers_.emplace_back(std::format("Access-Control-Allow-Origin:{}", origin));
+  headers_.emplace_back(fmt::format("Access-Control-Allow-Origin:{}", origin));
 }
 
 // cors
@@ -202,7 +202,7 @@ void HttpMessage::SetAllowMethods(std::vector<std::string> methods) {
 
 // compression.
 void HttpMessage::SetAcceptEncoding(std::vector<std::string> encoding_types) {
-  std::string encodings{std::format("{}: ", kHeaderFieldAcceptEncoding)};
+  std::string encodings{fmt::format("{}: ", kHeaderFieldAcceptEncoding)};
   for (size_t i = 0; i < encoding_types.size(); ++i) {
     encodings.append(encoding_types[i]);
     if (i != (encoding_types.size() - 1)) {
@@ -213,12 +213,12 @@ void HttpMessage::SetAcceptEncoding(std::vector<std::string> encoding_types) {
 
 void HttpMessage::SetContentEncoding(const std::string_view &encoding_type) {
   headers_.emplace_back(
-      std::format("{}: {}", kHeaderFieldContentEncoding, encoding_type));
+      fmt::format("{}: {}", kHeaderFieldContentEncoding, encoding_type));
 }
 
 void HttpMessage::SetTransferEncoding(const std::string_view &value) {
   headers_.emplace_back(
-      std::format("{}: {}", kHeaderFieldTransferEncoding, value));
+      fmt::format("{}: {}", kHeaderFieldTransferEncoding, value));
 };
 
 std::string HttpMessage::StringifyHeaders() {

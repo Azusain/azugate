@@ -11,21 +11,20 @@
 - Linux sendfile() optimization
 - High-performance asynchronous I/O
 
-### Build & Run
+### Build
 
 You will need a compiler that supports c++20, along with CMake and vcpkg, to build this project. The project builds successfully on both M2 Mac and x86-64 Linux.
  
 ```shell
-  # 1. Build with CMake and vcpkg.
   mkdir build && cd build
   cmake --preset=default ..
   cmake --build .
-  
-  # 2. Modify the provided template: resources/config.yaml
-  
-  # 3. Run
-  ./azugate
+```
 
+### Run (docker)
+
+```shell
+  docker run -p 8080:8080 -p 50051:50051 -v config.yaml:/app/config.yaml azusaing/azugate:latest ./azugate -c config.yaml
 ```
 
 ### Dev Tools

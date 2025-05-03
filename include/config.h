@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <mutex>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <unordered_set>
@@ -23,7 +24,7 @@ constexpr std::string_view kPathDftPage = "/welcome.html";
 constexpr size_t kMaxHttpHeaderSize = 1024 * 8;
 constexpr size_t kMaxHeadersNum = 20;
 // yaml.
-constexpr std::string_view kDftConfigFile = "config.yaml";
+constexpr std::string_view kDftConfigFile = "config.default.yaml";
 constexpr std::string_view kYamlFieldPort = "port";
 constexpr std::string_view kYamlFieldCrt = "crt";
 constexpr std::string_view kYamlFieldKey = "key";

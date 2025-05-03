@@ -32,7 +32,6 @@ file(GLOB_RECURSE API_SOURCES "src/api/*.cc")
 file(GLOB_RECURSE API_INCLUDES_DIR "src/api")
 file(GLOB_RECURSE THIRD_PARTY_SOURCES "third_party/*.cc" "third_party/*.c")
 
-
 # library for all the apps.
 add_library(common STATIC
 ${COMMON_SOURCES}
@@ -77,20 +76,4 @@ common
 Boost::system
 )
 
-# I/O Perf (uses kqueue thus cannot run on Linux).
-# add_executable(io_perf
-# "src/app/io_perf.cc"
-# )
-# target_link_libraries(io_perf
-# ${OPENSSL_LIBRARIES}
-# common
-# )
 
-#  GTest template.
-# add_executable(template_test
-# "src/app/template_test.cc"
-# )
-# target_link_libraries(template PRIVATE
-# common
-# GTest::gtest
-# )
