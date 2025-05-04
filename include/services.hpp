@@ -84,7 +84,7 @@ inline bool handleGzipCompression(const boost::shared_ptr<T> sock_ptr,
                                     &ec](unsigned char *compressed_data,
                                          size_t size) {
     std::array<boost::asio::const_buffer, 3> buffers = {
-        boost::asio::buffer(std::format("{:x}{}", size, CRequest::kCrlf)),
+        boost::asio::buffer(fmt::format("{:x}{}", size, CRequest::kCrlf)),
         boost::asio::buffer(compressed_data, size),
         boost::asio::buffer(CRequest::kCrlf, 2)};
     sock_ptr->write_some(buffers, ec);
@@ -514,7 +514,6 @@ public:
     boost::system::error_code ec;
     source_connection_info_.http_url =
         std::string(request_.path, request_.len_path);
-    // TODO: differ by "Connection upgrade".
     source_connection_info_.type =
         isWebSocket_ ? ProtocolTypeWebSocket : ProtocolTypeHttp;
     auto target_conn_info_opt = GetTargetRoute(source_connection_info_);
