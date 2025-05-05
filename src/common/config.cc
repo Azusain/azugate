@@ -203,8 +203,7 @@ inline bool prefixMatchEqual(const ConnectionInfo &source_conn_info,
                              const ConnectionInfo &rule_conn_info) {
   return source_conn_info.http_url.starts_with(rule_conn_info.http_url.substr(
              0, rule_conn_info.http_url.find('*'))) &&
-         source_conn_info.type == rule_conn_info.type &&
-         source_conn_info.remote == rule_conn_info.remote;
+         source_conn_info.type == rule_conn_info.type;
 }
 
 void AddRoute(ConnectionInfo &&source, ConnectionInfo &&target) {

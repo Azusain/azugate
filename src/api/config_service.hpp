@@ -122,6 +122,8 @@ public:
         response->set_message("invalid protocol type");
         return grpc::Status::CANCELLED;
       }
+      SPDLOG_INFO("{}: [{}] {} -> {}", rule.remote() ? "remote" : "local",
+                  protocol, rule.match_path(), rule.dest_path());
       azugate::AddRoute(
           azugate::ConnectionInfo{
               .type = protocol,
