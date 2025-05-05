@@ -8,7 +8,9 @@ RUN apt-get update && apt-get install -y \
     cmake \
     git \
     curl \
-    pkg-config
+    pkg-config \
+    zip \
+    unzip
 
 # Install vcpkg.
 WORKDIR /opt
