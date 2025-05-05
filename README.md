@@ -24,7 +24,19 @@ You will need a compiler that supports c++20, along with CMake and vcpkg, to bui
 ### Run (docker)
 
 ```shell
-  docker run -p 8080:8080 -p 50051:50051 -v config.yaml:/app/config.yaml azusaing/azugate:latest ./azugate -c config.yaml
+  # default configurations:
+  docker run -p 8080:8080 -p 50051:50051 azusaing/azugate:latest
+  
+  # static files & custom configurations:
+  docker run \
+  -p 8080:8080 \
+  -p 50051:50051 \
+  -v ./resources:/app/resources \
+  -v ./config.yaml:/app/bin/config.yaml azusaing/azugate:latest \
+  ./azugate -c config.yaml
+
+  # or use docker-compose under the root folder:
+  docker-compose up -d
 ```
 
 ### Dev Tools

@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  azugate:
+    image: azusaing/azugate:latest
+    container_name: azugate
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+    volumes:
+      - ./resources:/app/resources
+      - ./config.yaml:/app/bin/config.yaml
+    command: ["./azugate", "-c", "config.yaml"]
