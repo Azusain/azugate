@@ -21,6 +21,12 @@ You will need a compiler that supports c++20, along with CMake and vcpkg, to bui
   cmake --build .
 ```
 
+### Build Image
+
+```
+  docker buildx build --platform linux/amd64,linux/arm64 -t azusaing/azugate:latest .
+```
+
 ### Run (docker)
 
 ```shell
