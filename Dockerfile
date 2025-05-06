@@ -25,7 +25,7 @@ WORKDIR /project
 COPY . .
 RUN mkdir build \
     && cd build \
-    && cmake --preset=default -DCMAKE_BUILD_TYPE=Release ..
+    && cmake --preset=default -DCMAKE_BUILD_TYPE=Release -DVCPKG_BUILD_TYPE=release ..
 RUN cd build && cmake --build .
 
 # ============== Runtime ==============
