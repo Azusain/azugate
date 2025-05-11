@@ -1,5 +1,5 @@
 # ============== Build ==============
-FROM debian:bookworm AS builder
+FROM ubuntu:latest AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -29,7 +29,7 @@ RUN mkdir build \
 RUN cd build && cmake --build .
 
 # ============== Runtime ==============
-FROM debian:bookworm-slim
+FROM ubuntu:latest
 RUN apt-get update && apt-get install -y libstdc++6 && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /project/build/azugate /app/bin/azugate
 COPY --from=builder /project/resources /app/resources
