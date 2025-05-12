@@ -125,66 +125,6 @@ struct UpdateHealthzListRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateHealthzListRequestDefaultTypeInternal _UpdateHealthzListRequest_default_instance_;
 
-inline constexpr UpdateConfigResponse::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : http_compression_{false},
-        https_{false},
-        enable_rate_limitor_{false},
-        enable_external_auth_{false},
-        num_token_max_{0u},
-        num_token_per_sec_{0u},
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR UpdateConfigResponse::UpdateConfigResponse(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct UpdateConfigResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR UpdateConfigResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~UpdateConfigResponseDefaultTypeInternal() {}
-  union {
-    UpdateConfigResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateConfigResponseDefaultTypeInternal _UpdateConfigResponse_default_instance_;
-
-inline constexpr UpdateConfigRequest::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : path_{},
-        http_compression_{false},
-        https_{false},
-        enable_rate_limitor_{false},
-        num_token_max_{0u},
-        num_token_per_sec_{0u},
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR UpdateConfigRequest::UpdateConfigRequest(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct UpdateConfigRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR UpdateConfigRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~UpdateConfigRequestDefaultTypeInternal() {}
-  union {
-    UpdateConfigRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateConfigRequestDefaultTypeInternal _UpdateConfigRequest_default_instance_;
-
 inline constexpr RouterRule::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : match_path_(
@@ -263,35 +203,6 @@ struct GetIpBlackListRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetIpBlackListRequestDefaultTypeInternal _GetIpBlackListRequest_default_instance_;
-
-inline constexpr GetConfigResponse::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : http_compression_{false},
-        https_{false},
-        enable_rate_limitor_{false},
-        num_token_max_{0u},
-        num_token_per_sec_{0u},
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR GetConfigResponse::GetConfigResponse(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct GetConfigResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR GetConfigResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~GetConfigResponseDefaultTypeInternal() {}
-  union {
-    GetConfigResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetConfigResponseDefaultTypeInternal _GetConfigResponse_default_instance_;
               template <typename>
 PROTOBUF_CONSTEXPR GetConfigRequest::GetConfigRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
@@ -310,6 +221,43 @@ struct GetConfigRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetConfigRequestDefaultTypeInternal _GetConfigRequest_default_instance_;
+
+inline constexpr ExternalAuthConfig::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : domain_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        client_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        client_secret_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        callback_url_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        enable_{false},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ExternalAuthConfig::ExternalAuthConfig(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct ExternalAuthConfigDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ExternalAuthConfigDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ExternalAuthConfigDefaultTypeInternal() {}
+  union {
+    ExternalAuthConfig _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ExternalAuthConfigDefaultTypeInternal _ExternalAuthConfig_default_instance_;
 
 inline constexpr ConfigRouterResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -337,6 +285,96 @@ struct ConfigRouterResponseDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConfigRouterResponseDefaultTypeInternal _ConfigRouterResponse_default_instance_;
+
+inline constexpr UpdateConfigResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        external_auth_config_{nullptr},
+        http_compression_{false},
+        https_{false},
+        enable_rate_limitor_{false},
+        num_token_max_{0u},
+        num_token_per_sec_{0u} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR UpdateConfigResponse::UpdateConfigResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct UpdateConfigResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UpdateConfigResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~UpdateConfigResponseDefaultTypeInternal() {}
+  union {
+    UpdateConfigResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateConfigResponseDefaultTypeInternal _UpdateConfigResponse_default_instance_;
+
+inline constexpr UpdateConfigRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        external_auth_config_{nullptr},
+        http_compression_{false},
+        https_{false},
+        enable_rate_limitor_{false},
+        num_token_max_{0u},
+        num_token_per_sec_{0u} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR UpdateConfigRequest::UpdateConfigRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct UpdateConfigRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UpdateConfigRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~UpdateConfigRequestDefaultTypeInternal() {}
+  union {
+    UpdateConfigRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateConfigRequestDefaultTypeInternal _UpdateConfigRequest_default_instance_;
+
+inline constexpr GetConfigResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        external_auth_config_{nullptr},
+        http_compression_{false},
+        https_{false},
+        enable_rate_limitor_{false},
+        num_token_max_{0u},
+        num_token_per_sec_{0u} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GetConfigResponse::GetConfigResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct GetConfigResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GetConfigResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GetConfigResponseDefaultTypeInternal() {}
+  union {
+    GetConfigResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetConfigResponseDefaultTypeInternal _GetConfigResponse_default_instance_;
 
 inline constexpr ConfigRouterRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -378,7 +416,7 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::api::v1::GetConfigResponse, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::api::v1::GetConfigResponse, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -391,7 +429,27 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::api::v1::GetConfigResponse, _impl_.enable_rate_limitor_),
         PROTOBUF_FIELD_OFFSET(::api::v1::GetConfigResponse, _impl_.num_token_max_),
         PROTOBUF_FIELD_OFFSET(::api::v1::GetConfigResponse, _impl_.num_token_per_sec_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::GetConfigResponse, _impl_.external_auth_config_),
+        ~0u,
+        ~0u,
+        ~0u,
+        ~0u,
+        ~0u,
+        0,
         ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::api::v1::ExternalAuthConfig, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::api::v1::ExternalAuthConfig, _impl_.enable_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::ExternalAuthConfig, _impl_.domain_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::ExternalAuthConfig, _impl_.client_id_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::ExternalAuthConfig, _impl_.client_secret_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::ExternalAuthConfig, _impl_.callback_url_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -399,13 +457,19 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.path_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.http_compression_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.https_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.enable_rate_limitor_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.num_token_max_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.num_token_per_sec_),
-        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigRequest, _impl_.external_auth_config_),
+        1,
+        2,
+        3,
+        4,
+        5,
+        0,
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -418,7 +482,13 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.enable_rate_limitor_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.num_token_max_),
         PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.num_token_per_sec_),
-        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.enable_external_auth_),
+        PROTOBUF_FIELD_OFFSET(::api::v1::UpdateConfigResponse, _impl_.external_auth_config_),
+        ~0u,
+        ~0u,
+        ~0u,
+        ~0u,
+        ~0u,
+        0,
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::api::v1::GetIpBlackListRequest, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -510,22 +580,24 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, -1, -1, sizeof(::api::v1::GetConfigRequest)},
-        {8, -1, -1, sizeof(::api::v1::GetConfigResponse)},
-        {21, -1, -1, sizeof(::api::v1::UpdateConfigRequest)},
-        {35, -1, -1, sizeof(::api::v1::UpdateConfigResponse)},
-        {49, -1, -1, sizeof(::api::v1::GetIpBlackListRequest)},
-        {57, -1, -1, sizeof(::api::v1::GetIpBlackListResponse)},
-        {66, -1, -1, sizeof(::api::v1::UpdateIpBlackListRequest)},
-        {76, -1, -1, sizeof(::api::v1::UpdateIpBlackListResponse)},
-        {84, -1, -1, sizeof(::api::v1::ConfigRouterRequest)},
-        {93, -1, -1, sizeof(::api::v1::RouterRule)},
-        {107, -1, -1, sizeof(::api::v1::ConfigRouterResponse)},
-        {116, -1, -1, sizeof(::api::v1::UpdateHealthzListRequest)},
-        {126, -1, -1, sizeof(::api::v1::UpdateHealthzListResponse)},
+        {8, 22, -1, sizeof(::api::v1::GetConfigResponse)},
+        {28, -1, -1, sizeof(::api::v1::ExternalAuthConfig)},
+        {41, 55, -1, sizeof(::api::v1::UpdateConfigRequest)},
+        {61, 75, -1, sizeof(::api::v1::UpdateConfigResponse)},
+        {81, -1, -1, sizeof(::api::v1::GetIpBlackListRequest)},
+        {89, -1, -1, sizeof(::api::v1::GetIpBlackListResponse)},
+        {98, -1, -1, sizeof(::api::v1::UpdateIpBlackListRequest)},
+        {108, -1, -1, sizeof(::api::v1::UpdateIpBlackListResponse)},
+        {116, -1, -1, sizeof(::api::v1::ConfigRouterRequest)},
+        {125, -1, -1, sizeof(::api::v1::RouterRule)},
+        {139, -1, -1, sizeof(::api::v1::ConfigRouterResponse)},
+        {148, -1, -1, sizeof(::api::v1::UpdateHealthzListRequest)},
+        {158, -1, -1, sizeof(::api::v1::UpdateHealthzListResponse)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::api::v1::_GetConfigRequest_default_instance_._instance,
     &::api::v1::_GetConfigResponse_default_instance_._instance,
+    &::api::v1::_ExternalAuthConfig_default_instance_._instance,
     &::api::v1::_UpdateConfigRequest_default_instance_._instance,
     &::api::v1::_UpdateConfigResponse_default_instance_._instance,
     &::api::v1::_GetIpBlackListRequest_default_instance_._instance,
@@ -542,65 +614,77 @@ const char descriptor_table_protodef_config_5fservice_2eproto[] ABSL_ATTRIBUTE_S
     protodesc_cold) = {
     "\n\024config_service.proto\022\006api.v1\032\034google/a"
     "pi/annotations.proto\"\022\n\020GetConfigRequest"
-    "\"\323\001\n\021GetConfigResponse\022)\n\020http_compressi"
+    "\"\241\002\n\021GetConfigResponse\022)\n\020http_compressi"
     "on\030\001 \001(\010R\017httpCompression\022\024\n\005https\030\002 \001(\010"
     "R\005https\022.\n\023enable_rate_limitor\030\003 \001(\010R\021en"
     "ableRateLimitor\022\"\n\rnum_token_max\030\004 \001(\rR\013"
     "numTokenMax\022)\n\021num_token_per_sec\030\005 \001(\rR\016"
-    "numTokenPerSec\"\351\001\n\023UpdateConfigRequest\022\022"
-    "\n\004path\030\001 \003(\tR\004path\022)\n\020http_compression\030\002"
-    " \001(\010R\017httpCompression\022\024\n\005https\030\003 \001(\010R\005ht"
-    "tps\022.\n\023enable_rate_limitor\030\004 \001(\010R\021enable"
-    "RateLimitor\022\"\n\rnum_token_max\030\005 \001(\rR\013numT"
-    "okenMax\022)\n\021num_token_per_sec\030\006 \001(\rR\016numT"
-    "okenPerSec\"\210\002\n\024UpdateConfigResponse\022)\n\020h"
-    "ttp_compression\030\001 \001(\010R\017httpCompression\022\024"
-    "\n\005https\030\002 \001(\010R\005https\022.\n\023enable_rate_limi"
-    "tor\030\003 \001(\010R\021enableRateLimitor\022\"\n\rnum_toke"
-    "n_max\030\004 \001(\rR\013numTokenMax\022)\n\021num_token_pe"
-    "r_sec\030\005 \001(\rR\016numTokenPerSec\0220\n\024enable_ex"
-    "ternal_auth\030\006 \001(\010R\022enableExternalAuth\"\027\n"
-    "\025GetIpBlackListRequest\"1\n\026GetIpBlackList"
-    "Response\022\027\n\007ip_list\030\001 \003(\tR\006ipList\"\320\001\n\030Up"
-    "dateIpBlackListRequest\022C\n\006action\030\001 \001(\0162+"
-    ".api.v1.UpdateIpBlackListRequest.ActionT"
-    "ypeR\006action\022\027\n\007ip_list\030\002 \003(\tR\006ipList\"V\n\n"
-    "ActionType\022\033\n\027ACTION_TYPE_UNSPECIFIED\020\000\022"
-    "\023\n\017ACTION_TYPE_ADD\020\001\022\026\n\022ACTION_TYPE_REMO"
-    "VE\020\002\"\033\n\031UpdateIpBlackListResponse\"\?\n\023Con"
-    "figRouterRequest\022(\n\005rules\030\001 \003(\0132\022.api.v1"
-    ".RouterRuleR\005rules\"\322\002\n\nRouterRule\022;\n\010pro"
-    "tocol\030\001 \001(\0162\037.api.v1.RouterRule.Protocol"
-    "TypeR\010protocol\022\035\n\nmatch_path\030\002 \001(\tR\tmatc"
-    "hPath\022\033\n\tdest_port\030\003 \001(\rR\010destPort\022\033\n\tde"
-    "st_host\030\004 \001(\tR\010destHost\022\033\n\tdest_path\030\005 \001"
-    "(\tR\010destPath\022\026\n\006remote\030\006 \001(\010R\006remote\"y\n\014"
-    "ProtocolType\022\035\n\031PROTOCOL_TYPE_UNSPECIFIE"
-    "D\020\000\022\025\n\021PROTOCOL_TYPE_TCP\020\001\022\026\n\022PROTOCOL_T"
-    "YPE_HTTP\020\002\022\033\n\027PROTOCOL_TYPE_WEBSOCKET\020\003\""
-    "0\n\024ConfigRouterResponse\022\030\n\007message\030\001 \001(\t"
-    "R\007message\"H\n\030UpdateHealthzListRequest\022\026\n"
-    "\006action\030\001 \001(\tR\006action\022\024\n\005addrs\030\002 \003(\tR\005ad"
-    "drs\"5\n\031UpdateHealthzListResponse\022\030\n\007mess"
-    "age\030\001 \001(\tR\007message2\326\004\n\rConfigService\022Q\n\t"
-    "GetConfig\022\030.api.v1.GetConfigRequest\032\031.ap"
-    "i.v1.GetConfigResponse\"\017\202\323\344\223\002\t\022\007/config\022"
-    "d\n\014UpdateConfig\022\033.api.v1.UpdateConfigReq"
-    "uest\032\034.api.v1.UpdateConfigResponse\"\031\202\323\344\223"
-    "\002\023\"\016/config:update:\001*\022g\n\016GetIpBlackList\022"
-    "\035.api.v1.GetIpBlackListRequest\032\036.api.v1."
-    "GetIpBlackListResponse\"\026\202\323\344\223\002\020\022\016/config/"
-    "iplist\022z\n\021UpdateIpBlackList\022 .api.v1.Upd"
-    "ateIpBlackListRequest\032!.api.v1.UpdateIpB"
-    "lackListResponse\" \202\323\344\223\002\032\"\025/config/iplist"
-    ":update:\001*\022K\n\014ConfigRouter\022\033.api.v1.Conf"
-    "igRouterRequest\032\034.api.v1.ConfigRouterRes"
-    "ponse\"\000\022Z\n\021UpdateHealthzList\022 .api.v1.Up"
-    "dateHealthzListRequest\032!.api.v1.UpdateHe"
-    "althzListResponse\"\000B_\n\ncom.api.v1B\022Confi"
-    "gServiceProtoP\001Z\004/api\242\002\003AXX\252\002\006Api.V1\312\002\006A"
-    "pi\\V1\342\002\022Api\\V1\\GPBMetadata\352\002\007Api::V1b\006pr"
-    "oto3"
+    "numTokenPerSec\022L\n\024external_auth_config\030\006"
+    " \001(\0132\032.api.v1.ExternalAuthConfigR\022extern"
+    "alAuthConfig\"\251\001\n\022ExternalAuthConfig\022\026\n\006e"
+    "nable\030\001 \001(\010R\006enable\022\026\n\006domain\030\002 \001(\tR\006dom"
+    "ain\022\033\n\tclient_id\030\003 \001(\tR\010clientId\022#\n\rclie"
+    "nt_secret\030\004 \001(\tR\014clientSecret\022!\n\014callbac"
+    "k_url\030\005 \001(\tR\013callbackUrl\"\271\003\n\023UpdateConfi"
+    "gRequest\022.\n\020http_compression\030\002 \001(\010H\000R\017ht"
+    "tpCompression\210\001\001\022\031\n\005https\030\003 \001(\010H\001R\005https"
+    "\210\001\001\0223\n\023enable_rate_limitor\030\004 \001(\010H\002R\021enab"
+    "leRateLimitor\210\001\001\022\'\n\rnum_token_max\030\005 \001(\rH"
+    "\003R\013numTokenMax\210\001\001\022.\n\021num_token_per_sec\030\006"
+    " \001(\rH\004R\016numTokenPerSec\210\001\001\022Q\n\024external_au"
+    "th_config\030\007 \001(\0132\032.api.v1.ExternalAuthCon"
+    "figH\005R\022externalAuthConfig\210\001\001B\023\n\021_http_co"
+    "mpressionB\010\n\006_httpsB\026\n\024_enable_rate_limi"
+    "torB\020\n\016_num_token_maxB\024\n\022_num_token_per_"
+    "secB\027\n\025_external_auth_config\"\244\002\n\024UpdateC"
+    "onfigResponse\022)\n\020http_compression\030\001 \001(\010R"
+    "\017httpCompression\022\024\n\005https\030\002 \001(\010R\005https\022."
+    "\n\023enable_rate_limitor\030\003 \001(\010R\021enableRateL"
+    "imitor\022\"\n\rnum_token_max\030\004 \001(\rR\013numTokenM"
+    "ax\022)\n\021num_token_per_sec\030\005 \001(\rR\016numTokenP"
+    "erSec\022L\n\024external_auth_config\030\007 \001(\0132\032.ap"
+    "i.v1.ExternalAuthConfigR\022externalAuthCon"
+    "fig\"\027\n\025GetIpBlackListRequest\"1\n\026GetIpBla"
+    "ckListResponse\022\027\n\007ip_list\030\001 \003(\tR\006ipList\""
+    "\320\001\n\030UpdateIpBlackListRequest\022C\n\006action\030\001"
+    " \001(\0162+.api.v1.UpdateIpBlackListRequest.A"
+    "ctionTypeR\006action\022\027\n\007ip_list\030\002 \003(\tR\006ipLi"
+    "st\"V\n\nActionType\022\033\n\027ACTION_TYPE_UNSPECIF"
+    "IED\020\000\022\023\n\017ACTION_TYPE_ADD\020\001\022\026\n\022ACTION_TYP"
+    "E_REMOVE\020\002\"\033\n\031UpdateIpBlackListResponse\""
+    "\?\n\023ConfigRouterRequest\022(\n\005rules\030\001 \003(\0132\022."
+    "api.v1.RouterRuleR\005rules\"\322\002\n\nRouterRule\022"
+    ";\n\010protocol\030\001 \001(\0162\037.api.v1.RouterRule.Pr"
+    "otocolTypeR\010protocol\022\035\n\nmatch_path\030\002 \001(\t"
+    "R\tmatchPath\022\033\n\tdest_port\030\003 \001(\rR\010destPort"
+    "\022\033\n\tdest_host\030\004 \001(\tR\010destHost\022\033\n\tdest_pa"
+    "th\030\005 \001(\tR\010destPath\022\026\n\006remote\030\006 \001(\010R\006remo"
+    "te\"y\n\014ProtocolType\022\035\n\031PROTOCOL_TYPE_UNSP"
+    "ECIFIED\020\000\022\025\n\021PROTOCOL_TYPE_TCP\020\001\022\026\n\022PROT"
+    "OCOL_TYPE_HTTP\020\002\022\033\n\027PROTOCOL_TYPE_WEBSOC"
+    "KET\020\003\"0\n\024ConfigRouterResponse\022\030\n\007message"
+    "\030\001 \001(\tR\007message\"H\n\030UpdateHealthzListRequ"
+    "est\022\026\n\006action\030\001 \001(\tR\006action\022\024\n\005addrs\030\002 \003"
+    "(\tR\005addrs\"5\n\031UpdateHealthzListResponse\022\030"
+    "\n\007message\030\001 \001(\tR\007message2\326\004\n\rConfigServi"
+    "ce\022Q\n\tGetConfig\022\030.api.v1.GetConfigReques"
+    "t\032\031.api.v1.GetConfigResponse\"\017\202\323\344\223\002\t\022\007/c"
+    "onfig\022d\n\014UpdateConfig\022\033.api.v1.UpdateCon"
+    "figRequest\032\034.api.v1.UpdateConfigResponse"
+    "\"\031\202\323\344\223\002\023\"\016/config:update:\001*\022g\n\016GetIpBlac"
+    "kList\022\035.api.v1.GetIpBlackListRequest\032\036.a"
+    "pi.v1.GetIpBlackListResponse\"\026\202\323\344\223\002\020\022\016/c"
+    "onfig/iplist\022z\n\021UpdateIpBlackList\022 .api."
+    "v1.UpdateIpBlackListRequest\032!.api.v1.Upd"
+    "ateIpBlackListResponse\" \202\323\344\223\002\032\"\025/config/"
+    "iplist:update:\001*\022K\n\014ConfigRouter\022\033.api.v"
+    "1.ConfigRouterRequest\032\034.api.v1.ConfigRou"
+    "terResponse\"\000\022Z\n\021UpdateHealthzList\022 .api"
+    ".v1.UpdateHealthzListRequest\032!.api.v1.Up"
+    "dateHealthzListResponse\"\000B_\n\ncom.api.v1B"
+    "\022ConfigServiceProtoP\001Z\004/api\242\002\003AXX\252\002\006Api."
+    "V1\312\002\006Api\\V1\342\002\022Api\\V1\\GPBMetadata\352\002\007Api::"
+    "V1b\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_config_5fservice_2eproto_deps[1] =
     {
@@ -610,13 +694,13 @@ static ::absl::once_flag descriptor_table_config_5fservice_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_config_5fservice_2eproto = {
     false,
     false,
-    2404,
+    2890,
     descriptor_table_protodef_config_5fservice_2eproto,
     "config_service.proto",
     &descriptor_table_config_5fservice_2eproto_once,
     descriptor_table_config_5fservice_2eproto_deps,
     1,
-    13,
+    14,
     schemas,
     file_default_instances,
     TableStruct_config_5fservice_2eproto::offsets,
@@ -768,6 +852,10 @@ const ::_pbi::TcParseTable<0, 0, 0, 0, 2> GetConfigRequest::_table_ = {
 
 class GetConfigResponse::_Internal {
  public:
+  using HasBits =
+      decltype(std::declval<GetConfigResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_._has_bits_);
 };
 
 GetConfigResponse::GetConfigResponse(::google::protobuf::Arena* arena)
@@ -779,10 +867,38 @@ GetConfigResponse::GetConfigResponse(::google::protobuf::Arena* arena)
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:api.v1.GetConfigResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE GetConfigResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::api::v1::GetConfigResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
 GetConfigResponse::GetConfigResponse(
-    ::google::protobuf::Arena* arena, const GetConfigResponse& from)
-    : GetConfigResponse(arena) {
-  MergeFrom(from);
+    ::google::protobuf::Arena* arena,
+    const GetConfigResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  GetConfigResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.external_auth_config_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::api::v1::ExternalAuthConfig>(
+                              arena, *from._impl_.external_auth_config_)
+                        : nullptr;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, http_compression_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, http_compression_),
+           offsetof(Impl_, num_token_per_sec_) -
+               offsetof(Impl_, http_compression_) +
+               sizeof(Impl_::num_token_per_sec_));
+
+  // @@protoc_insertion_point(copy_constructor:api.v1.GetConfigResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE GetConfigResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
@@ -792,10 +908,10 @@ inline PROTOBUF_NDEBUG_INLINE GetConfigResponse::Impl_::Impl_(
 inline void GetConfigResponse::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
   ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, http_compression_),
+               offsetof(Impl_, external_auth_config_),
            0,
            offsetof(Impl_, num_token_per_sec_) -
-               offsetof(Impl_, http_compression_) +
+               offsetof(Impl_, external_auth_config_) +
                sizeof(Impl_::num_token_per_sec_));
 }
 GetConfigResponse::~GetConfigResponse() {
@@ -805,6 +921,7 @@ GetConfigResponse::~GetConfigResponse() {
 }
 inline void GetConfigResponse::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.external_auth_config_;
   _impl_.~Impl_();
 }
 
@@ -837,17 +954,17 @@ const ::google::protobuf::MessageLite::ClassData* GetConfigResponse::GetClassDat
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 0, 2> GetConfigResponse::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 1, 0, 2> GetConfigResponse::_table_ = {
   {
-    0,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_._has_bits_),
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    6,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
@@ -871,29 +988,34 @@ const ::_pbi::TcParseTable<3, 5, 0, 0, 2> GetConfigResponse::_table_ = {
     // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GetConfigResponse, _impl_.num_token_per_sec_), 63>(),
      {40, 63, 0, PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.num_token_per_sec_)}},
-    {::_pbi::TcParser::MiniParse, {}},
+    // .api.v1.ExternalAuthConfig external_auth_config = 6 [json_name = "externalAuthConfig"];
+    {::_pbi::TcParser::FastMtS1,
+     {50, 0, 0, PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.external_auth_config_)}},
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
     // bool http_compression = 1 [json_name = "httpCompression"];
-    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.http_compression_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.http_compression_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
     // bool https = 2 [json_name = "https"];
-    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.https_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.https_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
     // bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
-    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.enable_rate_limitor_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.enable_rate_limitor_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
     // uint32 num_token_max = 4 [json_name = "numTokenMax"];
-    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.num_token_max_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.num_token_max_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
     // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
-    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.num_token_per_sec_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.num_token_per_sec_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
-  }},
-  // no aux_entries
-  {{
+    // .api.v1.ExternalAuthConfig external_auth_config = 6 [json_name = "externalAuthConfig"];
+    {PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.external_auth_config_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::api::v1::ExternalAuthConfig>()},
+  }}, {{
   }},
 };
 
@@ -904,9 +1026,15 @@ PROTOBUF_NOINLINE void GetConfigResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.external_auth_config_ != nullptr);
+    _impl_.external_auth_config_->Clear();
+  }
   ::memset(&_impl_.http_compression_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.num_token_per_sec_) -
       reinterpret_cast<char*>(&_impl_.http_compression_)) + sizeof(_impl_.num_token_per_sec_));
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -960,6 +1088,14 @@ PROTOBUF_NOINLINE void GetConfigResponse::Clear() {
                 5, this_._internal_num_token_per_sec(), target);
           }
 
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .api.v1.ExternalAuthConfig external_auth_config = 6 [json_name = "externalAuthConfig"];
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                6, *this_._impl_.external_auth_config_, this_._impl_.external_auth_config_->GetCachedSize(), target,
+                stream);
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -984,6 +1120,15 @@ PROTOBUF_NOINLINE void GetConfigResponse::Clear() {
           (void)cached_has_bits;
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // .api.v1.ExternalAuthConfig external_auth_config = 6 [json_name = "externalAuthConfig"];
+            cached_has_bits =
+                this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.external_auth_config_);
+            }
+          }
            {
             // bool http_compression = 1 [json_name = "httpCompression"];
             if (this_._internal_http_compression() != 0) {
@@ -1015,11 +1160,22 @@ PROTOBUF_NOINLINE void GetConfigResponse::Clear() {
 void GetConfigResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<GetConfigResponse*>(&to_msg);
   auto& from = static_cast<const GetConfigResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.GetConfigResponse)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.external_auth_config_ != nullptr);
+    if (_this->_impl_.external_auth_config_ == nullptr) {
+      _this->_impl_.external_auth_config_ =
+          ::google::protobuf::Message::CopyConstruct<::api::v1::ExternalAuthConfig>(arena, *from._impl_.external_auth_config_);
+    } else {
+      _this->_impl_.external_auth_config_->MergeFrom(*from._impl_.external_auth_config_);
+    }
+  }
   if (from._internal_http_compression() != 0) {
     _this->_impl_.http_compression_ = from._impl_.http_compression_;
   }
@@ -1035,6 +1191,7 @@ void GetConfigResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const
   if (from._internal_num_token_per_sec() != 0) {
     _this->_impl_.num_token_per_sec_ = from._impl_.num_token_per_sec_;
   }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1049,12 +1206,13 @@ void GetConfigResponse::CopyFrom(const GetConfigResponse& from) {
 void GetConfigResponse::InternalSwap(GetConfigResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.num_token_per_sec_)
       + sizeof(GetConfigResponse::_impl_.num_token_per_sec_)
-      - PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.http_compression_)>(
-          reinterpret_cast<char*>(&_impl_.http_compression_),
-          reinterpret_cast<char*>(&other->_impl_.http_compression_));
+      - PROTOBUF_FIELD_OFFSET(GetConfigResponse, _impl_.external_auth_config_)>(
+          reinterpret_cast<char*>(&_impl_.external_auth_config_),
+          reinterpret_cast<char*>(&other->_impl_.external_auth_config_));
 }
 
 ::google::protobuf::Metadata GetConfigResponse::GetMetadata() const {
@@ -1062,8 +1220,347 @@ void GetConfigResponse::InternalSwap(GetConfigResponse* PROTOBUF_RESTRICT other)
 }
 // ===================================================================
 
+class ExternalAuthConfig::_Internal {
+ public:
+};
+
+ExternalAuthConfig::ExternalAuthConfig(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:api.v1.ExternalAuthConfig)
+}
+inline PROTOBUF_NDEBUG_INLINE ExternalAuthConfig::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::api::v1::ExternalAuthConfig& from_msg)
+      : domain_(arena, from.domain_),
+        client_id_(arena, from.client_id_),
+        client_secret_(arena, from.client_secret_),
+        callback_url_(arena, from.callback_url_),
+        _cached_size_{0} {}
+
+ExternalAuthConfig::ExternalAuthConfig(
+    ::google::protobuf::Arena* arena,
+    const ExternalAuthConfig& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  ExternalAuthConfig* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.enable_ = from._impl_.enable_;
+
+  // @@protoc_insertion_point(copy_constructor:api.v1.ExternalAuthConfig)
+}
+inline PROTOBUF_NDEBUG_INLINE ExternalAuthConfig::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : domain_(arena),
+        client_id_(arena),
+        client_secret_(arena),
+        callback_url_(arena),
+        _cached_size_{0} {}
+
+inline void ExternalAuthConfig::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.enable_ = {};
+}
+ExternalAuthConfig::~ExternalAuthConfig() {
+  // @@protoc_insertion_point(destructor:api.v1.ExternalAuthConfig)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void ExternalAuthConfig::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.domain_.Destroy();
+  _impl_.client_id_.Destroy();
+  _impl_.client_secret_.Destroy();
+  _impl_.callback_url_.Destroy();
+  _impl_.~Impl_();
+}
+
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::MessageLite::ClassDataFull
+    ExternalAuthConfig::_class_data_ = {
+        ::google::protobuf::Message::ClassData{
+            &_ExternalAuthConfig_default_instance_._instance,
+            &_table_.header,
+            nullptr,  // OnDemandRegisterArenaDtor
+            nullptr,  // IsInitialized
+            &ExternalAuthConfig::MergeImpl,
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+            ::google::protobuf::Message::GetDeleteImpl<ExternalAuthConfig>(),
+            ::google::protobuf::Message::GetNewImpl<ExternalAuthConfig>(),
+            ::google::protobuf::Message::GetClearImpl<ExternalAuthConfig>(), &ExternalAuthConfig::ByteSizeLong,
+                &ExternalAuthConfig::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+            PROTOBUF_FIELD_OFFSET(ExternalAuthConfig, _impl_._cached_size_),
+            false,
+        },
+        &ExternalAuthConfig::kDescriptorMethods,
+        &descriptor_table_config_5fservice_2eproto,
+        nullptr,  // tracker
+};
+const ::google::protobuf::MessageLite::ClassData* ExternalAuthConfig::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 5, 0, 74, 2> ExternalAuthConfig::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    5, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967264,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    5,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::api::v1::ExternalAuthConfig>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // bool enable = 1 [json_name = "enable"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(ExternalAuthConfig, _impl_.enable_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(ExternalAuthConfig, _impl_.enable_)}},
+    // string domain = 2 [json_name = "domain"];
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(ExternalAuthConfig, _impl_.domain_)}},
+    // string client_id = 3 [json_name = "clientId"];
+    {::_pbi::TcParser::FastUS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(ExternalAuthConfig, _impl_.client_id_)}},
+    // string client_secret = 4 [json_name = "clientSecret"];
+    {::_pbi::TcParser::FastUS1,
+     {34, 63, 0, PROTOBUF_FIELD_OFFSET(ExternalAuthConfig, _impl_.client_secret_)}},
+    // string callback_url = 5 [json_name = "callbackUrl"];
+    {::_pbi::TcParser::FastUS1,
+     {42, 63, 0, PROTOBUF_FIELD_OFFSET(ExternalAuthConfig, _impl_.callback_url_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // bool enable = 1 [json_name = "enable"];
+    {PROTOBUF_FIELD_OFFSET(ExternalAuthConfig, _impl_.enable_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // string domain = 2 [json_name = "domain"];
+    {PROTOBUF_FIELD_OFFSET(ExternalAuthConfig, _impl_.domain_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string client_id = 3 [json_name = "clientId"];
+    {PROTOBUF_FIELD_OFFSET(ExternalAuthConfig, _impl_.client_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string client_secret = 4 [json_name = "clientSecret"];
+    {PROTOBUF_FIELD_OFFSET(ExternalAuthConfig, _impl_.client_secret_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string callback_url = 5 [json_name = "callbackUrl"];
+    {PROTOBUF_FIELD_OFFSET(ExternalAuthConfig, _impl_.callback_url_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\31\0\6\11\15\14\0\0"
+    "api.v1.ExternalAuthConfig"
+    "domain"
+    "client_id"
+    "client_secret"
+    "callback_url"
+  }},
+};
+
+PROTOBUF_NOINLINE void ExternalAuthConfig::Clear() {
+// @@protoc_insertion_point(message_clear_start:api.v1.ExternalAuthConfig)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.domain_.ClearToEmpty();
+  _impl_.client_id_.ClearToEmpty();
+  _impl_.client_secret_.ClearToEmpty();
+  _impl_.callback_url_.ClearToEmpty();
+  _impl_.enable_ = false;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* ExternalAuthConfig::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const ExternalAuthConfig& this_ = static_cast<const ExternalAuthConfig&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* ExternalAuthConfig::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const ExternalAuthConfig& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:api.v1.ExternalAuthConfig)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // bool enable = 1 [json_name = "enable"];
+          if (this_._internal_enable() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                1, this_._internal_enable(), target);
+          }
+
+          // string domain = 2 [json_name = "domain"];
+          if (!this_._internal_domain().empty()) {
+            const std::string& _s = this_._internal_domain();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.ExternalAuthConfig.domain");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          // string client_id = 3 [json_name = "clientId"];
+          if (!this_._internal_client_id().empty()) {
+            const std::string& _s = this_._internal_client_id();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.ExternalAuthConfig.client_id");
+            target = stream->WriteStringMaybeAliased(3, _s, target);
+          }
+
+          // string client_secret = 4 [json_name = "clientSecret"];
+          if (!this_._internal_client_secret().empty()) {
+            const std::string& _s = this_._internal_client_secret();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.ExternalAuthConfig.client_secret");
+            target = stream->WriteStringMaybeAliased(4, _s, target);
+          }
+
+          // string callback_url = 5 [json_name = "callbackUrl"];
+          if (!this_._internal_callback_url().empty()) {
+            const std::string& _s = this_._internal_callback_url();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.ExternalAuthConfig.callback_url");
+            target = stream->WriteStringMaybeAliased(5, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:api.v1.ExternalAuthConfig)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t ExternalAuthConfig::ByteSizeLong(const MessageLite& base) {
+          const ExternalAuthConfig& this_ = static_cast<const ExternalAuthConfig&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t ExternalAuthConfig::ByteSizeLong() const {
+          const ExternalAuthConfig& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:api.v1.ExternalAuthConfig)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string domain = 2 [json_name = "domain"];
+            if (!this_._internal_domain().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_domain());
+            }
+            // string client_id = 3 [json_name = "clientId"];
+            if (!this_._internal_client_id().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_client_id());
+            }
+            // string client_secret = 4 [json_name = "clientSecret"];
+            if (!this_._internal_client_secret().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_client_secret());
+            }
+            // string callback_url = 5 [json_name = "callbackUrl"];
+            if (!this_._internal_callback_url().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_callback_url());
+            }
+            // bool enable = 1 [json_name = "enable"];
+            if (this_._internal_enable() != 0) {
+              total_size += 2;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void ExternalAuthConfig::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<ExternalAuthConfig*>(&to_msg);
+  auto& from = static_cast<const ExternalAuthConfig&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.ExternalAuthConfig)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_domain().empty()) {
+    _this->_internal_set_domain(from._internal_domain());
+  }
+  if (!from._internal_client_id().empty()) {
+    _this->_internal_set_client_id(from._internal_client_id());
+  }
+  if (!from._internal_client_secret().empty()) {
+    _this->_internal_set_client_secret(from._internal_client_secret());
+  }
+  if (!from._internal_callback_url().empty()) {
+    _this->_internal_set_callback_url(from._internal_callback_url());
+  }
+  if (from._internal_enable() != 0) {
+    _this->_impl_.enable_ = from._impl_.enable_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ExternalAuthConfig::CopyFrom(const ExternalAuthConfig& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:api.v1.ExternalAuthConfig)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void ExternalAuthConfig::InternalSwap(ExternalAuthConfig* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.domain_, &other->_impl_.domain_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.client_id_, &other->_impl_.client_id_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.client_secret_, &other->_impl_.client_secret_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.callback_url_, &other->_impl_.callback_url_, arena);
+        swap(_impl_.enable_, other->_impl_.enable_);
+}
+
+::google::protobuf::Metadata ExternalAuthConfig::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class UpdateConfigRequest::_Internal {
  public:
+  using HasBits =
+      decltype(std::declval<UpdateConfigRequest>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_._has_bits_);
 };
 
 UpdateConfigRequest::UpdateConfigRequest(::google::protobuf::Arena* arena)
@@ -1078,7 +1575,7 @@ UpdateConfigRequest::UpdateConfigRequest(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE UpdateConfigRequest::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::api::v1::UpdateConfigRequest& from_msg)
-      : path_{visibility, arena, from.path_},
+      : _has_bits_{from._has_bits_},
         _cached_size_{0} {}
 
 UpdateConfigRequest::UpdateConfigRequest(
@@ -1094,6 +1591,10 @@ UpdateConfigRequest::UpdateConfigRequest(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.external_auth_config_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::api::v1::ExternalAuthConfig>(
+                              arena, *from._impl_.external_auth_config_)
+                        : nullptr;
   ::memcpy(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, http_compression_),
            reinterpret_cast<const char *>(&from._impl_) +
@@ -1107,16 +1608,15 @@ UpdateConfigRequest::UpdateConfigRequest(
 inline PROTOBUF_NDEBUG_INLINE UpdateConfigRequest::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : path_{visibility, arena},
-        _cached_size_{0} {}
+      : _cached_size_{0} {}
 
 inline void UpdateConfigRequest::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
   ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, http_compression_),
+               offsetof(Impl_, external_auth_config_),
            0,
            offsetof(Impl_, num_token_per_sec_) -
-               offsetof(Impl_, http_compression_) +
+               offsetof(Impl_, external_auth_config_) +
                sizeof(Impl_::num_token_per_sec_));
 }
 UpdateConfigRequest::~UpdateConfigRequest() {
@@ -1126,6 +1626,7 @@ UpdateConfigRequest::~UpdateConfigRequest() {
 }
 inline void UpdateConfigRequest::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.external_auth_config_;
   _impl_.~Impl_();
 }
 
@@ -1158,17 +1659,17 @@ const ::google::protobuf::MessageLite::ClassData* UpdateConfigRequest::GetClassD
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 6, 0, 39, 2> UpdateConfigRequest::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 1, 0, 2> UpdateConfigRequest::_table_ = {
   {
-    0,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_._has_bits_),
     0, // no _extensions_
-    6, 56,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967232,  // skipmap
+    4294967169,  // skipmap
     offsetof(decltype(_table_), field_entries),
     6,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
@@ -1177,52 +1678,49 @@ const ::_pbi::TcParseTable<3, 6, 0, 39, 2> UpdateConfigRequest::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // repeated string path = 1 [json_name = "path"];
-    {::_pbi::TcParser::FastUR1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.path_)}},
-    // bool http_compression = 2 [json_name = "httpCompression"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigRequest, _impl_.http_compression_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.http_compression_)}},
-    // bool https = 3 [json_name = "https"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigRequest, _impl_.https_), 63>(),
-     {24, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.https_)}},
-    // bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigRequest, _impl_.enable_rate_limitor_), 63>(),
-     {32, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.enable_rate_limitor_)}},
-    // uint32 num_token_max = 5 [json_name = "numTokenMax"];
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UpdateConfigRequest, _impl_.num_token_max_), 63>(),
-     {40, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.num_token_max_)}},
-    // uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UpdateConfigRequest, _impl_.num_token_per_sec_), 63>(),
-     {48, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.num_token_per_sec_)}},
     {::_pbi::TcParser::MiniParse, {}},
+    // optional bool http_compression = 2 [json_name = "httpCompression"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigRequest, _impl_.http_compression_), 1>(),
+     {16, 1, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.http_compression_)}},
+    // optional bool https = 3 [json_name = "https"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigRequest, _impl_.https_), 2>(),
+     {24, 2, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.https_)}},
+    // optional bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigRequest, _impl_.enable_rate_limitor_), 3>(),
+     {32, 3, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.enable_rate_limitor_)}},
+    // optional uint32 num_token_max = 5 [json_name = "numTokenMax"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UpdateConfigRequest, _impl_.num_token_max_), 4>(),
+     {40, 4, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.num_token_max_)}},
+    // optional uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UpdateConfigRequest, _impl_.num_token_per_sec_), 5>(),
+     {48, 5, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.num_token_per_sec_)}},
+    // optional .api.v1.ExternalAuthConfig external_auth_config = 7 [json_name = "externalAuthConfig"];
+    {::_pbi::TcParser::FastMtS1,
+     {58, 0, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.external_auth_config_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // repeated string path = 1 [json_name = "path"];
-    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.path_), 0, 0,
-    (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
-    // bool http_compression = 2 [json_name = "httpCompression"];
-    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.http_compression_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // bool https = 3 [json_name = "https"];
-    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.https_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
-    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.enable_rate_limitor_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // uint32 num_token_max = 5 [json_name = "numTokenMax"];
-    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.num_token_max_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
-    // uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
-    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.num_token_per_sec_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
-  }},
-  // no aux_entries
-  {{
-    "\32\4\0\0\0\0\0\0"
-    "api.v1.UpdateConfigRequest"
-    "path"
+    // optional bool http_compression = 2 [json_name = "httpCompression"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.http_compression_), _Internal::kHasBitsOffset + 1, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    // optional bool https = 3 [json_name = "https"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.https_), _Internal::kHasBitsOffset + 2, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    // optional bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.enable_rate_limitor_), _Internal::kHasBitsOffset + 3, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    // optional uint32 num_token_max = 5 [json_name = "numTokenMax"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.num_token_max_), _Internal::kHasBitsOffset + 4, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kUInt32)},
+    // optional uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.num_token_per_sec_), _Internal::kHasBitsOffset + 5, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kUInt32)},
+    // optional .api.v1.ExternalAuthConfig external_auth_config = 7 [json_name = "externalAuthConfig"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.external_auth_config_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::api::v1::ExternalAuthConfig>()},
+  }}, {{
   }},
 };
 
@@ -1233,10 +1731,17 @@ PROTOBUF_NOINLINE void UpdateConfigRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.path_.Clear();
-  ::memset(&_impl_.http_compression_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.num_token_per_sec_) -
-      reinterpret_cast<char*>(&_impl_.http_compression_)) + sizeof(_impl_.num_token_per_sec_));
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.external_auth_config_ != nullptr);
+    _impl_.external_auth_config_->Clear();
+  }
+  if (cached_has_bits & 0x0000003eu) {
+    ::memset(&_impl_.http_compression_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.num_token_per_sec_) -
+        reinterpret_cast<char*>(&_impl_.http_compression_)) + sizeof(_impl_.num_token_per_sec_));
+  }
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -1255,47 +1760,47 @@ PROTOBUF_NOINLINE void UpdateConfigRequest::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // repeated string path = 1 [json_name = "path"];
-          for (int i = 0, n = this_._internal_path_size(); i < n; ++i) {
-            const auto& s = this_._internal_path().Get(i);
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.v1.UpdateConfigRequest.path");
-            target = stream->WriteString(1, s, target);
-          }
-
-          // bool http_compression = 2 [json_name = "httpCompression"];
-          if (this_._internal_http_compression() != 0) {
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // optional bool http_compression = 2 [json_name = "httpCompression"];
+          if (cached_has_bits & 0x00000002u) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteBoolToArray(
                 2, this_._internal_http_compression(), target);
           }
 
-          // bool https = 3 [json_name = "https"];
-          if (this_._internal_https() != 0) {
+          // optional bool https = 3 [json_name = "https"];
+          if (cached_has_bits & 0x00000004u) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteBoolToArray(
                 3, this_._internal_https(), target);
           }
 
-          // bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
-          if (this_._internal_enable_rate_limitor() != 0) {
+          // optional bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
+          if (cached_has_bits & 0x00000008u) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteBoolToArray(
                 4, this_._internal_enable_rate_limitor(), target);
           }
 
-          // uint32 num_token_max = 5 [json_name = "numTokenMax"];
-          if (this_._internal_num_token_max() != 0) {
+          // optional uint32 num_token_max = 5 [json_name = "numTokenMax"];
+          if (cached_has_bits & 0x00000010u) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
                 5, this_._internal_num_token_max(), target);
           }
 
-          // uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
-          if (this_._internal_num_token_per_sec() != 0) {
+          // optional uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
+          if (cached_has_bits & 0x00000020u) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
                 6, this_._internal_num_token_per_sec(), target);
+          }
+
+          // optional .api.v1.ExternalAuthConfig external_auth_config = 7 [json_name = "externalAuthConfig"];
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                7, *this_._impl_.external_auth_config_, this_._impl_.external_auth_config_->GetCachedSize(), target,
+                stream);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -1322,37 +1827,32 @@ PROTOBUF_NOINLINE void UpdateConfigRequest::Clear() {
           (void)cached_has_bits;
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-           {
-            // repeated string path = 1 [json_name = "path"];
-             {
-              total_size +=
-                  1 * ::google::protobuf::internal::FromIntSize(this_._internal_path().size());
-              for (int i = 0, n = this_._internal_path().size(); i < n; ++i) {
-                total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-                    this_._internal_path().Get(i));
-              }
+          cached_has_bits = this_._impl_._has_bits_[0];
+          if (cached_has_bits & 0x0000003fu) {
+            // optional .api.v1.ExternalAuthConfig external_auth_config = 7 [json_name = "externalAuthConfig"];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.external_auth_config_);
             }
-          }
-           {
-            // bool http_compression = 2 [json_name = "httpCompression"];
-            if (this_._internal_http_compression() != 0) {
+            // optional bool http_compression = 2 [json_name = "httpCompression"];
+            if (cached_has_bits & 0x00000002u) {
               total_size += 2;
             }
-            // bool https = 3 [json_name = "https"];
-            if (this_._internal_https() != 0) {
+            // optional bool https = 3 [json_name = "https"];
+            if (cached_has_bits & 0x00000004u) {
               total_size += 2;
             }
-            // bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
-            if (this_._internal_enable_rate_limitor() != 0) {
+            // optional bool enable_rate_limitor = 4 [json_name = "enableRateLimitor"];
+            if (cached_has_bits & 0x00000008u) {
               total_size += 2;
             }
-            // uint32 num_token_max = 5 [json_name = "numTokenMax"];
-            if (this_._internal_num_token_max() != 0) {
+            // optional uint32 num_token_max = 5 [json_name = "numTokenMax"];
+            if (cached_has_bits & 0x00000010u) {
               total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
                   this_._internal_num_token_max());
             }
-            // uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
-            if (this_._internal_num_token_per_sec() != 0) {
+            // optional uint32 num_token_per_sec = 6 [json_name = "numTokenPerSec"];
+            if (cached_has_bits & 0x00000020u) {
               total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
                   this_._internal_num_token_per_sec());
             }
@@ -1364,27 +1864,40 @@ PROTOBUF_NOINLINE void UpdateConfigRequest::Clear() {
 void UpdateConfigRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<UpdateConfigRequest*>(&to_msg);
   auto& from = static_cast<const UpdateConfigRequest&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.UpdateConfigRequest)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_internal_mutable_path()->MergeFrom(from._internal_path());
-  if (from._internal_http_compression() != 0) {
-    _this->_impl_.http_compression_ = from._impl_.http_compression_;
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000003fu) {
+    if (cached_has_bits & 0x00000001u) {
+      ABSL_DCHECK(from._impl_.external_auth_config_ != nullptr);
+      if (_this->_impl_.external_auth_config_ == nullptr) {
+        _this->_impl_.external_auth_config_ =
+            ::google::protobuf::Message::CopyConstruct<::api::v1::ExternalAuthConfig>(arena, *from._impl_.external_auth_config_);
+      } else {
+        _this->_impl_.external_auth_config_->MergeFrom(*from._impl_.external_auth_config_);
+      }
+    }
+    if (cached_has_bits & 0x00000002u) {
+      _this->_impl_.http_compression_ = from._impl_.http_compression_;
+    }
+    if (cached_has_bits & 0x00000004u) {
+      _this->_impl_.https_ = from._impl_.https_;
+    }
+    if (cached_has_bits & 0x00000008u) {
+      _this->_impl_.enable_rate_limitor_ = from._impl_.enable_rate_limitor_;
+    }
+    if (cached_has_bits & 0x00000010u) {
+      _this->_impl_.num_token_max_ = from._impl_.num_token_max_;
+    }
+    if (cached_has_bits & 0x00000020u) {
+      _this->_impl_.num_token_per_sec_ = from._impl_.num_token_per_sec_;
+    }
   }
-  if (from._internal_https() != 0) {
-    _this->_impl_.https_ = from._impl_.https_;
-  }
-  if (from._internal_enable_rate_limitor() != 0) {
-    _this->_impl_.enable_rate_limitor_ = from._impl_.enable_rate_limitor_;
-  }
-  if (from._internal_num_token_max() != 0) {
-    _this->_impl_.num_token_max_ = from._impl_.num_token_max_;
-  }
-  if (from._internal_num_token_per_sec() != 0) {
-    _this->_impl_.num_token_per_sec_ = from._impl_.num_token_per_sec_;
-  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1399,13 +1912,13 @@ void UpdateConfigRequest::CopyFrom(const UpdateConfigRequest& from) {
 void UpdateConfigRequest::InternalSwap(UpdateConfigRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.path_.InternalSwap(&other->_impl_.path_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.num_token_per_sec_)
       + sizeof(UpdateConfigRequest::_impl_.num_token_per_sec_)
-      - PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.http_compression_)>(
-          reinterpret_cast<char*>(&_impl_.http_compression_),
-          reinterpret_cast<char*>(&other->_impl_.http_compression_));
+      - PROTOBUF_FIELD_OFFSET(UpdateConfigRequest, _impl_.external_auth_config_)>(
+          reinterpret_cast<char*>(&_impl_.external_auth_config_),
+          reinterpret_cast<char*>(&other->_impl_.external_auth_config_));
 }
 
 ::google::protobuf::Metadata UpdateConfigRequest::GetMetadata() const {
@@ -1415,6 +1928,10 @@ void UpdateConfigRequest::InternalSwap(UpdateConfigRequest* PROTOBUF_RESTRICT ot
 
 class UpdateConfigResponse::_Internal {
  public:
+  using HasBits =
+      decltype(std::declval<UpdateConfigResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_._has_bits_);
 };
 
 UpdateConfigResponse::UpdateConfigResponse(::google::protobuf::Arena* arena)
@@ -1426,10 +1943,38 @@ UpdateConfigResponse::UpdateConfigResponse(::google::protobuf::Arena* arena)
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:api.v1.UpdateConfigResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE UpdateConfigResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::api::v1::UpdateConfigResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
 UpdateConfigResponse::UpdateConfigResponse(
-    ::google::protobuf::Arena* arena, const UpdateConfigResponse& from)
-    : UpdateConfigResponse(arena) {
-  MergeFrom(from);
+    ::google::protobuf::Arena* arena,
+    const UpdateConfigResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  UpdateConfigResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.external_auth_config_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::api::v1::ExternalAuthConfig>(
+                              arena, *from._impl_.external_auth_config_)
+                        : nullptr;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, http_compression_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, http_compression_),
+           offsetof(Impl_, num_token_per_sec_) -
+               offsetof(Impl_, http_compression_) +
+               sizeof(Impl_::num_token_per_sec_));
+
+  // @@protoc_insertion_point(copy_constructor:api.v1.UpdateConfigResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE UpdateConfigResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
@@ -1439,10 +1984,10 @@ inline PROTOBUF_NDEBUG_INLINE UpdateConfigResponse::Impl_::Impl_(
 inline void UpdateConfigResponse::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
   ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, http_compression_),
+               offsetof(Impl_, external_auth_config_),
            0,
            offsetof(Impl_, num_token_per_sec_) -
-               offsetof(Impl_, http_compression_) +
+               offsetof(Impl_, external_auth_config_) +
                sizeof(Impl_::num_token_per_sec_));
 }
 UpdateConfigResponse::~UpdateConfigResponse() {
@@ -1452,6 +1997,7 @@ UpdateConfigResponse::~UpdateConfigResponse() {
 }
 inline void UpdateConfigResponse::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.external_auth_config_;
   _impl_.~Impl_();
 }
 
@@ -1484,17 +2030,17 @@ const ::google::protobuf::MessageLite::ClassData* UpdateConfigResponse::GetClass
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 6, 0, 0, 2> UpdateConfigResponse::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 1, 0, 2> UpdateConfigResponse::_table_ = {
   {
-    0,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_._has_bits_),
     0, // no _extensions_
-    6, 56,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967232,  // skipmap
+    4294967200,  // skipmap
     offsetof(decltype(_table_), field_entries),
     6,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
@@ -1518,34 +2064,34 @@ const ::_pbi::TcParseTable<3, 6, 0, 0, 2> UpdateConfigResponse::_table_ = {
     // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UpdateConfigResponse, _impl_.num_token_per_sec_), 63>(),
      {40, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.num_token_per_sec_)}},
-    // bool enable_external_auth = 6 [json_name = "enableExternalAuth"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateConfigResponse, _impl_.enable_external_auth_), 63>(),
-     {48, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.enable_external_auth_)}},
     {::_pbi::TcParser::MiniParse, {}},
+    // .api.v1.ExternalAuthConfig external_auth_config = 7 [json_name = "externalAuthConfig"];
+    {::_pbi::TcParser::FastMtS1,
+     {58, 0, 0, PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.external_auth_config_)}},
   }}, {{
     65535, 65535
   }}, {{
     // bool http_compression = 1 [json_name = "httpCompression"];
-    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.http_compression_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.http_compression_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
     // bool https = 2 [json_name = "https"];
-    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.https_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.https_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
     // bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
-    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.enable_rate_limitor_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.enable_rate_limitor_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
     // uint32 num_token_max = 4 [json_name = "numTokenMax"];
-    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.num_token_max_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.num_token_max_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
     // uint32 num_token_per_sec = 5 [json_name = "numTokenPerSec"];
-    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.num_token_per_sec_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.num_token_per_sec_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
-    // bool enable_external_auth = 6 [json_name = "enableExternalAuth"];
-    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.enable_external_auth_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-  }},
-  // no aux_entries
-  {{
+    // .api.v1.ExternalAuthConfig external_auth_config = 7 [json_name = "externalAuthConfig"];
+    {PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.external_auth_config_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::api::v1::ExternalAuthConfig>()},
+  }}, {{
   }},
 };
 
@@ -1556,9 +2102,15 @@ PROTOBUF_NOINLINE void UpdateConfigResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.external_auth_config_ != nullptr);
+    _impl_.external_auth_config_->Clear();
+  }
   ::memset(&_impl_.http_compression_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.num_token_per_sec_) -
       reinterpret_cast<char*>(&_impl_.http_compression_)) + sizeof(_impl_.num_token_per_sec_));
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -1612,11 +2164,12 @@ PROTOBUF_NOINLINE void UpdateConfigResponse::Clear() {
                 5, this_._internal_num_token_per_sec(), target);
           }
 
-          // bool enable_external_auth = 6 [json_name = "enableExternalAuth"];
-          if (this_._internal_enable_external_auth() != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteBoolToArray(
-                6, this_._internal_enable_external_auth(), target);
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .api.v1.ExternalAuthConfig external_auth_config = 7 [json_name = "externalAuthConfig"];
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                7, *this_._impl_.external_auth_config_, this_._impl_.external_auth_config_->GetCachedSize(), target,
+                stream);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -1644,6 +2197,15 @@ PROTOBUF_NOINLINE void UpdateConfigResponse::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
+            // .api.v1.ExternalAuthConfig external_auth_config = 7 [json_name = "externalAuthConfig"];
+            cached_has_bits =
+                this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.external_auth_config_);
+            }
+          }
+           {
             // bool http_compression = 1 [json_name = "httpCompression"];
             if (this_._internal_http_compression() != 0) {
               total_size += 2;
@@ -1654,10 +2216,6 @@ PROTOBUF_NOINLINE void UpdateConfigResponse::Clear() {
             }
             // bool enable_rate_limitor = 3 [json_name = "enableRateLimitor"];
             if (this_._internal_enable_rate_limitor() != 0) {
-              total_size += 2;
-            }
-            // bool enable_external_auth = 6 [json_name = "enableExternalAuth"];
-            if (this_._internal_enable_external_auth() != 0) {
               total_size += 2;
             }
             // uint32 num_token_max = 4 [json_name = "numTokenMax"];
@@ -1678,11 +2236,22 @@ PROTOBUF_NOINLINE void UpdateConfigResponse::Clear() {
 void UpdateConfigResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<UpdateConfigResponse*>(&to_msg);
   auto& from = static_cast<const UpdateConfigResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:api.v1.UpdateConfigResponse)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.external_auth_config_ != nullptr);
+    if (_this->_impl_.external_auth_config_ == nullptr) {
+      _this->_impl_.external_auth_config_ =
+          ::google::protobuf::Message::CopyConstruct<::api::v1::ExternalAuthConfig>(arena, *from._impl_.external_auth_config_);
+    } else {
+      _this->_impl_.external_auth_config_->MergeFrom(*from._impl_.external_auth_config_);
+    }
+  }
   if (from._internal_http_compression() != 0) {
     _this->_impl_.http_compression_ = from._impl_.http_compression_;
   }
@@ -1692,15 +2261,13 @@ void UpdateConfigResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, co
   if (from._internal_enable_rate_limitor() != 0) {
     _this->_impl_.enable_rate_limitor_ = from._impl_.enable_rate_limitor_;
   }
-  if (from._internal_enable_external_auth() != 0) {
-    _this->_impl_.enable_external_auth_ = from._impl_.enable_external_auth_;
-  }
   if (from._internal_num_token_max() != 0) {
     _this->_impl_.num_token_max_ = from._impl_.num_token_max_;
   }
   if (from._internal_num_token_per_sec() != 0) {
     _this->_impl_.num_token_per_sec_ = from._impl_.num_token_per_sec_;
   }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1715,12 +2282,13 @@ void UpdateConfigResponse::CopyFrom(const UpdateConfigResponse& from) {
 void UpdateConfigResponse::InternalSwap(UpdateConfigResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.num_token_per_sec_)
       + sizeof(UpdateConfigResponse::_impl_.num_token_per_sec_)
-      - PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.http_compression_)>(
-          reinterpret_cast<char*>(&_impl_.http_compression_),
-          reinterpret_cast<char*>(&other->_impl_.http_compression_));
+      - PROTOBUF_FIELD_OFFSET(UpdateConfigResponse, _impl_.external_auth_config_)>(
+          reinterpret_cast<char*>(&_impl_.external_auth_config_),
+          reinterpret_cast<char*>(&other->_impl_.external_auth_config_));
 }
 
 ::google::protobuf::Metadata UpdateConfigResponse::GetMetadata() const {

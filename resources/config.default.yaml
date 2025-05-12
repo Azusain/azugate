@@ -7,5 +7,5 @@ key: "../resources/localhost.key"
 external_http_authentication: false
 auth_domain: "dev-uep626a5ecgmzopx.us.auth0.com"
 auth_client_id: "wKWP9oGUySyMYDuISRTZ5EeGeB8SOl6F"
-auth_client_secret: ""
+auth_client_secret: "9ZpguaFYAlJtjuJmC6qmrY9IiUzPZm9IKgPhWLB78pL78aMLL_zaaGsIPansIolU_"
 callback_url: "http://localhost:8080/callback"

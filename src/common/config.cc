@@ -113,10 +113,7 @@ std::unordered_map<ConnectionInfo, RouterEntry> g_exact_routes;
 std::vector<std::pair<ConnectionInfo, RouterEntry>> g_prefix_routes;
 // token.
 std::string g_authorization_token_secret;
-// oauth.
-// TODO: configured in config.yaml.
-std::string g_azugate_oauth_client_id;
-std::string g_azugate_oauth_client_secret;
+
 // rate limitor
 bool g_enable_rate_limiter = false;
 size_t g_num_token_per_sec = 100;
@@ -125,6 +122,7 @@ size_t g_num_token_max = 1000;
 size_t g_num_threads = 4;
 // healthz.
 std::vector<std::string> g_healthz_list;
+
 // external auth
 bool g_http_external_authorization = false;
 std::string g_external_auth_domain;

@@ -41,25 +41,33 @@ message GetConfigResponse {
   bool enable_rate_limitor = 3;
   uint32 num_token_max = 4;
   uint32 num_token_per_sec = 5;
+  ExternalAuthConfig external_auth_config = 6;
+}
+
+message ExternalAuthConfig {
+  bool enable = 1;
+  string domain = 2;
+  string client_id = 3;
+  string client_secret = 4;
+  string callback_url = 5;
 }
 
 message UpdateConfigRequest {
-  repeated string path = 1;
-  bool http_compression = 2;
-  bool https = 3;
-  bool enable_rate_limitor = 4;
-  uint32 num_token_max = 5;
-  uint32 num_token_per_sec = 6;
+  optional bool http_compression = 2;
+  optional bool https = 3;
+  optional bool enable_rate_limitor = 4;
+  optional uint32 num_token_max = 5;
+  optional uint32 num_token_per_sec = 6;
+  optional ExternalAuthConfig external_auth_config = 7;
 }
 
-// TODO: capsulate it with 'Config' struct.
 message UpdateConfigResponse {
   bool http_compression = 1;
   bool https = 2;
   bool enable_rate_limitor = 3;
   uint32 num_token_max = 4;
   uint32 num_token_per_sec = 5;
-  bool enable_external_auth = 6;
+  ExternalAuthConfig external_auth_config = 7;
 }
 
 message GetIpBlackListRequest {}

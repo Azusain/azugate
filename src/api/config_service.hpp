@@ -30,6 +30,12 @@ public:
     auto [num_token_max, num_token_per_sec] = azugate::GetRateLimitorConfig();
     response->set_num_token_max(num_token_max);
     response->set_num_token_per_sec(num_token_per_sec);
+    auto auth_config = response->mutable_external_auth_config();
+    auth_config->set_enable(azugate::g_http_external_authorization);
+    auth_config->set_callback_url(azugate::g_external_auth_callback_url);
+    auth_config->set_domain(azugate::g_external_auth_domain);
+    auth_config->set_client_id(azugate::g_external_auth_client_id);
+    auth_config->set_client_secret(azugate::g_external_auth_client_secret);
     return grpc::Status::OK;
   }
 
@@ -47,22 +53,31 @@ public:
   UpdateConfig(grpc::ServerContext *context,
                const api::v1::UpdateConfigRequest *request,
                api::v1::UpdateConfigResponse *response) override {
-    for (auto &path : request->path()) {
-      if (!path.compare("http_compression")) {
-        azugate::SetHttpCompression(request->http_compression());
-      }
-      if (!path.compare("https")) {
-        azugate::SetHttps(request->https());
-      }
-      if (!path.compare("enable_rate_limitor")) {
-        azugate::SetEnableRateLimitor(request->enable_rate_limitor());
-      }
-      if (!path.compare("num_token_per_sec")) {
-        azugate::ConfigRateLimitor(0, request->num_token_per_sec());
-      }
-      if (!path.compare("num_token_max")) {
-        azugate::ConfigRateLimitor(request->num_token_max(), 0);
-      }
+    bool set_auth = false;
+
+    if (request->has_http_compression()) {
+      azugate::SetHttpCompression(request->http_compression());
+    }
+    if (request->has_https()) {
+      azugate::SetHttps(request->https());
+    }
+    if (request->has_enable_rate_limitor()) {
+      azugate::SetEnableRateLimitor(request->enable_rate_limitor());
+    }
+    if (request->has_enable_rate_limitor()) {
+      azugate::ConfigRateLimitor(0, request->num_token_per_sec());
+    }
+    if (request->has_num_token_max()) {
+      azugate::ConfigRateLimitor(request->num_token_max(), 0);
+    }
+    if (request->has_external_auth_config()) {
+      // TODO: concurrency problem.
+      auto &config = request->external_auth_config();
+      azugate::g_http_external_authorization = config.enable();
+      azugate::g_external_auth_domain = config.domain();
+      azugate::g_external_auth_client_id = config.client_id();
+      azugate::g_external_auth_client_secret = config.client_secret();
+      azugate::g_external_auth_callback_url = config.callback_url();
     }
     response->set_http_compression(azugate::GetHttpCompression());
     response->set_https(azugate::GetHttps());
@@ -70,8 +85,12 @@ public:
     auto [num_token_max, num_token_per_sec] = azugate::GetRateLimitorConfig();
     response->set_num_token_max(num_token_max);
     response->set_num_token_per_sec(num_token_per_sec);
-    // TODO: remove this.
-    response->set_enable_external_auth(true);
+    auto auth_config = response->mutable_external_auth_config();
+    auth_config->set_enable(azugate::g_http_external_authorization);
+    auth_config->set_callback_url(azugate::g_external_auth_callback_url);
+    auth_config->set_domain(azugate::g_external_auth_domain);
+    auth_config->set_client_id(azugate::g_external_auth_client_id);
+    auth_config->set_client_secret(azugate::g_external_auth_client_secret);
     return grpc::Status::OK;
   }
 

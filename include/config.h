@@ -59,9 +59,7 @@ extern std::mutex g_config_mutex;
 extern bool g_http_external_authorization;
 // used for generating and verifying tokens.
 extern std::string g_authorization_token_secret;
-// oauth.
-extern std::string g_azugate_oauth_client_id;
-extern std::string g_azugate_oauth_client_secret;
+
 // rate limitor.
 extern bool g_enable_rate_limiter;
 extern size_t g_num_token_per_sec;
@@ -70,7 +68,7 @@ extern size_t g_num_token_max;
 // io
 extern size_t g_num_threads;
 
-// TODO: auth (temp).
+// exteranl auth.
 extern std::string g_external_auth_domain;
 extern std::string g_external_auth_client_id;
 extern std::string g_external_auth_client_secret;
