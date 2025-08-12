@@ -10,6 +10,9 @@
 #include <optional>
 #include <spdlog/spdlog.h>
 #include <string>
+#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
+#include <signal.h>
+#endif
 
 #include <string_view>
 #include <unordered_map>
@@ -57,12 +60,13 @@ void InitLogger() {
 }
 
 void IgnoreSignalPipe() {
-#if defined(__linux__)
-  // ignore SIGPIPE.
+#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
+  // ignore SIGPIPE on Unix-like systems.
   struct sigaction sa{};
   sa.sa_handler = SIG_IGN;
   sigaction(SIGPIPE, &sa, nullptr);
 #endif
+  // On Windows, SIGPIPE doesn't exist, so nothing to do
 }
 
 // router.
@@ -285,22 +289,22 @@ bool LoadServerConfig(const std::string &path_config_file) {
     // parse and load configuration.
     auto config = YAML::LoadFile(path_config_file);
     // listening port.
-    g_azugate_port = config[kYamlFieldPort].as<uint16_t>();
-    g_azugate_admin_port = config[kYamlFieldAdminPort].as<uint16_t>();
+    g_azugate_port = config[std::string(kYamlFieldPort)].as<uint16_t>();
+    g_azugate_admin_port = config[std::string(kYamlFieldAdminPort)].as<uint16_t>();
     // SSL certificates.
-    g_ssl_crt = config[kYamlFieldCrt].as<std::string>();
-    g_ssl_key = config[kYamlFieldKey].as<std::string>();
+    g_ssl_crt = config[std::string(kYamlFieldCrt)].as<std::string>();
+    g_ssl_key = config[std::string(kYamlFieldKey)].as<std::string>();
     // external auth.
     g_http_external_authorization =
-        config[kYamlFieldExternalHTTPAuthentication].as<bool>();
+        config[std::string(kYamlFieldExternalHTTPAuthentication)].as<bool>();
     g_external_auth_domain =
-        config[kYamlFieldExternalAuthDomain].as<std::string>();
+        config[std::string(kYamlFieldExternalAuthDomain)].as<std::string>();
     g_external_auth_client_id =
-        config[kYamlFieldExternalAuthClientID].as<std::string>();
+        config[std::string(kYamlFieldExternalAuthClientID)].as<std::string>();
     g_external_auth_client_secret =
-        config[kYamlFieldExternalAuthClientSecret].as<std::string>();
+        config[std::string(kYamlFieldExternalAuthClientSecret)].as<std::string>();
     g_external_auth_callback_url =
-        config[kYamlFieldExternalAuthCallbackUrl].as<std::string>();
+        config[std::string(kYamlFieldExternalAuthCallbackUrl)].as<std::string>();
   } catch (...) {
     return false;
   }

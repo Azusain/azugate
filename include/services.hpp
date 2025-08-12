@@ -54,8 +54,13 @@
 #include <system_error>
 #include <utility>
 #include <vector>
-#if defined(__linux__)
+#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
 #include <sys/sendfile.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <errno.h>
+#include <cstring>
 #endif
 
 using namespace azugate;

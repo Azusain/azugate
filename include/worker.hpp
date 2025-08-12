@@ -10,12 +10,16 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/system/error_code.hpp>
+#include <thread>
+#include <chrono>
+#ifdef ENABLE_GRPC_WORKER
 #include <grpcpp/create_channel.h>
 #include <grpcpp/ext/proto_server_reflection_plugin.h>
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/security/server_credentials.h>
 #include <grpcpp/server.h>
 #include <grpcpp/server_builder.h>
+#endif
 #include <spdlog/spdlog.h>
 
 namespace azugate {
@@ -104,7 +108,8 @@ inline void StartHealthCheckWorker(
 
 // gRPC Worker.
 inline void StartGrpcWorker() {
-  // grpc server worker thread.
+#ifdef ENABLE_GRPC_WORKER
+  // gRPC server worker thread.
   std::thread grpc_server_thread([&]() {
     grpc::ServerBuilder server_builder;
     // TODO: The server should listen only on the local address by default.
@@ -119,6 +124,9 @@ inline void StartGrpcWorker() {
     server->Wait();
   });
   grpc_server_thread.detach();
+#else
+  SPDLOG_WARN("gRPC worker is disabled in this build");
+#endif
 }
 
 } // namespace azugate

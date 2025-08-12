@@ -3,9 +3,16 @@
 #include <fmt/format.h>
 #include <fstream>
 #include <iostream>
+#include <vector>
+
+#ifdef _WIN32
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#define MSG_DONTWAIT 0
+#else
 #include <sys/socket.h>
 #include <unistd.h>
-#include <vector>
+#endif
 
 #include "crequest.h"
 #include "http_parser.h"

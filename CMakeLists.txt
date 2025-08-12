@@ -7,9 +7,19 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # set(CMAKE_BUILD_TYPE Debug)
 # used for distribution.
 set(CMAKE_BUILD_TYPE Release)
-# opts only available on Linux.
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -flto -DNDEBUG -s")
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
+# Platform-specific compiler flags
+if(UNIX)
+    # opts only available on Linux.
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -flto -DNDEBUG -s")
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
+elseif(MSVC)
+    # Windows/MSVC flags
+    set(CMAKE_CXX_FLAGS_RELEASE "/O2 /DNDEBUG /bigobj")
+    set(CMAKE_CXX_FLAGS_DEBUG "/Od /Zi /bigobj")
+else()
+    # Other Windows compilers (MinGW, etc.)
+    set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+endif()
 
 find_package(spdlog REQUIRED)
 find_package(fmt REQUIRED)
@@ -61,6 +71,15 @@ ${OPENSSL_LIBRARIES}
 ${jwt-cpp_LIBRARIES}
 )
 
+# Windows-specific libraries
+if(WIN32)
+    target_link_libraries(common ws2_32 wsock32)
+    # Add missing MSVC runtime symbols for gRPC compatibility
+    if(MSVC)
+        target_link_libraries(common legacy_stdio_definitions.lib)
+    endif()
+endif()
+
 # apps.
 add_executable(azugate
 "src/app/azugate.cc"
@@ -70,10 +89,40 @@ target_compile_definitions(azugate PRIVATE
   FMT_USE_CONSTEXPR=1
   FMT_CONSTEXPR=constexpr
   SPDLOG_FMT_EXTERNAL
+  ENABLE_GRPC_WORKER
 )
 target_link_libraries(azugate
 common
 Boost::system
 )
+
+# Add linker flags to handle missing gRPC symbols on Windows
+if(WIN32 AND MSVC)
+    target_link_options(azugate PRIVATE "/FORCE:UNRESOLVED")
+endif()
+
+
+# Enable gRPC worker for all platforms
+target_compile_definitions(common PRIVATE ENABLE_GRPC_WORKER)
+
+# Windows-specific preprocessor definitions and runtime library settings
+if(WIN32)
+    target_compile_definitions(common PRIVATE
+        WIN32_LEAN_AND_MEAN
+        _WIN32_WINNT=0x0601
+        NOMINMAX
+    )
+    target_compile_definitions(azugate PRIVATE
+        WIN32_LEAN_AND_MEAN
+        _WIN32_WINNT=0x0601
+        NOMINMAX
+    )
+    
+    # MSVC runtime library consistency - use dynamic runtime to match gRPC
+    if(MSVC)
+        set_property(TARGET common PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+        set_property(TARGET azugate PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+    endif()
+endif()
 
 

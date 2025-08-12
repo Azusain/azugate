@@ -7,9 +7,7 @@
 #include <string_view>
 #include <zlib.h>
 
-#if defined(__linux__)
 #include <functional>
-#endif
 
 namespace azugate {
 namespace utils {
