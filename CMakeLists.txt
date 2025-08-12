@@ -96,8 +96,9 @@ common
 Boost::system
 )
 
-# Add linker flags to handle missing gRPC symbols on Windows
+# Platform-specific linker flags
 if(WIN32 AND MSVC)
+    # Add linker flags to handle missing gRPC symbols on Windows
     target_link_options(azugate PRIVATE "/FORCE:UNRESOLVED")
 endif()
 
