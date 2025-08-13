@@ -21,10 +21,11 @@ on:
         required: false
         default: ''
         type: string
-  # Automatic triggers
+  # Automatic triggers - optimized to prevent multiple executions
   push:
     branches: [ main, develop ]
     tags: [ 'v*' ]
+    # Only one trigger per push event
   pull_request:
     branches: [ main ]
 
