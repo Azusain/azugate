@@ -191,22 +191,48 @@ jobs:
       run: |
         echo "=== Documentation Verification ==="
         
-        # Check if documentation files exist
-        required_docs=(
-          "README.md"
+        # Check main README.md in root
+        if [[ -f "README.md" ]]; then
+          local line_count=$(wc -l < "README.md" 2>/dev/null || echo "0")
+          echo "✅ README.md exists in root ($line_count lines)"
+        else
+          echo "❌ README.md is missing from root directory"
+          exit 1
+        fi
+        
+        # Check documentation files in docs/ folder
+        required_docs_in_docs=(
           "BUILD.README.md"
           "LINUX_BUILD.md"
           "GRPC_INTEGRATION_FIXES.md"
         )
         
-        for doc in "${required_docs[@]}"; do
-          if [[ -f "$doc" ]]; then
-            echo "✅ $doc exists ($(wc -l <"$doc") lines)"
+        doc_check_failed=false
+        echo "Checking documentation files in docs/ folder..."
+        
+        for doc in "${required_docs_in_docs[@]}"; do
+          echo "Checking: docs/$doc"
+          if [[ -f "docs/$doc" ]]; then
+            local line_count=$(wc -l < "docs/$doc" 2>/dev/null || echo "0")
+            echo "✅ docs/$doc exists ($line_count lines)"
           else
-            echo "❌ $doc is missing"
-            exit 1
+            echo "❌ docs/$doc is missing"
+            doc_check_failed=true
           fi
         done
+        
+        if [[ "$doc_check_failed" == "true" ]]; then
+          echo ""
+          echo "❌ Some required documentation files are missing from docs/ folder"
+          echo "Available files in docs/:"
+          ls -la docs/*.md 2>/dev/null || echo "No .md files found in docs/"
+          exit 1
+        fi
+        
+        echo ""
+        echo "✅ All required documentation files found!"
+        echo "  - README.md in root directory"
+        echo "  - All other documentation in docs/ folder"
         
         # Check if vcpkg manifest is valid
         echo "Verifying vcpkg configuration..."
