@@ -193,7 +193,7 @@ jobs:
         
         # Check main README.md in root
         if [[ -f "README.md" ]]; then
-          local line_count=$(wc -l < "README.md" 2>/dev/null || echo "0")
+          line_count=$(wc -l < "README.md" 2>/dev/null || echo "0")
           echo "✅ README.md exists in root ($line_count lines)"
         else
           echo "❌ README.md is missing from root directory"
@@ -213,7 +213,7 @@ jobs:
         for doc in "${required_docs_in_docs[@]}"; do
           echo "Checking: docs/$doc"
           if [[ -f "docs/$doc" ]]; then
-            local line_count=$(wc -l < "docs/$doc" 2>/dev/null || echo "0")
+            line_count=$(wc -l < "docs/$doc" 2>/dev/null || echo "0")
             echo "✅ docs/$doc exists ($line_count lines)"
           else
             echo "❌ docs/$doc is missing"
