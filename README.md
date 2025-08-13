@@ -1,4 +1,6 @@
-# azugate
+# Azugate v1.0.0
+
+> **Latest Release**: [v1.0.0](https://github.com/Azusain/azugate/releases/tag/v1.0.0) - Production-ready gRPC and HTTP gateway
 
 ### Features
 
