@@ -46,6 +46,52 @@ jobs:
       with:
         submodules: recursive
     
+    # Environment Detection
+    - name: Detect Build Environment
+      id: env-detect
+      run: |
+        echo "=== Environment Detection ==="
+        
+        # Detect runner type
+        if [ -n "${{ runner.name }}" ] && [[ "${{ runner.name }}" == "GitHub Actions"* ]]; then
+          RUNNER_TYPE="github-hosted"
+          echo "🏗️ Detected: GitHub-hosted runner"
+        else
+          RUNNER_TYPE="self-hosted"
+          echo "🏠 Detected: Self-hosted runner"
+        fi
+        echo "runner_type=$RUNNER_TYPE" >> $GITHUB_OUTPUT
+        
+        # Check if build tools are already installed
+        NEED_SYSTEM_DEPS="true"
+        if command -v cmake >/dev/null 2>&1 && command -v ninja >/dev/null 2>&1 && command -v ${{ matrix.cc }} >/dev/null 2>&1; then
+          NEED_SYSTEM_DEPS="false"
+          echo "✅ Build tools already available: cmake, ninja, ${{ matrix.cc }}"
+        else
+          echo "📦 Build tools need installation"
+        fi
+        echo "need_system_deps=$NEED_SYSTEM_DEPS" >> $GITHUB_OUTPUT
+        
+        # Check if vcpkg is already available
+        NEED_VCPKG_SETUP="true"
+        if [ -x "vcpkg/vcpkg" ] || command -v vcpkg >/dev/null 2>&1; then
+          NEED_VCPKG_SETUP="false"
+          echo "✅ vcpkg already available"
+        else
+          echo "📦 vcpkg needs setup"
+        fi
+        echo "need_vcpkg_setup=$NEED_VCPKG_SETUP" >> $GITHUB_OUTPUT
+        
+        # Display environment summary
+        echo "=== Environment Summary ==="
+        echo "Runner Type: $RUNNER_TYPE"
+        echo "Need System Dependencies: $NEED_SYSTEM_DEPS"
+        echo "Need vcpkg Setup: $NEED_VCPKG_SETUP"
+        echo "OS: $(uname -s)"
+        echo "Architecture: $(uname -m)"
+        echo "Available CPUs: $(nproc)"
+        echo "Memory: $(free -h | grep '^Mem:' | awk '{print $2}' || echo 'N/A')"
+    
     # Multi-level aggressive caching strategy
     - name: Cache vcpkg Binary Cache
       uses: actions/cache@v4
@@ -81,13 +127,27 @@ jobs:
           ${{ runner.os }}-build-${{ matrix.compiler }}-${{ matrix.build_type }}-
           ${{ runner.os }}-build-${{ matrix.compiler }}-
     
-    - name: Install System Dependencies (Cached)
+    # Conditional System Dependencies Installation
+    - name: Install System Dependencies (GitHub-hosted runners only)
+      if: steps.env-detect.outputs.need_system_deps == 'true'
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
         packages: build-essential cmake ninja-build git pkg-config curl zip unzip tar ${{ matrix.cc }} ${{ matrix.cxx }}
         version: 1.0
     
-    - name: Setup vcpkg (Optimized)
+    - name: Verify System Dependencies (Self-hosted runners)
+      if: steps.env-detect.outputs.need_system_deps == 'false'
+      run: |
+        echo "=== Using Pre-installed System Dependencies ==="
+        echo "CMake: $(cmake --version | head -1)"
+        echo "Ninja: $(ninja --version)"
+        echo "Compiler: $(${{ matrix.cc }} --version | head -1)"
+        echo "Git: $(git --version)"
+        echo "✅ All system dependencies are available"
+    
+    # Conditional vcpkg Setup
+    - name: Setup vcpkg (when needed)
+      if: steps.env-detect.outputs.need_vcpkg_setup == 'true'
       uses: lukka/run-vcpkg@v11
       with:
         vcpkgGitCommitId: 'cd124b84feb0c02a24a2d90981e8358fdee0e077'
@@ -96,6 +156,29 @@ jobs:
         appendedCacheKey: ${{ matrix.compiler }}
         # Use pre-built binaries when possible
         vcpkgJsonGlob: 'vcpkg.json'
+    
+    - name: Use Existing vcpkg (when available)
+      if: steps.env-detect.outputs.need_vcpkg_setup == 'false'
+      run: |
+        echo "=== Using Pre-existing vcpkg Installation ==="
+        if [ -x "vcpkg/vcpkg" ]; then
+          VCPKG_CMD="./vcpkg/vcpkg"
+          echo "Using local vcpkg: $PWD/vcpkg/vcpkg"
+        else
+          VCPKG_CMD="vcpkg"
+          echo "Using system vcpkg: $(which vcpkg)"
+        fi
+        
+        echo "vcpkg version: $($VCPKG_CMD version)"
+        echo "Installing dependencies from vcpkg.json..."
+        $VCPKG_CMD install --triplet=x64-linux
+        
+        # Set VCPKG_ROOT for subsequent steps
+        if [ -x "vcpkg/vcpkg" ]; then
+          echo "VCPKG_ROOT=$PWD/vcpkg" >> $GITHUB_ENV
+        else
+          echo "VCPKG_ROOT=$(dirname $(which vcpkg))" >> $GITHUB_ENV
+        fi
     
     - name: Configure CMake
       run: |
