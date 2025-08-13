@@ -1,4 +1,4 @@
-name: Cross-Platform CI
+name: Linux CI
 
 on:
   push:
@@ -8,24 +8,17 @@ on:
     branches: [ main ]
 
 jobs:
-  multi-platform-build:
-    name: Build on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+  linux-build:
+    name: Build on Linux
+    runs-on: ubuntu-22.04
     
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, windows-2022, macos-13]
         build_type: [Release]
         include:
-          - os: ubuntu-22.04
+          - build_type: Release
             triplet: x64-linux
-            executable: azugate
-          - os: windows-2022
-            triplet: x64-windows
-            executable: azugate.exe
-          - os: macos-13
-            triplet: x64-osx
             executable: azugate
     
     steps:
@@ -34,92 +27,51 @@ jobs:
       with:
         submodules: recursive
     
-    - name: Setup vcpkg (Linux/macOS)
-      if: runner.os != 'Windows'
-      uses: lukka/run-vcpkg@v11
-      with:
-        vcpkgGitCommitId: 'cd124b84feb0c02a24a2d90981e8358fdee0e077'
-        runVcpkgInstall: true
-    
-    - name: Setup vcpkg (Windows)
-      if: runner.os == 'Windows'
+    - name: Setup vcpkg
       uses: lukka/run-vcpkg@v11
       with:
         vcpkgGitCommitId: 'cd124b84feb0c02a24a2d90981e8358fdee0e077'
         runVcpkgInstall: true
     
     - name: Install Linux Dependencies
-      if: runner.os == 'Linux'
       run: |
         sudo apt update
         sudo apt install -y build-essential cmake ninja-build pkg-config
     
-    - name: Install macOS Dependencies
-      if: runner.os == 'macOS'
-      run: |
-        brew install cmake ninja pkg-config
-    
-    - name: Configure CMake (Linux/macOS)
-      if: runner.os != 'Windows'
+    - name: Configure CMake
       run: |
         cmake -B build \
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
           -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake \
           -G Ninja
     
-    - name: Configure CMake (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        cmake -B build \
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-          -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake \
-          -G "Visual Studio 17 2022" \
-          -A x64
-    
     - name: Build Project
       run: |
         cmake --build build --config ${{ matrix.build_type }} --parallel
     
-    - name: Test Binary (Linux/macOS)
-      if: runner.os != 'Windows'
+    - name: Test Binary
       run: |
         echo "=== Testing ${{ matrix.executable }} ==="
         file build/${{ matrix.executable }}
-        ldd build/${{ matrix.executable }} || otool -L build/${{ matrix.executable }} || echo "Dependencies check completed"
+        ldd build/${{ matrix.executable }} || echo "Dependencies check completed"
         
         # Test help command
         timeout 10s build/${{ matrix.executable }} --help || echo "Help test completed"
     
-    - name: Test Binary (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        echo "=== Testing ${{ matrix.executable }} ==="
-        if (Test-Path "build\Release\${{ matrix.executable }}") {
-          echo "✅ Executable exists"
-          # Test help command
-          & "build\Release\${{ matrix.executable }}" --help
-        } else {
-          echo "❌ Executable not found"
-          Get-ChildItem build -Recurse -Name "*.exe"
-        }
-    
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: azugate-${{ matrix.os }}-${{ matrix.build_type }}
+        name: azugate-ubuntu-22.04-${{ matrix.build_type }}
         path: |
           build/${{ matrix.executable }}
-          build/Release/${{ matrix.executable }}
-          build/**/*.dll
           build/**/*.so*
-          build/**/*.dylib
         if-no-files-found: ignore
         retention-days: 7
 
   integration-test:
     name: Integration Tests
     runs-on: ubuntu-22.04
-    needs: multi-platform-build
+    needs: linux-build
     
     steps:
     - name: Checkout Repository
@@ -188,7 +140,7 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-22.04
-    needs: [multi-platform-build, integration-test]
+    needs: [linux-build, integration-test]
     if: startsWith(github.ref, 'refs/tags/v')
     
     steps:
@@ -204,31 +156,26 @@ jobs:
       run: |
         cd release-artifacts
         
-        # Create release packages
+        # Create Linux release package
         for dir in */; do
           if [[ -d "$dir" ]]; then
             echo "Processing $dir..."
             cd "$dir"
             
-            # Find executables and create archives
-            if ls azugate* >/dev/null 2>&1; then
-              if [[ "$dir" == *"windows"* ]]; then
-                zip -r "../${dir%/}.zip" *
-              else
-                tar -czf "../${dir%/}.tar.gz" *
-              fi
+            # Find executables and create archives (Linux only)
+            if ls azugate* > /dev/null 2>&1; then
+              tar -czf "../${dir%/}.tar.gz" *
             fi
             cd ..
           fi
         done
         
-        ls -la *.zip *.tar.gz || echo "No release packages created"
+        ls -la *.tar.gz || echo "No release packages created"
     
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          release-artifacts/*.zip
           release-artifacts/*.tar.gz
         generate_release_notes: true
         draft: false
