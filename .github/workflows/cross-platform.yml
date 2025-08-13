@@ -15,17 +15,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Reduced matrix for speed - only essential builds
+        # Single build for maximum speed - GCC Release only
         include:
-          # Primary build - GCC Release (for releases and main testing)
           - compiler: gcc
             cc: gcc-11
             cxx: g++-11
-            build_type: Release
-          # Alternative compiler - Clang Release (for compatibility)
-          - compiler: clang
-            cc: clang-14
-            cxx: clang++-14
             build_type: Release
     
     env:
