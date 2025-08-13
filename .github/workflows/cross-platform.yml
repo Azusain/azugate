@@ -1,6 +1,20 @@
 name: Azugate Linux CI/CD
 
 on:
+  # Manual trigger with release option
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Create a GitHub release (true/false)'
+        required: false
+        default: 'false'
+        type: boolean
+      release_version:
+        description: 'Release version (e.g., v1.0.0, or leave empty for auto-generation)'
+        required: false
+        default: ''
+        type: string
+  # Automatic triggers
   push:
     branches: [ main, develop ]
     tags: [ 'v*' ]
@@ -319,45 +333,100 @@ jobs:
     name: Create Release
     runs-on: ubuntu-22.04
     needs: [build-and-test, integration-test]
-    if: startsWith(github.ref, 'refs/tags/v')
+    # Run if: manually requested OR tagged push
+    if: (github.event.inputs.create_release == 'true') || startsWith(github.ref, 'refs/tags/v')
     
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     
     - name: Download All Artifacts
       uses: actions/download-artifact@v4
       with:
         path: ./release-artifacts
     
+    - name: Generate Release Version
+      id: version
+      run: |
+        if [ -n "${{ github.event.inputs.release_version }}" ]; then
+          # Use provided version
+          VERSION="${{ github.event.inputs.release_version }}"
+          echo "Using provided version: $VERSION"
+        elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
+          # Use tag name
+          VERSION="${{ github.ref_name }}"
+          echo "Using tag version: $VERSION"
+        else
+          # Generate version from date and commit
+          VERSION="v$(date +'%Y.%m.%d')-$(git rev-parse --short HEAD)"
+          echo "Generated version: $VERSION"
+        fi
+        echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+    
     - name: Prepare Release Assets
       run: |
         cd release-artifacts
         
-        # Create Linux release package
+        echo "=== Preparing Release Assets for $RELEASE_VERSION ==="
+        
+        # Create release packages
         for dir in */; do
           if [[ -d "$dir" ]]; then
             echo "Processing $dir..."
             cd "$dir"
             
-            # Find executables and create archives (Linux only)
+            # Find executables and create archives
             if ls azugate* > /dev/null 2>&1; then
-              tar -czf "../${dir%/}.tar.gz" *
+              tar -czf "../${dir%/}-${RELEASE_VERSION}.tar.gz" *
+              echo "✅ Created: ${dir%/}-${RELEASE_VERSION}.tar.gz"
             fi
             cd ..
           fi
         done
         
-        ls -la *.tar.gz || echo "No release packages created"
+        echo "=== Final Release Assets ==="
+        ls -la *.tar.gz || echo "❌ No release packages created"
     
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
+        tag_name: ${{ env.RELEASE_VERSION }}
+        name: "Azugate Release ${{ env.RELEASE_VERSION }}"
+        body: |
+          ## Azugate Release ${{ env.RELEASE_VERSION }}
+          
+          ### 🚀 What's New
+          - Linux binary (GCC Release build)
+          - Optimized with vcpkg dependencies
+          - Full gRPC and HTTP support
+          
+          ### 📦 What's Included
+          - `azugate` - Main executable
+          - All required dependencies
+          
+          ### ⚡ Quick Start
+          ```bash
+          # Download and extract
+          wget https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_VERSION }}/azugate-linux-gcc-Release-${{ env.RELEASE_VERSION }}.tar.gz
+          tar -xzf azugate-linux-gcc-Release-${{ env.RELEASE_VERSION }}.tar.gz
+          
+          # Run
+          ./azugate --help
+          ```
+          
+          ### 🔧 Build Information
+          - **Commit**: `${{ github.sha }}`
+          - **Build Date**: `$(date -u +'%Y-%m-%d %H:%M:%S UTC')`
+          - **Triggered by**: @${{ github.actor }}
+          - **Workflow**: ${{ github.workflow }}
         files: |
           release-artifacts/*.tar.gz
         generate_release_notes: true
         draft: false
-        prerelease: ${{ contains(github.ref, '-') }}
+        prerelease: ${{ contains(env.RELEASE_VERSION, '-') }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
