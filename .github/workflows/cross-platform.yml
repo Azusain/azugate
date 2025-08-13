@@ -1,5 +1,12 @@
 name: Azugate Linux CI/CD
 
+# Required permissions for the workflow
+permissions:
+  contents: write
+  packages: read
+  actions: read
+  security-events: write
+
 on:
   # Manual trigger with release option
   workflow_dispatch:
