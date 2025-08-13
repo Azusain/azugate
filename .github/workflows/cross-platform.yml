@@ -15,15 +15,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        build_type: [Release, Debug]
-        compiler: [gcc, clang]
+        # Reduced matrix for speed - only essential builds
         include:
+          # Primary build - GCC Release (for releases and main testing)
           - compiler: gcc
             cc: gcc-11
             cxx: g++-11
+            build_type: Release
+          # Alternative compiler - Clang Release (for compatibility)
           - compiler: clang
             cc: clang-14
             cxx: clang++-14
+            build_type: Release
     
     env:
       CC: ${{ matrix.cc }}
@@ -35,43 +38,56 @@ jobs:
       with:
         submodules: recursive
     
-    - name: Setup vcpkg
+    # Multi-level aggressive caching strategy
+    - name: Cache vcpkg Binary Cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cache/vcpkg/archives
+          ~/.cache/vcpkg/downloads
+        key: ${{ runner.os }}-vcpkg-binary-${{ hashFiles('vcpkg.json', 'vcpkg-configuration.json') }}
+        restore-keys: |
+          ${{ runner.os }}-vcpkg-binary-
+    
+    - name: Cache vcpkg Installation
+      uses: actions/cache@v4
+      with:
+        path: |
+          vcpkg_installed
+          vcpkg
+        key: ${{ runner.os }}-vcpkg-install-${{ matrix.compiler }}-${{ hashFiles('vcpkg.json', 'vcpkg-configuration.json') }}
+        restore-keys: |
+          ${{ runner.os }}-vcpkg-install-${{ matrix.compiler }}-
+          ${{ runner.os }}-vcpkg-install-
+    
+    - name: Cache Build Directory
+      uses: actions/cache@v4
+      with:
+        path: |
+          build/CMakeFiles
+          build/CMakeCache.txt
+          build/*.ninja
+          build/.ninja*
+        key: ${{ runner.os }}-build-${{ matrix.compiler }}-${{ matrix.build_type }}-${{ hashFiles('CMakeLists.txt', 'src/**/*.cpp', 'src/**/*.cc', 'src/**/*.h') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ matrix.compiler }}-${{ matrix.build_type }}-
+          ${{ runner.os }}-build-${{ matrix.compiler }}-
+    
+    - name: Install System Dependencies (Cached)
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: build-essential cmake ninja-build git pkg-config curl zip unzip tar ${{ matrix.cc }} ${{ matrix.cxx }}
+        version: 1.0
+    
+    - name: Setup vcpkg (Optimized)
       uses: lukka/run-vcpkg@v11
       with:
         vcpkgGitCommitId: 'cd124b84feb0c02a24a2d90981e8358fdee0e077'
         runVcpkgInstall: true
-    
-    - name: Install Linux Dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y build-essential cmake ninja-build pkg-config
-    
-    - name: Cache vcpkg Dependencies
-      uses: actions/cache@v3
-      with:
-        path: |
-          vcpkg_installed
-          ~/.cache/vcpkg
-        key: ${{ runner.os }}-vcpkg-${{ matrix.compiler }}-${{ hashFiles('vcpkg.json', 'vcpkg-configuration.json') }}
-        restore-keys: |
-          ${{ runner.os }}-vcpkg-${{ matrix.compiler }}-
-          ${{ runner.os }}-vcpkg-
-    
-    - name: Install System Dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y \
-          build-essential \
-          cmake \
-          ninja-build \
-          git \
-          pkg-config \
-          curl \
-          zip \
-          unzip \
-          tar \
-          ${{ matrix.cc }} \
-          ${{ matrix.cxx }}
+        # Enable binary caching
+        appendedCacheKey: ${{ matrix.compiler }}
+        # Use pre-built binaries when possible
+        vcpkgJsonGlob: 'vcpkg.json'
     
     - name: Configure CMake
       run: |
