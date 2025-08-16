@@ -6,6 +6,7 @@
 #include <functional>
 #include <memory>
 #include <mutex>
+#include <shared_mutex>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -61,6 +62,40 @@ struct CircuitBreakerStats {
     std::chrono::steady_clock::time_point last_failure_time;
     std::chrono::steady_clock::time_point last_success_time;
     std::chrono::steady_clock::time_point last_state_change;
+    
+    // Default constructor
+    CircuitBreakerStats() = default;
+    
+    // Move constructor
+    CircuitBreakerStats(CircuitBreakerStats&& other) noexcept
+        : total_requests(other.total_requests.load()),
+          successful_requests(other.successful_requests.load()),
+          failed_requests(other.failed_requests.load()),
+          rejected_requests(other.rejected_requests.load()),
+          timeout_requests(other.timeout_requests.load()),
+          consecutive_failures(other.consecutive_failures.load()),
+          consecutive_successes(other.consecutive_successes.load()),
+          last_failure_time(other.last_failure_time),
+          last_success_time(other.last_success_time),
+          last_state_change(other.last_state_change) {
+    }
+    
+    // Move assignment
+    CircuitBreakerStats& operator=(CircuitBreakerStats&& other) noexcept {
+        if (this != &other) {
+            total_requests.store(other.total_requests.load());
+            successful_requests.store(other.successful_requests.load());
+            failed_requests.store(other.failed_requests.load());
+            rejected_requests.store(other.rejected_requests.load());
+            timeout_requests.store(other.timeout_requests.load());
+            consecutive_failures.store(other.consecutive_failures.load());
+            consecutive_successes.store(other.consecutive_successes.load());
+            last_failure_time = other.last_failure_time;
+            last_success_time = other.last_success_time;
+            last_state_change = other.last_state_change;
+        }
+        return *this;
+    }
     
     double current_failure_rate() const {
         uint64_t total = total_requests.load();

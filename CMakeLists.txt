@@ -64,13 +64,12 @@ ${jwt-cpp_LIBRARIES}
 
 # Windows-specific libraries
 if(WIN32)
-    target_link_libraries(common ws2_32 wsock32)
+    target_link_libraries(common ws2_32 wsock32 psapi)
 endif()
 
 # apps.
 add_executable(azugate
 "src/app/azugate.cc"
-"src/app/tcp_proxy.cc"
 )
 
 target_compile_definitions(azugate PRIVATE

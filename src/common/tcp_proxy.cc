@@ -175,7 +175,9 @@ private:
     std::unique_ptr<std::array<char, 8192>> target_buffer_;
 };
 
-// Implementation of the TcpProxyHandler function
+} // namespace azugate
+
+// Implementation of the TcpProxyHandler function (in global namespace)
 void TcpProxyHandler(
     const boost::shared_ptr<boost::asio::io_context> io_context_ptr,
     const boost::shared_ptr<boost::asio::ip::tcp::socket>& source_sock_ptr,
@@ -201,7 +203,7 @@ void TcpProxyHandler(
     SPDLOG_INFO("Starting TCP proxy to {}:{}", target_info.address, target_info.port);
 
     // Create and start the async TCP proxy
-    auto proxy = std::make_shared<AsyncTcpProxy>(
+    auto proxy = std::make_shared<azugate::AsyncTcpProxy>(
         io_context_ptr, 
         source_sock_ptr, 
         target_info.address, 
@@ -210,5 +212,3 @@ void TcpProxyHandler(
     
     proxy->Start();
 }
-
-} // namespace azugate

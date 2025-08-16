@@ -3,11 +3,23 @@
 #include "server.hpp"
 #include "worker.hpp"
 #include "http_cache.hpp"
+#include "config_manager.hpp"
 #include <cxxopts.hpp>
 #include <spdlog/spdlog.h>
 #include <string>
 #include <iostream>
 #include <filesystem>
+#include <csignal>
+#include <atomic>
+
+// Global shutdown flag for graceful shutdown
+std::atomic<bool> g_shutdown_requested{false};
+
+// Signal handler for graceful shutdown
+void signal_handler(int signum) {
+  SPDLOG_INFO("Received signal {}, initiating graceful shutdown...", signum);
+  g_shutdown_requested.store(true);
+}
 
 // TODO:
 // ref: https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes.
@@ -27,6 +39,10 @@ int main(int argc, char *argv[]) {
       ("enable-file-proxy", "Enable file proxy mode", cxxopts::value<bool>()->default_value("false"))
       ("proxy-dir", "Directory to proxy files from", cxxopts::value<std::string>())
       ("enable-directory-listing", "Enable directory listing", cxxopts::value<bool>()->default_value("true"))
+      ("generate-config", "Generate sample configuration file", cxxopts::value<std::string>())
+      ("validate-config", "Validate configuration file", cxxopts::value<std::string>())
+      ("config-template", "Configuration template type (full, minimal, dev, prod)", cxxopts::value<std::string>()->default_value("full"))
+      ("hot-reload", "Enable configuration hot-reload", cxxopts::value<bool>()->default_value("false"))
       ("h,help", "Print usage");
   
   auto parsed_opts = opts.parse(argc, argv);
@@ -35,12 +51,65 @@ int main(int argc, char *argv[]) {
     std::cout << opts.help() << std::endl;
     return 0;
   }
+  
+  // Handle configuration generation
+  if (parsed_opts.count("generate-config")) {
+    std::string output_path = parsed_opts["generate-config"].as<std::string>();
+    std::string template_type = parsed_opts["config-template"].as<std::string>();
+    
+    std::cout << "Generating configuration file: " << output_path << std::endl;
+    std::cout << "Template type: " << template_type << std::endl;
+    
+    // Create the appropriate template content
+    std::string template_content;
+    if (template_type == "minimal") {
+      template_content = ConfigTemplateGenerator::generate_minimal_template();
+    } else if (template_type == "dev" || template_type == "development") {
+      template_content = ConfigTemplateGenerator::generate_development_template();
+    } else if (template_type == "prod" || template_type == "production") {
+      template_content = ConfigTemplateGenerator::generate_production_template();
+    } else {
+      template_content = ConfigTemplateGenerator::generate_full_template();
+    }
+    
+    // Write to file
+    std::ofstream file(output_path);
+    if (!file.is_open()) {
+      std::cerr << "Error: Cannot create configuration file: " << output_path << std::endl;
+      return -1;
+    }
+    
+    file << template_content;
+    file.close();
+    
+    std::cout << "Configuration file generated successfully!" << std::endl;
+    return 0;
+  }
+  
+  // Handle configuration validation
+  if (parsed_opts.count("validate-config")) {
+    std::string config_path = parsed_opts["validate-config"].as<std::string>();
+    
+    std::cout << "Validating configuration file: " << config_path << std::endl;
+    
+    auto& config_manager = ConfigManager::instance();
+    ValidationResult result = config_manager.validate_config(config_path);
+    
+    std::cout << result.to_string() << std::endl;
+    
+    if (!result.valid) {
+      return -1;
+    }
+    
+    std::cout << "Configuration is valid!" << std::endl;
+    return 0;
+  }
 
   IgnoreSignalPipe();
 
   InitLogger();
 
-  // Load the configurations from the local file.
+  // Determine configuration file path
   std::string path_config_file;
   if (parsed_opts.count("config")) {
     path_config_file = parsed_opts["config"].as<std::string>();
@@ -48,19 +117,29 @@ int main(int argc, char *argv[]) {
     SPDLOG_INFO("use default configuration file");
     path_config_file = std::string(azugate::kDftConfigFile);
   }
-  // Apply command line configurations
-  if (parsed_opts.count("port")) {
-    g_azugate_port = parsed_opts["port"].as<uint16_t>();
-    SPDLOG_INFO("Port set to {} via command line", g_azugate_port);
-  } else {
-    SPDLOG_INFO("loading configuration from {}", path_config_file);
-    if (!LoadServerConfig(path_config_file)) {
-      SPDLOG_ERROR("unexpected errors happen when parsing yaml file");
-      return -1;
-    }
+
+  // Load initial configuration
+  auto& config_manager = ConfigManager::instance();
+  if (!config_manager.load_config(path_config_file)) {
+    SPDLOG_ERROR("Failed to load initial configuration. Exiting.");
+    return -1;
   }
   
-  // Apply other command line options
+  // Enable hot-reload if specified
+  if (parsed_opts.count("hot-reload") && parsed_opts["hot-reload"].as<bool>()) {
+      config_manager.enable_hot_reload(true);
+  }
+  
+  // Apply initial configuration from manager
+  const auto& initial_config = config_manager.get_config();
+  g_azugate_port = initial_config["server"]["port"].as<uint16_t>(8080);
+  
+  // Apply command-line overrides
+  if (parsed_opts.count("port")) {
+    g_azugate_port = parsed_opts["port"].as<uint16_t>();
+    SPDLOG_INFO("Port overridden to {} via command line", g_azugate_port);
+  }
+  
   if (parsed_opts.count("enable-https")) {
     SetHttps(parsed_opts["enable-https"].as<bool>());
   }
@@ -108,7 +187,7 @@ int main(int argc, char *argv[]) {
       return -1;
     }
   }
-
+  
   auto io_context_ptr = boost::make_shared<boost::asio::io_context>();
   
   // Initialize HTTP cache system
@@ -122,10 +201,27 @@ int main(int argc, char *argv[]) {
   HttpCacheManager::instance().initialize(cache_config);
   SPDLOG_INFO("HTTP cache initialized with {}MB capacity", cache_config.max_size_bytes / (1024 * 1024));
 
+  // Set up signal handlers for graceful shutdown
+  std::signal(SIGINT, signal_handler);
+  std::signal(SIGTERM, signal_handler);
+#ifdef _WIN32
+  std::signal(SIGBREAK, signal_handler);
+#else
+  std::signal(SIGQUIT, signal_handler);
+  std::signal(SIGHUP, signal_handler);
+#endif
+
+  SPDLOG_INFO("Signal handlers installed for graceful shutdown");
+
   StartHealthCheckWorker(io_context_ptr);
 
   Server s(io_context_ptr, g_azugate_port);
-  SPDLOG_INFO("azugate is listening on port {}", g_azugate_port);
+  SPDLOG_INFO("🚀 AzuGate v1.0.0 started successfully!");
+  SPDLOG_INFO("📊 Dashboard: http://localhost:{}/dashboard", g_azugate_port);
+  SPDLOG_INFO("🏥 Health: http://localhost:{}/health", g_azugate_port);
+  SPDLOG_INFO("📈 Metrics: http://localhost:{}/metrics", g_azugate_port);
+  SPDLOG_INFO("⚙️ Config: http://localhost:{}/config", g_azugate_port);
+  SPDLOG_INFO("Press Ctrl+C for graceful shutdown");
 
   s.Run(io_context_ptr);
 

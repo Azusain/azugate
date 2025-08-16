@@ -907,7 +907,7 @@ public:
     
     // If it's a directory, generate directory index
     if (std::filesystem::is_directory(full_local_file_path_str)) {
-      handleDirectoryRequest(full_local_file_path_str);
+      handleDirectoryRequest(full_local_file_path_str.c_str());
       async_accpet_cb_();
       return;
     }
@@ -941,7 +941,7 @@ public:
 
     // setup and send body.
     memset(request_.header_buf, '\0', sizeof(request_.header_buf));
-    if (!compressAndWriteBody(sock_ptr_, full_local_file_path_str,
+    if (!compressAndWriteBody(sock_ptr_, full_local_file_path_str.c_str(),
                               local_file_size, compression_type_, request_)) {
       SPDLOG_WARN("failed to write body");
     };

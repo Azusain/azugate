@@ -148,8 +148,20 @@ void CircuitBreaker::reset() {
     std::lock_guard<std::mutex> lock(stats_mutex_);
     std::lock_guard<std::mutex> history_lock(history_mutex_);
     
-    stats_ = CircuitBreakerStats{};
-    stats_.last_state_change = std::chrono::steady_clock::now();
+    // Reset all atomic counters individually since assignment operator is deleted
+    stats_.total_requests.store(0);
+    stats_.successful_requests.store(0);
+    stats_.failed_requests.store(0);
+    stats_.rejected_requests.store(0);
+    stats_.timeout_requests.store(0);
+    stats_.consecutive_failures.store(0);
+    stats_.consecutive_successes.store(0);
+    
+    // Reset timestamps
+    auto now = std::chrono::steady_clock::now();
+    stats_.last_failure_time = now;
+    stats_.last_success_time = now;
+    stats_.last_state_change = now;
     
     request_history_.clear();
     half_open_requests_ = 0;
@@ -358,7 +370,23 @@ std::unordered_map<std::string, CircuitBreakerStats> CircuitBreakerRegistry::get
     std::unordered_map<std::string, CircuitBreakerStats> stats;
     
     for (const auto& pair : breakers_) {
-        stats[pair.first] = pair.second->get_stats();
+        // Create a copy by manually copying each atomic field
+        const auto& src_stats = pair.second->get_stats();
+        CircuitBreakerStats dest_stats;
+        
+        dest_stats.total_requests.store(src_stats.total_requests.load());
+        dest_stats.successful_requests.store(src_stats.successful_requests.load());
+        dest_stats.failed_requests.store(src_stats.failed_requests.load());
+        dest_stats.rejected_requests.store(src_stats.rejected_requests.load());
+        dest_stats.timeout_requests.store(src_stats.timeout_requests.load());
+        dest_stats.consecutive_failures.store(src_stats.consecutive_failures.load());
+        dest_stats.consecutive_successes.store(src_stats.consecutive_successes.load());
+        
+        dest_stats.last_failure_time = src_stats.last_failure_time;
+        dest_stats.last_success_time = src_stats.last_success_time;
+        dest_stats.last_state_change = src_stats.last_state_change;
+        
+        stats.emplace(pair.first, std::move(dest_stats));
     }
     
     return stats;
@@ -396,7 +424,7 @@ std::string CircuitBreakerRegistry::get_health_report() const {
             case CircuitBreakerState::CLOSED: closed_count++; break;
         }
         
-        auto stats = pair.second->get_stats();
+        const auto& stats = pair.second->get_stats();
         oss << fmt::format("- {}: {} (requests: {}, failures: {}, failure_rate: {:.1f}%)\n",
                           pair.first,
                           static_cast<int>(state) == 0 ? "CLOSED" : 
