@@ -1,8 +1,0 @@
-# Created by venv; see https://docs.python.org/3/library/venv.html
-bin/
-lib/
-# symlink
-lib64
-include/
-pyvenv.cfg
-go_simple_server/go_simple_server
