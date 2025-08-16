@@ -1,83 +1,206 @@
-# Azugate v1.0.0
+# Azugate
 
-> **Latest Release**: [v1.0.0](https://github.com/Azusain/azugate/releases/tag/v1.0.0) - Production-ready gRPC and HTTP gateway
+A lightweight HTTP proxy server with built-in file serving capabilities. Azugate provides a simple yet powerful solution for HTTP proxying and static file serving with directory listing support.
 
-### Features
+> **Latest Version**: v2.0.0 - Simplified architecture with command-line configuration (gRPC removed)  
+> **Legacy Version**: v1.x available in `legacy` branch with gRPC support
 
-- HTTP(S) proxy support (local files and remote resources)
-- WebSocket support
-- HTTP Gzip compression and chunked transfer encoding
-- Rate limiting
-- OAuth integration via Auth0
-- Management through gRPC API
-- Linux sendfile() optimization
-- High-performance asynchronous I/O
+## Features
 
-### Build
+- **HTTP Proxy Server**: Forward HTTP requests to upstream servers
+- **HTTPS Support**: Enable secure connections with TLS
+- **File Proxy Server**: Serve static files from local directories
+- **Directory Listing**: Nginx-style directory index pages with file information
+- **HTTP Compression**: Built-in gzip compression support
+- **Rate Limiting**: Configurable request rate limiting
+- **Command-line Configuration**: Easy configuration through command-line arguments
+- **Cross-platform**: Built with modern C++ for Windows and Linux
 
-You will need a compiler that supports c++20, along with CMake and vcpkg, to build this project. The project builds successfully on both M2 Mac and x86-64 Linux.
- 
-```shell
-  mkdir build && cd build
-  cmake --preset=default ..
-  cmake --build .
+## Installation
+
+### Prerequisites
+
+- C++ compiler with C++17 support
+- CMake 3.15 or later
+- vcpkg package manager
+
+### Dependencies
+
+The project uses the following libraries (automatically managed by vcpkg):
+- `cpprestsdk`: HTTP client/server framework
+- `cxxopts`: Command-line argument parsing
+- `fmt`: String formatting library
+
+### Building
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd azugate
 ```
 
-### Build Image
-
-```
-  docker buildx build --platform linux/amd64,linux/arm64 -t azusaing/azugate:latest .
-```
-
-### Run (docker)
-
-```shell
-  # default configurations:
-  docker run -p 8080:8080 -p 50051:50051 azusaing/azugate:latest
-  
-  # static files & custom configurations:
-  docker run \
-  -p 8080:8080 \
-  -p 50051:50051 \
-  -v ./resources:/app/resources \
-  -v ./config.yaml:/app/bin/config.yaml azusaing/azugate:latest \
-  ./azugate -c config.yaml
-
-  # or use docker-compose under the root folder:
-  docker-compose up -d
+2. Install dependencies using vcpkg:
+```bash
+vcpkg install
 ```
 
-### Dev Tools
-
-#### wrk
-
-```shell
-  wrk -t1 -c20 -d10s http://localhost:5080
+3. Build the project:
+```bash
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=[path-to-vcpkg]/scripts/buildsystems/vcpkg.cmake
+cmake --build . --config Release
 ```
 
-#### ab
+## Usage
 
-```shell
-  wrk -t1 -c20 -d10s http://localhost:5080
+### Basic HTTP Proxy
+
+Start a basic HTTP proxy server on port 8080:
+```bash
+./azugate --port 8080
 ```
 
-#### buf
+### HTTPS Proxy with Compression
 
-```shell
- # under proto/
-  buf lint
-  buf format -w
-  buf generate
+Enable HTTPS and compression:
+```bash
+./azugate --port 8443 --enable-https --enable-compression
 ```
 
-### Perf
+### File Proxy Server
 
-```shell
- # CPU: 12th Gen Intel(R) Core(TM) i5-12600K
- # Cores: 2
- # Command: 
- wrk -c400 -t4 -d5s http://172.17.0.2:8080/login/login.html
+Serve files from a local directory with directory listing:
+```bash
+./azugate --port 8080 --enable-file-proxy --proxy-directory "/path/to/serve"
 ```
 
-<img src="perf.png" alt="QPS Comparison" width="600">
+### Advanced Configuration
+
+Combine multiple features with rate limiting:
+```bash
+./azugate \
+  --port 8080 \
+  --enable-https \
+  --enable-compression \
+  --enable-rate-limiter \
+  --enable-file-proxy \
+  --proxy-directory "/var/www/html"
+```
+
+## Command-line Options
+
+| Option | Description | Default |
+|--------|-------------|---------||
+| `--port` | Server port number | 8080 |
+| `--enable-https` | Enable HTTPS support | false |
+| `--enable-compression` | Enable HTTP compression | false |
+| `--enable-rate-limiter` | Enable request rate limiting | false |
+| `--enable-file-proxy` | Enable file proxy mode | false |
+| `--proxy-directory` | Directory to serve files from | "" |
+| `--help` | Show help message | - |
+
+## File Proxy Mode
+
+When file proxy mode is enabled, Azugate serves static files from the specified directory. Features include:
+
+- **Static File Serving**: Serve files with appropriate MIME types
+- **Directory Listing**: Auto-generate directory index pages
+- **File Information**: Display file sizes and modification dates
+- **Nginx-style Interface**: Familiar directory listing format
+- **Path Navigation**: Click-through directory navigation
+- **Security**: Prevents directory traversal attacks
+
+### Directory Listing Example
+
+When accessing a directory, you'll see a formatted listing like:
+```
+Index of /examples/
+
+[DIR]  assets/                     -        2024-01-15 10:30:00
+[FILE] index.html              2.5KB       2024-01-15 09:45:00
+[FILE] script.js               1.2KB       2024-01-15 09:50:00
+[FILE] styles.css                834B      2024-01-15 09:48:00
+```
+
+## Configuration Examples
+
+### Development Server
+Perfect for local development with file serving:
+```bash
+./azugate --enable-file-proxy --proxy-directory "./public" --port 3000
+```
+
+### Production Proxy
+High-performance proxy with security features:
+```bash
+./azugate --port 80 --enable-https --enable-compression --enable-rate-limiter
+```
+
+### Static Site Hosting
+Host a static website with HTTPS:
+```bash
+./azugate \
+  --enable-file-proxy \
+  --proxy-directory "/var/www/mysite" \
+  --port 443 \
+  --enable-https \
+  --enable-compression
+```
+
+## API Endpoints
+
+When running as an HTTP proxy, all requests are forwarded to upstream servers. In file proxy mode:
+
+- `GET /`: Returns directory listing or file content
+- `GET /path/to/file`: Returns the requested file
+- `GET /path/to/directory/`: Returns directory listing for the path
+
+## Security Considerations
+
+- File proxy mode includes path traversal protection
+- Directory listings can be disabled by serving an `index.html` file
+- HTTPS support provides encryption for sensitive data
+- Rate limiting helps prevent abuse
+
+## Troubleshooting
+
+### Build Issues
+- Ensure vcpkg is properly configured and dependencies are installed
+- Check that your compiler supports C++17 features
+- Verify CMake version compatibility
+
+### Runtime Issues
+- Check that the specified port is not in use
+- Ensure the proxy directory exists and is readable
+- Verify file permissions for the directory being served
+
+### Connection Issues
+- Confirm the server is listening on the correct port
+- Check firewall settings if accessing from remote machines
+- Verify network connectivity and DNS resolution
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+[Specify your license here]
+
+## Version History
+
+### v2.0.0 (Latest)
+- Removed gRPC dependencies for simplified architecture
+- Added command-line configuration
+- Implemented file proxy server with directory listing
+- Enhanced build system and cross-platform support
+
+### v1.x (Legacy Branch)
+- gRPC-based configuration (preserved in `legacy` branch)
+- Basic HTTP proxy functionality
 
