@@ -8,6 +8,7 @@
 #include "network_wrapper.hpp"
 #include "protocols.h"
 #include "string_op.h"
+#include "file_index.hpp"
 #include <boost/asio.hpp>
 #include <boost/asio/buffers_iterator.hpp>
 #include <boost/asio/error.hpp>
@@ -878,9 +879,24 @@ public:
     std::shared_ptr<char[]> full_local_file_path =
         assembleFullLocalFilePath(kPathResourceFolder, target_url_);
     auto full_local_file_path_str = full_local_file_path.get();
-    if (!std::filesystem::exists(full_local_file_path_str) ||
-        !std::filesystem::is_regular_file(full_local_file_path_str)) {
+    
+    if (!std::filesystem::exists(full_local_file_path_str)) {
       SPDLOG_WARN("file not exists: {}", full_local_file_path_str);
+      sendNotFoundResponse();
+      async_accpet_cb_();
+      return;
+    }
+    
+    // If it's a directory, generate directory index
+    if (std::filesystem::is_directory(full_local_file_path_str)) {
+      handleDirectoryRequest(full_local_file_path_str);
+      async_accpet_cb_();
+      return;
+    }
+    
+    if (!std::filesystem::is_regular_file(full_local_file_path_str)) {
+      SPDLOG_WARN("not a regular file: {}", full_local_file_path_str);
+      sendNotFoundResponse();
       async_accpet_cb_();
       return;
     }
@@ -912,6 +928,50 @@ public:
       SPDLOG_WARN("failed to write body");
     };
     async_accpet_cb_();
+  }
+
+  void handleDirectoryRequest(const char* directory_path) {
+    // Generate directory index page
+    std::string index_html = DirectoryIndexGenerator::GenerateIndexPage(directory_path, target_url_);
+    
+    if (index_html.empty()) {
+      SPDLOG_WARN("failed to generate directory index for: {}", directory_path);
+      sendNotFoundResponse();
+      return;
+    }
+    
+    // Send directory index response
+    CRequest::HttpResponse resp(CRequest::kHttpOk);
+    resp.SetContentType(CRequest::kContentTypeTextHtml);
+    resp.SetKeepAlive(false);
+    resp.SetContentLength(index_html.size());
+    
+    network::HttpClient<T> http_client(sock_ptr_);
+    if (!http_client.SendHttpHeader(resp)) {
+      SPDLOG_ERROR("failed to send directory index response header");
+      return;
+    }
+    
+    // Send the HTML body
+    boost::system::error_code ec;
+    boost::asio::write(*sock_ptr_, boost::asio::buffer(index_html), ec);
+    if (ec) {
+      SPDLOG_ERROR("failed to write directory index body: {}", ec.message());
+    }
+  }
+  
+  void sendNotFoundResponse() {
+    using namespace boost::beast;
+    boost::system::error_code ec;
+    http::response<http::string_body> err_not_found_resp{http::status::not_found, 11};
+    err_not_found_resp.set(http::field::content_type, "text/html");
+    err_not_found_resp.body() = "<html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>";
+    err_not_found_resp.prepare_payload();
+    
+    http::write(*sock_ptr_, err_not_found_resp, ec);
+    if (ec) {
+      SPDLOG_WARN("failed to write 404 response: {}", ec.message());
+    }
   }
 
   void Close() {
