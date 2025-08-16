@@ -91,7 +91,7 @@ Combine multiple features with rate limiting:
 ## Command-line Options
 
 | Option | Description | Default |
-|--------|-------------|---------||
+|--------|-------------|---------|
 | `--port` | Server port number | 8080 |
 | `--enable-https` | Enable HTTPS support | false |
 | `--enable-compression` | Enable HTTP compression | false |
