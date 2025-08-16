@@ -45,8 +45,7 @@ int main(int argc, char *argv[]) {
     path_config_file = parsed_opts["config"].as<std::string>();
   } else {
     SPDLOG_INFO("use default configuration file");
-    path_config_file = fmt::format("{}/{}", azugate::kPathResourceFolder,
-                                   azugate::kDftConfigFile);
+    path_config_file = std::string(azugate::kDftConfigFile);
   }
   // Apply command line configurations
   if (parsed_opts.count("port")) {

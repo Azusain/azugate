@@ -58,13 +58,15 @@ void Dispatch(boost::shared_ptr<boost::asio::io_context> io_context_ptr,
     callback();
     return;
   }
-  // TODO: configured by router.
-  // TCP.
-  // if (g_proxy_mode) {
-  //   source_connection_info.type = ProtocolTypeTcp;
-  //   TcpProxyHandler(io_context_ptr, sock_ptr,
-  //                   GetRouterMapping(source_connection_info));
-  // }
+  // Check if this should be handled as TCP proxy
+  source_connection_info.type = ProtocolTypeTcp;
+  auto tcp_target = GetTargetRoute(source_connection_info);
+  if (tcp_target && tcp_target->type == ProtocolTypeTcp) {
+    SPDLOG_INFO("Handling TCP proxy to {}:{}", tcp_target->address, tcp_target->port);
+    TcpProxyHandler(io_context_ptr, sock_ptr, tcp_target);
+    callback();
+    return;
+  }
 
   // HTTP & HTTPS.
   if (azugate::GetHttps()) {

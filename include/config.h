@@ -18,7 +18,7 @@ constexpr size_t kDefaultBufSize = 1024 * 4;
 // TODO: this needs more consideration.
 constexpr size_t kMaxFdSize = 1024 / 2;
 // TODO: this needs some configuration file.
-constexpr std::string_view kPathResourceFolder = "../resources";
+constexpr std::string_view kPathResourceFolder = "./";
 constexpr std::string_view kPathDftPage = "/welcome.html";
 // ref to Nginx, the value is 8kb, but 60kb in Envoy.
 constexpr size_t kMaxHttpHeaderSize = 1024 * 8;

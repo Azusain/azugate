@@ -875,10 +875,25 @@ public:
   }
 
   void handleLocalFileRequest() {
-    // get local file path from request url.
-    std::shared_ptr<char[]> full_local_file_path =
-        assembleFullLocalFilePath(kPathResourceFolder, target_url_);
-    auto full_local_file_path_str = full_local_file_path.get();
+    // target_url_ contains the base directory from route config
+    // and we need to append the request path to it
+    std::string request_path(request_.path, request_.len_path);
+    std::string full_local_file_path_str;
+    
+    // Handle root path
+    if (request_path == "/") {
+      full_local_file_path_str = target_url_;
+    } else {
+      // Remove leading slash from request path to avoid double slash
+      if (!request_path.empty() && request_path[0] == '/') {
+        request_path = request_path.substr(1);
+      }
+      full_local_file_path_str = target_url_;
+      if (!full_local_file_path_str.empty() && full_local_file_path_str.back() != '/') {
+        full_local_file_path_str += "/";
+      }
+      full_local_file_path_str += request_path;
+    }
     
     if (!std::filesystem::exists(full_local_file_path_str)) {
       SPDLOG_WARN("file not exists: {}", full_local_file_path_str);
@@ -905,7 +920,7 @@ public:
 
     // setup and send response headers.
     CRequest::HttpResponse resp(CRequest::kHttpOk);
-    auto ext = utils::FindFileExtension(target_url_);
+    auto ext = utils::FindFileExtension(full_local_file_path_str);
     resp.SetContentType(CRequest::utils::GetContentTypeFromSuffix(ext));
     resp.SetKeepAlive(false);
     if (compression_type_.code != utils::kCompressionTypeCodeNone) {
