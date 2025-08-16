@@ -2,6 +2,7 @@
 #include "config.h"
 #include "server.hpp"
 #include "worker.hpp"
+#include "http_cache.hpp"
 #include <cxxopts.hpp>
 #include <spdlog/spdlog.h>
 #include <string>
@@ -109,7 +110,17 @@ int main(int argc, char *argv[]) {
   }
 
   auto io_context_ptr = boost::make_shared<boost::asio::io_context>();
-
+  
+  // Initialize HTTP cache system
+  HttpCacheConfig cache_config;
+  cache_config.max_size_bytes = 100 * 1024 * 1024;  // 100MB cache
+  cache_config.max_entries = 10000;
+  cache_config.default_ttl = std::chrono::seconds(300);  // 5 minutes
+  cache_config.respect_cache_control = true;
+  cache_config.enable_conditional_requests = true;
+  
+  HttpCacheManager::instance().initialize(cache_config);
+  SPDLOG_INFO("HTTP cache initialized with {}MB capacity", cache_config.max_size_bytes / (1024 * 1024));
 
   StartHealthCheckWorker(io_context_ptr);
 
