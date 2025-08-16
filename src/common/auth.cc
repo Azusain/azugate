@@ -34,6 +34,25 @@ std::string GenerateToken(const std::string &payload,
 }
 
 bool VerifyToken(const std::string &token, const std::string &secret) {
+  // Basic validation first
+  if (token.empty() || secret.empty()) {
+    SPDLOG_WARN("empty token or secret provided");
+    return false;
+  }
+  
+  // Check token format (JWT should have 3 parts separated by dots)
+  size_t first_dot = token.find('.');
+  if (first_dot == std::string::npos) {
+    SPDLOG_WARN("invalid token format: missing first dot");
+    return false;
+  }
+  
+  size_t second_dot = token.find('.', first_dot + 1);
+  if (second_dot == std::string::npos) {
+    SPDLOG_WARN("invalid token format: missing second dot");
+    return false;
+  }
+  
   try {
     auto decoded_token = jwt::decode(token);
     auto verifier = jwt::verify()
@@ -42,8 +61,17 @@ bool VerifyToken(const std::string &token, const std::string &secret) {
     verifier.verify(decoded_token);
     SPDLOG_DEBUG("validate token successfully");
     return true;
+  } catch (const jwt::error::invalid_json_exception& e) {
+    SPDLOG_WARN("token contains invalid JSON: {}", e.what());
+    return false;
+  } catch (const jwt::error::token_verification_exception& e) {
+    SPDLOG_WARN("token verification failed: {}", e.what());
+    return false;
+  } catch (const jwt::error::signature_verification_exception& e) {
+    SPDLOG_WARN("token signature verification failed: {}", e.what());
+    return false;
   } catch (const std::exception &e) {
-    SPDLOG_WARN("error verifying token: {}", e.what());
+    SPDLOG_WARN("unexpected error verifying token: {}", e.what());
     return false;
   }
 }

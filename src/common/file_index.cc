@@ -5,56 +5,72 @@
 namespace azugate {
 
 std::string DirectoryIndexGenerator::GenerateIndexPage(const std::string& directory_path, const std::string& request_path) {
-    try {
-        if (!std::filesystem::exists(directory_path) || !std::filesystem::is_directory(directory_path)) {
-            return "";
+    std::error_code ec;
+    if (!std::filesystem::exists(directory_path, ec) || ec) {
+        if (ec) {
+            SPDLOG_ERROR("Error checking directory existence: {}", ec.message());
         }
-        
-        auto files = GetDirectoryListing(directory_path);
-        return GenerateHtmlPage(request_path, files);
-    } catch (const std::exception& e) {
-        SPDLOG_ERROR("Error generating directory index: {}", e.what());
         return "";
     }
+    
+    if (!std::filesystem::is_directory(directory_path, ec) || ec) {
+        if (ec) {
+            SPDLOG_ERROR("Error checking if path is directory: {}", ec.message());
+        }
+        return "";
+    }
+    
+    auto files = GetDirectoryListing(directory_path);
+    return GenerateHtmlPage(request_path, files);
 }
 
 std::vector<FileInfo> DirectoryIndexGenerator::GetDirectoryListing(const std::string& directory_path) {
     std::vector<FileInfo> files;
+    std::error_code dir_ec;
     
-    try {
-        for (const auto& entry : std::filesystem::directory_iterator(directory_path)) {
-            FileInfo file_info;
-            file_info.name = entry.path().filename().string();
-            file_info.path = entry.path().string();
-            file_info.is_directory = entry.is_directory();
-            
-            if (entry.is_regular_file()) {
-                std::error_code ec;
-                file_info.size = std::filesystem::file_size(entry, ec);
-                if (ec) {
-                    file_info.size = 0;
-                }
-            } else {
-                file_info.size = 0;
-            }
-            
-            std::error_code ec;
-            file_info.last_modified = std::filesystem::last_write_time(entry, ec);
-            
-            files.push_back(file_info);
+    std::filesystem::directory_iterator dir_iter(directory_path, dir_ec);
+    if (dir_ec) {
+        SPDLOG_ERROR("Error creating directory iterator for {}: {}", directory_path, dir_ec.message());
+        return files;
+    }
+    
+    for (const auto& entry : dir_iter) {
+        FileInfo file_info;
+        
+        std::error_code ec;
+        file_info.name = entry.path().filename().string();
+        file_info.path = entry.path().string();
+        file_info.is_directory = entry.is_directory(ec);
+        if (ec) {
+            SPDLOG_WARN("Error checking if {} is directory: {}", file_info.name, ec.message());
+            continue;
         }
         
-        // Sort directories first, then files, both alphabetically
-        std::sort(files.begin(), files.end(), [](const FileInfo& a, const FileInfo& b) {
-            if (a.is_directory != b.is_directory) {
-                return a.is_directory > b.is_directory; // directories first
+        if (entry.is_regular_file(ec) && !ec) {
+            file_info.size = std::filesystem::file_size(entry, ec);
+            if (ec) {
+                file_info.size = 0;
             }
-            return a.name < b.name; // alphabetical
-        });
+        } else {
+            file_info.size = 0;
+        }
         
-    } catch (const std::exception& e) {
-        SPDLOG_ERROR("Error reading directory {}: {}", directory_path, e.what());
+        file_info.last_modified = std::filesystem::last_write_time(entry, ec);
+        if (ec) {
+            // Use epoch time as fallback
+            file_info.last_modified = std::filesystem::file_time_type{};
+        }
+        
+        files.push_back(file_info);
     }
+    
+    // Sort directories first, then files, both alphabetically
+    std::sort(files.begin(), files.end(), [](const FileInfo& a, const FileInfo& b) {
+        if (a.is_directory != b.is_directory) {
+            return a.is_directory > b.is_directory; // directories first
+        }
+        return a.name < b.name; // alphabetical
+    });
     
     return files;
 }
@@ -75,18 +91,43 @@ std::string DirectoryIndexGenerator::FormatFileSize(std::uintmax_t size) {
 }
 
 std::string DirectoryIndexGenerator::FormatTime(std::filesystem::file_time_type file_time) {
-    try {
-        auto system_time = std::chrono::time_point_cast<std::chrono::system_clock::duration>(
-            file_time - std::filesystem::file_time_type::clock::now() + std::chrono::system_clock::now()
-        );
-        auto time_t = std::chrono::system_clock::to_time_t(system_time);
-        
-        std::ostringstream oss;
-        oss << std::put_time(std::localtime(&time_t), "%Y-%m-%d %H:%M:%S");
-        return oss.str();
-    } catch (...) {
+    // Check if file_time is valid (not epoch time)
+    if (file_time == std::filesystem::file_time_type{}) {
         return "Unknown";
     }
+    
+    // Safely convert filesystem time to system time
+    auto system_time = std::chrono::time_point_cast<std::chrono::system_clock::duration>(
+        file_time - std::filesystem::file_time_type::clock::now() + std::chrono::system_clock::now()
+    );
+    
+    // Check if conversion resulted in valid time
+    if (system_time < std::chrono::system_clock::time_point{}) {
+        return "Unknown";
+    }
+    
+    auto time_t = std::chrono::system_clock::to_time_t(system_time);
+    
+    // Check if time_t is valid
+    if (time_t < 0) {
+        return "Unknown";
+    }
+    
+    // Use localtime_s on Windows, localtime_r on Unix for thread safety
+    std::tm tm_buf;
+#ifdef _WIN32
+    if (localtime_s(&tm_buf, &time_t) != 0) {
+        return "Unknown";
+    }
+#else
+    if (localtime_r(&time_t, &tm_buf) == nullptr) {
+        return "Unknown";
+    }
+#endif
+    
+    std::ostringstream oss;
+    oss << std::put_time(&tm_buf, "%Y-%m-%d %H:%M:%S");
+    return oss.str();
 }
 
 std::string DirectoryIndexGenerator::EscapeHtml(const std::string& text) {

@@ -14,6 +14,7 @@
 #include <signal.h>
 #endif
 
+#include <filesystem>
 #include <string_view>
 #include <unordered_map>
 #include <unordered_set>
@@ -285,29 +286,64 @@ bool azugate::ConnectionInfo::operator==(const ConnectionInfo &other) const {
 }
 
 bool LoadServerConfig(const std::string &path_config_file) {
-  try {
-    // parse and load configuration.
-    auto config = YAML::LoadFile(path_config_file);
-    // listening port.
-    g_azugate_port = config[std::string(kYamlFieldPort)].as<uint16_t>();
-    g_azugate_admin_port = config[std::string(kYamlFieldAdminPort)].as<uint16_t>();
-    // SSL certificates.
-    g_ssl_crt = config[std::string(kYamlFieldCrt)].as<std::string>();
-    g_ssl_key = config[std::string(kYamlFieldKey)].as<std::string>();
-    // external auth.
-    g_http_external_authorization =
-        config[std::string(kYamlFieldExternalHTTPAuthentication)].as<bool>();
-    g_external_auth_domain =
-        config[std::string(kYamlFieldExternalAuthDomain)].as<std::string>();
-    g_external_auth_client_id =
-        config[std::string(kYamlFieldExternalAuthClientID)].as<std::string>();
-    g_external_auth_client_secret =
-        config[std::string(kYamlFieldExternalAuthClientSecret)].as<std::string>();
-    g_external_auth_callback_url =
-        config[std::string(kYamlFieldExternalAuthCallbackUrl)].as<std::string>();
-  } catch (...) {
+  YAML::Node config;
+  // Check if file exists and can be loaded
+  if (!std::filesystem::exists(path_config_file)) {
+    SPDLOG_ERROR("Config file not found: {}", path_config_file);
     return false;
   }
+  
+  // Load and parse YAML file
+  try {
+    config = YAML::LoadFile(path_config_file);
+  } catch (const YAML::Exception& e) {
+    SPDLOG_ERROR("Failed to parse YAML config: {}", e.what());
+    return false;
+  }
+  
+  // Safely extract configuration values with validation
+  try {
+    if (!config[std::string(kYamlFieldPort)]) {
+      SPDLOG_ERROR("Missing required field: {}", kYamlFieldPort);
+      return false;
+    }
+    g_azugate_port = config[std::string(kYamlFieldPort)].as<uint16_t>();
+    
+    if (!config[std::string(kYamlFieldAdminPort)]) {
+      SPDLOG_ERROR("Missing required field: {}", kYamlFieldAdminPort);
+      return false;
+    }
+    g_azugate_admin_port = config[std::string(kYamlFieldAdminPort)].as<uint16_t>();
+    
+    // SSL certificates (optional)
+    if (config[std::string(kYamlFieldCrt)]) {
+      g_ssl_crt = config[std::string(kYamlFieldCrt)].as<std::string>();
+    }
+    if (config[std::string(kYamlFieldKey)]) {
+      g_ssl_key = config[std::string(kYamlFieldKey)].as<std::string>();
+    }
+    
+    // External auth (optional)
+    if (config[std::string(kYamlFieldExternalHTTPAuthentication)]) {
+      g_http_external_authorization = config[std::string(kYamlFieldExternalHTTPAuthentication)].as<bool>();
+    }
+    if (config[std::string(kYamlFieldExternalAuthDomain)]) {
+      g_external_auth_domain = config[std::string(kYamlFieldExternalAuthDomain)].as<std::string>();
+    }
+    if (config[std::string(kYamlFieldExternalAuthClientID)]) {
+      g_external_auth_client_id = config[std::string(kYamlFieldExternalAuthClientID)].as<std::string>();
+    }
+    if (config[std::string(kYamlFieldExternalAuthClientSecret)]) {
+      g_external_auth_client_secret = config[std::string(kYamlFieldExternalAuthClientSecret)].as<std::string>();
+    }
+    if (config[std::string(kYamlFieldExternalAuthCallbackUrl)]) {
+      g_external_auth_callback_url = config[std::string(kYamlFieldExternalAuthCallbackUrl)].as<std::string>();
+    }
+  } catch (const YAML::Exception& e) {
+    SPDLOG_ERROR("Error parsing config value: {}", e.what());
+    return false;
+  }
+  
   // token secret.
   g_authorization_token_secret = utils::GenerateSecret();
   return true;

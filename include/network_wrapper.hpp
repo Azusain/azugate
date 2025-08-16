@@ -108,13 +108,10 @@ public:
       ssl::context ssl_client_ctx(ssl::context::sslv23_client);
       sock_ptr_ = boost::make_shared<ssl::stream<ip::tcp::socket>>(
           std::move(*tcp_sock_ptr), ssl_client_ctx);
-      try {
-        sock_ptr_->handshake(ssl::stream_base::client);
-      } catch (const std::exception &e) {
-        SPDLOG_ERROR("failed to handshake: {}", e.what());
-        return false;
-      } catch (...) {
-        SPDLOG_WARN("failedt to handshake due to unknown reason");
+      boost::system::error_code handshake_ec;
+      sock_ptr_->handshake(ssl::stream_base::client, handshake_ec);
+      if (handshake_ec) {
+        SPDLOG_ERROR("failed to handshake: {}", handshake_ec.message());
         return false;
       }
     }
