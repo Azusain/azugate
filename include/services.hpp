@@ -9,6 +9,7 @@
 #include "protocols.h"
 #include "string_op.h"
 #include "file_index.hpp"
+#include "load_balancer.hpp"
 #include <boost/asio.hpp>
 #include <boost/asio/buffers_iterator.hpp>
 #include <boost/asio/error.hpp>
