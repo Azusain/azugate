@@ -18,7 +18,18 @@ A lightweight HTTP proxy server with built-in file serving capabilities. Azugate
 
 ## Installation
 
-### Package Managers (Recommended)
+### Quick Install Script (Recommended)
+```bash
+# One-line installation (auto-detects OS and package manager)
+curl -fsSL https://raw.githubusercontent.com/Azusain/azugate/main/install.sh | bash
+
+# Or specify installation method
+curl -fsSL https://raw.githubusercontent.com/Azusain/azugate/main/install.sh | bash -s brew
+curl -fsSL https://raw.githubusercontent.com/Azusain/azugate/main/install.sh | bash -s apt
+curl -fsSL https://raw.githubusercontent.com/Azusain/azugate/main/install.sh | bash -s manual
+```
+
+### Package Managers
 
 #### Homebrew (macOS/Linux)
 ```bash
