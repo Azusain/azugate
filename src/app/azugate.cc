@@ -180,7 +180,10 @@ int main(int argc, char *argv[]) {
       
       SPDLOG_INFO("File proxy enabled for directory: {} -> {}", proxy_directory, absolute_path_str);
       
-      // Set up file proxy route with wildcard
+      // Set up file proxy route with wildcard for different protocol types
+      SPDLOG_INFO("Adding file proxy routes: /* -> {}", absolute_path_str);
+      
+      // Add route for HTTP protocol
       azugate::AddRoute(
           azugate::ConnectionInfo{
               .type = azugate::ProtocolTypeHttp,
@@ -193,6 +196,36 @@ int main(int argc, char *argv[]) {
               .http_url = absolute_path_str,
               .remote = false, // Local file access
           });
+          
+      // Add route for WebSocket protocol
+      azugate::AddRoute(
+          azugate::ConnectionInfo{
+              .type = azugate::ProtocolTypeWebSocket,
+              .http_url = "/*", // Catch all paths with wildcard
+          },
+          azugate::ConnectionInfo{
+              .type = azugate::ProtocolTypeWebSocket,
+              .address = "localhost",
+              .port = g_azugate_port,
+              .http_url = absolute_path_str,
+              .remote = false, // Local file access
+          });
+      
+      // Add route for TCP protocol (for cases where HTTP is detected as TCP)
+      azugate::AddRoute(
+          azugate::ConnectionInfo{
+              .type = azugate::ProtocolTypeTcp,
+              .http_url = "/*", // Catch all paths with wildcard
+          },
+          azugate::ConnectionInfo{
+              .type = azugate::ProtocolTypeTcp,
+              .address = "localhost",
+              .port = g_azugate_port,
+              .http_url = absolute_path_str,
+              .remote = false, // Local file access
+          });
+          
+      SPDLOG_INFO("File proxy routes added successfully");
     } else {
       SPDLOG_ERROR("File proxy enabled but no directory specified. Use --proxy-dir");
       return -1;

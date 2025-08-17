@@ -204,12 +204,22 @@ const std::vector<std::string> &GetHealthzList() {
 
 inline bool prefixMatchEqual(const ConnectionInfo &source_conn_info,
                              const ConnectionInfo &rule_conn_info) {
-  return source_conn_info.http_url.starts_with(rule_conn_info.http_url.substr(
-             0, rule_conn_info.http_url.find('*'))) &&
-         source_conn_info.type == rule_conn_info.type;
+  std::string prefix = rule_conn_info.http_url.substr(
+                       0, rule_conn_info.http_url.find('*'));
+  bool type_match = source_conn_info.type == rule_conn_info.type;
+  bool prefix_match = source_conn_info.http_url.starts_with(prefix);
+  
+  SPDLOG_DEBUG("prefix match details: source='{}' type={}, rule='{}' type={}, prefix='{}', type_match={}, prefix_match={}",
+               source_conn_info.http_url, source_conn_info.type,
+               rule_conn_info.http_url, rule_conn_info.type, 
+               prefix, type_match, prefix_match);
+               
+  return prefix_match && type_match;
 }
 
 void AddRoute(ConnectionInfo &&source, ConnectionInfo &&target) {
+  std::lock_guard<std::mutex> lock(g_config_mutex);
+  
   if (source.http_url.find("*") != std::string::npos) {
     SPDLOG_DEBUG("add prefix match rule: {} -> {}", source.http_url,
                  target.http_url);
@@ -239,17 +249,25 @@ void AddRoute(ConnectionInfo &&source, ConnectionInfo &&target) {
 
 std::optional<ConnectionInfo> GetTargetRoute(const ConnectionInfo &source) {
   std::lock_guard<std::mutex> lock(g_config_mutex);
+  SPDLOG_DEBUG("Looking for route for: {} (type: {})", source.http_url, source.type);
+  
   // exact match first.
   auto it = g_exact_routes.find(source);
   if (it != g_exact_routes.end() && !it->second.targets.empty()) {
+    SPDLOG_DEBUG("Found exact route match");
     auto next_target = it->second.GetNextTarget();
     return next_target;
   }
+  
   // prefix match.
+  SPDLOG_DEBUG("Checking {} prefix routes", g_prefix_routes.size());
   for (auto &route : g_prefix_routes) {
+    SPDLOG_DEBUG("Checking prefix route: {} vs {}", source.http_url, route.first.http_url);
     if (!prefixMatchEqual(source, route.first)) {
+      SPDLOG_DEBUG("Prefix match failed");
       continue;
     }
+    SPDLOG_DEBUG("Prefix match succeeded!");
     auto target = route.second.GetNextTarget();
     auto &target_url = target->http_url;
     if (target_url.size() >= 2 &&
