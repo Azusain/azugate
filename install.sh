@@ -5,7 +5,7 @@
 
 set -e
 
-AZUGATE_VERSION="v1.1.0"
+AZUGATE_VERSION="v1.1.1"
 GITHUB_REPO="Azusain/azugate"
 
 # Colors for output

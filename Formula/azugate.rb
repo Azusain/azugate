@@ -1,7 +1,7 @@
 class Azugate < Formula
   desc "High-performance reverse proxy and load balancer with file serving capabilities"
   homepage "https://github.com/Azusain/azugate"
-  url "https://github.com/Azusain/azugate/archive/refs/tags/v1.1.0.tar.gz"
+  url "https://github.com/Azusain/azugate/archive/refs/tags/v1.1.1.tar.gz"
   sha256 "" # This will be filled when creating a real release
   license "MIT"
   head "https://github.com/Azusain/azugate.git", branch: "main"
