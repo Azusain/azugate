@@ -143,7 +143,7 @@ endif()
 
 # CPack configuration for creating packages
 set(CPACK_PACKAGE_NAME "azugate")
-set(CPACK_PACKAGE_VERSION "1.0.0")
+set(CPACK_PACKAGE_VERSION "1.1.0")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "An unsafe and inefficient gateway")
 set(CPACK_PACKAGE_DESCRIPTION "AzuGate is a high-performance reverse proxy and load balancer with file serving capabilities.")
 set(CPACK_PACKAGE_VENDOR "AzuGate Project")

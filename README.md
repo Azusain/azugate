@@ -2,8 +2,8 @@
 
 A lightweight HTTP proxy server with built-in file serving capabilities. Azugate provides a simple yet powerful solution for HTTP proxying and static file serving with directory listing support.
 
-> **Latest Version**: v2.0.0 - Simplified architecture with command-line configuration (gRPC removed)  
-> **Legacy Version**: v1.x available in `legacy` branch with gRPC support
+> **Latest Version**: v1.1.0 - File proxy fixes and comprehensive package manager support  
+> **Previous Version**: v1.0.0 - Initial release with HTTP proxy and file serving
 
 ## Features
 
@@ -33,8 +33,8 @@ brew install https://raw.githubusercontent.com/Azusain/azugate/main/Formula/azug
 #### APT (Ubuntu/Debian)
 ```bash
 # Download and install .deb package
-wget https://github.com/Azusain/azugate/releases/latest/download/azugate_1.0.0-1_amd64.deb
-sudo dpkg -i azugate_1.0.0-1_amd64.deb
+wget https://github.com/Azusain/azugate/releases/latest/download/azugate_1.1.0-1_amd64.deb
+sudo dpkg -i azugate_1.1.0-1_amd64.deb
 sudo apt-get install -f  # Fix dependencies if needed
 ```
 
@@ -224,13 +224,19 @@ When running as an HTTP proxy, all requests are forwarded to upstream servers. I
 
 ## Version History
 
-### v2.0.0 (Latest)
-- Removed gRPC dependencies for simplified architecture
-- Added command-line configuration
-- Implemented file proxy server with directory listing
-- Enhanced build system and cross-platform support
+### v1.1.0 (Latest)
+- Fix file proxy routing issues (protocol type matching)
+- Resolve encoding problems in directory listings (ASCII icons) 
+- Add comprehensive package manager support (Homebrew, APT)
+- Automated multi-platform releases via GitHub Actions
+- Complete systemd integration with security hardening
+- Enhanced build system with CMake install targets
+- Comprehensive documentation and troubleshooting guides
 
-### v1.x (Legacy Branch)
-- gRPC-based configuration (preserved in `legacy` branch)
-- Basic HTTP proxy functionality
+### v1.0.0
+- Initial release with HTTP proxy and file serving
+- Directory listings with file information
+- HTTP compression and rate limiting support
+- SSL/TLS termination capabilities
+- Cross-platform support (Windows, Linux, macOS)
 

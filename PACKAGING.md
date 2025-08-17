@@ -19,8 +19,8 @@ brew install https://raw.githubusercontent.com/Azusain/azugate/main/Formula/azug
 
 ```bash
 # Download and install the .deb package from GitHub releases
-wget https://github.com/Azusain/azugate/releases/latest/download/azugate_1.0.0-1_amd64.deb
-sudo dpkg -i azugate_1.0.0-1_amd64.deb
+wget https://github.com/Azusain/azugate/releases/latest/download/azugate_1.1.0-1_amd64.deb
+sudo dpkg -i azugate_1.1.0-1_amd64.deb
 sudo apt-get install -f  # Fix any missing dependencies
 ```
 
