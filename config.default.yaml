@@ -1,11 +1,23 @@
-port: 8080
-admin_port: 50051
-# SSL certificates.
-crt: "../resources/localhost.crt"
-key: "../resources/localhost.key"
-# external OAuth Provider.
-external_http_authentication: false
-auth_domain: "dev-uep626a5ecgmzopx.us.auth0.com"
-auth_client_id: "wKWP9oGUySyMYDuISRTZ5EeGeB8SOl6F"
-auth_client_secret: "9ZpguaFYAlJtjuJmC6qmrY9IiUzPZm9IKgPhWLB78pL78aMLL_zaaGsIPansIolU_"
-callback_url: "http://localhost:8080/callback"
+# Minimal AzuGate Configuration
+# This configuration provides basic reverse proxy functionality
+
+server:
+  port: 8080
+  host: "0.0.0.0"
+
+routes:
+  # Default proxy - will be overridden by command line options
+  - path: "/api/*"
+    upstream:
+      servers:
+        - host: "localhost"
+          port: 3000
+
+# Optional: Enable metrics
+metrics:
+  enabled: true
+  port: 9090
+
+# Optional: Enable basic logging
+logging:
+  level: "info"
