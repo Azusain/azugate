@@ -185,20 +185,22 @@ jobs:
         draft: false
         prerelease: false
         body: |
-          # AzuGate v1.1.0 - File Proxy Fixes & Package Manager Support
+          # AzuGate v1.1.1 - GitHub Actions Update
 
-          ## 🔧 Major Bug Fixes
-          - **Fixed file proxy routing issues**: Resolved protocol type matching problems that prevented routes from working
-          - **Fixed encoding problems**: Replaced emoji icons with ASCII `[DIR]` and `[FILE]` to prevent Windows console issues  
-          - **Enhanced route matching**: Added support for multiple protocol types (HTTP, WebSocket, TCP)
+          ## 🔧 Bug Fixes & Improvements
+          - **Updated GitHub Actions artifacts**: Upgraded from v3 to v4 for compatibility
+          - **Fixed CI/CD pipeline**: Resolved deprecation warnings in release automation
+          - **Improved release reliability**: Enhanced artifact handling and workflow stability
 
-          ## 📦 Package Manager Support
+          ## 📦 Package Manager Support (Inherited from v1.1.0)
           - **🍺 Homebrew (macOS/Linux)**: Formula with service management and dependency resolution
           - **📋 APT (Ubuntu/Debian)**: Complete `.deb` packaging with systemd integration
           - **⚡ One-line installer**: `curl -fsSL https://raw.githubusercontent.com/Azusain/azugate/main/install.sh | bash`
           - **🚀 Automated builds**: Multi-platform releases via GitHub Actions
 
-          ## 🛠️ Enhanced Features
+          ## 🛠️ Enhanced Features (From Previous Releases)
+          - **File proxy routing fixes**: Resolved protocol type matching problems
+          - **Encoding improvements**: ASCII icons for better console compatibility
           - **Systemd service** with security hardening and proper user isolation
           - **Service management** integration (`systemctl`, `brew services`)
           - **Configuration management** with proper file permissions
@@ -218,11 +220,11 @@ jobs:
           brew install https://raw.githubusercontent.com/Azusain/azugate/main/Formula/azugate.rb
 
           # APT (Ubuntu/Debian) 
-          wget https://github.com/Azusain/azugate/releases/download/v1.1.0/azugate_1.1.0-1_amd64.deb
-          sudo dpkg -i azugate_1.1.0-1_amd64.deb
+          wget https://github.com/Azusain/azugate/releases/download/v1.1.1/azugate_1.1.1-1_amd64.deb
+          sudo dpkg -i azugate_1.1.1-1_amd64.deb
 
           # Windows MSI
-          # Download azugate-1.1.0-win64.msi and run installer
+          # Download azugate-1.1.1-win64.msi and run installer
 
           # Manual installation
           # Download appropriate .tar.gz/.zip for your platform
