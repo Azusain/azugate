@@ -156,6 +156,7 @@ std::string DirectoryIndexGenerator::GenerateHtmlPage(const std::string& request
     html << "<!DOCTYPE html>\n"
          << "<html>\n"
          << "<head>\n"
+         << "    <meta charset=\"utf-8\">\n"
          << "    <title>Index of " << escaped_path << "</title>\n"
          << "    <style>\n"
          << "        body { font-family: Arial, sans-serif; margin: 40px; }\n"
@@ -198,7 +199,7 @@ std::string DirectoryIndexGenerator::GenerateHtmlPage(const std::string& request
         }
         
         html << "            <tr>\n"
-             << "                <td class=\"icon\">📁</td>\n"
+             << "                <td class=\"icon\">[DIR]</td>\n"
              << "                <td><a href=\"" << EscapeHtml(parent_path) << "\" class=\"directory\">..</a></td>\n"
              << "                <td class=\"size\">-</td>\n"
              << "                <td>-</td>\n"
@@ -217,7 +218,7 @@ std::string DirectoryIndexGenerator::GenerateHtmlPage(const std::string& request
         std::string escaped_url = EscapeHtml(file_url);
         
         html << "            <tr>\n"
-             << "                <td class=\"icon\">" << (file.is_directory ? "📁" : "📄") << "</td>\n"
+             << "                <td class=\"icon\">" << (file.is_directory ? "[DIR]" : "[FILE]") << "</td>\n"
              << "                <td><a href=\"" << escaped_url << "\""
              << (file.is_directory ? " class=\"directory\"" : "") << ">" << escaped_name << "</a></td>\n"
              << "                <td class=\"size\">" << (file.is_directory ? "-" : FormatFileSize(file.size)) << "</td>\n"

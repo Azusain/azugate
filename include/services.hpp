@@ -950,7 +950,8 @@ public:
 
   void handleDirectoryRequest(const char* directory_path) {
     // Generate directory index page
-    std::string index_html = DirectoryIndexGenerator::GenerateIndexPage(directory_path, target_url_);
+    std::string request_path(request_.path, request_.len_path);
+    std::string index_html = DirectoryIndexGenerator::GenerateIndexPage(directory_path, request_path);
     
     if (index_html.empty()) {
       SPDLOG_WARN("failed to generate directory index for: {}", directory_path);
@@ -960,7 +961,7 @@ public:
     
     // Send directory index response
     CRequest::HttpResponse resp(CRequest::kHttpOk);
-    resp.SetContentType(CRequest::kContentTypeTextHtml);
+    resp.SetContentType("text/html; charset=utf-8");
     resp.SetKeepAlive(false);
     resp.SetContentLength(index_html.size());
     
