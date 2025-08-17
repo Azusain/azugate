@@ -58,7 +58,11 @@ bool ConfigManager::load_config(const std::string& config_path) {
         
         // Get file modification time
         if (std::filesystem::exists(config_path)) {
-            last_modified_ = std::filesystem::last_write_time(config_path);
+            auto fs_time = std::filesystem::last_write_time(config_path);
+            // Convert filesystem time to system clock time
+            last_modified_ = std::chrono::time_point_cast<std::chrono::system_clock::duration>(
+                fs_time - std::filesystem::file_time_type::clock::now() + std::chrono::system_clock::now()
+            );
         }
         
         last_validation_result_ = validation;
@@ -396,7 +400,11 @@ bool ConfigManager::check_file_modified() {
     }
     
     auto current_modified = std::filesystem::last_write_time(config_path_);
-    return current_modified > last_modified_;
+    // Convert filesystem time to system clock time for comparison
+    auto current_system_time = std::chrono::time_point_cast<std::chrono::system_clock::duration>(
+        current_modified - std::filesystem::file_time_type::clock::now() + std::chrono::system_clock::now()
+    );
+    return current_system_time > last_modified_;
 }
 
 void ConfigManager::reload_config() {

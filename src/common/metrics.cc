@@ -889,18 +889,51 @@ std::string MetricsServer::handle_config_request() const {
 static auto app_start_time = std::chrono::steady_clock::now();
 
 std::string MetricsServer::handle_version_request() const {
-    return R"({"service":"azugate","version":"1.0.0","build_date":"2024-01-01","build_commit":"dev","go_version":"cpp17","os":")" +
+    std::string os_name;
 #ifdef _WIN32
-           R"(windows",)" +
+    os_name = "windows";
 #else
-           R"(linux",)" +
+    os_name = "linux";
 #endif
-           R"("arch":"amd64","uptime_seconds":)" + std::to_string(get_uptime_seconds()) + R"(,"timestamp":)" + std::to_string(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count()) + R"(})";
+    return std::string(R"({"service":"azugate","version":"1.0.0","build_date":"2024-01-01","build_commit":"dev","go_version":"cpp17","os":")")
+        + os_name + R"(","arch":"amd64","uptime_seconds":)" 
+        + std::to_string(get_uptime_seconds()) + R"(,"timestamp":)" 
+        + std::to_string(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count()) 
+        + R"(})";
 }
 
 std::string MetricsServer::handle_dashboard_request() const {
     auto uptime_seconds = get_uptime_seconds();
-    return R"(<!DOCTYPE html><html><head><title>AzuGate Dashboard</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-family:Arial,sans-serif;margin:20px;background-color:#f5f5f5}.header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:20px;border-radius:8px;margin-bottom:20px}.card{background:white;padding:20px;margin:10px 0;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}.metric{display:inline-block;margin:10px 15px}.metric-value{font-size:24px;font-weight:bold;color:#333}.metric-label{font-size:12px;color:#666;text-transform:uppercase}.status-ok{color:#28a745}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}.refresh-btn{background:#007bff;color:white;border:none;padding:10px 20px;border-radius:4px;cursor:pointer}</style><script>function refreshPage(){window.location.reload()}function autoRefresh(){setTimeout(refreshPage,30000)}window.onload=autoRefresh</script></head><body><div class="header"><h1>🚀 AzuGate Dashboard</h1><p>Real-time gateway monitoring</p><button class="refresh-btn" onclick="refreshPage()">🔄 Refresh</button></div><div class="grid"><div class="card"><h3>🏥 Service Health</h3><div class="metric"><div class="metric-value status-ok">HEALTHY</div><div class="metric-label">System Status</div></div><div class="metric"><div class="metric-value">)" + format_uptime(uptime_seconds) + R"(</div><div class="metric-label">Uptime</div></div><div class="metric"><div class="metric-value">v1.0.0</div><div class="metric-label">Version</div></div></div><div class="card"><h3>📊 HTTP Metrics</h3><div class="metric"><div class="metric-value">0</div><div class="metric-label">Total Requests</div></div><div class="metric"><div class="metric-value">0</div><div class="metric-label">Active Connections</div></div></div><div class="card"><h3>💾 Cache Metrics</h3><div class="metric"><div class="metric-value">0%</div><div class="metric-label">Hit Rate</div></div></div></div><div class="card"><h3>🔗 Quick Links</h3><p><a href="/metrics" target="_blank">📈 Prometheus Metrics</a> | <a href="/health" target="_blank">🏥 Health Check</a> | <a href="/version" target="_blank">ℹ️ Version Info</a> | <a href="/config" target="_blank">⚙️ Configuration</a></p></div><div style="text-align:center;margin-top:30px;color:#666;font-size:12px"><p>AzuGate Gateway • Auto-refresh in 30s</p></div></body></html>)";
+    std::string html = "<!DOCTYPE html><html><head><title>AzuGate Dashboard</title>";
+    html += "<meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
+    html += "<style>body{font-family:Arial,sans-serif;margin:20px;background-color:#f5f5f5}";
+    html += ".header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:20px;border-radius:8px;margin-bottom:20px}";
+    html += ".card{background:white;padding:20px;margin:10px 0;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}";
+    html += ".metric{display:inline-block;margin:10px 15px}.metric-value{font-size:24px;font-weight:bold;color:#333}";
+    html += ".metric-label{font-size:12px;color:#666;text-transform:uppercase}.status-ok{color:#28a745}";
+    html += ".grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}";
+    html += ".refresh-btn{background:#007bff;color:white;border:none;padding:10px 20px;border-radius:4px;cursor:pointer}";
+    html += "</style><script>function refreshPage(){window.location.reload()}";
+    html += "function autoRefresh(){setTimeout(refreshPage,30000)}window.onload=autoRefresh</script></head><body>";
+    html += "<div class=\"header\"><h1>AzuGate Dashboard</h1><p>Real-time gateway monitoring</p>";
+    html += "<button class=\"refresh-btn\" onclick=\"refreshPage()\">Refresh</button></div>";
+    html += "<div class=\"grid\"><div class=\"card\"><h3>Service Health</h3>";
+    html += "<div class=\"metric\"><div class=\"metric-value status-ok\">HEALTHY</div><div class=\"metric-label\">System Status</div></div>";
+    html += "<div class=\"metric\"><div class=\"metric-value\">" + format_uptime(uptime_seconds) + "</div><div class=\"metric-label\">Uptime</div></div>";
+    html += "<div class=\"metric\"><div class=\"metric-value\">v1.0.0</div><div class=\"metric-label\">Version</div></div></div>";
+    html += "<div class=\"card\"><h3>HTTP Metrics</h3>";
+    html += "<div class=\"metric\"><div class=\"metric-value\">0</div><div class=\"metric-label\">Total Requests</div></div>";
+    html += "<div class=\"metric\"><div class=\"metric-value\">0</div><div class=\"metric-label\">Active Connections</div></div></div>";
+    html += "<div class=\"card\"><h3>Cache Metrics</h3>";
+    html += "<div class=\"metric\"><div class=\"metric-value\">0%</div><div class=\"metric-label\">Hit Rate</div></div></div></div>";
+    html += "<div class=\"card\"><h3>Quick Links</h3><p>";
+    html += "<a href=\"/metrics\" target=\"_blank\">Prometheus Metrics</a> | ";
+    html += "<a href=\"/health\" target=\"_blank\">Health Check</a> | ";
+    html += "<a href=\"/version\" target=\"_blank\">Version Info</a> | ";
+    html += "<a href=\"/config\" target=\"_blank\">Configuration</a>";
+    html += "</p></div><div style=\"text-align:center;margin-top:30px;color:#666;font-size:12px\">";
+    html += "<p>AzuGate Gateway - Auto-refresh in 30s</p></div></body></html>";
+    return html;
 }
 
 // Helper methods implementation
