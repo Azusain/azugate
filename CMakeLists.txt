@@ -157,5 +157,13 @@ set(CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
 set(CPACK_RPM_PACKAGE_GROUP "Applications/Internet")
 set(CPACK_RPM_PACKAGE_REQUIRES "glibc, libstdc++, openssl-libs")
 
+# WiX (Windows MSI) settings
+set(CPACK_WIX_UPGRADE_GUID "12345678-1234-1234-1234-123456789012")
+set(CPACK_WIX_PRODUCT_ICON "${CMAKE_SOURCE_DIR}/icon.ico")
+set(CPACK_WIX_PROGRAM_MENU_FOLDER "AzuGate")
+set(CPACK_WIX_PROPERTY_ARPHELPLINK "https://github.com/Azusain/azugate")
+set(CPACK_WIX_PROPERTY_ARPURLINFOABOUT "https://github.com/Azusain/azugate")
+set(CPACK_WIX_PROPERTY_ARPCOMMENTS "High-performance reverse proxy and load balancer")
+
 include(CPack)
 

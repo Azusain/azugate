@@ -157,12 +157,15 @@ jobs:
       run: |
         cd build
         cpack -G ZIP
+        cpack -G WIX
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
         name: azugate-windows-x64
-        path: build/*.zip
+        path: |
+          build/*.zip
+          build/*.msi
 
   create-release:
     needs: [build-linux, build-macos, build-windows]
@@ -181,7 +184,76 @@ jobs:
           azugate-windows-x64/*
         draft: false
         prerelease: false
-        generate_release_notes: true
+        body: |
+          # AzuGate v1.1.0 - File Proxy Fixes & Package Manager Support
+
+          ## 🔧 Major Bug Fixes
+          - **Fixed file proxy routing issues**: Resolved protocol type matching problems that prevented routes from working
+          - **Fixed encoding problems**: Replaced emoji icons with ASCII `[DIR]` and `[FILE]` to prevent Windows console issues  
+          - **Enhanced route matching**: Added support for multiple protocol types (HTTP, WebSocket, TCP)
+
+          ## 📦 Package Manager Support
+          - **🍺 Homebrew (macOS/Linux)**: Formula with service management and dependency resolution
+          - **📋 APT (Ubuntu/Debian)**: Complete `.deb` packaging with systemd integration
+          - **⚡ One-line installer**: `curl -fsSL https://raw.githubusercontent.com/Azusain/azugate/main/install.sh | bash`
+          - **🚀 Automated builds**: Multi-platform releases via GitHub Actions
+
+          ## 🛠️ Enhanced Features
+          - **Systemd service** with security hardening and proper user isolation
+          - **Service management** integration (`systemctl`, `brew services`)
+          - **Configuration management** with proper file permissions
+          - **Comprehensive documentation** with troubleshooting guides
+
+          ## 📥 Installation Methods
+
+          ### Quick Install (Recommended)
+          ```bash
+          # Auto-detect OS and install
+          curl -fsSL https://raw.githubusercontent.com/Azusain/azugate/main/install.sh | bash
+          ```
+
+          ### Package Managers
+          ```bash
+          # Homebrew (macOS/Linux)
+          brew install https://raw.githubusercontent.com/Azusain/azugate/main/Formula/azugate.rb
+
+          # APT (Ubuntu/Debian) 
+          wget https://github.com/Azusain/azugate/releases/download/v1.1.0/azugate_1.1.0-1_amd64.deb
+          sudo dpkg -i azugate_1.1.0-1_amd64.deb
+
+          # Windows MSI
+          # Download azugate-1.1.0-win64.msi and run installer
+
+          # Manual installation
+          # Download appropriate .tar.gz/.zip for your platform
+          ```
+
+          ## 📦 Available Packages
+          - **Linux**: `.deb` (APT) and `.tar.gz` (manual)
+          - **macOS**: `.tar.gz` (Homebrew/manual)
+          - **Windows**: `.msi` (installer) and `.zip` (portable)
+
+          ## 🎯 Usage Examples
+          ```bash
+          # Generate config
+          azugate --generate-config azugate.yaml
+
+          # Start file proxy
+          azugate --enable-file-proxy -d /path/to/serve
+
+          # Use as system service (APT installations)
+          sudo systemctl start azugate
+          sudo systemctl enable azugate
+          ```
+
+          ## 📚 Documentation
+          - **Installation Guide**: [PACKAGING.md](https://github.com/Azusain/azugate/blob/main/PACKAGING.md)
+          - **Main README**: [README.md](https://github.com/Azusain/azugate/blob/main/README.md)
+          - **Issues**: [GitHub Issues](https://github.com/Azusain/azugate/issues)
+
+          ---
+          
+          **Note**: This release does NOT include gRPC support. AzuGate focuses on HTTP proxy and file serving capabilities with command-line configuration.
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
