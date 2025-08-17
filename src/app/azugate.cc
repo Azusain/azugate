@@ -168,19 +168,29 @@ int main(int argc, char *argv[]) {
         SPDLOG_ERROR("Proxy directory does not exist: {}", proxy_directory);
         return -1;
       }
-      SPDLOG_INFO("File proxy enabled for directory: {}", proxy_directory);
       
-      // Set up file proxy route
+      // Convert to absolute path for consistency
+      std::error_code ec;
+      auto absolute_path = std::filesystem::absolute(proxy_directory, ec);
+      if (ec) {
+        SPDLOG_ERROR("Failed to resolve absolute path for {}: {}", proxy_directory, ec.message());
+        return -1;
+      }
+      std::string absolute_path_str = absolute_path.string();
+      
+      SPDLOG_INFO("File proxy enabled for directory: {} -> {}", proxy_directory, absolute_path_str);
+      
+      // Set up file proxy route with wildcard
       azugate::AddRoute(
           azugate::ConnectionInfo{
               .type = azugate::ProtocolTypeHttp,
-              .http_url = "/", // Catch all paths
+              .http_url = "/*", // Catch all paths with wildcard
           },
           azugate::ConnectionInfo{
               .type = azugate::ProtocolTypeHttp,
               .address = "localhost",
               .port = g_azugate_port,
-              .http_url = proxy_directory,
+              .http_url = absolute_path_str,
               .remote = false, // Local file access
           });
     } else {
@@ -217,11 +227,11 @@ int main(int argc, char *argv[]) {
   StartHealthCheckWorker(io_context_ptr);
 
   Server s(io_context_ptr, g_azugate_port);
-  SPDLOG_INFO("🚀 AzuGate v1.0.0 started successfully!");
-  SPDLOG_INFO("📊 Dashboard: http://localhost:{}/dashboard", g_azugate_port);
-  SPDLOG_INFO("🏥 Health: http://localhost:{}/health", g_azugate_port);
-  SPDLOG_INFO("📈 Metrics: http://localhost:{}/metrics", g_azugate_port);
-  SPDLOG_INFO("⚙️ Config: http://localhost:{}/config", g_azugate_port);
+  SPDLOG_INFO("AzuGate v1.0.0 started successfully!");
+  SPDLOG_INFO("Dashboard: http://localhost:{}/dashboard", g_azugate_port);
+  SPDLOG_INFO("Health: http://localhost:{}/health", g_azugate_port);
+  SPDLOG_INFO("Metrics: http://localhost:{}/metrics", g_azugate_port);
+  SPDLOG_INFO("Config: http://localhost:{}/config", g_azugate_port);
   SPDLOG_INFO("Press Ctrl+C for graceful shutdown");
 
   s.Run(io_context_ptr);
