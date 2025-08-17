@@ -103,4 +103,59 @@ if(WIN32)
     endif()
 endif()
 
+# Installation configuration
+set(CMAKE_INSTALL_PREFIX "/usr/local" CACHE PATH "Install path prefix, prepended onto install directories.")
+
+# Install binary
+install(TARGETS azugate
+    RUNTIME DESTINATION bin
+    COMPONENT Runtime
+)
+
+# Install default configuration
+install(FILES config.default.yaml
+    DESTINATION etc/azugate
+    RENAME azugate.yaml
+    COMPONENT Configuration
+)
+
+# Install documentation
+install(FILES README.md LICENSE
+    DESTINATION share/doc/azugate
+    COMPONENT Documentation
+)
+
+# Install man page (if exists)
+if(EXISTS "${CMAKE_SOURCE_DIR}/docs/azugate.1")
+    install(FILES docs/azugate.1
+        DESTINATION share/man/man1
+        COMPONENT Documentation
+    )
+endif()
+
+# Create systemd service directory on Linux
+if(UNIX AND NOT APPLE)
+    install(DIRECTORY
+        DESTINATION lib/systemd/system
+        COMPONENT SystemdService
+    )
+endif()
+
+# CPack configuration for creating packages
+set(CPACK_PACKAGE_NAME "azugate")
+set(CPACK_PACKAGE_VERSION "1.0.0")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "An unsafe and inefficient gateway")
+set(CPACK_PACKAGE_DESCRIPTION "AzuGate is a high-performance reverse proxy and load balancer with file serving capabilities.")
+set(CPACK_PACKAGE_VENDOR "AzuGate Project")
+set(CPACK_PACKAGE_CONTACT "your-email@example.com")
+
+# Package-specific settings
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6, libstdc++6, libssl3")
+set(CPACK_DEBIAN_PACKAGE_SECTION "net")
+set(CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
+
+set(CPACK_RPM_PACKAGE_GROUP "Applications/Internet")
+set(CPACK_RPM_PACKAGE_REQUIRES "glibc, libstdc++, openssl-libs")
+
+include(CPack)
 

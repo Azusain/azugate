@@ -1,0 +1,11 @@
+azugate (1.0.0-1) unstable; urgency=medium
+
+  * Initial release
+  * High-performance reverse proxy and load balancer
+  * File serving capabilities with directory listings
+  * HTTP compression and rate limiting support
+  * SSL/TLS termination
+  * Configuration hot-reload
+  * Health checking and metrics
+
+ -- AzuGate Project <contact@example.com>  Sat, 17 Aug 2024 17:00:00 +0000

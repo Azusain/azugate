@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+case "$1" in
+    remove|upgrade|deconfigure)
+        # Stop and disable service
+        if systemctl is-active azugate >/dev/null; then
+            systemctl stop azugate
+        fi
+        if systemctl is-enabled azugate >/dev/null; then
+            systemctl disable azugate
+        fi
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

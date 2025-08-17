@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e
+
+case "$1" in
+    configure)
+        # Create azugate user if it doesn't exist
+        if ! getent passwd azugate > /dev/null; then
+            adduser --system --group --home /var/lib/azugate --no-create-home azugate
+        fi
+        
+        # Create directories
+        mkdir -p /var/log/azugate
+        mkdir -p /var/lib/azugate
+        
+        # Set ownership
+        chown azugate:azugate /var/log/azugate
+        chown azugate:azugate /var/lib/azugate
+        
+        # Set permissions on config file
+        if [ -f /etc/azugate/azugate.yaml ]; then
+            chmod 640 /etc/azugate/azugate.yaml
+            chown root:azugate /etc/azugate/azugate.yaml
+        fi
+        
+        # Enable and start service
+        systemctl daemon-reload
+        systemctl enable azugate
+        
+        echo "AzuGate installed successfully!"
+        echo "Configuration file: /etc/azugate/azugate.yaml"
+        echo "Start service: sudo systemctl start azugate"
+        echo "View logs: sudo journalctl -u azugate -f"
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

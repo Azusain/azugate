@@ -1,0 +1,39 @@
+Source: azugate
+Section: net
+Priority: optional
+Maintainer: AzuGate Project <contact@example.com>
+Build-Depends: debhelper-compat (= 13),
+               cmake (>= 3.25),
+               ninja-build,
+               pkg-config,
+               libssl-dev,
+               zlib1g-dev,
+               libboost-dev,
+               libboost-system-dev,
+               libboost-thread-dev,
+               libboost-url-dev,
+               libyaml-cpp-dev,
+               nlohmann-json3-dev,
+               libspdlog-dev,
+               libfmt-dev
+Standards-Version: 4.6.0
+Homepage: https://github.com/Azusain/azugate
+Vcs-Browser: https://github.com/Azusain/azugate
+Vcs-Git: https://github.com/Azusain/azugate.git
+Rules-Requires-Root: no
+
+Package: azugate
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: High-performance reverse proxy and load balancer
+ AzuGate is a high-performance reverse proxy and load balancer with
+ file serving capabilities. It provides:
+ .
+  * Reverse proxy with load balancing
+  * Static file serving with directory listings
+  * HTTP compression support
+  * Rate limiting
+  * SSL/TLS termination
+  * Configuration hot-reload
+  * Health checking
+  * Metrics and monitoring

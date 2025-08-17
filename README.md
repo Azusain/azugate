@@ -18,10 +18,40 @@ A lightweight HTTP proxy server with built-in file serving capabilities. Azugate
 
 ## Installation
 
-### Prerequisites
+### Package Managers (Recommended)
 
-- C++ compiler with C++17 support
-- CMake 3.15 or later
+#### Homebrew (macOS/Linux)
+```bash
+# Install from custom tap
+brew tap azusain/azugate
+brew install azugate
+
+# Or install directly from formula URL
+brew install https://raw.githubusercontent.com/Azusain/azugate/main/Formula/azugate.rb
+```
+
+#### APT (Ubuntu/Debian)
+```bash
+# Download and install .deb package
+wget https://github.com/Azusain/azugate/releases/latest/download/azugate_1.0.0-1_amd64.deb
+sudo dpkg -i azugate_1.0.0-1_amd64.deb
+sudo apt-get install -f  # Fix dependencies if needed
+```
+
+#### Manual Installation
+```bash
+# Download pre-built binaries
+curl -LO https://github.com/Azusain/azugate/releases/latest/download/azugate-linux-x64.tar.gz
+tar -xzf azugate-linux-x64.tar.gz
+sudo cp azugate /usr/local/bin/
+```
+
+### Building from Source
+
+#### Prerequisites
+
+- C++ compiler with C++20 support
+- CMake 3.25 or later
 - vcpkg package manager
 
 ### Dependencies

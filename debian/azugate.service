@@ -1,0 +1,33 @@
+[Unit]
+Description=AzuGate reverse proxy and load balancer
+Documentation=https://github.com/Azusain/azugate
+After=network.target
+
+[Service]
+Type=simple
+User=azugate
+Group=azugate
+ExecStart=/usr/bin/azugate -c /etc/azugate/azugate.yaml
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=azugate
+KillMode=mixed
+TimeoutStopSec=5
+
+# Security settings
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log/azugate /var/lib/azugate
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictNamespaces=true
+
+[Install]
+WantedBy=multi-user.target

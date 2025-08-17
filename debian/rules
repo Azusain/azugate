@@ -1,0 +1,31 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+%:
+	dh $@ --buildsystem=cmake
+
+override_dh_auto_configure:
+	# Install vcpkg dependencies that are not available in Debian
+	git clone https://github.com/Microsoft/vcpkg.git vcpkg
+	./vcpkg/bootstrap-vcpkg.sh
+	./vcpkg/vcpkg install cxxopts jwt-cpp gtest
+	
+	dh_auto_configure -- \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_TOOLCHAIN_FILE=$(CURDIR)/vcpkg/scripts/buildsystems/vcpkg.cmake
+
+override_dh_auto_install:
+	dh_auto_install
+	# Create systemd service file
+	mkdir -p debian/azugate/lib/systemd/system
+	cp debian/azugate.service debian/azugate/lib/systemd/system/
+
+override_dh_installsystemd:
+	dh_installsystemd --name=azugate
+
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -rf vcpkg/
